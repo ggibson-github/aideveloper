@@ -21,7 +21,7 @@ See [references/workflow.md](references/workflow.md) for the full workflow.
 **v2 outputs:**
 
 1. `TODOS.md` — ordered list with dependencies
-2. `docs/tasks/task-001.md` … one card per implement task (template in `docs/tasks/README.md`)
+2. `docs/tasks/task-001.md` … use `python scripts/new-task-card.py` or manual cards per `docs/tasks/README.md`
 3. Update `docs/manifest/staleness.json` task nodes
 4. Dual-write journal + state; `next_action` → `run scaffold-project`
 5. Set `allowed_reads` for scaffold phase

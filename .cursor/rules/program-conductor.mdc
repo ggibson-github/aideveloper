@@ -1,0 +1,13 @@
+---
+description: Program mode lane merge and cross-stream blockers
+alwaysApply: false
+globs:
+  - program/**
+---
+
+# Program conductor
+
+- Only **conductor** updates `program/workstreams/*/lane.json` and `journal/state.json`.
+- Lane merge: worker summary + artifact paths only.
+- Set `blocked_on` on downstream lanes when artifact graph marks nodes stale.
+- Parallel spawn only via **orchestrate-program** when manifest gate cleared.

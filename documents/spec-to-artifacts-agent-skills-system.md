@@ -437,3 +437,34 @@ v1 relied on heuristic skill selection and markdown journal only. v2 adds determ
 
 See `docs/operator/export-contract.md` for headless/OpenClaw/Hermes bridge without rebuilding a 24/7 gateway in v2.
 
+---
+
+## 9. Genius conductor and tiered routing (v2.4+)
+
+**Implemented.** Genius parent for planning/gates; economy subagents for implement/explore/verify; S0 scripts (`route-tier.py`, `validate-workflow.py`, `verify-router.py`, etc.).
+
+- **Parent model:** Operator selects Genius tier once per orchestration session.
+- **Workers:** Model tier from `model-policy.json` and `route-tier.py`.
+- **Capability classes S0–S4:** Route by thinking required.
+
+Full design: [genius-conductor-tiered-routing.md](genius-conductor-tiered-routing.md). Policy: [model-policy.json](../docs/operator/model-policy.json).
+
+---
+
+## 10. Program orchestration (v2.7–v2.12)
+
+**Implemented.** Multi-workstream programs for mega-specs (game asset pipeline, data platform, etc.).
+
+| Piece | Path |
+|-------|------|
+| Mode | `journal/state.json` `mode: program`, `program` object |
+| Pipelines | `docs/manifest/pipelines/*.yaml` |
+| Integration manifest | `program/integration/manifest.md` |
+| Workstreams | `program/workstreams/<id>/lane.json`, `workstream.md` |
+| Artifact graph | `program/manifest/artifact-graph.json` |
+| Parallel orchestration | `orchestrate-program` skill |
+| External lanes | `pull-ready-work-orders.py`, `complete-work-order.py`, `/lane` |
+| Template packs | `template-packs/` |
+
+Software greenfield pipeline remains default when `mode` is not `program`.
+

@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "graph": [
+    { "id": "manifest", "path": "program/integration/manifest.md", "depends_on": [] },
+    { "id": "ingest", "path": "program/workstreams/ingest/tasks/", "depends_on": ["manifest"] },
+    { "id": "transform", "path": "program/workstreams/transform/tasks/", "depends_on": ["ingest"] },
+    { "id": "serve", "path": "program/workstreams/serve/tasks/", "depends_on": ["transform"] }
+  ],
+  "stale": {}
+}

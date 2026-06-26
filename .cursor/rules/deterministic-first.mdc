@@ -1,0 +1,14 @@
+---
+description: Prefer scripts and hooks before LLM for clerical workflow steps
+alwaysApply: true
+---
+
+# Deterministic-first (S0)
+
+Before an agent turn for routing, validation, dashboard, verify, or autopilot readiness:
+
+1. Check if `scripts/` already performs the step (`route-tier.py`, `validate-workflow.py`, `automation/check-pipeline-blocked.py`, `sync-state.py`, `generate-dashboard.py`, `headless-verify.py`, `verify-router.py`, `update-staleness.py`, `new-task-card.py`, lane scripts, `run-local-pipeline.py`).
+2. Run the script; use its output instead of re-deriving state in the LLM.
+3. Only use the conductor LLM for merge, gates, and orchestration after S0 output is available.
+
+Workers (subagents) should not run clerical scripts that update journal/state—conductor runs S0 or approves script output, then dual-writes.

@@ -1,0 +1,19 @@
+id: data-platform-program
+description: Data platform / pipeline mega-spec
+mode: program
+pack_keywords:
+  - data platform
+  - etl
+  - pipeline
+  - warehouse
+  - dbt
+  - spark
+pack_id: data-platform
+phases:
+  - program-scoper
+  - integration-manifest-keeper
+  - task-breakdown
+  - orchestrate-program
+gates:
+  - milestone_approved
+  - manifest_approved

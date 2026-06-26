@@ -14,6 +14,11 @@
    - `run scaffold-project` → scaffold-project
    - `implement-feature (task K/N)` → implement-feature
    - `reconcile-stale` → reconcile-stale
+   - `reconcile-artifact-graph` → reconcile-artifact-graph
+   - `run program-scoper` → program-scoper
+   - `run integration-manifest-keeper` → integration-manifest-keeper
+   - `orchestrate-program` → orchestrate-program
    - `run iterative-feature` → iterative-feature
    - `run git-workflow (...)` → only if `last_verify` passed or exception documented
-7. Dual-write journal + state; run generate-dashboard at session end.
+7. Run `python scripts/route-tier.py --apply` after changing `next_action`.
+8. Dual-write journal + state; run generate-dashboard at session end.

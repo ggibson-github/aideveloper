@@ -1,0 +1,22 @@
+id: multi-domain-program
+description: Mega-spec decomposed into milestone, workstreams, integration manifest
+mode: program
+pack_keywords:
+  - game
+  - 3d
+  - unreal
+  - blender
+  - asset
+  - mesh
+  - rig
+  - animation
+pack_id: game-asset-pipeline
+phases:
+  - program-scoper
+  - integration-manifest-keeper
+  - task-breakdown
+  - orchestrate-program
+  - implement-feature
+gates:
+  - milestone_approved
+  - manifest_approved

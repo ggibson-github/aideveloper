@@ -1,0 +1,14 @@
+---
+description: Workers cite integration manifest sections in program tasks
+alwaysApply: false
+globs:
+  - program/**
+---
+
+# Integration manifest
+
+When `mode: program`, workers must:
+
+1. Read `program/integration/manifest.md` (path from `state.program.integration_manifest`).
+2. Cite manifest section in WorkResult summary (e.g. "manifest §Attachment sockets").
+3. Do not invent socket names or export settings not in manifest.

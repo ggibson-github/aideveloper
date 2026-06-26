@@ -11,6 +11,7 @@ description: >-
 
 - User says "continue", "start", or "resume" or `/continue`
 - User asks to pick up where the project left off
+- For **many steps in one session** without repeated Continue, use **autopilot** or `/autopilot` instead
 
 ## Instructions
 

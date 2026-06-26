@@ -1,0 +1,14 @@
+id: software-greenfield
+description: Single software product from spec through HLD, DD, implement
+mode: greenfield
+phases:
+  - spec-parser
+  - hld-writer
+  - dd-writer
+  - diagram-generator
+  - task-breakdown
+  - scaffold-project
+  - implement-feature
+gates:
+  - hld_approved
+  - dd_approved

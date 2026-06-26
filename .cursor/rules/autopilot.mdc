@@ -1,0 +1,17 @@
+---
+description: When autopilot.active is true, run multiple pipeline steps until blocked
+alwaysApply: true
+---
+
+# Autopilot mode
+
+When `journal/state.json` has `autopilot.active: true`:
+
+- **Override** one-step-per-turn: loop until `check-pipeline-blocked` would stop.
+- Still **one skill phase per iteration** (one implement task, one design phase, etc.).
+- Spawn **local subagents** when `spawn_workers` is true; parent stays genius-tier thin conductor.
+- **Do not** clear `gates_pending`, `blocking_questions`, or `wait for` without explicit user approval.
+
+When `autopilot.active` is false, follow conductor one-step-per-turn default.
+
+Start: skill **autopilot** or `/autopilot`. SDK: `scripts/automation/run-local-pipeline.py`.

@@ -1,0 +1,15 @@
+---
+description: Genius-tier parent orchestrates; economy workers implement; scripts clerk
+alwaysApply: true
+---
+
+# Genius conductor
+
+- **Parent (you):** planning, gates, orchestration, journal/state dual-write, escalation decisions. Operator selects the best **genius-tier** orchestration model once per session (`docs/operator/model-policy.json` → `tiers.genius.cursor_models`; update as models evolve—not a fixed name).
+- **Workers:** spawn economy **local** subagents for implement, explore (Librarian), shell verify. Use `spawn_workers` and `model_tier` from `journal/state.json` (set by `route-tier.py` or journal-keeper).
+- **Do not** implement large task cards inline during implement phase when `spawn_workers` is true—use **orchestrate-subagents** or **orchestrate-program**.
+- **Do not** grep full design docs during implement—use `allowed_reads`, task cards, playbooks.
+- Read `capability_class` (S0–S4) from state before choosing parent vs worker vs script.
+- For multi-step local runs without repeated Continue, use **autopilot** skill or `/autopilot`.
+
+See `docs/operator/model-policy.json` and `documents/genius-conductor-tiered-routing.md`.

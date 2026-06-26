@@ -1,0 +1,5 @@
+# Worker run audit log (append-only)
+
+Conductor may append JSON lines when merging subagent work results.
+
+Format: `{"ts":"ISO8601","work_order_id":"...","role":"...","status":"completed|failed|blocked"}`

@@ -5,13 +5,27 @@ _Generated 2026-06-26_
 ## Pipeline
 - **next_action:** run spec-parser
 - **phase:** not_started
-- **mode:** greenfield | iterative_feature (greenfield = initial build; iterative_feature = new or changed feature after delivery)
+- **mode:** greenfield
+- **pipeline_id:** software-greenfield
 - **completion_status:** not_started
+
+## Model routing
+- **capability_class:** S3
+- **model_tier:** genius
+- **spawn_workers:** False
+- **genius_session_recommended:** True
+- **model_escalation:** False
+
+## Autopilot
+- **active:** False
+- **steps_this_session:** 0
+- **max_steps_per_session:** 25
+- **stopped_reason:** None
 
 ## Gates and blockers
 - **gates_pending:** []
 - **blocking_questions:** []
-- **blockers:** none. Types: waiting_on_user | waiting_on_external | build_failed | blocking_question. Clear when resolved.
+- **blockers:** none
 
 ## Verify
 - **last_verify:** None

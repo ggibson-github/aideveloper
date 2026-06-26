@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "description": "Model tier routing (v2.4+). Edit tiers.genius.cursor_models when Cursor adds orchestration models — genius tier is not a fixed model name.",
+  "tiers": {
+    "genius": {
+      "description": "Orchestration parent (S3–S4). Operator selects best available genius-tier model in Composer for the session.",
+      "cursor_models": [
+        "claude-fable-5",
+        "claude-opus-4",
+        "claude-opus-4-6"
+      ]
+    },
+    "standard": {
+      "description": "Structured artifacts, diagrams, task breakdown (S2).",
+      "cursor_models": [
+        "claude-sonnet-4",
+        "composer-2.5",
+        "gpt-4.1"
+      ]
+    },
+    "economy": {
+      "description": "Implement, explore, routine tests (S1). Default for local subagents.",
+      "cursor_models": [
+        "composer-2.5-fast",
+        "gpt-4.1-mini",
+        "claude-haiku"
+      ]
+    }
+  },
+  "autopilot": {
+    "parent_tier": "genius",
+    "default_max_steps": 25,
+    "description": "Local run-until-blocked via /autopilot or run-local-pipeline.py"
+  },
+  "capability_classes": {
+    "S0": { "tier": null, "execution": "scripts_hooks_ci" },
+    "S1": { "tier": "economy", "execution": "subagent_or_script" },
+    "S2": { "tier": "standard", "execution": "subagent_or_script" },
+    "S3": { "tier": "genius", "execution": "parent_or_premium_subagent" },
+    "S4": { "tier": "genius", "execution": "parent" }
+  },
+  "routing_by_next_action": {
+    "run spec-parser": { "class": "S3", "tier": "genius", "spawn_workers": false },
+    "run hld-writer": { "class": "S3", "tier": "genius", "spawn_workers": false },
+    "run dd-writer": { "class": "S3", "tier": "genius", "spawn_workers": false },
+    "wait for": { "class": "S4", "tier": "genius", "spawn_workers": false },
+    "run diagram-generator": { "class": "S2", "tier": "standard", "spawn_workers": false },
+    "run task-breakdown": { "class": "S2", "tier": "standard", "spawn_workers": false },
+    "run scaffold-project": { "class": "S2", "tier": "standard", "spawn_workers": true },
+    "implement-feature": { "class": "S1", "tier": "economy", "spawn_workers": true },
+    "run git-workflow": { "class": "S0", "tier": null, "spawn_workers": true },
+    "reconcile-stale": { "class": "S3", "tier": "genius", "spawn_workers": false },
+    "orchestrate-program": { "class": "S3", "tier": "genius", "spawn_workers": true },
+    "run program-scoper": { "class": "S3", "tier": "genius", "spawn_workers": false },
+    "run integration-manifest-keeper": { "class": "S3", "tier": "genius", "spawn_workers": false }
+  },
+  "subagent_roles": {
+    "librarian": { "tier": "economy", "type": "explore", "readonly": true },
+    "phase_worker_implement": { "tier": "economy", "type": "generalPurpose" },
+    "phase_worker_design": { "tier": "genius", "type": "generalPurpose" },
+    "verifier": { "tier": null, "type": "shell" },
+    "reviewer": { "tier": "genius", "type": "bugbot" }
+  },
+  "escalation": {
+    "on_verify_failure": { "set_class": "S4", "retry_tier": "genius", "max_premium_retries": 1 }
+  }
+}

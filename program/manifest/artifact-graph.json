@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "graph": [
+    { "id": "manifest", "path": "program/integration/manifest.md", "depends_on": [] },
+    { "id": "rig_spec", "path": "program/workstreams/character/workstream.md", "depends_on": ["manifest"] },
+    { "id": "mesh", "path": "program/workstreams/character/tasks/", "depends_on": ["rig_spec"] },
+    { "id": "armor_fit", "path": "program/workstreams/equipment/tasks/", "depends_on": ["rig_spec", "mesh"] },
+    { "id": "pipeline_tools", "path": "program/workstreams/pipeline/tasks/", "depends_on": ["manifest"] }
+  ],
+  "stale": {}
+}

@@ -34,3 +34,7 @@ Say **continue** in Agent chat; check Hooks output channel.
 ## sessionStart caveat
 
 See [forum thread](https://forum.cursor.com/t/sessionstart-hook-additional-context-is-never-injected-into-agents-initial-system-context/158452). Prefer commands + `beforeSubmitPrompt` + rules.
+
+## Tiered routing (v2.4+)
+
+Implemented: `route-tier.py`, `genius-conductor` / `deterministic-first` rules. See [genius-conductor-tiered-routing.md](../../documents/genius-conductor-tiered-routing.md), [model-policy.json](../../docs/operator/model-policy.json).

@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "graph": [
+    { "id": "manifest", "path": "program/integration/manifest.md", "depends_on": [] },
+    { "id": "mesh", "path": "program/workstreams/character/tasks/", "depends_on": ["manifest"] },
+    { "id": "rig", "path": "program/workstreams/character/workstream.md", "depends_on": ["mesh"] },
+    { "id": "armor", "path": "program/workstreams/equipment/tasks/", "depends_on": ["rig"] },
+    { "id": "ue_import", "path": "program/workstreams/pipeline/tasks/", "depends_on": ["mesh", "armor"] }
+  ],
+  "stale": {}
+}

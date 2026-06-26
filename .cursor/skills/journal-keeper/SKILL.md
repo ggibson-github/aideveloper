@@ -27,6 +27,10 @@ description: >-
    - `blockers`, `pause_reason`, `last_failure`, `completion_status`
    - `evidence_required`, `evidence_files`, `last_verify` (`passed` | `failed` | null)
    - `last_session_summary`
+   - `capability_class`, `model_tier`, `spawn_workers` (run `python scripts/route-tier.py --apply` after changing `next_action`)
+   - `subagent_models`, `model_escalation`, `genius_session_recommended`
+   - `pipeline_id`, `program` (object or null)
+   - `autopilot`: `active`, `max_steps_per_session`, `steps_this_session`, `stopped_reason`
 
 3. **allowed_reads:** Set per `next_action`. Examples:
    - `run spec-parser`: `spec.md`, `journal/*`, `docs/facts/INDEX.md`
@@ -39,7 +43,7 @@ description: >-
 
 6. When setting implement/design steps: populate `context_files` and matching `allowed_reads`.
 
-7. **Evidence:** When a task is verified, set `evidence_files`, `last_verify: passed`, clear `evidence_required`. Before advancing past a verified task, require evidence when `evidence_required` is true.
+7. **Evidence:** When a task is verified, set `evidence_files`, `last_verify: passed`, clear `evidence_required`. Before advancing past a verified task, require evidence when `evidence_required` is true. On verify **failure**, set `last_verify: failed`, `model_escalation: true`, `capability_class: S4` per `model-policy.json` escalation block.
 
 8. Session end: `last_session_summary`; run **generate-dashboard** skill or `python scripts/generate-dashboard.py`; refresh `STATUS.md`.
 

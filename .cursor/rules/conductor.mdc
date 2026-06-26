@@ -13,4 +13,4 @@ Before spawning subagents:
 2. Run **librarian** (readonly explore) or follow **orchestrate-subagents** for role choice
 3. Pass `allowed_reads` to workers; workers must not expand scope
 
-After workers finish: merge results, dual-write journal + state, one pipeline step per turn.
+After workers finish: merge results, dual-write journal + state, **one pipeline step per turn unless `autopilot.active`** (see autopilot rule/skill).

@@ -30,4 +30,8 @@ description: >-
 4. Merge worker output; **conductor** dual-writes journal + state
 5. Never let workers update `next_action` or gates
 
+## Work orders
+
+Issue bounded **WorkOrder** / expect **WorkResult** per [references/work-order.md](references/work-order.md). Set `model_tier` from `state.subagent_models` and policy.
+
 See **librarian** and **verifier** skills for prompts.

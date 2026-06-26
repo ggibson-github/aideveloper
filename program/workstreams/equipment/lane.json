@@ -1,0 +1,11 @@
+{
+  "status": "backlog",
+  "current_task": null,
+  "blocked_on": ["manifest_approved"],
+  "done": [],
+  "lease": {
+    "holder": null,
+    "expires_at": null,
+    "work_order_path": null
+  }
+}

@@ -2,9 +2,10 @@
   "version": 2,
   "spec_file": "spec.md",
   "spec_version": null,
-  "mode": "greenfield | iterative_feature (greenfield = initial build; iterative_feature = new or changed feature after delivery)",
+  "mode": "greenfield",
   "phase": "not_started",
   "feature_id": null,
+  "pipeline_id": "software-greenfield",
   "repo_url": "https://github.com/ggibson-github/aideveloper.git",
   "current_branch": "main",
   "last_completed": null,
@@ -25,12 +26,31 @@
   "blocking_questions": [],
   "deferred_questions": [],
   "resolved_qa_archive": "docs/decisions/archive.md",
-  "blockers": "none. Types: waiting_on_user | waiting_on_external | build_failed | blocking_question. Clear when resolved.",
+  "blockers": "none",
   "pause_reason": null,
   "last_failure": null,
   "completion_status": "not_started",
   "evidence_required": false,
   "evidence_files": [],
   "last_verify": null,
-  "last_session_summary": "(one short paragraph: what was done, what's next, what's needed from user)"
+  "last_session_summary": "(one short paragraph: what was done, what's next, what's needed from user)",
+  "capability_class": "S3",
+  "model_tier": "genius",
+  "spawn_workers": false,
+  "subagent_models": {
+    "librarian": "economy",
+    "phase_worker_implement": "economy",
+    "phase_worker_design": "genius",
+    "verifier": "economy",
+    "reviewer": "genius"
+  },
+  "model_escalation": false,
+  "genius_session_recommended": true,
+  "program": null,
+  "autopilot": {
+    "active": false,
+    "max_steps_per_session": 25,
+    "steps_this_session": 0,
+    "stopped_reason": null
+  }
 }

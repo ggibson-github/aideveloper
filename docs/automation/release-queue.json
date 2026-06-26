@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "description": "Ordered v2.4–v2.12 releases for unattended template evolution",
+  "releases": [
+    {
+      "id": "v2-4-tier-routing",
+      "tag": "v2.4.0",
+      "status": "done",
+      "branch": "release/v2.4",
+      "plan_todo_id": "v2-4-tier-routing"
+    },
+    {
+      "id": "v2-5-route-tier",
+      "tag": "v2.5.0",
+      "status": "done",
+      "branch": "release/v2.5",
+      "plan_todo_id": "v2-5-route-tier"
+    },
+    {
+      "id": "v2-6-staleness-scripts",
+      "tag": "v2.6.0",
+      "status": "done",
+      "branch": "release/v2.6",
+      "plan_todo_id": "v2-6-staleness-scripts"
+    },
+    {
+      "id": "v2-7-program-mode",
+      "tag": "v2.7.0",
+      "status": "done",
+      "branch": "release/v2.7",
+      "plan_todo_id": "v2-7-program-mode"
+    },
+    {
+      "id": "v2-8-artifact-graph",
+      "tag": "v2.8.0",
+      "status": "done",
+      "branch": "release/v2.8",
+      "plan_todo_id": "v2-8-artifact-graph"
+    },
+    {
+      "id": "v2-9-parallel",
+      "tag": "v2.9.0",
+      "status": "done",
+      "branch": "release/v2.9",
+      "plan_todo_id": "v2-9-parallel"
+    },
+    {
+      "id": "v2-10-verify-router",
+      "tag": "v2.10.0",
+      "status": "done",
+      "branch": "release/v2.10",
+      "plan_todo_id": "v2-10-verify-router"
+    },
+    {
+      "id": "v2-11-external-lanes",
+      "tag": "v2.11.0",
+      "status": "done",
+      "branch": "release/v2.11",
+      "plan_todo_id": "v2-11-external-lanes"
+    },
+    {
+      "id": "v2-12-template-packs",
+      "tag": "v2.12.0",
+      "status": "done",
+      "branch": "release/v2.12",
+      "plan_todo_id": "v2-12-template-packs",
+      "auto_tag": false
+    },
+    {
+      "id": "v2-auto-unattended",
+      "tag": null,
+      "status": "done",
+      "branch": null,
+      "plan_todo_id": "v2-auto-unattended"
+    }
+  ]
+}

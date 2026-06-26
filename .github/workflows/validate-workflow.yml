@@ -13,4 +13,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - run: python scripts/route-tier.py --apply
+      - run: python scripts/automation/check-pipeline-blocked.py
       - run: python scripts/validate-workflow.py
+      - run: python scripts/route-tier.py --check
+      - run: pip install pytest && pytest tests/unit/ -q
