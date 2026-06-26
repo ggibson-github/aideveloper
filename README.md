@@ -1,4 +1,4 @@
-# Agent-skills project template
+# Cursor Developer Expert System
 
 This folder is an **expert system** that agents such as Cursor use to simulate the behavior of a software developer. A **journal** (`journal/progress.md`) gives the system memory across sessions—recording phase, decisions, open questions, and next steps so work can resume without starting over. **Rules for the agent** (in `AGENTS.md` and related skills) steer the expert toward talking with the operator: clarifying requirements, resolving blockers, and seeking approval at review gates—rather than guessing or making rash decisions on its own.
 
