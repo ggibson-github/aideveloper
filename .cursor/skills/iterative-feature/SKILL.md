@@ -16,6 +16,12 @@ description: >-
 
 ## Instructions
 
+**Read first**
+
+1. Read `journal/progress.md` and any **Context files** listed there.
+2. If the task involves external systems, read `docs/facts/INDEX.md`.
+3. Then perform this phase's work.
+
 1. **Feature id**: Assign or use a stable feature-id (e.g. slug like `export-csv` or ticket number). Create `docs/features/<feature-id>/` if it does not exist.
 2. **Gather requirements**: Capture the feature request in `docs/features/<feature-id>/spec.md`. Ask clarifying questions; record answers in journal Resolved Q&A or in the feature spec. Do not implement until blocking questions are answered.
 3. **Research** (if needed): Document options or spikes in `docs/features/<feature-id>/research.md` or in decisions.

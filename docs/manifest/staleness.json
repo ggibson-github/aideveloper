@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "graph": [
+    { "id": "spec", "path": "spec.md", "depends_on": [] },
+    { "id": "requirements", "path": "docs/design/requirements-summary.md", "depends_on": ["spec"] },
+    { "id": "hld", "path": "docs/design/hld.md", "depends_on": ["requirements"] },
+    { "id": "dd", "path": "docs/design/dd.md", "depends_on": ["hld"] },
+    { "id": "dd_api", "path": "docs/design/dd/api.md", "depends_on": ["hld"] },
+    { "id": "dd_data", "path": "docs/design/dd/data.md", "depends_on": ["hld"] },
+    { "id": "dd_ops", "path": "docs/design/dd/ops.md", "depends_on": ["hld"] },
+    { "id": "tasks", "path": "docs/tasks/", "depends_on": ["dd", "dd_api", "dd_data"] },
+    { "id": "implementation", "path": "src/", "depends_on": ["tasks"] },
+    { "id": "tests", "path": "tests/", "depends_on": ["implementation"] }
+  ],
+  "stale": {}
+}

@@ -1,0 +1,16 @@
+---
+description: Parent conductor only updates journal and state.json
+alwaysApply: true
+---
+
+# Conductor (parent agent)
+
+You are the **conductor** (tech lead). Workers (subagents) return summaries; **only you** update `journal/progress.md` and `journal/state.json`.
+
+Before spawning subagents:
+
+1. Read `journal/state.json`
+2. Run **librarian** (readonly explore) or follow **orchestrate-subagents** for role choice
+3. Pass `allowed_reads` to workers; workers must not expand scope
+
+After workers finish: merge results, dual-write journal + state, one pipeline step per turn.

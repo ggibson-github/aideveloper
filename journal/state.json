@@ -1,0 +1,36 @@
+{
+  "version": 2,
+  "spec_file": "spec.md",
+  "spec_version": null,
+  "mode": "greenfield | iterative_feature (greenfield = initial build; iterative_feature = new or changed feature after delivery)",
+  "phase": "not_started",
+  "feature_id": null,
+  "repo_url": "https://github.com/ggibson-github/aideveloper.git",
+  "current_branch": "main",
+  "last_completed": null,
+  "next_action": "run spec-parser",
+  "context_files": [],
+  "allowed_reads": [
+    "journal/progress.md",
+    "journal/state.json",
+    "spec.md",
+    "docs/facts/INDEX.md"
+  ],
+  "forbidden_reads": [
+    "docs/design/hld.md",
+    "docs/design/dd.md",
+    "docs/design/dd/"
+  ],
+  "gates_pending": [],
+  "blocking_questions": [],
+  "deferred_questions": [],
+  "resolved_qa_archive": "docs/decisions/archive.md",
+  "blockers": "none. Types: waiting_on_user | waiting_on_external | build_failed | blocking_question. Clear when resolved.",
+  "pause_reason": null,
+  "last_failure": null,
+  "completion_status": "not_started",
+  "evidence_required": false,
+  "evidence_files": [],
+  "last_verify": null,
+  "last_session_summary": "(one short paragraph: what was done, what's next, what's needed from user)"
+}

@@ -15,18 +15,28 @@ description: >-
 
 ## Instructions
 
-1. **Capture the content** the user pasted or provided. If the user gave a short label or category (e.g. "Slack convo", "URL", "SQL", "team contact"), use it; otherwise infer a brief label from the content (e.g. "URL", "SQL snippet", "Slack excerpt", "Team/contact") so the entry is easy to find later.
-2. **Append to `docs/facts/captured.md`** using this format so entries are consistent and searchable:
+1. **Capture the content** the user pasted or provided. If the user gave a short label or category (e.g. "Slack convo", "URL", "SQL", "team contact"), use it; otherwise infer a brief label from the content.
+2. **Infer topics** from label, user hint, or content (e.g. `api`, `staging`, `db`, `team`). Use lowercase topic tokens.
+3. **Route to the correct file** using `docs/facts/INDEX.md`:
+   - If a topic matches an INDEX row → append to that file (e.g. `docs/facts/api.md`)
+   - If the topic is new → create `docs/facts/<topic>.md` with a header and add a row to INDEX.md
+   - If no topic matches → append to `docs/facts/captured.md`
+4. **Append using this entry format** (consistent and searchable):
 
    ```markdown
    ---
-   ## YYYY-MM-DD [Label]
+   date: YYYY-MM-DD
+   label: Short label
+   topics: [api, staging]
+   phase: implementation
+   ---
+
    (Optional one-line context if helpful.)
 
    (Pasted/content here. Preserve formatting, code blocks, and links.)
-   ---
    ```
 
-   Create `docs/facts/` and `docs/facts/captured.md` if they do not exist. If the file already has a header (e.g. "# Captured facts and snippets"), append new entries after it and any existing entries.
-3. **Confirm briefly** to the user that the fact was saved and where (e.g. "Saved to docs/facts/captured.md. You can search that file later.")
-4. When the user or the agent needs to find something later, search or read `docs/facts/captured.md` (and any other files in `docs/facts/`) for relevant snippets.
+   `phase` is optional (`spec`, `hld`, `implement`, `deploy`, etc.). Create `docs/facts/` and target files if they do not exist.
+5. **Update INDEX.md** when you create a new topic file: add a table row with topic, file path, and keywords.
+6. **Confirm briefly** to the user where the fact was saved (file path).
+7. When the user or agent needs facts later: read `docs/facts/INDEX.md` first, then the listed file(s)—not only `captured.md`.

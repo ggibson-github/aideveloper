@@ -1,0 +1,18 @@
+---
+description: Continue is not approval or an answer to open questions
+alwaysApply: true
+---
+
+# Approval gates
+
+**Continue** does not mean:
+
+- An answer to an open question (blocking or deferred)
+- Approval or waiver of HLD, DD, or feature design gates
+
+If **Next action** is wait for approval or blocking questions remain:
+
+- Re-prompt the user
+- Do not advance until they give a substantive answer or explicit approval/waiver (e.g. "I approve the HLD", "Skip DD approval")
+
+Record approvals and answers in the journal in the same turn.

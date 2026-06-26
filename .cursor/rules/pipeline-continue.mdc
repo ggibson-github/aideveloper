@@ -1,0 +1,14 @@
+---
+description: Read journal on continue/start; one pipeline step per turn
+alwaysApply: true
+---
+
+# Pipeline and continue
+
+When the user says **continue**, **start**, or **resume**:
+
+1. Read `journal/progress.md` before any pipeline step (hooks may inject a summary; still read the journal and any **Context files** listed there).
+2. Run the **continue** skill and perform exactly **one** pipeline step from **Next action**.
+3. Update the journal after that step (journal-keeper behavior).
+
+Do not skip phases unless the journal says they are complete. Prefer one step plus journal update over many steps without updating.

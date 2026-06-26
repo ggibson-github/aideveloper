@@ -358,3 +358,82 @@ Before pushing changes, the agent must **run the full test suite** so that previ
    - **Assert** expected behavior (e.g. success message, data persisted, no errors).
 
 These tests live in `tests/e2e/` or `tests/ui-automation/`. The **test-writer** skill adds or updates unit and integration tests. The **test-ui-automation** skill adds or updates UI/E2E tests that drive the UI (e.g. via Playwright, Cypress, or similar), navigate to the relevant area, trigger the feature, and capture logs for verification. The **git-workflow** skill (or **continue**) must require that all applicable tests pass before allowing push to the remote.
+
+---
+
+## 7. Context retrieval
+
+Cursor does not provide a deterministic expert-system engine that matches phase → facts → inject. Context comes from three layers that the template implements together:
+
+| Layer | Mechanism | Deterministic? |
+|-------|-----------|----------------|
+| Always-on | `AGENTS.md`, `.cursor/rules/*.mdc` with `alwaysApply: true` | Mostly yes |
+| Scoped | Rules with `globs`, skills chosen by description | Partially |
+| Agent-driven | Read, Grep, semantic search, `@` references | No |
+
+### Taxonomy
+
+| Kind | Path | Retrieval |
+|------|------|-------------|
+| Process / gates | `AGENTS.md`, `.cursor/rules/`, skills | Always-on rules + continue skill |
+| Session state | `journal/progress.md` | Fixed path; **Context files** field lists paths for current step |
+| Stable decisions | `docs/decisions/` | Index + journal links |
+| Design | `docs/design/` | Glob rules when editing `src/` |
+| Episodic facts | `docs/facts/INDEX.md` + topic files | INDEX keywords; remember skill routing |
+| Feature-local | `docs/features/<id>/` | Journal **Current feature id** |
+
+### Facts index and entries
+
+- `docs/facts/INDEX.md` maps topics to files and keywords (for grep and hooks).
+- Fact entries use YAML frontmatter: `date`, `label`, `topics`, optional `phase`.
+- The **remember** skill routes by topic to the INDEX file or `captured.md`.
+
+### Hooks (Python)
+
+Project hooks in `.cursor/hooks/` and `.cursor/hooks.json`:
+
+- `beforeSubmitPrompt` — inject on continue / start / resume
+- `postToolUse` — inject related facts after `Read` of `journal/progress.md`
+- `sessionStart` — best-effort journal summary (known Cursor bug may drop `additional_context`)
+
+Hooks **supplement** rules and explicit reads; they do not replace reading the journal. Requires Python 3 on PATH. See `.cursor/hooks/README.md`.
+
+### Limitations
+
+- Skill selection remains heuristic; **continue** + always-on rules enforce journal-driven steps.
+- `sessionStart` injection may be unreliable until Cursor fixes timing; use `beforeSubmitPrompt` and `postToolUse` as primary hook paths.
+- Cap fact excerpts in hooks (default 4 KB) to avoid context blow-up.
+
+---
+
+## 8. v2 verified delivery harness
+
+v2 adds a **workflow harness** on top of v1 context retrieval: conductor + `journal/state.json`, commands, role subagents, evidence, staleness, playbooks, conformance CI.
+
+### Architecture
+
+- **Conductor** (parent): dual-writes `journal/progress.md` + `journal/state.json`; only conductor updates gates and next_action.
+- **Librarian** (readonly explore): sets `allowed_reads` (max 5).
+- **Verifier** (shell): runs task card test command → `evidence/`.
+- **Hooks v2**: `subagentStart`, `preToolUse` (Read guards on `docs/design/`), `preCompact` (snapshots).
+
+### Key paths
+
+| Path | Role |
+|------|------|
+| `journal/state.json` | Machine router |
+| `.cursor/commands/` | `/continue`, `/status`, `/gate`, `/task`, `/verify`, `/research` |
+| `docs/tasks/task-NNN.md` | Task cards with test commands |
+| `evidence/` | Verify logs |
+| `docs/manifest/staleness.json` | Design traceability |
+| `docs/playbooks/` | Repo-scoped patterns |
+| `docs/operator/` | Dashboard, export contract, integrations |
+| `scripts/validate-workflow.py` | Conformance |
+| `.github/workflows/` | CI validate + scheduled verify stub |
+
+### vs v1
+
+v1 relied on heuristic skill selection and markdown journal only. v2 adds deterministic `allowed_reads`, evidence gates, and operator dashboard. Skills use progressive disclosure (`SKILL.md` + `references/workflow.md`).
+
+See `docs/operator/export-contract.md` for headless/OpenClaw/Hermes bridge without rebuilding a 24/7 gateway in v2.
+

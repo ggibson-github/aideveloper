@@ -19,6 +19,6 @@ description: >-
 1. **Connect repo (first time)**: If no remote exists, ask the user for the repo URL (or instruct them to create one). Run `git init` if needed, then `git remote add origin <url>`. Optionally initial commit and push (e.g. main). Record **Repo URL** and **Current branch** in the journal.
 2. **Branch**: Create a branch for the current feature or task (e.g. `feature/<feature-id>` or `feature/short-name`). Use `git checkout -b <branch>`. Update journal **Current branch**.
 3. **Add and commit**: Stage changes (`git add`) and commit with a clear message (e.g. conventional commits: `feat(area): description`, `fix(area): description`). User may approve or edit the message. Update journal **Last commit**.
-4. **PR and push**: Open a pull request (if the workflow uses PRs) or push the branch. **Do not push until the full test suite passes** (unit, integration, UI/e2e if present). Run tests first; if any fail, set Blockers in the journal and do not push until resolved. After push, record **PR URL** in the journal if applicable.
+4. **PR and push**: Open a pull request (if the workflow uses PRs) or push the branch. **Do not push until the full test suite passes** (unit, integration, UI/e2e if present). Check `journal/state.json`: `last_verify` must be `passed` unless journal documents an exception. Run **verifier** or full suite first; if any fail, set Blockers and do not push.
 
 Journal fields to maintain: **Repo URL** (or "none"), **Current branch**, **Last commit**, **PR URL** (if opened).

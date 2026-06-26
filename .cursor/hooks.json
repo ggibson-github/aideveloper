@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeSubmitPrompt": [
+      {
+        "command": "python .cursor/hooks/cursor_context_hook.py",
+        "matcher": "UserPromptSubmit"
+      }
+    ],
+    "postToolUse": [
+      {
+        "command": "python .cursor/hooks/cursor_context_hook.py",
+        "matcher": "Read"
+      }
+    ],
+    "sessionStart": [
+      {
+        "command": "python .cursor/hooks/cursor_context_hook.py"
+      }
+    ],
+    "subagentStart": [
+      {
+        "command": "python .cursor/hooks/cursor_context_hook.py"
+      }
+    ],
+    "preToolUse": [
+      {
+        "command": "python .cursor/hooks/cursor_context_hook.py",
+        "matcher": "Read"
+      }
+    ],
+    "preCompact": [
+      {
+        "command": "python .cursor/hooks/cursor_context_hook.py"
+      }
+    ]
+  }
+}

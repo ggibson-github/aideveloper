@@ -1,0 +1,14 @@
+---
+description: Tasks require evidence files before completion when evidence_required
+alwaysApply: true
+---
+
+# Evidence required
+
+When `journal/state.json` has `evidence_required: true`:
+
+- Do not set next action past the current implement task until `evidence_files` exist and `last_verify` is `passed`
+- Use **verifier** skill (shell subagent) to run the task card test command and write `evidence/task-NNN-test.log`
+- Record paths in journal **Evidence files** and state `evidence_files`
+
+Do not push (`git-workflow`) unless `last_verify` is `passed` or exceptions are documented in the journal.

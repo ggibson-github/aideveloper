@@ -1,18 +1,40 @@
-# Cursor Developer Expert System
+# Cursor Developer Expert System (v2)
 
-This folder is an **expert system** that agents such as Cursor use to simulate the behavior of a software developer. A **journal** (`journal/progress.md`) gives the system memory across sessions—recording phase, decisions, open questions, and next steps so work can resume without starting over. **Rules for the agent** (in `AGENTS.md` and related skills) steer the expert toward talking with the operator: clarifying requirements, resolving blockers, and seeking approval at review gates—rather than guessing or making rash decisions on its own.
+Verified delivery orchestration for AI developers: gated SDLC pipeline, deterministic routing via `journal/state.json`, evidence-backed tasks, and conductor + subagent roles.
 
-The pipeline turns a specification into design docs, diagrams, tasks, and implementation. It also supports **continued development**: new features, changes to existing features, refactoring to reduce tech debt, and a professional Git workflow (branch, commit, PR, push) with tests run before push.
+A **journal** (`journal/progress.md` + `journal/state.json`) gives memory across sessions. **Rules** and **commands** steer the conductor; workers (Librarian, Verifier) stay bounded.
 
 ## How to use
 
 1. **Copy this folder** for a new project.
-2. **Put your specification** in `spec.md` (or tell the agent which file is the spec).
-3. **Open the folder in Cursor** and say **"Start"** or **"Implement from spec.md"** to begin. Say **"Continue"** to resume from where the agent left off (e.g. after restarting).
-4. The agent will parse the spec, ask any blocking questions, tell the user if you need them to stop the app so you can build or start the app and test or to gather logs or any other help you need, produce HLD and DD (with your approval gates), generate diagrams, break down tasks, scaffold the project, and implement features—updating `journal/progress.md` and optionally `STATUS.md` so you can resume anytime.
-5. **After initial delivery**, say **"Add a feature"** or **"I want to change X"** to enter iterative mode: the agent will gather requirements, design, get your approval, create a branch, implement, run tests (unit, integration, UI automation), and help with commit/PR/push. Tests are run before push to prove previous features still work. Artifacts are organized in `docs/design/`, `docs/features/<feature-id>/`, `docs/decisions/`, and `tests/` (unit, integration, e2e).
-6. **Store fact snippets** (Slack excerpts, URLs, SQL, team contacts, etc.): say **"Remember this"** or **"Note this down"** and paste the text. The agent saves it to `docs/facts/captured.md` so you and the agent can find it later.
+2. Put your specification in `spec.md`.
+3. Open in Cursor. Use **`/continue`** or say **Start** / **Continue**.
+4. Use **`/status`** for operator view without opening design docs.
+5. Pipeline: spec → HLD → DD (split `docs/design/dd/`) → diagrams → task cards → scaffold → implement with **evidence** → done.
+6. **Remember facts** via `docs/facts/INDEX.md`. **Playbooks** capture repo patterns in `docs/playbooks/`.
+
+## v2 harness
+
+| Piece | Location |
+|-------|----------|
+| Machine state | `journal/state.json` |
+| Commands | `.cursor/commands/` |
+| Conductor + workers | `orchestrate-subagents`, `librarian`, `verifier` skills |
+| Task cards | `docs/tasks/task-NNN.md` |
+| Evidence | `evidence/task-NNN-test.log` |
+| Staleness | `docs/manifest/staleness.json` |
+| Dashboard | `docs/operator/dashboard.md` |
+| Validate | `python scripts/validate-workflow.py` |
+| Headless verify | `python scripts/headless-verify.py` |
+
+**Hooks:** Python 3 required for `.cursor/hooks/`. See `.cursor/hooks/README.md`.
+
+**Integrations:** `docs/operator/integrations.md` (OpenClaw/Hermes bridge, no full gateway in v2).
+
+## Context retrieval (v1 baseline)
+
+Rules in `.cursor/rules/`, facts in `docs/facts/INDEX.md`, hooks inject on continue/journal read.
 
 ## Reference
 
-Full design: see `documents/spec-to-artifacts-agent-skills-system.md`.
+Full design: `documents/spec-to-artifacts-agent-skills-system.md` (§7 context, §8 v2 harness).

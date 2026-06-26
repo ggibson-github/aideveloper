@@ -1,0 +1,9 @@
+---
+description: API DD when editing API-related source
+globs: src/**/*
+alwaysApply: false
+---
+
+# API design reference
+
+API contracts live in `docs/design/dd/api.md`. Do not invent endpoints. Read task card design pointers first.

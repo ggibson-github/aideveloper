@@ -1,0 +1,14 @@
+---
+description: Run full test suite before push to remote
+alwaysApply: true
+---
+
+# Test before push
+
+Do not push to the remote until the full applicable test suite passes:
+
+- Unit tests (`tests/unit/`)
+- Integration tests (`tests/integration/`)
+- E2E/UI tests (`tests/e2e/`) when the app has a UI
+
+Document exceptions in the journal if tests cannot pass. Use **git-workflow** only after tests are green (or exceptions are recorded).

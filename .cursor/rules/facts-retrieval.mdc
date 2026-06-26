@@ -1,0 +1,14 @@
+---
+description: Read facts INDEX before guessing URLs, APIs, or credentials
+alwaysApply: true
+---
+
+# Facts retrieval
+
+Before guessing URLs, API endpoints, credentials, database details, or team contacts:
+
+1. Read `docs/facts/INDEX.md`
+2. Open the fact file(s) listed for the relevant topic or keywords
+3. Read any paths in the journal **Context files** field
+
+Do not invent external configuration. If facts are missing, ask the user or record an open question in the journal.
