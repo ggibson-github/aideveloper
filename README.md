@@ -16,7 +16,3 @@ The pipeline turns a specification into design docs, diagrams, tasks, and implem
 ## Reference
 
 Full design: see `documents/spec-to-artifacts-agent-skills-system.md`.
-
-When setting up a python service prefer installing portable python within the project folder instead of venv.
-When installing torch as a requirement use GPU with CUDA torch not CPU torch unless asked for explicitly.
-Assume environment is Windows unless specified otherwise.
