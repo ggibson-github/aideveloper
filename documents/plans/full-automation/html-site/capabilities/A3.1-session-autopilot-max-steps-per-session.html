@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>A3.1 — session autopilot and max steps per session</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/A.html">Plane A</a> · <a href="../chapters/A-A3.html">A3</a> ·
+    A3.1
+  </nav>
+  <p class="page-id">A3.1 · Pursuit &amp; control plane</p>
+  <h1 class="page-title">session autopilot and max steps per session</h1>
+  <p class="page-subtitle">session_autopilot max_steps_per_session</p>
+  
+  <div class="story-block"><p>Session <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> is the in-IDE mode most operators use first: the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> loops pursuit steps inside one Cursor session until a cap, a block, or goal completion. This capability defines <code>max_steps_per_session</code>—a safety valve so a single chat cannot run unbounded turns if preflight mis-reads state or a worker hangs.</p>
+<p>The limit is not a product goal; goal <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> (A3.2) and the SDK daemon (A3.4) lift it for long-running work. When the cap is hit, pursuit <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s a structured stop reason and exits cleanly so the next wake—manual Continue or daemon poll—resumes from the last good journal/state snapshot. See <a href="../capabilities/A2.6-loop-until-blocked-budget-achieved-h3-reject.html" class="spec-link">A2.6 loop until blocked</a> for the inner loop this mode wraps.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a>.active is true in session_autopilot mode, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> wraps <a href="../capabilities/A2.6-loop-until-blocked-budget-achieved-h3-reject.html" class="spec-link">A2.6</a> inside one Cursor session—incrementing pursuit.session_step_count after each <a href="../capabilities/A2.3-post-step-route-tier-dual-write-increment.html" class="spec-link">A2.3</a> <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> without waiting for manual Continue.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Each iteration runs <a href="../capabilities/A2.1-preflight-check-pipeline-blocked-extended.html" class="spec-link">A2.1</a> preflight then exactly one <a href="../capabilities/A2.2-if-ready-execute-one-pipeline-step.html" class="spec-link">A2.2</a> pipeline phase before post-step routing—a single skill phase per turn inside the session loop.</span></li><li><span class="step-num">Step 3</span><span class="step-text">When pursuit.session_step_count reaches max_steps_per_session from state.json or operator policy, pursuit <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s stop reason session_cap and exits cleanly so the next wake—manual Continue or daemon poll—resumes from the last committed journal/state snapshot.</span></li><li><span class="step-num">Step 4</span><span class="step-text"><a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> blocks, H1/<a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> touchpoints, <a href="../capabilities/A2.4-goal-scope-complete-run-goal-verify.html" class="spec-link">A2.4</a> scope completion, and <a href="../capabilities/A1.4-deadline-budget-steps-tokens-wall-clock.html" class="spec-link">A1.4</a> budget exhaustion terminate before the cap; <a href="../capabilities/A3.2-goal-autopilot-until-goal-verify-or-hard-block.html" class="spec-link">A3.2</a> goal <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> lifts the session ceiling for long-running work.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If preflight mis-reads state or a worker hangs without incrementing counters, the session cap still forces a typed stop rather than unbounded turns in one chat—fail closed at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> if <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> of the cap stop fails.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids A3.1</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>goal_verify passes but H3 rejected — goal.state returns to pursuing with rejection notes.</li><li>Edge case A3.1 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;A3.1&quot;,
+  &quot;description&quot;: &quot;session autopilot max steps per session&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.14</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

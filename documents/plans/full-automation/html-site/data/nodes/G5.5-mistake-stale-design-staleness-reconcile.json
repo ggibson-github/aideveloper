@@ -1,0 +1,89 @@
+{
+  "id": "G5.5",
+  "slug": "G5.5-mistake-stale-design-staleness-reconcile",
+  "title": "mistake stale design staleness reconcile",
+  "branch": "G",
+  "parent": "[G5-index](G5-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "G5.5 defines mistake stale design staleness reconcile for the agent-driven expert system. Verification & quality \u2014 evidence, goal_verify, anti-mistake.",
+  "scope": [
+    "Owns `G5.5` only; siblings under `G5` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a79 \u2014 Branch G \u2014 Verification & quality plane (anti-mistake)](../../full-automation-vision-and-hierarchy.md#9-branch-g-verification-quality-plane-anti-mistake)."
+  ],
+  "behavior_steps": [
+    "After H1 approves a plan, pursuit binds `pipeline_id` and phase order from [C1](C1-index.md) in `state.json`; each wake executes exactly one phase skill (spec through implement) per [C2](C2-index.md) inside goal autopilot\u2014not as a detached manual SDLC.",
+    "Task cards from [C3](C3-index.md) scope economy worker turns; when `evidence_required` is true, [verify-router](G1.1-task-verify-router-verifier.md) must set `last_verify: passed` before `next_action` advances past the current implement task.",
+    "Program mode fans parallel lanes from work orders and the integration manifest per [C4](C4-index.md); the conductor orchestrates ready lanes without clearing manifest or milestone gates without explicit H1 approval.",
+    "Per-task evidence and definition-of-done from [C5](C5-index.md) roll up toward goal_verify per [C3.4](C3.4-task-to-goal-rollup-percent-goal-verify.md)\u2014passing individual tasks does not close the goal without Plane G aggregation.",
+    "If a design gate is pending, task evidence is missing, or workers would edit out-of-scope paths, Plane C halts at H2 fail-closed rather than marking phases complete or skipping to implement."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"G5.5\",\n  \"description\": \"mistake stale design staleness reconcile\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Flaky test \u00e2\u20ac\u201d escalation S4 once, then H2 with evidence log; no silent retry loop.",
+    "Edge case `G5.5` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `G5.5`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Extend verify-router for goal-level suite invocation.",
+    "Wire CI: validate-workflow checks goal block when pursuit.mode=goal_autopilot.",
+    "Document evidence type in docs/operator/evidence-types.md.",
+    "Validate `G5.5` against SEC-15 release checklist and parent index links.",
+    "Document `G5.5` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `G5.5`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids G5.5`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`scripts/verify-router.py`",
+    "`scripts/validate-workflow.py`",
+    "`evidence/`",
+    "`.cursor/skills/verifier/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a79",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[G5-index](G5-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids G5.5` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [G5-index](G5-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "G5.5 defines mistake stale design staleness reconcile for the agent-driven expert system. Verification & quality \u2014 evidence, goal_verify, anti-mistake. In practice, the system after h1 approves a plan, pursuit binds `pipeline_id` and phase order from [c1](c1-index.md) in `state.json`; each wake executes exactly one phase skill (spec through implement) per [c2](c2-index.md) inside goal autopilot\u2014not as a detached manual sdlc, then task cards from [c3](c3-index.md) scope economy worker turns; when `evidence_required` is true, [verify-router](g1.1-task-verify-router-verifier.md) must set `last_verify: passed` before `next_action` advances past the current implement task.",
+  "reader_narrative": "<!-- prose-source: agent plane-g 2026-06-28 -->\n\nStale design is implementing against outdated HLD, DD, or integration manifest while staleness graph marks dependents stale. Controls: reconcile-stale skill, reconcile-artifact-graph in program mode, and [G4.4](G4.4-review-staleness-reconciliation-before-merge.md) merge gate.\n\nUpstream vision or spec changes bump staleness; implement must pause or re-run design phases per journal next_action. Silent implement on stale nodes violates compose-first and expert-system integrity."
+}

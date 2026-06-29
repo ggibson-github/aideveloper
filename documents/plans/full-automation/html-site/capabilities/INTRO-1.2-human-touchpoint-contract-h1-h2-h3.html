@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>INTRO-1.2 — Human touchpoint contract H1 H2 H3</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/meta.html">Plane meta</a> ·
+    INTRO-1.2
+  </nav>
+  <p class="page-id">INTRO-1.2 · Front matter &amp; cross-cutting architecture</p>
+  <h1 class="page-title">Human touchpoint contract H1 H2 H3</h1>
+  <p class="page-subtitle">Human touchpoint contract H1 H2 H3</p>
+  
+<div class="hitl-callout">
+  <h2>Human touchpoints explained</h2>
+  <dl>
+    <dt><a href="../glossary.html#h1" class="glossary-link">H1 — Initial planning gate</a></dt>
+    <dd>Approve the plan before autonomous pursuit begins.</dd>
+    <dt><a href="../glossary.html#h2" class="glossary-link">H2 — Blocker assistance</a></dt>
+    <dd>Provide help when automation is stuck.</dd>
+    <dt><a href="../glossary.html#h3" class="glossary-link">H3 — Final sign-off</a></dt>
+    <dd>Accept or reject verified outcomes.</dd>
+  </dl>
+</div>
+  <div class="story-block"><p>The <a href="../glossary.html#expert-system" class="glossary-link" title="Expert system">expert system</a> recognizes exactly three human touchpoint classes. <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> is initial planning: the operator supplies a spec or company charter and receives an approved plan artifact—once per project, program, or pack instantiation. <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> is blocker assistance: triggered when preflight blocks, goal verification fails, or an external dependency is missing; the system pauses, notifies, and resumes when unblocked. <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> is final sign-off: triggered only after <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> passes; accept or reject with notes, where rejection re-enters pursuit.</p>
+<p>Everything else—including HLD and DD review by default—becomes agent self-gate with <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> unless strict <a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">HITL</a> mode is enabled. This contract is the social license for <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a>: operators know when they must act versus when they may read dashboards only.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart TD
+  trigger[Trigger condition] --&gt; pre[Preconditions S0]
+  pre --&gt; exec[Execute step logic]
+  exec --&gt; verify[Verify output]
+  verify --&gt;|pass| done[Mark queue item done]
+  verify --&gt;|fail| h2[H2 blocker]</pre>
+</div>
+  <h2 class="section-title">What this defines</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text"><a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> is blocker assistance: triggered when preflight blocks, goal verification fails, or an external dependency is missing; the system pauses, notifies, and resumes when unblocked</span></li><li><span class="step-num">Step 2</span><span class="step-text">This contract is the social license for <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a>: operators know when they must act versus when they may read dashboards only</span></li><li><span class="step-num">Step 3</span><span class="step-text">At <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a>, the operator supplies a spec or charter; the approved plan reflects this summary—north star, scope, and minimal <a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">HITL</a> (<a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">H1/H2/H3</a>).</span></li><li><span class="step-num">Step 4</span><span class="step-text">All pursuit and plane specs assume three structural shifts: always-on pursuit until goals verify, parallel product and self-improvement work, and template-packs at company scale.</span></li><li><span class="step-num">Step 5</span><span class="step-text">When scope or stop behavior is ambiguous, agents resolve conflicts using this summary before inventing new policy.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids INTRO-1.2</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case INTRO-1.2 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case INTRO-1.2 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;INTRO-1.2&quot;,
+  &quot;description&quot;: &quot;human touchpoint contract h1 h2 h3&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,84 @@
+{
+  "id": "SEC-15-v2.20",
+  "slug": "SEC-15-v2.20-release-v2-20-game-studio-pack-reference",
+  "title": "v2.20 release v2 20 game studio pack reference",
+  "branch": "meta",
+  "parent": "\u2014",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "SEC-15-v2.20 defines release v2 20 game studio pack reference for the agent-driven expert system. Roadmap, gap analysis, pursuit flow, decisions.",
+  "scope": [
+    "Owns `SEC-15-v2.20` only; siblings under `SEC-15-v2` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a715 \u2014 Implementation roadmap (additive v2 releases)](../../full-automation-vision-and-hierarchy.md#15-implementation-roadmap-additive-v2-releases)."
+  ],
+  "behavior_steps": [
+    "v2.20 pursuit binds a game-studio template-pack ([F3](F3-index.md)) with roles, pipelines, and external tool permissions so a creative-industry demo runs through the same A2 loop as software greenfield.",
+    "Demo goals use only H1 plan approval and H3 sign-off per [INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)\u2014Blender, UE, git, and CI tool phases execute via economy workers with evidence, not standing human babysitting.",
+    "Success criteria include reproducible demo script output plus goal_verify evidence ([F3.4](F3.4-game-studio-goal-verify-asset-engine-tests-perf.md)) aggregating asset checks, engine tests, or perf gates\u2014not slide decks or manual looks-good sign-off.",
+    "The reference pack proves taxonomy and pursuit on non-CRUD work: the conductor still runs one [A2.2](A2.2-if-ready-execute-one-pipeline-step.md) phase per wake with pack-defined pipelines from [F1.3](F1.3-pack-pipelines---yaml.md).",
+    "If demo evidence is missing or external tool MCP calls fail, pursuit stops at H2 with tool-operator logs attached\u2014release acceptance requires green goal_verify, not partial asset delivery."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"node\": \"SEC-15-v2.20\",\n  \"description\": \"release v2 20 game studio pack reference\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `SEC-15-v2.20` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `SEC-15-v2.20` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `SEC-15-v2.20`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `SEC-15-v2.20` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_sec-15-v2_20.py when script exists.",
+    "Validate `SEC-15-v2.20` against SEC-15 release checklist and parent index links.",
+    "Document `SEC-15-v2.20` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `SEC-15-v2.20`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids SEC-15-v2.20`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a715",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[SEC-15-v2-index](SEC-15-v2-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids SEC-15-v2.20` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [SEC-15-v2-index](SEC-15-v2-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "SEC-15-v2.20 defines release v2 20 game studio pack reference for the agent-driven expert system. Roadmap, gap analysis, pursuit flow, decisions. In practice, the system v2.20 pursuit binds a game-studio template-pack ([f3](f3-index.md)) with roles, pipelines, and external tool permissions so a creative-industry demo runs through the same a2 loop as software greenfield, then demo goals use only h1 plan approval and h3 sign-off per [intro-1.2](intro-1.2-human-touchpoint-contract-h1-h2-h3.md)\u2014blender, ue, git, and ci tool phases execute via economy workers with evidence, not standing human babysitting.",
+  "reader_narrative": "<!-- prose-source: agent meta 2026-06-28 -->\n\nRelease v2.20 delivers a game studio pack reference implementation with an end-to-end demo that uses only H1 and H3 as human touchpoints. It proves the taxonomy and pursuit loop on a creative-industry shape, not only software CRUD.\n\nSuccess is a reproducible demo script plus goal_verify evidence, not a slide deck."
+}

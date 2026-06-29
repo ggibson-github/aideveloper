@@ -1,0 +1,89 @@
+{
+  "id": "D2.2",
+  "slug": "D2.2-platform-queue-item-schema",
+  "title": "platform queue item schema",
+  "branch": "D",
+  "parent": "[D2-index](D2-index.md)",
+  "vision_section": "",
+  "release": "v2.16",
+  "purpose": "D2.2 defines platform queue item schema for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse.",
+  "scope": [
+    "Owns `D2.2` only; siblings under `D2` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a76 \u2014 Branch D \u2014 Platform evolution plane (parallel queue)](../../full-automation-vision-and-hierarchy.md#6-branch-d-platform-evolution-plane-parallel-queue)."
+  ],
+  "behavior_steps": [
+    "When product `next_action` is blocked because compose or implement needs a missing playbook, script, or catalog entry, preflight flags the missing artifact class and applies priority cut\u2014platform drain items targeting that class jump ahead of routine [D3.1](D3.1-1-platform-turn-per-k-product-turns.md) K-step interleaving.",
+    "The product goal remains blocked on internal wait or H2 until the promoted artifact exists at the required maturity tier or an operator waives at H1/H2; priority cut reprioritizes platform work only\u2014it does not clear human gates.",
+    "During the blocked window, [D2.1](D2.1-index.md) enqueue triggers may fire for the same missing capability; the conductor merges enqueue-and-drain so the promotion queue head targets the artifact class that unblocks product.",
+    "Priority cut temporarily suspends [D3.2](D3.2-priority-boost-queue-depth-threshold.md) boost when evidence-blocked product work must not defer behind accelerated platform drains unrelated to the missing tool.",
+    "Before marking promotion done, [D6](D6-index.md) checklist verification must pass; if the artifact is still missing, queue depth is zero with cut active, or dual-write drifts, pursuit stops at H2\u2014never run implement turns while the needed playbook sits queued at low priority."
+  ],
+  "mermaid": "flowchart LR\n  prod[Product turn] --> k{step mod K == 0?}\n  k -->|yes| plat[Platform turn dequeue]\n  k -->|no| prod\n  plat --> promote[promotion_queue drain]\n  promote --> prod",
+  "json_example": "{\n  \"platform\": {\n    \"promotion_queue\": [\n      {\n        \"id\": \"promo-001\",\n        \"source\": \"task-012\",\n        \"target_level\": \"L2\",\n        \"priority\": 50,\n        \"reason\": \"repeated manual pytest invocation\"\n      }\n    ],\n    \"drain_policy\": { \"product_steps_per_platform_turn\": 5 }\n  }\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Platform queue depth 0 but product blocked on missing playbook \u00e2\u20ac\u201d D3.3 priority cut skips platform drain.",
+    "Edge case `D2.2` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `D2.2`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `platform.promotion_queue[]` to state.json schema.",
+    "Scheduler in autopilot workflow: `(steps_total % K) == 0` \u00e2\u2020\u2019 platform turn.",
+    "playbook-keeper + script extraction skills dequeue promotion items.",
+    "Validate `D2.2` against SEC-15 release checklist and parent index links.",
+    "Document `D2.2` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `D2.2`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids D2.2`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/playbooks/`",
+    "`scripts/`",
+    "`.cursor/skills/playbook-keeper/`",
+    "`state.platform.promotion_queue`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a76",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[D2-index](D2-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids D2.2` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [D2-index](D2-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "D2.2 defines platform queue item schema for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse. In practice, the system when product `next_action` is blocked because compose or implement needs a missing playbook, script, or catalog entry, preflight flags the missing artifact class and applies priority cut\u2014platform drain items targeting that class jump ahead of routine [d3.1](d3.1-1-platform-turn-per-k-product-turns.md) k-step interleaving, then the product goal remains blocked on internal wait or h2 until the promoted artifact exists at the required maturity tier or an operator waives at h1/h2; priority cut reprioritizes platform work only\u2014it does not clear human gates.",
+  "reader_narrative": "<!-- prose-source: agent plane-d 2026-06-28 -->\n\nEach `platform.promotion_queue[]` entry follows a strict schema: `id`, `source` (task, divergence log, or post-mortem ref), `target_level` (L1\u2013L5), `priority`, and `effort_class` so schedulers and workers estimate drain cost. Optional fields capture reason text, fingerprint, and partial promotion state.\n\nSchema conformance is S0-validatable; malformed items must not dequeue. Priority overrides FIFO when [D3.2](D3.2-priority-boost-queue-depth-threshold.md) or [D3.5](D3.5-max-platform-backlog-age-force-drain.md) fire. The conductor is sole writer\u2014concurrent manual JSON edits reload each wake with a journal note. See [APP-B-state-json-sketch](APP-B-state-json-sketch.md) for platform block shape."
+}

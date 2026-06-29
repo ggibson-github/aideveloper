@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>G — Verification &amp; quality plane</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb"><a href="../index.html">Overview</a> · <a href="index.html">Architectural planes</a> · Plane G</nav>
+  <p class="page-id">Plane G</p>
+  <h1 class="page-title">Verification &amp; quality plane</h1>
+  <div class="story-block"><p>Plane G is verification and quality: <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> gates, goal-level verification, conformance, automated review triggers, mistake-class controls, and rollback.</p>
+<p>This plane has 6 topic groups listed below. Open a group to see its <a href="../glossary.html#capability" class="glossary-link" title="Capability">capabilities</a>; sequential groups include a flow diagram.</p></div>
+  
+  <p><span class="badge">27 <a href="../glossary.html#capability" class="glossary-link" title="Capability">capabilities</a></span></p>
+  
+<section class="cap-group">
+  <h2 class="section-title"><a href="../chapters/G-G1.html">G1: Evidence gates (existing)</a></h2>
+  
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/G1.1-task-verify-router-verifier.html">G1.1</a></span>
+  <span class="cap-title">task verify-router verifier</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/G1.2-evidence-required-state.html">G1.2</a></span>
+  <span class="cap-title">evidence required and state</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/G1.3-last-verify-before-advance.html">G1.3</a></span>
+  <span class="cap-title">last verify, before, and advance</span>
+</li></ul></div>
+</section>
+<section class="cap-group">
+  <h2 class="section-title"><a href="../chapters/G-G2.html">G2: Goal-level verification (NEW)</a></h2>
+  <div class="diagram-panel"><pre class="mermaid">flowchart LR
+  G2_1[&quot;G2.1&lt;br/&gt;goal verify command, state, and pack&quot;]
+  G2_2[&quot;G2.2&lt;br/&gt;goal verify, aggregates, unit, integrati&quot;]
+  G2_3[&quot;G2.3&lt;br/&gt;goal verify blocks H3 until pass&quot;]
+  G2_4[&quot;G2.4&lt;br/&gt;goal verify, regression, every, implemen&quot;]
+  G2_5[&quot;G2.5&lt;br/&gt;per-node evidence rollup goal verify&quot;]
+  G2_1 --&gt; G2_2
+  G2_2 --&gt; G2_3
+  G2_3 --&gt; G2_4
+  G2_4 --&gt; G2_5</pre></div>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/G2.1-goal-verify-command-state-pack.html">G2.1</a></span>
+  <span class="cap-title">goal verify command, state, and pack</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/G2.2-goal-verify-aggregates-unit-integration-e2e-tool.html">G2.2</a></span>
+  <span class="cap-title">goal verify, aggregates, unit, integration, e2e, and tool</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/G2.3-goal-verify-blocks-h3-until-pass.html">G2.3</a></span>
+  <span class="cap-title">goal verify blocks H3 until pass</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/G2.4-goal-verify-regression-every-implement-batch.html">G2.4</a></span>
+  <span class="cap-title">goal verify, regression, every, implement, and batch</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/G2.5-per-node-evidence-rollup-goal-verify.html">G2.5</a></span>
+  <span class="cap-title">per-node evidence rollup goal verify</span>
+</li></ul></div>
+</section>
+<section class="cap-group">
+  <h2 class="section-title"><a href="../chapters/G-G3.html">G3: Conformance &amp; workflow</a></h2>
+  
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/G3.1-conformance-validate-workflow-ci.html">G3.1</a></span>
+  <span class="cap-title">conformance validate-workflow CI</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/G3.2-conformance-route-tier-check.html">G3.2</a></span>
+  <span class="cap-title">conformance route-tier check</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/G3.3-conformance-check-pipeline-blocked-goal-autopilot.html">G3.3</a></span>
+  <span class="cap-title">conformance check-pipeline-blocked goal autopilot</span>
+</li></ul></div>
+</section>
+<section class="cap-group">
+  <h2 class="section-title"><a href="../chapters/G-G4.html">G4: Review triggers (automated)</a></h2>
+  
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/G4.1-review-security-review-touch-paths-deps.html">G4.1</a></span>
+  <span class="cap-title">review security-review touch paths deps</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/G4.2-review-bugbot-large-diffs.html">G4.2</a></span>
+  <span class="cap-title">review, bugbot, large, and diffs</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/G4.3-review-escalation-s4-repeated-verify-fail.html">G4.3</a></span>
+  <span class="cap-title">review escalation S4 repeated verify fail</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/G4.4-review-staleness-reconciliation-before-merge.html">G4.4</a></span>
+  <span class="cap-title">review, staleness, reconciliation, before, and merge</span>
+</li></ul></div>
+</section>
+<section class="cap-group">
+  <h2 class="section-title"><a href="../chapters/G-G5.html">G5: Mistake class → control mapping</a></h2>
+  
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/G5.1-mistake-hallucinated-done-evidence-gate.html">G5.1</a></span>
+  <span class="cap-title">mistake, hallucinated, done, evidence, and gate</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/G5.2-mistake-scope-creep-allowed-reads-task-card.html">G5.2</a></span>
+  <span class="cap-title">mistake, scope, creep, allowed reads, task, and card</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/G5.3-mistake-wrong-architecture-self-gate-goal-verify.html">G5.3</a></span>
+  <span class="cap-title">mistake wrong architecture self-gate goal verify</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/G5.4-mistake-skipped-tests-verify-router-mandatory.html">G5.4</a></span>
+  <span class="cap-title">mistake skipped tests verify-router mandatory</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/G5.5-mistake-stale-design-staleness-reconcile.html">G5.5</a></span>
+  <span class="cap-title">mistake, stale, design, staleness, and reconcile</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/G5.6-mistake-duplicate-tooling-platform-queue-catalog.html">G5.6</a></span>
+  <span class="cap-title">mistake, duplicate, tooling, platform, queue, and catalog</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/G5.7-mistake-unsafe-command-pretooluse-allowlist.html">G5.7</a></span>
+  <span class="cap-title">mistake unsafe command preToolUse allowlist</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/G5.8-mistake-fuzzy-chain-lost-in-prose-workflow-control.html">G5.8</a></span>
+  <span class="cap-title">mistake, fuzzy, chain, lost, in, prose, workflow, and control</span>
+</li></ul></div>
+</section>
+<section class="cap-group">
+  <h2 class="section-title"><a href="../chapters/G-G6.html">G6: Rollback &amp; recovery</a></h2>
+  
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/G6.1-rollback-git-branch-per-goal-slice.html">G6.1</a></span>
+  <span class="cap-title">rollback, git, branch, per, goal, and slice</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/G6.2-rollback-journal-last-failure-structured-h2.html">G6.2</a></span>
+  <span class="cap-title">rollback journal last failure structured H2</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/G6.3-rollback-autopilot-resume-precompact-snapshot.html">G6.3</a></span>
+  <span class="cap-title">rollback autopilot resume preCompact snapshot</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/G6.4-workflow-checkpoint-replay-from-failed-node.html">G6.4</a></span>
+  <span class="cap-title">workflow, checkpoint, replay, from, failed, and node</span>
+</li></ul></div>
+</section>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

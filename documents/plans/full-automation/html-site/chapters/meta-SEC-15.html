@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>SEC-15 — Implementation roadmap v2.14–v2.28 (§15)</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/meta.html">Plane meta</a> ·
+    SEC-15
+  </nav>
+  <p class="page-id">SEC-15 · Front matter &amp; cross-cutting architecture</p>
+  <h1 class="page-title">Implementation roadmap v2.14–v2.28 (§15)</h1>
+  <div class="story-block"><p>Additive releases v2.14 through v2.28—read in order; each release unlocks the next layer of autonomy.</p>
+<p>The sections below follow release order—read them in sequence.</p>
+<p>Release v2.14 establishes the goal model in state.json and introduces <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> as a first-class field alongside extended check-pipeline-blocked semantics. Without this release, pursuit cannot attach verification to nested goals or distinguish task done from goal achieved.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart LR
+  SEC_15_v2_14[&quot;SEC-15-v2.14&lt;br/&gt;Release v2.14 goal model goal verify&quot;]
+  SEC_15_v2_15[&quot;SEC-15-v2.15&lt;br/&gt;Release v2.15 pursuit loop goal autopilo&quot;]
+  SEC_15_v2_16[&quot;SEC-15-v2.16&lt;br/&gt;Release v2.16 platform queue scheduler&quot;]
+  SEC_15_v2_17[&quot;SEC-15-v2.17&lt;br/&gt;Release v2.17 catalog compose-first list&quot;]
+  SEC_15_v2_18[&quot;SEC-15-v2.18&lt;br/&gt;Release v2.18 staleness graph platform n&quot;]
+  SEC_15_v2_19[&quot;SEC-15-v2.19&lt;br/&gt;Release v2.19 company pack schema active&quot;]
+  SEC_15_v2_20[&quot;SEC-15-v2.20&lt;br/&gt;Release v2.20 game studio pack reference&quot;]
+  SEC_15_v2_21[&quot;SEC-15-v2.21&lt;br/&gt;Release v2.21 data platform pack referen&quot;]
+  SEC_15_v2_22[&quot;SEC-15-v2.22&lt;br/&gt;Release v2.22 cross-pack  shared library&quot;]
+  SEC_15_v2_23[&quot;SEC-15-v2.23&lt;br/&gt;Release v2.23 operator polish H2 audit d&quot;]
+  SEC_15_v2_24[&quot;SEC-15-v2.24&lt;br/&gt;Release v2.24 transistor schema registry&quot;]
+  SEC_15_v2_25[&quot;SEC-15-v2.25&lt;br/&gt;Release v2.25 workflow DAG validate-work&quot;]
+  SEC_15_v2_14 --&gt; SEC_15_v2_15
+  SEC_15_v2_15 --&gt; SEC_15_v2_16
+  SEC_15_v2_16 --&gt; SEC_15_v2_17
+  SEC_15_v2_17 --&gt; SEC_15_v2_18
+  SEC_15_v2_18 --&gt; SEC_15_v2_19
+  SEC_15_v2_19 --&gt; SEC_15_v2_20
+  SEC_15_v2_20 --&gt; SEC_15_v2_21
+  SEC_15_v2_21 --&gt; SEC_15_v2_22
+  SEC_15_v2_22 --&gt; SEC_15_v2_23
+  SEC_15_v2_23 --&gt; SEC_15_v2_24
+  SEC_15_v2_24 --&gt; SEC_15_v2_25</pre>
+</div>
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/SEC-15-v2.14-release-v2-14-goal-model-goal-verify.html">SEC-15-v2.14</a></span>
+  <span class="cap-title">Release v2.14 goal model goal verify</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/SEC-15-v2.15-release-v2-15-pursuit-loop-goal-autopilot-self-gate.html">SEC-15-v2.15</a></span>
+  <span class="cap-title">Release v2.15 pursuit loop goal autopilot self-gate</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/SEC-15-v2.16-release-v2-16-platform-queue-scheduler.html">SEC-15-v2.16</a></span>
+  <span class="cap-title">Release v2.16 platform queue scheduler</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/SEC-15-v2.17-release-v2-17-catalog-compose-first-list-components.html">SEC-15-v2.17</a></span>
+  <span class="cap-title">Release v2.17 catalog compose-first list-components</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/SEC-15-v2.18-release-v2-18-staleness-graph-platform-nodes.html">SEC-15-v2.18</a></span>
+  <span class="cap-title">Release v2.18 staleness graph platform nodes</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/SEC-15-v2.19-release-v2-19-company-pack-schema-active-role.html">SEC-15-v2.19</a></span>
+  <span class="cap-title">Release v2.19 company pack schema active role</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/SEC-15-v2.20-release-v2-20-game-studio-pack-reference.html">SEC-15-v2.20</a></span>
+  <span class="cap-title">Release v2.20 game studio pack reference</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/SEC-15-v2.21-release-v2-21-data-platform-pack-reference.html">SEC-15-v2.21</a></span>
+  <span class="cap-title">Release v2.21 data platform pack reference</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/SEC-15-v2.22-release-v2-22-cross-pack--shared-library.html">SEC-15-v2.22</a></span>
+  <span class="cap-title">Release v2.22 cross-pack  shared library</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/SEC-15-v2.23-release-v2-23-operator-polish-h2-audit-dashboard.html">SEC-15-v2.23</a></span>
+  <span class="cap-title">Release v2.23 operator polish H2 audit dashboard</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/SEC-15-v2.24-release-v2-24-transistor-schema-registry-list-transistors.html">SEC-15-v2.24</a></span>
+  <span class="cap-title">Release v2.24 transistor schema registry list-transistors</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/SEC-15-v2.25-release-v2-25-workflow-dag-validate-workflow-dag.html">SEC-15-v2.25</a></span>
+  <span class="cap-title">Release v2.25 workflow DAG validate-workflow-dag</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/SEC-15-v2.26-release-v2-26-workflow-composer-active-workflow-execution.html">SEC-15-v2.26</a></span>
+  <span class="cap-title">Release v2.26 workflow-composer active workflow execution</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/SEC-15-v2.27-release-v2-27-pack-workflow-templates-cross-domain.html">SEC-15-v2.27</a></span>
+  <span class="cap-title">Release v2.27 pack workflow templates cross-domain</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/SEC-15-v2.28-release-v2-28-transistor-maturity-dashboard-metrics.html">SEC-15-v2.28</a></span>
+  <span class="cap-title">Release v2.28 transistor maturity dashboard metrics</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

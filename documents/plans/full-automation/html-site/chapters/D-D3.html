@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>D3 — Scheduling policy (parallel product and self-improvement)</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/D.html">Plane D</a> ·
+    D3
+  </nav>
+  <p class="page-id">D3 · Platform evolution plane</p>
+  <h1 class="page-title">Scheduling policy (parallel product and self-improvement)</h1>
+  <div class="story-block"><p>D3: Scheduling policy (parallel product and self-improvement). Open each capability below for diagrams, verification, and contracts.</p>
+<p>Default scheduling grants one <a href="../glossary.html#platform-turn" class="glossary-link" title="Platform turn">platform turn</a> every K <a href="../glossary.html#product-turn" class="glossary-link" title="Product turn">product turns</a>—commonly K=5—encoded in <code>platform.drain_policy.product_steps_per_platform_turn</code>. <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">Autopilot</a> evaluates <code>(steps_total % K) == 0</code> after each product phase completes; when true, the next iteration is platform dequeue instead of implement or design.</p>
+<p>If the improvement queue is empty, the <a href="../glossary.html#platform-turn" class="glossary-link" title="Platform turn">platform turn</a> is skipped and the project continues—delivery does not sit idle waiting for self-improvement work. K is pack-configurable (<a href="../capabilities/D5.1-configure-task-level-params-only.html" class="spec-link">D5.1</a>) without forking schedulers. Overrides from <a href="../capabilities/D3.2-priority-boost-queue-depth-threshold.html" class="spec-link">D3.2</a>, <a href="../capabilities/D3.4-idle-drain-product-waits-h2.html" class="spec-link">D3.4</a>, and <a href="../capabilities/D3.5-max-platform-backlog-age-force-drain.html" class="spec-link">D3.5</a> layer on this baseline.</p>
+<p>When <a href="../glossary.html#promotion-queue" class="glossary-link" title="Promotion queue">promotion queue</a> depth exceeds a configured threshold, priority boost accelerates platform drains—extra <a href="../glossary.html#platform-turn" class="glossary-link" title="Platform turn">platform turns</a> or elevated head priority—so backlog cannot grow unbounded during heavy implement phases. Boost is a pressure valve, not the default cadence; it complements <a href="../capabilities/D3.1-1-platform-turn-per-k-product-turns.html" class="spec-link">D3.1</a> rather than replacing K-step interleaving.</p>
+<p>Threshold and boost factor live in drain_policy beside K. Boost must not defer the current project goal when next_action is <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>-blocked; <a href="../capabilities/D3.3-priority-cut-product-blocked-missing-tool.html" class="spec-link">D3.3</a> can temporarily suspend boost to favor enqueue-and-drain of the missing artifact class. Track depth in state.json for operator dashboard visibility and SEC-15 audit rows.</p>
+<p>Priority cut inverts normal scheduling when product pursuit is blocked on a missing playbook, script, or <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> entry: platform drain targeting that artifact class jumps ahead of routine K-step interleaving. The product goal stays blocked on <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> or internal wait until the promoted artifact exists or operator waives.</p>
+<p>Cut prevents absurd ordering—five implement turns while the very playbook needed for implement sits queued at priority 50. Cut does not clear human gates; it only reprioritizes platform work that unblocks product. Enqueue triggers (<a href="../chapters/D-D2.html" class="spec-link">D2.1</a>) may fire during the same blocked window; verify <a href="../chapters/D-D6.html" class="spec-link">D6</a> checklist before marking promotion done.</p>
+<p>When product pursuit waits on external <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a>—credentials, legal approval, operator answer—CPU and <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> attention would otherwise idle. Idle drain spends that wait on platform queue processing: dequeue and promote without advancing product next_action or clearing gates.</p>
+<p>Idle drain respects <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> semantics: no silent gate clearance, no fake implement progress. It maximizes parallel platform evolution during human latency and pairs naturally with <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> loops that would otherwise spin on blocked checks. When <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> clears, <a href="../glossary.html#product-turn" class="glossary-link" title="Product turn">product turns</a> resume on prior next_action; platform backlog should be thinner than if waits were pure no-ops. See <a href="../capabilities/A4.1-stop-human-h1-h2-h3.html" class="spec-link">A4.1</a> stop taxonomy.</p>
+<p>Each promotion item carries age; when oldest backlog exceeds max_platform_backlog_age, force drain policy schedules <a href="../glossary.html#platform-turn" class="glossary-link" title="Platform turn">platform turns</a> until age falls or queue empties—even if K-step cadence would defer drain. This prevents the improvement backlog from rotting during long project-only sprints.</p>
+<p>Force drain is the adversarial-review backstop cited across D-<a href="../glossary.html#branch" class="glossary-link" title="Branch">branch</a> specs. It does not override active product <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> gates; it prevents promotion debt from rotting. Age resets on partial promotion with re-enqueue; false done still fails <a href="../chapters/D-D6.html" class="spec-link">D6</a> audit. Operator may tune age and force intensity per pack.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/D3.1-1-platform-turn-per-k-product-turns.html">D3.1</a></span>
+  <span class="cap-title">1 platform turn per K product turns</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/D3.2-priority-boost-queue-depth-threshold.html">D3.2</a></span>
+  <span class="cap-title">priority, boost, queue, depth, and threshold</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/D3.3-priority-cut-product-blocked-missing-tool.html">D3.3</a></span>
+  <span class="cap-title">priority, cut, product, blocked, missing, and tool</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/D3.4-idle-drain-product-waits-h2.html">D3.4</a></span>
+  <span class="cap-title">idle drain product waits H2</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/D3.5-max-platform-backlog-age-force-drain.html">D3.5</a></span>
+  <span class="cap-title">max, platform, backlog, age, force, and drain</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

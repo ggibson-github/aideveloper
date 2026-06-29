@@ -1,0 +1,89 @@
+{
+  "id": "E5.1",
+  "slug": "E5.1-staleness-design-graph-staleness-json",
+  "title": "staleness design graph staleness.json",
+  "branch": "E",
+  "parent": "[E5-index](E5-index.md)",
+  "vision_section": "",
+  "release": "v2.17",
+  "purpose": "E5.1 defines staleness design graph staleness json for the agent-driven expert system. Knowledge & composition \u2014 catalog, compose-first, staleness.",
+  "scope": [
+    "Owns `E5.1` only; siblings under `E5` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a77 \u2014 Branch E \u2014 Knowledge & composition plane](../../full-automation-vision-and-hierarchy.md#7-branch-e-knowledge-composition-plane)."
+  ],
+  "behavior_steps": [
+    "After design artifacts change (HLD, DD, diagrams, task cards), S0 update-staleness.py derives dependency edges and sets stale flags in docs/manifest/staleness.json without conductor improvisation.",
+    "On each pursuit wake before implement spawn, preflight reads staleness.json; paths touching stale design nodes block worker spawn until reconcile-stale clears flags or records an H2 waiver.",
+    "In program mode, artifact graphs from [C4.4](C4.4-artifact-graph-per-program-and-pack.md) complement the design manifest so cross-stream contracts surface stale nodes the global manifest alone might miss.",
+    "When vision or hierarchy source changes, affected node ids enqueue deepen items so the staleness graph and pursuit queue stay aligned with approved scope.",
+    "If staleness.json is missing, corrupt, or shows unresolved stale nodes on a path about to implement, pursuit stops at H2\u2014silent implement against obsolete design violates Plane E and undermines goal_verify evidence."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"E5.1\",\n  \"description\": \"staleness design graph staleness json\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `E5.1` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `E5.1` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `E5.1`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `E5.1` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_e5_1.py when script exists.",
+    "Validate `E5.1` against SEC-15 release checklist and parent index links.",
+    "Document `E5.1` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `E5.1`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids E5.1`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/facts/INDEX.md`",
+    "`docs/playbooks/INDEX.md`",
+    "`docs/manifest/staleness.json`",
+    "`allowed_reads`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a77",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[E5-index](E5-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids E5.1` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [E5-index](E5-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "E5.1 defines staleness design graph staleness json for the agent-driven expert system. Knowledge & composition \u2014 catalog, compose-first, staleness. In practice, the system after design artifacts change (hld, dd, diagrams, task cards), s0 update-staleness.py derives dependency edges and sets stale flags in docs/manifest/staleness.json without conductor improvisation, then on each pursuit wake before implement spawn, preflight reads staleness.json; paths touching stale design nodes block worker spawn until reconcile-stale clears flags or records an h2 waiver.",
+  "reader_narrative": "<!-- prose-source: agent plane-e 2026-06-28 -->\n\n`docs/manifest/staleness.json` is the design-graph staleness manifest: nodes for HLD, DD, diagrams, task cards with dependency edges and stale flags when upstream artifacts change. S0 update-staleness.py (or successor) maintains the graph file-derived.\n\nStaleness blocks implement spawn against obsolete design until reconcile completes. Program artifact graphs ([C4.4](C4.4-artifact-graph-per-program-and-pack.md)) complement this manifest for multi-stream work. Vision \u00a7 changes enqueue deepen items for affected hierarchy ids. See [E5-index](E5-index.md) for sibling extensions."
+}

@@ -1,0 +1,165 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "category": "Human touchpoints",
+      "id": "h1",
+      "terms": ["(H1)", "H1"],
+      "short": "H1 — initial planning gate",
+      "definition": "The first time a human must act: you describe the goal (a product, feature, or project) and approve the plan. After H1, the system is expected to work on its own until it needs help or finishes.",
+      "spec_slug": "INTRO-1.2-human-touchpoint-contract-h1-h2-h3"
+    },
+    {
+      "category": "Human touchpoints",
+      "id": "h2",
+      "terms": ["(H2)", "H2"],
+      "short": "H2 — blocker assistance",
+      "definition": "A pause where the automation cannot continue without you — for example missing credentials, an unclear requirement, or a failed check it cannot fix alone. You provide what is missing; the system records the answer and resumes the same goal.",
+      "spec_slug": "INTRO-1.2-human-touchpoint-contract-h1-h2-h3"
+    },
+    {
+      "category": "Human touchpoints",
+      "id": "h3",
+      "terms": ["(H3)", "H3"],
+      "short": "H3 — final sign-off",
+      "definition": "The last human step: after automated tests and checks pass, you formally accept or reject the completed work. Rejection sends the system back to fix issues rather than closing the goal.",
+      "spec_slug": "INTRO-1.2-human-touchpoint-contract-h1-h2-h3"
+    },
+    {
+      "category": "Human touchpoints",
+      "id": "hitl",
+      "terms": ["HITL", "H1/H2/H3", "H1–H3", "H1-H3", "Human touchpoints"],
+      "short": "Human-in-the-loop touchpoints",
+      "definition": "The rule that humans appear only at three moments: approve the plan (H1), unblock when stuck (H2), and sign off at the end (H3). Everything between those moments is meant to run without asking you to click Continue on every step.",
+      "spec_slug": "INTRO-1.2-human-touchpoint-contract-h1-h2-h3"
+    },
+    {
+      "category": "Routing & tiers",
+      "id": "s0",
+      "terms": ["S0", "s0"],
+      "short": "S0 — deterministic scripts",
+      "definition": "The cheapest, most reliable kind of work: small programs that read files and run fixed steps with no AI guessing. The system must run these scripts first whenever they exist, before spending tokens on an AI model.",
+      "spec_slug": "B1.1-s0-deterministic-mandatory-first"
+    },
+    {
+      "category": "Routing & tiers",
+      "id": "s1",
+      "terms": ["S1"],
+      "short": "S1 — mechanical workers",
+      "definition": "Routine AI-assisted work with a tight brief — searching code, applying a task card, running a command — using a lower-cost model because the steps are well defined and low risk.",
+      "spec_slug": "B1.2-s1-mechanical-economy-workers-catalog"
+    },
+    {
+      "category": "Routing & tiers",
+      "id": "s2",
+      "terms": ["S2"],
+      "short": "S2 — templated artifacts",
+      "definition": "Producing standard documents or artifacts from templates — design sections, task lists, diagrams — following patterns the organization already agreed on instead of inventing structure from scratch each time.",
+      "spec_slug": "B1.3-s2-templated-artifacts"
+    },
+    {
+      "category": "Routing & tiers",
+      "id": "s3",
+      "terms": ["S3"],
+      "short": "S3 — architecture / ambiguity",
+      "definition": "Judgment calls where there is no single script answer — trade-offs, merges after parallel work, or gaps in the written rules. A senior orchestration model handles these turns instead of a routine worker.",
+      "spec_slug": "B1.4-s3-architecture-ambiguity"
+    },
+    {
+      "category": "Routing & tiers",
+      "id": "s4",
+      "terms": ["S4"],
+      "short": "S4 — governance escalation",
+      "definition": "When the system must stop and package a clear question for a human because policy, legal, safety, or high-risk impact requires an explicit decision — not because a test failed.",
+      "spec_slug": "B1.5-s4-governance-escalation-h2-packaging"
+    },
+    {
+      "category": "Routing & tiers",
+      "id": "s-tiers",
+      "terms": ["S0–S4", "S0-S4", "Capability tiers"],
+      "short": "Capability tiers S0 through S4",
+      "definition": "Five levels of how hard or expensive a turn of work should be: from fixed scripts (S0) up to governance escalation (S4). Routing picks the lowest tier that can safely do the job.",
+      "spec_slug": "B1.1-s0-deterministic-mandatory-first"
+    },
+    {
+      "category": "Routing & tiers",
+      "id": "conductor",
+      "terms": ["conductor", "Conductor"],
+      "short": "Conductor",
+      "definition": "The lead AI role that runs the show: it decides what happens next, assigns smaller worker AIs, merges their results, and writes the official record of progress. It does not do all the coding itself.",
+      "spec_slug": "B2.1-conductor-genius-merge-route-platform-drain"
+    },
+    {
+      "category": "Architecture",
+      "id": "architectural-planes",
+      "terms": ["Architectural planes", "architectural planes", "Architectural plane", "Explore the planes", "the planes"],
+      "short": "Architectural planes",
+      "definition": "Ten major chapters of the design (A through J), each owning one concern — pursuit, routing, product delivery, self-improvement, knowledge, organization, verification, persistence, runtime tools, and operator policy.",
+      "spec_slug": "MASTER-A-branch-a---pursuit---control-plane"
+    },
+    {
+      "category": "Architecture",
+      "id": "dual-write",
+      "terms": ["dual-write", "Dual-write"],
+      "short": "Dual-write",
+      "definition": "Every important status change is saved in two places: a human-readable journal file and a machine-readable state file. If the IDE closes or the process restarts, the system can pick up where it left off without relying on chat memory.",
+      "spec_slug": "H2-journal-progress"
+    },
+    {
+      "category": "Architecture",
+      "id": "catalog",
+      "terms": ["catalog", "Catalog", "compose-first", "compose first"],
+      "short": "Catalog (compose-first)",
+      "definition": "The organization's indexed library of facts, playbooks, scripts, and reusable pieces. Before inventing something new, the system must search the catalog and reuse what already exists — like checking parts inventory before fabricating a new part.",
+      "spec_slug": "B4.3-compose-first-catalog-before-improvise"
+    },
+    {
+      "category": "Operations & pursuit",
+      "id": "pursuit-loop",
+      "terms": ["Pursuit loop", "pursuit loop", "Pursuit Loop"],
+      "short": "Pursuit loop",
+      "definition": "The main repeating cycle after you approve a plan: check whether it is safe to act, do one step of work (product or platform), save progress, and repeat until the goal is done, you are needed (H2), or you sign off (H3).",
+      "spec_slug": "SEC-13-pursuit-flow"
+    },
+    {
+      "category": "Operations & pursuit",
+      "id": "product-turn",
+      "terms": ["product turns", "product turn", "Product turn"],
+      "short": "Product turn",
+      "definition": "One step of work directly on the current product, feature, or project — for example implementing a task, running tests, or updating design docs for that goal. This is the work the customer or team asked for.",
+      "spec_slug": "B4.1-product-next-action-task-each-turn"
+    },
+    {
+      "category": "Operations & pursuit",
+      "id": "platform-turn",
+      "terms": ["platform turns", "platform turn", "Platform turn"],
+      "short": "Platform turn",
+      "definition": "A step where the system works on itself instead of the current product: while delivering projects it notices repeated mistakes, manual work, or missing automation and queues improvements. On a platform turn it turns that queue into scripts, playbooks, or checks so the next project runs better. Product work and self-improvement alternate so delivery does not stop entirely for maintenance.",
+      "spec_slug": "B4.2-platform-promotion-queue-peek-drain"
+    },
+    {
+      "category": "Operations & pursuit",
+      "id": "promotion-queue",
+      "terms": ["promotion queue", "Promotion queue"],
+      "short": "Promotion queue",
+      "definition": "A to-do list of self-improvement items discovered during real project work — the same command run twice by hand, a pattern worth scripting, a playbook that should exist. Platform turns pull from this queue and mature each item into lasting automation.",
+      "spec_slug": "D2.2-platform-queue-item-schema"
+    },
+    {
+      "category": "Operations & pursuit",
+      "id": "goal-verify",
+      "terms": ["goal_verify", "goal verify", "Goal verification"],
+      "short": "Goal verification suite",
+      "definition": "A final automated exam run when all tasks for a goal are finished. It aggregates tests and checks across the whole scope. Passing is required before the system asks you for H3 sign-off; failing sends work back for fixes.",
+      "spec_slug": "A2.4-goal-scope-complete-run-goal-verify"
+    },
+    {
+      "category": "Operations & pursuit",
+      "id": "autopilot",
+      "terms": ["autopilot", "Autopilot", "goal_autopilot"],
+      "short": "Autopilot",
+      "definition": "Mode where the system keeps taking pursuit steps on its own after H1 — without you typing Continue after every phase — until the goal is verified, blocked for your help, or finished.",
+      "spec_slug": "A3.2-goal-autopilot-until-goal-verify-or-hard-block"
+    }
+  ]
+}

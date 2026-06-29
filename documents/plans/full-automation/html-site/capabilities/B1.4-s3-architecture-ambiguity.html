@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>B1.4 — S3 architecture ambiguity</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/B.html">Plane B</a> · <a href="../chapters/B-B1.html">B1</a> ·
+    B1.4
+  </nav>
+  <p class="page-id">B1.4 · Cognition &amp; routing plane</p>
+  <h1 class="page-title">S3 architecture ambiguity</h1>
+  <p class="page-subtitle">S3 architecture ambiguity</p>
+  
+  <div class="story-block"><p><a href="../glossary.html#s3" class="glossary-link" title="S3 — architecture / ambiguity">S3</a> is reserved for architecture ambiguity: trade-offs without a single script answer, merge decisions after parallel workers return, gate interpretation when policy is silent, and reconciliation when design artifacts conflict. The genius-tier <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> owns <a href="../glossary.html#s3" class="glossary-link" title="S3 — architecture / ambiguity">S3</a>—thin orchestration, not bulk implementation.</p>
+<p>When ambiguity is resolvable by reading one fact file or running one script, that is <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> or <a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a>, not S3. <a href="../glossary.html#s3" class="glossary-link" title="S3 — architecture / ambiguity">S3</a> turns should end in a recorded decision (journal Q&amp;A or ADR) and updated routing, not open-ended exploration. Escalation to <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> belongs in <a href="../glossary.html#s4" class="glossary-link" title="S4 — governance escalation">S4</a> when external authority is required.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When <a href="../capabilities/A2.1-preflight-check-pipeline-blocked-extended.html" class="spec-link">A2.1</a> or <a href="../capabilities/B2.1-conductor-genius-merge-route-platform-drain.html" class="spec-link">B2.1</a> classifies a turn as <a href="../glossary.html#s3" class="glossary-link" title="S3 — architecture / ambiguity">S3</a>, only the genius-tier <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> owns it—thin orchestration for trade-offs, merge decisions, silent policy, and conflicting design artifacts, not bulk <a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a> implementation.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Before invoking <a href="../glossary.html#s3" class="glossary-link" title="S3 — architecture / ambiguity">S3</a>, <a href="../capabilities/B1.1-s0-deterministic-mandatory-first.html" class="spec-link">B1.1</a> must rule out resolvable ambiguity: one fact-file read or one script answer stays S0/<a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a>, not S3.</span></li><li><span class="step-num">Step 3</span><span class="step-text">After parallel workers return under <a href="../capabilities/B2.3-phase-workers-implement-design-explore.html" class="spec-link">B2.3</a>, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> performs <a href="../glossary.html#s3" class="glossary-link" title="S3 — architecture / ambiguity">S3</a> merge—reconciling summaries, updating <code>next_action</code> and routing—without workers dual-writing journal or state.json.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Each <a href="../glossary.html#s3" class="glossary-link" title="S3 — architecture / ambiguity">S3</a> turn ends in a recorded decision—journal Resolved Q&amp;A or <a href="../capabilities/E3.2-decisions-docs-decisions-adr.html" class="spec-link">E3.2</a> ADR—and updated <code>route-tier</code> output; open-ended exploration without closure is forbidden.</span></li><li><span class="step-num">Step 5</span><span class="step-text">When external authority is required beyond recorded policy, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> escalates to <a href="../capabilities/B1.5-s4-governance-escalation-h2-packaging.html" class="spec-link">B1.5</a> S4/<a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> rather than improvising past the ambiguity boundary.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids B1.4</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case B1.4 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case B1.4 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;B1.4&quot;,
+  &quot;description&quot;: &quot;s3 architecture ambiguity&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

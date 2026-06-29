@@ -1,0 +1,89 @@
+{
+  "id": "A5.3",
+  "slug": "A5.3-default-after-h1-auto-enter-goal-autopilot",
+  "title": "default after H1 auto-enter goal_autopilot",
+  "branch": "A",
+  "parent": "[A5-index](A5-index.md)",
+  "vision_section": "",
+  "release": "v2.14",
+  "purpose": "A5.3 defines default after h1 auto enter goal autopilot for the agent-driven expert system. Pursuit & control plane \u2014 autonomous loops until goal verified.",
+  "scope": [
+    "Owns `A5.3` only; siblings under `A5` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a73 \u2014 Branch A \u2014 Pursuit & control plane](../../full-automation-vision-and-hierarchy.md#3-branch-a-pursuit-control-plane)."
+  ],
+  "behavior_steps": [
+    "When H1 plan approval clears `hitl.pending` and Resolved Q&A records the approval, goal-keeper sets `autopilot.active` and populates goal fields from [A1](A1-index.md) in the same dual-write turn\u2014no separate manual start-pursuit command.",
+    "The conductor immediately runs [A2.1](A2.1-preflight-check-pipeline-blocked-extended.md) preflight and, if READY, enters [A3.2](A3.2-goal-autopilot-until-goal-verify-or-hard-block.md) goal autopilot in the same session when operator policy allows.",
+    "This default encodes 100% automation between touchpoints: intent is supplied once at H1, then pursuit runs until H2, verify stop, resource stop, or H3 per [A4](A4-index.md).",
+    "Strict HITL packs or debug single-step mode may opt out\u2014`autopilot.active` stays false and [A5.1](A5.1-continue-resume-pursuit-if-not-blocked.md) drives one phase per Continue instead.",
+    "If goal fields are incomplete after H1, preflight fails closed at H2 rather than entering goal autopilot with ambiguous success_criteria or missing goal_verify_command."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"A5.3\",\n  \"description\": \"default after h1 auto enter goal autopilot\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "goal_verify passes but H3 rejected \u00e2\u20ac\u201d goal.state returns to pursuing with rejection notes.",
+    "Edge case `A5.3` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `A5.3`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `goal` block to state template and journal-keeper dual-write (v2.14).",
+    "Extend `check-pipeline-blocked.py` with goal_autopilot stop reasons.",
+    "Implement `scripts/goal-verify.py` stub aggregating task evidence paths.",
+    "Add `.cursor/skills/goal-keeper/SKILL.md` for conductor H1\u00e2\u2020\u2019pursuit transition.",
+    "Document `A5.3` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `A5.3`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids A5.3`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`journal/state.json `goal`, `pursuit`, `hitl``",
+    "`scripts/automation/check-pipeline-blocked.py`",
+    "`scripts/automation/run-local-pipeline.py`",
+    "`.cursor/skills/autopilot/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a73",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[A5-index](A5-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids A5.3` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [A5-index](A5-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "A5.3 defines default after h1 auto enter goal autopilot for the agent-driven expert system. Pursuit & control plane \u2014 autonomous loops until goal verified. In practice, the system when h1 plan approval clears `hitl.pending` and resolved q&a records the approval, goal-keeper sets `autopilot.active` and populates goal fields from [a1](a1-index.md) in the same dual-write turn\u2014no separate manual start-pursuit command, then the conductor immediately runs [a2.1](a2.1-preflight-check-pipeline-blocked-extended.md) preflight and, if ready, enters [a3.2](a3.2-goal-autopilot-until-goal-verify-or-hard-block.md) goal autopilot in the same session when operator policy allows.",
+  "reader_narrative": "<!-- prose-source: agent plane-a 2026-06-28 -->\n\nAfter H1 approves a plan, the default transition is automatic entry into goal autopilot\u2014no manual \u201cstart pursuit\u201d step. The goal-keeper skill (or equivalent conductor path) sets `autopilot.active`, populates goal fields from A1, and runs the first preflight in the same session when possible.\n\nThis default encodes \u201c100% automation between touchpoints\u201d: the operator supplies intent once, then observes until H2 or H3. Opt-out remains for strict HITL packs or debugging single steps. Pair with [A3.2](A3.2-goal-autopilot-until-goal-verify-or-hard-block.md) for the run mode entered here."
+}

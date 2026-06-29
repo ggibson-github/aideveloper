@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>H2 — journal and progress</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/H.html">Plane H</a> · <a href="../chapters/H-H2.html">H2</a> ·
+    H2
+  </nav>
+  <p class="page-id">H2 · Persistence &amp; state plane</p>
+  <h1 class="page-title">journal and progress</h1>
+  <p class="page-subtitle">journal progress</p>
+  
+  <div class="story-block"><p><code>journal/progress.md</code> is the human-readable mirror of machine state—not a second router. It records phase completions, Resolved Q&amp;A, Open questions, Blockers, <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">Evidence</a> files, Context files, Session summary, and Next action in prose operators can skim without parsing JSON.</p>
+<p>Only the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s after each pipeline step via journal-keeper; workers return summaries but never edit the journal. Hooks inject journal summary on continue/start (<a href="../capabilities/I1.4-runtime-ide-hooks-beforesubmit-subagentstart-pretooluse-prec.html" class="spec-link">I1.4</a>) but agents must still read the full file. STATUS.md and dashboard.md are generated views (<a href="../capabilities/I5.1-runtime-notify-status-dashboard-generation.html" class="spec-link">I5.1</a>), not authoritative pursuit state.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">After each pipeline step completes, journal-keeper <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s journal/progress.md and journal/state.json so the human mirror and machine router stay aligned—workers return summaries only and never edit the journal directly.</span></li><li><span class="step-num">Step 2</span><span class="step-text">The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> records phase completions, Resolved Q&amp;A, Open questions, Blockers, <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">Evidence</a> files, Context files, Session summary, and Next action in prose operators can skim without parsing JSON.</span></li><li><span class="step-num">Step 3</span><span class="step-text">On continue/start, <a href="../capabilities/I1.4-runtime-ide-hooks-beforesubmit-subagentstart-pretooluse-prec.html" class="spec-link">I1.4</a> hooks may inject a journal excerpt into the prompt, but pursuit agents must still read the full progress.md before routing—the hook is a pointer, not a substitute.</span></li><li><span class="step-num">Step 4</span><span class="step-text"><a href="../capabilities/I5.1-runtime-notify-status-dashboard-generation.html" class="spec-link">I5.1</a> regenerates STATUS.md and docs/operator/dashboard.md as derived views; preflight treats state.json next_action as authoritative when mirror and router disagree.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> fails or journal fields drift from state.json—missing Next action, stale Blockers—integrity stop fires at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> and pursuit halts until validate-workflow or manual reconciliation restores a single source of truth.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids H2</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case H2 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case H2 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;H2&quot;,
+  &quot;description&quot;: &quot;journal progress&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

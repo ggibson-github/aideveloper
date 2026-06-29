@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>C4 — Program / parallel execution</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/C.html">Plane C</a> ·
+    C4
+  </nav>
+  <p class="page-id">C4 · Product execution plane</p>
+  <h1 class="page-title">Program / parallel execution</h1>
+  <div class="story-block"><p>C4: Program / parallel execution. Open each capability below for diagrams, verification, and contracts.</p>
+<p>Workstreams expose lane JSON with lease fields so parallel program lanes claim work safely. Leases expire per A4.3 resource stops; stale leases return items to queue with journal note.</p>
+<p>Lane files live under docs/manifest/ program paths; integration-manifest-keeper maintains cross-lane contracts. One <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> remains writer for journal/state even when lanes parallelize implement.</p>
+<p>Orchestrate-program skill spawns ready lanes when manifest approved, blocking questions cleared, and spawn_workers true. Each lane worker receives allowed_reads from Librarian briefing and manifest slice only.</p>
+<p>Parent <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> merges lane summaries, updates artifact graph, and never clears gates without approval. Failed lane blocks program <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> until manifest reconciliation or <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> waiver.</p>
+<p>Integration manifest is the cross-stream contract: API surfaces, shared schemas, test harness boundaries, and completion criteria per stream. Human gate before parallel implement unless pack policy self-gates with verify suite.</p>
+<p>Manifest changes mark artifact graph nodes stale; dependent lanes pause at preflight until reconcile completes. This document is the program-level analog of feature design approval.</p>
+<p>Artifact graph nodes represent design, code, test, and pack artifacts with dependency edges for program and pack scopes. reconcile-artifact-graph marks stale when upstream changes; pursuit respects stale flags before spawn.</p>
+<p>Graph complements staleness.json for platform nodes; together they prevent implement against obsolete design. Pack schema may embed graph templates per company type.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/C4.1-workstreams-lane-json-leases.html">C4.1</a></span>
+  <span class="cap-title">workstreams lane.json leases</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/C4.2-orchestrate-program.html">C4.2</a></span>
+  <span class="cap-title">orchestrate-program</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/C4.3-integration-manifest-cross-stream-contract.html">C4.3</a></span>
+  <span class="cap-title">integration manifest cross-stream contract</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/C4.4-artifact-graph-per-program-and-pack.html">C4.4</a></span>
+  <span class="cap-title">artifact-graph per program and pack</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

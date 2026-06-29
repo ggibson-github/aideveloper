@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>E6.4 — list-transistors query io compatibility</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/E.html">Plane E</a> · <a href="../chapters/E-E6.html">E6</a> ·
+    E6.4
+  </nav>
+  <p class="page-id">E6.4 · Knowledge &amp; composition plane</p>
+  <h1 class="page-title">list-transistors query io compatibility</h1>
+  <p class="page-subtitle">list-transistors query io compatibility</p>
+  
+  <div class="story-block"><p><code>list-transistors.py</code> is the <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> discovery tool the workflow-composer and Librarian use before stitching generator DAGs. It queries the transistor registry by <code>capability_id</code>, optional <code>--produces</code> and <code>--consumes</code> type filters, and <code>--class</code> (<code>hard</code>, <code>soft</code>, or <code>gate</code>) so the composer can find blocks whose outputs are wire-compatible with the upstream node already placed in the workflow. This extends <a href="../capabilities/E2.2-compose-query-catalog-list-components.html" class="spec-link">E2.2</a> list-components: composition at workflow granularity starts with transistors, then falls back to legacy script and playbook hits per <a href="../capabilities/E6.5-compose-rank-hard-transistor-script-soft.html" class="spec-link">E6.5</a>.</p>
+<p>Results feed <a href="../capabilities/B6.1-workflow-composer-skill-s3-graph-planning.html" class="spec-link">B6.1</a> briefing and <a href="../capabilities/B2.2-librarian-allowed-reads-catalog-composition.html" class="spec-link">B2.2</a> suggested_components. An empty result triggers <a href="../capabilities/E7.4-workflow-miss-enqueue-transistor-promotion.html" class="spec-link">E7.4</a> promotion enqueue—not improvised implement. Duplicate capability coverage is rejected via <code>--check-duplicates</code> to enforce <a href="../capabilities/G5.6-mistake-duplicate-tooling-platform-queue-catalog.html" class="spec-link">G5.6</a>. Unit tests live under <code>tests/unit/test_list_transistors.py</code> as part of the v2.24 release row.</p>
+<p>See <a href="../../../../full-automation-vision-and-hierarchy.md#19-transistor-generator-workflow-model" class="spec-link">Vision §19 — Transistor &amp; generator workflow model</a> and <a href="../capabilities/SEC-18-transistor-model-a-to-z-reference.html" class="spec-link">SEC-18</a> §D for query semantics.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart TD
+  compose[Compose workflow] --&gt; validate[validate-workflow-dag S0]
+  validate --&gt;|pass| exec[Execute one node]
+  exec --&gt; nodeVerify[Transistor verify]
+  nodeVerify --&gt;|pass| next[Advance active_workflow]
+  nodeVerify --&gt;|fail| h2[H2 or retry gate]
+  next --&gt; goalVerify[goal_verify rollup]</pre>
+</div>
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">CLI: --capability, --produces, --consumes, --class hard|soft|gate.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Returns ranked hits compatible with upstream node outputs for DAG extension.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Integrates with librarian suggested_components in B2.2 briefing.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Empty result triggers E7.4 promotion enqueue—not improvised implement.</span></li><li><span class="step-num">Step 5</span><span class="step-text">Unit tests under tests/unit/test_list_transistors.py.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids E6.4</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>DAG validity</td><td>`python scripts/automation/validate-workflow-dag.py` when workflow exists</td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write including active_workflow.</li><li>Transistor version bump mid-pursuit — E5.4 marks workflow stale; re-validate before next node.</li><li>L0 waiver node without promotion progress — D3.3 priority boost then H2 if threshold exceeded.</li><li>Pack overlay id collision — F5.4 semver fork per D5.3, not silent overwrite.</li><li>Parallel branch join missing typed input — validate-workflow-dag fails at compose time.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;E6.4&quot;,
+  &quot;description&quot;: &quot;list-transistors query io compatibility&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot;, &quot;active_workflow&quot;: &quot;H1.7&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.24+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.24</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

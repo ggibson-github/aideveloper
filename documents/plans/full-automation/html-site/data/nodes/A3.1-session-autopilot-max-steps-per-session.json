@@ -1,0 +1,89 @@
+{
+  "id": "A3.1",
+  "slug": "A3.1-session-autopilot-max-steps-per-session",
+  "title": "session_autopilot max_steps_per_session",
+  "branch": "A",
+  "parent": "[A3-index](A3-index.md)",
+  "vision_section": "",
+  "release": "v2.14",
+  "purpose": "A3.1 defines session autopilot max steps per session for the agent-driven expert system. Pursuit & control plane \u2014 autonomous loops until goal verified.",
+  "scope": [
+    "Owns `A3.1` only; siblings under `A3` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a73 \u2014 Branch A \u2014 Pursuit & control plane](../../full-automation-vision-and-hierarchy.md#3-branch-a-pursuit-control-plane)."
+  ],
+  "behavior_steps": [
+    "When autopilot.active is true in session_autopilot mode, the conductor wraps [A2.6](A2.6-loop-until-blocked-budget-achieved-h3-reject.md) inside one Cursor session\u2014incrementing pursuit.session_step_count after each [A2.3](A2.3-post-step-route-tier-dual-write-increment.md) dual-write without waiting for manual Continue per [A2.7](A2.7-no-intermediate-wait-for-continue.md).",
+    "Each iteration runs [A2.1](A2.1-preflight-check-pipeline-blocked-extended.md) preflight then exactly one [A2.2](A2.2-if-ready-execute-one-pipeline-step.md) pipeline phase before post-step routing\u2014a single skill phase per turn inside the session loop.",
+    "When pursuit.session_step_count reaches max_steps_per_session from state.json or operator policy, pursuit dual-writes stop reason session_cap and exits cleanly so the next wake\u2014manual Continue or daemon poll\u2014resumes from the last committed journal/state snapshot.",
+    "H2 blocks, H1/H3 touchpoints, [A2.4](A2.4-goal-scope-complete-run-goal-verify.md) scope completion, and [A1.4](A1.4-deadline-budget-steps-tokens-wall-clock.md) budget exhaustion terminate before the cap; [A3.2](A3.2-goal-autopilot-until-goal-verify-or-hard-block.md) goal autopilot lifts the session ceiling for long-running work.",
+    "If preflight mis-reads state or a worker hangs without incrementing counters, the session cap still forces a typed stop rather than unbounded turns in one chat\u2014fail closed at H2 if dual-write of the cap stop fails."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"A3.1\",\n  \"description\": \"session autopilot max steps per session\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "goal_verify passes but H3 rejected \u00e2\u20ac\u201d goal.state returns to pursuing with rejection notes.",
+    "Edge case `A3.1` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `A3.1`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `goal` block to state template and journal-keeper dual-write (v2.14).",
+    "Extend `check-pipeline-blocked.py` with goal_autopilot stop reasons.",
+    "Implement `scripts/goal-verify.py` stub aggregating task evidence paths.",
+    "Add `.cursor/skills/goal-keeper/SKILL.md` for conductor H1\u00e2\u2020\u2019pursuit transition.",
+    "Document `A3.1` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `A3.1`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids A3.1`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`journal/state.json `goal`, `pursuit`, `hitl``",
+    "`scripts/automation/check-pipeline-blocked.py`",
+    "`scripts/automation/run-local-pipeline.py`",
+    "`.cursor/skills/autopilot/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a73",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[A3-index](A3-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids A3.1` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [A3-index](A3-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "A3.1 defines session autopilot max steps per session for the agent-driven expert system. Pursuit & control plane \u2014 autonomous loops until goal verified. In practice, the system when autopilot.active is true in session_autopilot mode, the conductor wraps [a2.6](a2.6-loop-until-blocked-budget-achieved-h3-reject.md) inside one cursor session\u2014incrementing pursuit.session_step_count after each [a2.3](a2.3-post-step-route-tier-dual-write-increment.md) dual-write without waiting for manual continue per [a2.7](a2.7-no-intermediate-wait-for-continue.md), then each iteration runs [a2.1](a2.1-preflight-check-pipeline-blocked-extended.md) preflight then exactly one [a2.2](a2.2-if-ready-execute-one-pipeline-step.md) pipeline phase before post-step routing\u2014a single skill phase per turn inside the session loop.",
+  "reader_narrative": "<!-- prose-source: agent plane-a 2026-06-28 -->\n\nSession autopilot is the in-IDE mode most operators use first: the conductor loops pursuit steps inside one Cursor session until a cap, a block, or goal completion. This capability defines `max_steps_per_session`\u2014a safety valve so a single chat cannot run unbounded turns if preflight mis-reads state or a worker hangs.\n\nThe limit is not a product goal; goal autopilot (A3.2) and the SDK daemon (A3.4) lift it for long-running work. When the cap is hit, pursuit dual-writes a structured stop reason and exits cleanly so the next wake\u2014manual Continue or daemon poll\u2014resumes from the last good journal/state snapshot. See [A2.6 loop until blocked](A2.6-loop-until-blocked-budget-achieved-h3-reject.md) for the inner loop this mode wraps."
+}

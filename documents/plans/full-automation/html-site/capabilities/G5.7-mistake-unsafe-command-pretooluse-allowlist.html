@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>G5.7 — mistake unsafe command preToolUse allowlist</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/G.html">Plane G</a> · <a href="../chapters/G-G5.html">G5</a> ·
+    G5.7
+  </nav>
+  <p class="page-id">G5.7 · Verification &amp; quality plane</p>
+  <h1 class="page-title">mistake unsafe command preToolUse allowlist</h1>
+  <p class="page-subtitle">mistake unsafe command preToolUse allowlist</p>
+  
+  <div class="story-block"><p>Unsafe commands are shell invocations outside role allowlists—destructive rm, credential exfiltration patterns, or network calls forbidden by pack policy. Controls: preToolUse hooks in <code>.cursor/hooks.json</code>, per-role tool permissions from template-pack (<a href="../capabilities/B5.2-role-to-pipeline-id-skills-tool-permissions.html" class="spec-link">B5.2</a>), and <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> rejection of worker-proposed commands not on the task card.</p>
+<p>Tool-operator and verifier workers run bounded literal commands only; economy search must not escalate to unapproved system commands. Hook deny is fail-closed with journal note, not silent strip.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When <code>strict_hitl</code> is off and pursuit reaches HLD, DD, or manifest gates, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> reads the configured self-gate mode from state—checklist-only, automated LLM reviewer, or second economy reviewer—before treating a middle gate as cleared without H3.</span></li><li><span class="step-num">Step 2</span><span class="step-text">In checklist-only mode, gate clearance requires every checklist row to map to an <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> file or verify command that <a href="../capabilities/G2.1-goal-verify-command-state-pack.html" class="spec-link">G2.1</a> can audit; the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> must not advance <code>next_action</code> on <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> prose alone.</span></li><li><span class="step-num">Step 3</span><span class="step-text">When reviewer mode is active, a genius-tier <a href="../capabilities/B2.5-reviewer-bugbot-security-risk-triggers.html" class="spec-link">B2.5</a> subagent evaluates the artifact under scoped <code>allowed_reads</code> and records pass/fail in state before design phases resume.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Until an ADR resolves this open decision, pursuit defaults to checklist plus machine-checkable <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> paths so middle gates stay fail-closed under <a href="../capabilities/A5.2-continue-not-approval-self-gate-h1-h3-only.html" class="spec-link">A5.2</a>.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If self-gate mode is undefined, reviewer output conflicts with <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>, or checklist items lack proof, pursuit stops at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a>—middle design gates never waive silently.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids G5.7</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Flaky test — escalation S4 once, then H2 with evidence log; no silent retry loop.</li><li>Edge case G5.7 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;G5.7&quot;,
+  &quot;description&quot;: &quot;mistake unsafe command pretooluse allowlist&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

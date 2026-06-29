@@ -1,0 +1,89 @@
+{
+  "id": "D1.1",
+  "slug": "D1.1-l0-ephemeral-one-off-reasoning",
+  "title": "L0 ephemeral one-off reasoning",
+  "branch": "D",
+  "parent": "[D1-index](D1-index.md)",
+  "vision_section": "",
+  "release": "v2.16",
+  "purpose": "D1.1 defines l0 ephemeral one off reasoning for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse.",
+  "scope": [
+    "Owns `D1.1` only; siblings under `D1` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a76 \u2014 Branch D \u2014 Platform evolution plane (parallel queue)](../../full-automation-vision-and-hierarchy.md#6-branch-d-platform-evolution-plane-parallel-queue)."
+  ],
+  "behavior_steps": [
+    "On each pursuit wake for novel work, the conductor and workers operate at L0\u2014ephemeral reasoning confined to the current turn until the outcome is captured as a reusable artifact on the promotion ladder.",
+    "L0 progress is valid product delivery but creates scale risk; when the same routing choice, manual sequence, or explanation repeats across turns, pursuit enqueues a `state.platform.promotion_queue` item with `target_level` above L0 per [D2.1](D2.1-index.md) triggers.",
+    "The autopilot scheduler interleaves platform turns with product work so repeated L0 patterns graduate into playbooks, scripts, or catalog entries instead of being re-derived every sprint.",
+    "The conductor dual-writes enqueue events and current ladder level to state.json and journal so operators can audit what remains ephemeral versus promoted.",
+    "If a pattern recurs twice without promotion enqueue, or L0 reasoning contradicts an existing playbook without reconcile-stale, pursuit stops at H2 until the platform backlog is corrected."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"D1.1\",\n  \"description\": \"l0 ephemeral one off reasoning\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Platform queue depth 0 but product blocked on missing playbook \u00e2\u20ac\u201d D3.3 priority cut skips platform drain.",
+    "Edge case `D1.1` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `D1.1`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `platform.promotion_queue[]` to state.json schema.",
+    "Scheduler in autopilot workflow: `(steps_total % K) == 0` \u00e2\u2020\u2019 platform turn.",
+    "playbook-keeper + script extraction skills dequeue promotion items.",
+    "Validate `D1.1` against SEC-15 release checklist and parent index links.",
+    "Document `D1.1` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `D1.1`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids D1.1`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/playbooks/`",
+    "`scripts/`",
+    "`.cursor/skills/playbook-keeper/`",
+    "`state.platform.promotion_queue`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a76",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[D1-index](D1-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids D1.1` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [D1-index](D1-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "D1.1 defines l0 ephemeral one off reasoning for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse. In practice, the system on each pursuit wake for novel work, the conductor and workers operate at l0\u2014ephemeral reasoning confined to the current turn until the outcome is captured as a reusable artifact on the promotion ladder, then l0 progress is valid product delivery but creates scale risk; when the same routing choice, manual sequence, or explanation repeats across turns, pursuit enqueues a `state.platform.promotion_queue` item with `target_level` above l0 per [d2.1](d2.1-index.md) triggers.",
+  "reader_narrative": "<!-- prose-source: agent plane-d 2026-06-28 -->\n\nL0 is the bottom rung of the promotion ladder: reasoning that lives only in the current agent turn\u2014useful once, not yet captured as a reusable artifact. Every pursuit session starts here for novel problems; the platform queue exists so repeated L0 patterns can graduate upward instead of being re-derived every sprint.\n\nL0 work is legitimate product progress but a liability for scale. When the same manual sequence, explanation, or routing choice appears twice, enqueue a promotion item with target_level above L0. Pair with [D2.1 enqueue triggers](D2.1-index.md) and [Vision \u00a76 \u2014 Branch D](../../full-automation-vision-and-hierarchy.md#6-branch-d-platform-evolution-plane-parallel-queue) for the parallel-queue model."
+}

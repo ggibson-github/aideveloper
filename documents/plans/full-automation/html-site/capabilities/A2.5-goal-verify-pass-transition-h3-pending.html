@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>A2.5 — goal verify pass transition H3 pending</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/A.html">Plane A</a> · <a href="../chapters/A-A2.html">A2</a> ·
+    A2.5
+  </nav>
+  <p class="page-id">A2.5 · Pursuit &amp; control plane</p>
+  <h1 class="page-title">goal verify pass transition H3 pending</h1>
+  <p class="page-subtitle">goal_verify pass transition H3 pending</p>
+  
+  <div class="story-block"><p>Passing <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> is necessary but not sufficient for closure. This capability defines transition to <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> pending: verification succeeded, human final sign-off is required, and the goal state reflects verifying → awaiting H3.</p>
+<p>The system notifies the operator; it does not block the world indefinitely unless strict <a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">HITL</a> mode demands it. <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> is the third human touchpoint—accept or reject verified outcomes. Rejection returns the goal to pursuing with structured notes.</p>
+<p>Automating everything except <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> is the INTRO contract; this step enforces that boundary in the <a href="../glossary.html#pursuit-loop" class="glossary-link" title="Pursuit loop">pursuit loop</a>.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When <a href="../capabilities/A2.4-goal-scope-complete-run-goal-verify.html" class="spec-link">A2.4</a> reports <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> success, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> sets goal.state to verifying and adds <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> sign-off to gates_pending.—autonomous pursuit stops before declaring achieved.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Journal-keeper <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s hitl.h3_pending, verification <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> paths, and last_verify passed to journal/progress.md and state.json in the same update so resume after crash still shows awaiting H3.</span></li><li><span class="step-num">Step 3</span><span class="step-text"><a href="../capabilities/A6.1-notify-dashboard-status-webhook-phase-complete.html" class="spec-link">A6.1</a> surfaces the verified outcome to the operator via dashboard or webhook digest without requiring another implement turn—non-blocking unless strict <a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">HITL</a> mode demands a hard wait.</span></li><li><span class="step-num">Step 4</span><span class="step-text">At <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> the operator accepts (goal.state → achieved) or rejects with structured notes, returning pursuit to pursuing and clearing achieved until <a href="../capabilities/A2.1-preflight-check-pipeline-blocked-extended.html" class="spec-link">A2.1</a> preflight reconciles scope and <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> passes but <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> pending <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> fails, or gates_pending omits <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> while notification fires, pursuit fails closed at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> until journal and state.json reconcile—premature achieved is forbidden.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids A2.5</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>goal_verify passes but H3 rejected — goal.state returns to pursuing with rejection notes.</li><li>Edge case A2.5 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;A2.5&quot;,
+  &quot;description&quot;: &quot;goal verify pass transition h3 pending&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.14</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

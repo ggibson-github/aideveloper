@@ -1,0 +1,89 @@
+{
+  "id": "H1.2",
+  "slug": "H1.2-state-goal-block",
+  "title": "state goal block",
+  "branch": "H",
+  "parent": "[H1-index](H1-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "H1.2 defines state goal block for the agent-driven expert system. Persistence \u2014 journal, state.json, graphs, evidence.",
+  "scope": [
+    "Owns `H1.2` only; siblings under `H1` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a710 \u2014 Branch H \u2014 Persistence & state plane](../../full-automation-vision-and-hierarchy.md#10-branch-h-persistence-state-plane)."
+  ],
+  "behavior_steps": [
+    "At H1 plan approval, the conductor stamps goal id, parent_goal, goal_type, machine-checkable success_criteria, and verify_command into state.json goal block\u2014establishing pursuit scope every wake reloads before routing.",
+    "During pursuit, only the conductor transitions goal.state among pursuing, blocked, verifying, achieved, and rejected after verify evidence per [A2.4](A2.4-goal-scope-complete-run-goal-verify.md).",
+    "goal_verify aggregates evidence from Plane G; subjective success language without machine checks remains H3, not autonomous achieved.",
+    "Budget counters in the goal block increment each wake per [A1.4](A1.4-deadline-budget-steps-tokens-wall-clock.md); exhaustion dual-writes structured stop reasons without marking achieved.",
+    "Company autopilot may schedule multiple goal blocks in parallel per [A3.3](A3.3-company-autopilot-multi-goal-role-workstreams.md), but scopes never merge\u2014evidence attaches only to the goal_id active on the current turn."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"goal\": { \"id\": \"g1\", \"state\": \"pursuing\" },\n  \"platform\": { \"promotion_queue\": [] },\n  \"pursuit\": { \"mode\": \"goal_autopilot\", \"steps_total\": 0 },\n  \"hitl\": { \"pending\": null },\n  \"company\": { \"pack_id\": null, \"active_role\": null }\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `H1.2` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `H1.2` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `H1.2`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `H1.2` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_h1_2.py when script exists.",
+    "Validate `H1.2` against SEC-15 release checklist and parent index links.",
+    "Document `H1.2` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `H1.2`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids H1.2`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`journal/state.json`",
+    "`journal/progress.md`",
+    "`evidence/`",
+    "`docs/manifest/staleness.json`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a710",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[H1-index](H1-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids H1.2` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [H1-index](H1-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "H1.2 defines state goal block for the agent-driven expert system. Persistence \u2014 journal, state.json, graphs, evidence. In practice, the system at h1 plan approval, the conductor stamps goal id, parent_goal, goal_type, machine-checkable success_criteria, and verify_command into state.json goal block\u2014establishing pursuit scope every wake reloads before routing, then during pursuit, only the conductor transitions goal.state among pursuing, blocked, verifying, achieved, and rejected after verify evidence per [a2.4](a2.4-goal-scope-complete-run-goal-verify.md).",
+  "reader_narrative": "<!-- prose-source: agent plane-h 2026-06-28 -->\n\nThe goal block records goal id, parent goal, goal type, success criteria, verify command, budget counters, and state enum (pursuing, blocked, verifying, achieved, rejected). Goal-verify is the terminal gate\u2014pursuit loops until `goal_verify` passes or H3 rejects per [A2.4](A2.4-goal-scope-complete-run-goal-verify.md).\n\nMachine-checkable success criteria bind to evidence paths in Plane G; subjective criteria remain H3. Company autopilot schedules multiple goal blocks without merging their scopes ([A3.3](A3.3-company-autopilot-multi-goal-role-workstreams.md)). Only the conductor writes goal transitions after verify evidence."
+}

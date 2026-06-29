@@ -1,0 +1,88 @@
+{
+  "id": "I1.3",
+  "slug": "I1.3-runtime-ide-slash-commands-autopilot-continue-lane-verify",
+  "title": "runtime IDE slash commands autopilot continue lane verify",
+  "branch": "I",
+  "parent": "[I1-index](I1-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "I1.3 defines runtime ide slash commands autopilot continue lane verify for the agent-driven expert system. Runtime & integration \u2014 IDE, SDK, headless, MCP tools.",
+  "scope": [
+    "Owns `I1.3` only; siblings under `I1` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a711 \u2014 Branch I \u2014 Runtime & integration plane](../../full-automation-vision-and-hierarchy.md#11-branch-i-runtime-integration-plane)."
+  ],
+  "behavior_steps": [
+    "Slash commands\u2014/continue, /autopilot, /status, /gate, /task, /verify, /lane, /program\u2014map to skills in .cursor/skills/ and inject deterministic behavior before the LLM turn",
+    "/continue performs exactly one pipeline step; /autopilot loops until check-pipeline-blocked (A3)",
+    "During pursuit, enforce the runtime IDE slash commands autopilot continue lane verify contract within In-IDE (Cursor) (Plane I).",
+    "Run [S0](B1.1-s0-deterministic-mandatory-first.md) scripts before improvising when file-derived behavior exists.",
+    "Dual-write journal and state.json after the step; attach evidence when verification applies."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"I1.3\",\n  \"description\": \"runtime ide slash commands autopilot continue lane verify\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `I1.3` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `I1.3` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `I1.3`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `I1.3` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_i1_3.py when script exists.",
+    "Validate `I1.3` against SEC-15 release checklist and parent index links.",
+    "Document `I1.3` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `I1.3`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids I1.3`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/automation/`",
+    "`.cursor/hooks/`",
+    "`docs/operator/export-contract.md`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a711",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[I1-index](I1-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids I1.3` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [I1-index](I1-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "I1.3 defines runtime ide slash commands autopilot continue lane verify for the agent-driven expert system. Runtime & integration \u2014 IDE, SDK, headless, MCP tools. In practice, the system slash commands\u2014/continue, /autopilot, /status, /gate, /task, /verify, /lane, /program\u2014map to skills in .cursor/skills/ and inject deterministic behavior before the llm turn, then /continue performs exactly one pipeline step; /autopilot loops until check-pipeline-blocked (a3).",
+  "reader_narrative": "<!-- prose-source: agent plane-i 2026-06-28 -->\n\nSlash commands\u2014/continue, /autopilot, /status, /gate, /task, /verify, /lane, /program\u2014map to skills in `.cursor/skills/` and inject deterministic behavior before the LLM turn. Commands are the operator's control surface; they do not substitute for H2 answers or H3 approval.\n\n/continue performs exactly one pipeline step; /autopilot loops until check-pipeline-blocked ([A3](A3-index.md)). Command definitions live under `.cursor/commands/` and must stay aligned with skill contracts. SDK and headless runners invoke equivalent script entry points ([I2.1](I2.1-runtime-sdk-run-local-pipeline-goal-autopilot.md))."
+}

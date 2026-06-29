@@ -1,0 +1,89 @@
+{
+  "id": "C2.2",
+  "slug": "C2.2-phase-hld-dd-diagrams",
+  "title": "phase hld dd diagrams",
+  "branch": "C",
+  "parent": "[C2-index](C2-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "C2.2 defines phase hld dd diagrams for the agent-driven expert system. Product execution \u2014 pipelines, tasks, program, delivery.",
+  "scope": [
+    "Owns `C2.2` only; siblings under `C2` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a75 \u2014 Branch C \u2014 Product execution plane](../../full-automation-vision-and-hierarchy.md#5-branch-c-product-execution-plane)."
+  ],
+  "behavior_steps": [
+    "When the platform queue dequeues an L1 promotion item, [D4.1](D4.1-platform-work-playbook-keeper.md) playbook-keeper distills divergence logs and task post-mortems into `docs/playbooks/<slug>.md`\u2014step lists, constraints, and pointers\u2014without duplicating full design monoliths.",
+    "L1 playbooks encode procedure intent and ordering only; file-derived mechanics remain for future L2 script extraction\u2014the conductor does not treat L1 prose as executable S0 commands during product turns.",
+    "On completion, playbook-keeper registers [D6.1](D6.1-platform-done-catalog-index-row.md) INDEX rows and [D6.3](D6.3-platform-done-task-card-references.md) task-card references so librarian briefings and implement turns can discover the playbook via `allowed_reads`.",
+    "If upstream design or vision sections change, Plane E staleness marks dependent playbooks stale; platform turns reconcile or re-run playbook-keeper before product lanes cite the playbook in pursuit routing.",
+    "If an L1 playbook lacks INDEX discoverability, was authored against stale upstream design, or duplicates an existing catalog entry without fingerprint dedupe, pursuit fails closed at H2 until playbook-keeper reconciles dependencies and dual-writes promotion-done state."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"C2.2\",\n  \"description\": \"phase hld dd diagrams\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `C2.2` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `C2.2` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `C2.2`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `C2.2` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_c2_2.py when script exists.",
+    "Validate `C2.2` against SEC-15 release checklist and parent index links.",
+    "Document `C2.2` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `C2.2`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids C2.2`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/tasks/`",
+    "`docs/manifest/pipelines/`",
+    "`.cursor/skills/implement-feature/`",
+    "`program/workstreams/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a75",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[C2-index](C2-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids C2.2` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [C2-index](C2-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "C2.2 defines phase hld dd diagrams for the agent-driven expert system. Product execution \u2014 pipelines, tasks, program, delivery. In practice, the system when the platform queue dequeues an l1 promotion item, [d4.1](d4.1-platform-work-playbook-keeper.md) playbook-keeper distills divergence logs and task post-mortems into `docs/playbooks/<slug>.md`\u2014step lists, constraints, and pointers\u2014without duplicating full design monoliths, then l1 playbooks encode procedure intent and ordering only; file-derived mechanics remain for future l2 script extraction\u2014the conductor does not treat l1 prose as executable s0 commands during product turns.",
+  "reader_narrative": "<!-- prose-source: agent plane-c 2026-06-28 -->\n\nDesign phase produces HLD, DD (split api/data/ops), and diagrams from approved requirements. Default path uses self-gate plus evidence; strict HITL retains human HLD/DD approval gates from v2.13.\n\nDiagram-generator runs after DD; staleness marks downstream task cards when design changes. Design artifacts live under docs/design/ and docs/diagrams/ per AGENTS.md paths. Conductor spawns dd-writer and diagram workers under S2 templates."
+}

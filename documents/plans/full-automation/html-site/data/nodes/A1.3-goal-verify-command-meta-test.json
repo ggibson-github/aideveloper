@@ -1,0 +1,89 @@
+{
+  "id": "A1.3",
+  "slug": "A1.3-goal-verify-command-meta-test",
+  "title": "goal_verify_command meta-test",
+  "branch": "A",
+  "parent": "[A1-index](A1-index.md)",
+  "vision_section": "",
+  "release": "v2.14",
+  "purpose": "A1.3 defines goal verify command meta test for the agent-driven expert system. Pursuit & control plane \u2014 autonomous loops until goal verified.",
+  "scope": [
+    "Owns `A1.3` only; siblings under `A1` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a73 \u2014 Branch A \u2014 Pursuit & control plane](../../full-automation-vision-and-hierarchy.md#3-branch-a-pursuit-control-plane)."
+  ],
+  "behavior_steps": [
+    "When pursuit scope is complete against machine-checkable [success criteria](A1.2-success-criteria-machine-checkable.md), the conductor sets `goal.state` to `verifying` and invokes `goal_verify_command` from state.json before surfacing H3 sign-off.",
+    "The meta-test aggregates success_criteria predicates, evidence logs, and conformance scripts into one exit code\u2014stricter than any single task-level verify pass.",
+    "Preflight and check-pipeline-blocked refuse `H3_pending` while goal_verify fails, even when individual implement tasks report `last_verify: passed`.",
+    "On exit 0, the conductor dual-writes the result to journal and state.json and requests H3 operator sign-off per the H1/H2/H3 contract in [INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md).",
+    "If goal_verify fails or evidence is incomplete, pursuit halts at H2 with structured notes; the system must not mark the goal achieved or request H3 until the meta-test passes."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"goal\": {\n    \"id\": \"goal-001\",\n    \"parent_goal\": null,\n    \"type\": \"program\",\n    \"success_criteria\": [\"manifest approved\", \"goal_verify exit 0\"],\n    \"verify_command\": \"python scripts/goal-verify.py\",\n    \"state\": \"pursuing\"\n  }\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "goal_verify passes but H3 rejected \u00e2\u20ac\u201d goal.state returns to pursuing with rejection notes.",
+    "Edge case `A1.3` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `A1.3`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `goal` block to state template and journal-keeper dual-write (v2.14).",
+    "Extend `check-pipeline-blocked.py` with goal_autopilot stop reasons.",
+    "Implement `scripts/goal-verify.py` stub aggregating task evidence paths.",
+    "Add `.cursor/skills/goal-keeper/SKILL.md` for conductor H1\u00e2\u2020\u2019pursuit transition.",
+    "Document `A1.3` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `A1.3`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids A1.3`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`journal/state.json `goal`, `pursuit`, `hitl``",
+    "`scripts/automation/check-pipeline-blocked.py`",
+    "`scripts/automation/run-local-pipeline.py`",
+    "`.cursor/skills/autopilot/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a73",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[A1-index](A1-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids A1.3` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [A1-index](A1-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "A1.3 defines goal verify command meta test for the agent-driven expert system. Pursuit & control plane \u2014 autonomous loops until goal verified. In practice, the system when pursuit scope is complete against machine-checkable [success criteria](a1.2-success-criteria-machine-checkable.md), the conductor sets `goal.state` to `verifying` and invokes `goal_verify_command` from state.json before surfacing h3 sign-off, then the meta-test aggregates success_criteria predicates, evidence logs, and conformance scripts into one exit code\u2014stricter than any single task-level verify pass.",
+  "reader_narrative": "<!-- prose-source: agent pilot 2026-06-28 -->\n\nTask-level tests prove a step ran; goal-level verification proves the entire pursuit succeeded. This capability defines goal_verify_command\u2014the meta-test that runs when scope is complete and must pass before the system requests H3 sign-off.\n\nThe command is typically a wrapper (for example `python scripts/goal-verify.py`) that aggregates checks across criteria, evidence logs, and conformance scripts. It is stricter than a single pytest file: failing goal_verify blocks transition to H3 pending even if individual tasks passed.\n\nDesigners should treat goal_verify as the contract between Plane A (pursuit) and Plane G (verification). Without it, operators would manually reconcile journals\u2014a violation of the 100% automation scope except at H1, H2, and H3."
+}

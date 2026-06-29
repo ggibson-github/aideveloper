@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "category": "Architecture",
+      "id": "capability",
+      "terms": ["Specified capabilities", "Capabilities", "capabilities", "Capability"],
+      "short": "Capability",
+      "definition": "One clearly defined piece of what the automated system must be able to do — like a written contract that says what should happen, how to check it worked, and what can go wrong. The book lists 239 of these; together they describe the whole design."
+    },
+    {
+      "category": "Architecture",
+      "id": "branch",
+      "terms": ["Branches", "Branch", "branch"],
+      "short": "Branch",
+      "definition": "A chapter-sized grouping of related capabilities in this book — for example everything about verification, or everything about how the system runs day to day. Branches help you navigate a large design without reading it all at once."
+    },
+    {
+      "category": "Charts & metrics",
+      "id": "capability-density-by-branch",
+      "terms": ["Capability density by branch", "Capability density by plane", "capability density by branch", "capability density by plane"],
+      "short": "Capability density by branch",
+      "definition": "A bar chart on the overview page showing how many capabilities are specified in each plane. Taller bars mean more design detail was written for that area. This measures documentation breadth, not how fast the software runs."
+    },
+    {
+      "category": "Charts & metrics",
+      "id": "capability-density",
+      "terms": ["Capability density", "capability density"],
+      "short": "Capability density",
+      "definition": "How many capabilities belong to a given plane or topic — a simple count of how much of the design lives in that section."
+    },
+    {
+      "category": "Charts & metrics",
+      "id": "architectural-scope-by-branch",
+      "terms": ["Architectural scope by branch", "Architectural scope by plane", "architectural scope by branch", "architectural scope by plane"],
+      "short": "Architectural scope by branch",
+      "definition": "A doughnut chart on the overview page showing each plane's share of all 239 capabilities — which parts of the design take up the most space on paper."
+    },
+    {
+      "category": "Charts & metrics",
+      "id": "architectural-scope",
+      "terms": ["Architectural scope", "architectural scope"],
+      "short": "Architectural scope",
+      "definition": "How much of the overall design a plane or component owns, measured here by counting capabilities relative to the whole book."
+    },
+    {
+      "category": "Architecture",
+      "id": "architectural-planes",
+      "terms": ["Architectural planes", "architectural planes", "Architectural plane", "Explore the planes", "the planes"],
+      "short": "Architectural planes",
+      "definition": "Ten major chapters of the design (labeled A through J), each covering one big concern — such as running work, checking quality, storing state, or connecting to tools. Think of them as departments in the blueprint of one automated delivery system."
+    },
+    {
+      "category": "Architecture",
+      "id": "expert-system",
+      "terms": ["expert system", "Expert system"],
+      "short": "Expert system",
+      "definition": "The automated software delivery system this book describes: it carries out projects with minimal human involvement, stops and asks for help when stuck, and keeps proof that each step actually worked before moving on."
+    },
+    {
+      "category": "Architecture",
+      "id": "evidence",
+      "terms": ["evidence", "Evidence"],
+      "short": "Evidence",
+      "definition": "Saved proof that a step really succeeded — for example a test log, a command output, or a file checksum. The system is not allowed to claim progress without evidence on disk that a computer can re-check later."
+    }
+  ]
+}

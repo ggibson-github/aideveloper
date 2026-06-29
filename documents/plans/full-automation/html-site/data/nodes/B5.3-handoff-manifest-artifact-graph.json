@@ -1,0 +1,89 @@
+{
+  "id": "B5.3",
+  "slug": "B5.3-handoff-manifest-artifact-graph",
+  "title": "handoff manifest artifact graph",
+  "branch": "B",
+  "parent": "[B5-index](B5-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "B5.3 defines handoff manifest artifact graph for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack.",
+  "scope": [
+    "Owns `B5.3` only; siblings under `B5` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a74 \u2014 Branch B \u2014 Cognition & routing plane](../../full-automation-vision-and-hierarchy.md#4-branch-b-cognition-routing-plane)."
+  ],
+  "behavior_steps": [
+    "After H1 approves a program milestone, program-scoper and integration-manifest-keeper produce the handoff manifest and artifact_graph listing which design nodes must exist before each implement lane may start and which integration tests gate program completion.",
+    "Before [orchestrate-program](../../../.cursor/skills/orchestrate-program/SKILL.md) spawns parallel lanes, the conductor reads the manifest and refuses spawn for any lane whose upstream artifact_graph nodes are absent, unverified, or still marked stale.",
+    "When upstream design or implementation changes a dependency, reconcile-artifact-graph marks affected nodes stale and pauses only the blocked lanes until reconciliation completes and state.json reflects cleared stale flags.",
+    "Each workstream records satisfied artifact_graph nodes and integration evidence in state under its lane lease ([C4.1](C4.1-workstreams-lane-json-leases.md)) so company-level goal_verify can roll up completion against manifest gates.",
+    "If the manifest human gate was never cleared, dependency edges cycle, or a lane starts without satisfied upstream nodes, pursuit stops at H2\u2014never running uncoordinated parallel implement across streams."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"B5.3\",\n  \"description\": \"handoff manifest artifact graph\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `B5.3` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `B5.3` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `B5.3`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `B5.3` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_b5_3.py when script exists.",
+    "Validate `B5.3` against SEC-15 release checklist and parent index links.",
+    "Document `B5.3` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `B5.3`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids B5.3`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/operator/model-policy.json`",
+    "`scripts/route-tier.py`",
+    "`.cursor/skills/librarian/`",
+    "`.cursor/rules/genius-conductor.mdc`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a74",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[B5-index](B5-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids B5.3` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [B5-index](B5-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "B5.3 defines handoff manifest artifact graph for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack. In practice, the system after h1 approves a program milestone, program-scoper and integration-manifest-keeper produce the handoff manifest and artifact_graph listing which design nodes must exist before each implement lane may start and which integration tests gate program completion, then before [orchestrate-program](../../../.cursor/skills/orchestrate-program/skill.md) spawns parallel lanes, the conductor reads the manifest and refuses spawn for any lane whose upstream artifact_graph nodes are absent, unverified, or still marked stale.",
+  "reader_narrative": "<!-- prose-source: agent plane-b 2026-06-28 -->\n\nHandoff manifest and artifact graph declare cross-workstream dependencies: which design nodes must exist before implement lanes start, which integration tests gate program completion. Program orchestration reads the manifest before parallel spawn ([orchestrate-program skill](../../../.cursor/skills/orchestrate-program/SKILL.md)).\n\nStale nodes in the graph trigger reconcile-artifact-graph before workers proceed. Handoff is the human-approved integration contract for multi-stream company goals."
+}

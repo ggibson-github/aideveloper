@@ -1,0 +1,88 @@
+{
+  "id": "F5.2",
+  "slug": "F5.2-template-packs--shared-library",
+  "title": "template-packs _shared library",
+  "branch": "F",
+  "parent": "[F5-index](F5-index.md)",
+  "vision_section": "",
+  "release": "v2.19",
+  "purpose": "F5.2 defines template packs  shared library for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling.",
+  "scope": [
+    "Owns `F5.2` only; siblings under `F5` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a78 \u2014 Branch F \u2014 Organization plane (template-packs = ceiling)](../../full-automation-vision-and-hierarchy.md#8-branch-f-organization-plane-template-packs-ceiling)."
+  ],
+  "behavior_steps": [
+    "`scripts/automation/run-local-pipeline.py` is the SDK/local daemon entry for `goal_autopilot`\u2014repeated Continue-equivalent steps without manual `/continue`, using the same journal/state contract as IDE pursuit per [A3.4](A3.4-sdk-daemon-run-local-pipeline-24-7.md).",
+    "Before each iteration the daemon runs S0 `check-pipeline-blocked.py` and halts on human gates, budget exhaustion, or integrity failures from Plane A stop rules.",
+    "The daemon spawns Cursor agents or SDK equivalents per `docs/operator/model-policy.json`; unattended 24/7 operation still respects H2 blockers and H3 sign-off\u2014no silent gate waiver.",
+    "Each completed iteration expects conductor-style dual-write to journal and state.json; daemon logs pair with [H5](H5-worker-runs.md) for audit when agent turns fail or time out.",
+    "If `state.json` is corrupt or autopilot would advance past `evidence_required` without `last_verify: passed`, the daemon exits non-zero and leaves pursuit blocked at H2 rather than looping blindly."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"node\": \"F5.2\",\n  \"description\": \"template packs  shared library\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Pack role handoff while lane lease held \u00e2\u20ac\u201d complete-work-order releases lease before role switch.",
+    "Edge case `F5.2` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `F5.2`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `company.yaml` + `roles/*.yaml` to template-packs schema.",
+    "program-scoper selects pack; sets state.company.active_role.",
+    "Per-role allowed_reads in lane.json work orders.",
+    "Validate `F5.2` against SEC-15 release checklist and parent index links.",
+    "Document `F5.2` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `F5.2`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids F5.2`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`template-packs/`",
+    "`program/integration/manifest.md`",
+    "`.cursor/skills/program-scoper/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a78",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[F5-index](F5-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids F5.2` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [F5-index](F5-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "F5.2 defines template packs  shared library for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling. In practice, the system `scripts/automation/run-local-pipeline.py` is the sdk/local daemon entry for `goal_autopilot`\u2014repeated continue-equivalent steps without manual `/continue`, using the same journal/state contract as ide pursuit per [a3.4](a3.4-sdk-daemon-run-local-pipeline-24-7.md), then before each iteration the daemon runs s0 `check-pipeline-blocked.py` and halts on human gates, budget exhaustion, or integrity failures from plane a stop rules.",
+  "reader_narrative": "<!-- prose-source: agent plane-f 2026-06-28 -->\n\n`template-packs/_shared/` is the generic library: onboarding micro-packs, security baselines, common verify hooks, and reusable role fragments consumed by industry packs via [F5.1](F5.1-cross-pack-imports-micro-packs.md). Shared content versions independently from game studio or data platform packs.\n\nAuthors promote mature fragments from product repos into _shared via Plane D pack fragment export ([D4.6](D4.6-platform-work-pack-fragment-export.md)). INDEX and catalog regeneration ([E1.7](E1.7-catalog-platform-catalog-md-umbrella.md)) must list _shared entries for compose-first discovery. Editing _shared affects all importers\u2014extend with backwards compatibility ([D5.2](D5.2-extend-backwards-compatible-staleness-bump.md)) or fork ([D5.3](D5.3-fork-new-catalog-entry-provenance.md))."
+}

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>SEC-18 — Transistor model A to Z reference</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/meta.html">Plane meta</a> ·
+    SEC-18
+  </nav>
+  <p class="page-id">SEC-18 · Front matter &amp; cross-cutting architecture</p>
+  <h1 class="page-title">Transistor model A to Z reference</h1>
+  <p class="page-subtitle">Transistor model — A to Z reference</p>
+  
+  <div class="story-block"><p>This document is the authoritative end-to-end model for transistors and generator workflows in the AIDeveloper <a href="../glossary.html#expert-system" class="glossary-link" title="Expert system">expert system</a>. It resolves design questions from the 2026-06-28 transistor brainstorming lineage, extends the full-automation north star (<a href="../capabilities/INTRO-0-executive-summary---0.html" class="spec-link">INTRO-0</a>, <a href="../capabilities/INTRO-2-transistor-building-blocks-north-star.html" class="spec-link">INTRO-2</a>), and defines how v2.24–v2.28 releases implement the fourth structural shift: compose executable workflows before generating deliverables.</p>
+<p>v2.13–v2.23 reduced improvisation via <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">compose-first</a> <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a>, <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> mandatory-first, and promotion ladder L0–L5—but still plans mostly in prose skills and picks one <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> component per turn. Transistors add typed I/O blocks wired into generator DAGs so agents compose before they invent, execute one verified node per turn, and promote misses to L6 on the platform queue. All E6, E7, B6, and C6 leaf specs must align with this reference.</p>
+<p>See <a href="../../../../full-automation-vision-and-hierarchy.md#19-transistor-generator-workflow-model" class="spec-link">Vision §19 — Transistor &amp; generator workflow model</a> for the hierarchy map and release rows in <a href="../chapters/meta-SEC-15.html" class="spec-link">SEC-15-index</a>.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart LR
+  goal[Goal + success_criteria] --&gt; deliverable[E7.1 deliverable type]
+  deliverable --&gt; template[Pack workflow template]
+  template --&gt; query[E6.4 list-transistors]
+  query --&gt; rank[E6.5 rank hits]
+  rank --&gt; stitch[E7.2 stitch DAG]
+  stitch --&gt; validate[E7.3 validate S0]
+  validate --&gt;|miss| promote[E7.4 promotion enqueue]
+  validate --&gt;|pass| h1[H1 bind active_workflow]
+  promote --&gt; h1</pre>
+</div>
+  <h2 class="section-title">What this defines</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">Operators and implementers read SEC-18 once for terminology, schemas, and release order before opening E6–E7, B6, or C6 leaf specs.</span></li><li><span class="step-num">Step 2</span><span class="step-text"><a href="../glossary.html#conductor" class="glossary-link" title="Conductor">Conductor</a> and workflow-composer treat this document as authority when resolving transistor versus legacy <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">compose-first</a> conflicts.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Platform promotion to L6 and workflow-compose phases must conform to the schemas and acceptance checklist in sections D–Q.</span></li><li><span class="step-num">Step 4</span><span class="step-text">v2.24–v2.28 release rows in section N map to implement tasks; leaf specs must not diverge without updating SEC-18 first.</span></li><li><span class="step-num">Step 5</span><span class="step-text">Human <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> review may include the workflow DAG summary and transistor maturity targets from sections C and M.</span></li></ol>
+  
+  
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;id&quot;: &quot;verify-router-invoke&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;capability_id&quot;: &quot;task.verify.pytest&quot;,
+  &quot;class&quot;: &quot;hard&quot;,
+  &quot;maturity&quot;: &quot;stable&quot;,
+  &quot;provenance&quot;: { &quot;pack_id&quot;: &quot;_shared&quot;, &quot;promoted_from&quot;: null },
+  &quot;inputs&quot;: [
+    { &quot;name&quot;: &quot;task_card_path&quot;, &quot;type&quot;: &quot;path&quot;, &quot;required&quot;: true }
+  ],
+  &quot;outputs&quot;: [
+    { &quot;name&quot;: &quot;evidence_log&quot;, &quot;type&quot;: &quot;path&quot;, &quot;required&quot;: true },
+    { &quot;name&quot;: &quot;exit_code&quot;, &quot;type&quot;: &quot;integer&quot;, &quot;required&quot;: true }
+  ],
+  &quot;preconditions&quot;: [
+    { &quot;check&quot;: &quot;file_exists&quot;, &quot;path&quot;: &quot;{{inputs.task_card_path}}&quot; }
+  ],
+  &quot;executor&quot;: {
+    &quot;kind&quot;: &quot;script&quot;,
+    &quot;command&quot;: &quot;python scripts/verify-router.py --task-card {{inputs.task_card_path}}&quot;
+  },
+  &quot;verify&quot;: {
+    &quot;kind&quot;: &quot;exit_code&quot;,
+    &quot;expect&quot;: 0
+  },
+  &quot;tags&quot;: [&quot;sdlc&quot;, &quot;verify&quot;, &quot;s0&quot;]
+}</pre></div>
+  <p class="release-note">Target release: v2.24</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

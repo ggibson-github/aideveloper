@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>F4 — Example: data platform pack</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/F.html">Plane F</a> ·
+    F4
+  </nav>
+  <p class="page-id">F4 · Organization plane</p>
+  <h1 class="page-title">Example: data platform pack</h1>
+  <div class="story-block"><p>F4: Example: data platform pack. Open each capability below for diagrams, verification, and contracts.</p>
+<p>The data platform example pack defines roles: analyst, data engineer, DBA, SRE, governance reviewer—each with pipeline bindings for ingest-to-production workflows. Roles demonstrate regulated data work: schema approval, deploy windows, and audit <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> distinct from game asset roles (<a href="../capabilities/F3.1-game-studio-roles-designer-ta-animator-programmer-qa-build-r.html" class="spec-link">F3.1</a>).</p>
+<p>Governance role may hold H2-equivalent gates inside pack policy (strict_hitl). Tool permissions restrict production deploy commands to SRE role (<a href="../capabilities/F6.3-role-tool-permissions-mcp-cli-allowlist.html" class="spec-link">F6.3</a>). Pipelines (<a href="../capabilities/F4.2-data-platform-pipelines-ingest-model-deploy-monitor.html" class="spec-link">F4.2</a>) sequence work across these roles. Shared micro-packs (<a href="../capabilities/F5.1-cross-pack-imports-micro-packs.html" class="spec-link">F5.1</a>) may add generic security review fragments.</p>
+<p>Data platform pipelines follow ingest → model/transform → deploy → monitor/alert—phases mapped to engineer, DBA, and SRE roles with governance checkpoints. Deploy phases require <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> bundles and may block outside maintenance windows per pack policy.</p>
+<p>Manifest and artifact graph (<a href="../capabilities/F1.4-pack-manifest-md-integration-contracts.html" class="spec-link">F1.4</a>, <a href="../capabilities/F1.5-pack-artifact-graph-json-cross-role.html" class="spec-link">F1.5</a>) wire schema approval before deploy lanes start. Monitor phase feeds <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> metrics checks in <a href="../capabilities/F1.8-pack-verify-goal-verify-suites.html" class="spec-link">F1.8</a>. <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> scripts should validate pipeline YAML against pack schema before instantiation saves bad graphs to state.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/F4.1-data-platform-roles-analyst-engineer-dba-sre-governance.html">F4.1</a></span>
+  <span class="cap-title">data platform roles analyst engineer DBA SRE governance</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/F4.2-data-platform-pipelines-ingest-model-deploy-monitor.html">F4.2</a></span>
+  <span class="cap-title">data, platform, pipelines, ingest, model, deploy, and monitor</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

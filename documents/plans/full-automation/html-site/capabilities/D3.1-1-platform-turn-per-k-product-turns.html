@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>D3.1 — 1 platform turn per K product turns</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/D.html">Plane D</a> · <a href="../chapters/D-D3.html">D3</a> ·
+    D3.1
+  </nav>
+  <p class="page-id">D3.1 · Platform evolution plane</p>
+  <h1 class="page-title">1 platform turn per K product turns</h1>
+  <p class="page-subtitle">platform turn per k product turns</p>
+  
+  <div class="story-block"><p>Default scheduling grants one <a href="../glossary.html#platform-turn" class="glossary-link" title="Platform turn">platform turn</a> every K <a href="../glossary.html#product-turn" class="glossary-link" title="Product turn">product turns</a>—commonly K=5—encoded in <code>platform.drain_policy.product_steps_per_platform_turn</code>. <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">Autopilot</a> evaluates <code>(steps_total % K) == 0</code> after each product phase completes; when true, the next iteration is platform dequeue instead of implement or design.</p>
+<p>If the improvement queue is empty, the <a href="../glossary.html#platform-turn" class="glossary-link" title="Platform turn">platform turn</a> is skipped and the project continues—delivery does not sit idle waiting for self-improvement work. K is pack-configurable (<a href="../capabilities/D5.1-configure-task-level-params-only.html" class="spec-link">D5.1</a>) without forking schedulers. Overrides from <a href="../capabilities/D3.2-priority-boost-queue-depth-threshold.html" class="spec-link">D3.2</a>, <a href="../capabilities/D3.4-idle-drain-product-waits-h2.html" class="spec-link">D3.4</a>, and <a href="../capabilities/D3.5-max-platform-backlog-age-force-drain.html" class="spec-link">D3.5</a> layer on this baseline.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">compose-first</a> cannot extend a <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> entry without breaking consumers or pack isolation, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> records the divergence in <a href="../capabilities/B4.4-divergence-log-when-not-composing.html" class="spec-link">B4.4</a> and opens a fork with provenance back to the source promotion or parent artifact.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Platform workers allocate a new <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> id, append an INDEX row, and wire a staleness graph node. before marking the fork item done in the <a href="../glossary.html#promotion-queue" class="glossary-link" title="Promotion queue">promotion queue</a>.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Downstream task cards migrate explicitly from the old id to the new entry; silent aliasing is forbidden so <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> remains tied to one canonical component.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Pack fragments from <a href="../capabilities/D4.6-platform-work-pack-fragment-export.html" class="spec-link">D4.6</a> may fork upward into the template-pack namespace when company boundaries require a separate reusable artifact.</span></li><li><span class="step-num">Step 5</span><span class="step-text">Fork without provenance fails closed at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> and blocks SEC-14 gap-analysis trust rather than publishing an untraceable <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> entry.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids D3.1</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Platform queue depth 0 but product blocked on missing playbook — D3.3 priority cut skips platform drain.</li><li>Edge case D3.1 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;D3.1&quot;,
+  &quot;description&quot;: &quot;1 platform turn per k product turns&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.16</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

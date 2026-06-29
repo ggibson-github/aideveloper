@@ -1,0 +1,89 @@
+{
+  "id": "A4.1",
+  "slug": "A4.1-stop-human-h1-h2-h3",
+  "title": "stop human H1 H2 H3",
+  "branch": "A",
+  "parent": "[A4-index](A4-index.md)",
+  "vision_section": "",
+  "release": "v2.14",
+  "purpose": "A4.1 defines stop human h1 h2 h3 for the agent-driven expert system. Pursuit & control plane \u2014 autonomous loops until goal verified.",
+  "scope": [
+    "Owns `A4.1` only; siblings under `A4` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a73 \u2014 Branch A \u2014 Pursuit & control plane](../../full-automation-vision-and-hierarchy.md#3-branch-a-pursuit-control-plane)."
+  ],
+  "behavior_steps": [
+    "Pursuit halts at H1 until an approved plan exists\u2014preflight sets hitl.pending=H1 and stops autopilot until the operator approves or waives the design gate.",
+    "At H2, blockers (credentials, external access, ambiguous requirements) dual-write to journal Blockers and state.json hitl fields with a typed stop class so dashboards and daemons know why the loop exited.",
+    "After goal_verify passes, H3 stops pursuit for final sign-off\u2014goal.state reflects verifying or awaiting H3 and pursuit must not auto-clear H3 or treat operator silence as acceptance.",
+    "Each human stop records stop class human:H1|H2|H3 in the pursuit stop taxonomy per [A4-index](A4-index.md) so [A2.1](A2.1-preflight-check-pipeline-blocked-extended.md) preflight returns BLOCKED until the touchpoint clears.",
+    "If a conductor turn ends without typed HITL fields while a human gate is open, preflight fails closed at H2 until journal-keeper reconciles state.json and journal."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"A4.1\",\n  \"description\": \"stop human h1 h2 h3\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "goal_verify passes but H3 rejected \u00e2\u20ac\u201d goal.state returns to pursuing with rejection notes.",
+    "Edge case `A4.1` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `A4.1`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `goal` block to state template and journal-keeper dual-write (v2.14).",
+    "Extend `check-pipeline-blocked.py` with goal_autopilot stop reasons.",
+    "Implement `scripts/goal-verify.py` stub aggregating task evidence paths.",
+    "Add `.cursor/skills/goal-keeper/SKILL.md` for conductor H1\u00e2\u2020\u2019pursuit transition.",
+    "Document `A4.1` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `A4.1`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids A4.1`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`journal/state.json `goal`, `pursuit`, `hitl``",
+    "`scripts/automation/check-pipeline-blocked.py`",
+    "`scripts/automation/run-local-pipeline.py`",
+    "`.cursor/skills/autopilot/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a73",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[A4-index](A4-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids A4.1` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [A4-index](A4-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "A4.1 defines stop human h1 h2 h3 for the agent-driven expert system. Pursuit & control plane \u2014 autonomous loops until goal verified. In practice, the system pursuit halts at h1 until an approved plan exists\u2014preflight sets hitl.pending=h1 and stops autopilot until the operator approves or waives the design gate, then at h2, blockers (credentials, external access, ambiguous requirements) dual-write to journal blockers and state.json hitl fields with a typed stop class so dashboards and daemons know why the loop exited.",
+  "reader_narrative": "<!-- prose-source: agent plane-a 2026-06-28 -->\n\nHuman stop reasons are intentional, policy-driven pauses\u2014not failures. H1 stops pursuit until an approved plan exists; H2 stops until a blocker is resolved (credentials, external access, ambiguous requirement); H3 stops after goal_verify passes until the operator accepts or rejects verified outcomes.\n\nEach stop dual-writes to journal and `hitl` fields in state.json with a typed reason so dashboards and daemons do not guess why the loop exited. Pursuit must never auto-clear H3 or treat silence as approval. This capability is the exhaustive taxonomy entry for touchpoint-class stops\u2014see [INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md) for the contract operators see."
+}

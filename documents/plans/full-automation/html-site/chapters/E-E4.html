@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>E4 — Context retrieval layers</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/E.html">Plane E</a> ·
+    E4
+  </nav>
+  <p class="page-id">E4 · Knowledge &amp; composition plane</p>
+  <h1 class="page-title">Context retrieval layers</h1>
+  <div class="story-block"><p>E4: Context retrieval layers. Open each capability below for diagrams, verification, and contracts.</p>
+<p>Always-on context layers inject project rules and <code>AGENTS.md</code> every session—the baseline <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> contract, <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> rules, approval gates, and pipeline semantics. Workers inherit applicable rules via spawn context; they do not re-read the full AGENTS monolith unless allowed.</p>
+<p>This is layer zero of context retrieval—below hooks (<a href="../capabilities/E4.2-context-hooks-inject-continue-start.html" class="spec-link">E4.2</a>) and Librarian allowed_reads (<a href="../capabilities/E4.3-context-allowed-reads-cap-max-5.html" class="spec-link">E4.3</a>). Pack authors may extend always-on rules through template-pack fragments. Changes to AGENTS.md mark dependent playbooks and skills stale in <a href="../capabilities/E5.2-staleness-extend-playbooks-scripts-pack-nodes.html" class="spec-link">E5.2</a>.</p>
+<p>Cursor hooks inject journal summary, state.json snapshot, and Context files on continue/start—deterministic session resume without re-pasting progress. Hooks run before the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> LLM turn; agents still must read journal per continue skill, but injection reduces cold-start drift.</p>
+<p>Hook output complements always-on rules (<a href="../capabilities/E4.1-context-always-on-rules-agents-md.html" class="spec-link">E4.1</a>) and precedes Librarian briefing. Hook scripts live under <code>.cursor/hooks.json</code> and should stay S0-thin. Failed injection surfaces <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> when state.json corrupt—pair with <a href="../capabilities/A4.4-stop-integrity-validate-workflow-state-corrupt.html" class="spec-link">A4.4</a>.</p>
+<p><code>allowed_reads</code> caps worker and Librarian context at five paths—hard bound on scope expansion. Librarian returns the cap; conductors pass it unchanged in spawn contracts; workers must not read outside the list except via declared tool output.</p>
+<p>The cap forces compose and <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> search to prioritize (<a href="../capabilities/E2.1-compose-resolve-capability-needed.html" class="spec-link">E2.1</a>–<a href="../capabilities/E2.4-compose-plan-task-card-components.html" class="spec-link">E2.4</a>) instead of loading entire design trees. <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">Conductor</a> may read more than workers but should still prefer INDEX and task cards. Violations are scope-bleed failure class; orchestrate-subagents enforces in worker prompts.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/E4.1-context-always-on-rules-agents-md.html">E4.1</a></span>
+  <span class="cap-title">context always-on rules AGENTS.md</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/E4.2-context-hooks-inject-continue-start.html">E4.2</a></span>
+  <span class="cap-title">context, hooks, inject, continue, and start</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/E4.3-context-allowed-reads-cap-max-5.html">E4.3</a></span>
+  <span class="cap-title">context, allowed reads, cap, max, and 5</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

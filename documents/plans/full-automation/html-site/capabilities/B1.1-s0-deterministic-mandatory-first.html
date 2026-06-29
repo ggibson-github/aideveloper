@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>B1.1 — S0 deterministic mandatory first</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/B.html">Plane B</a> · <a href="../chapters/B-B1.html">B1</a> ·
+    B1.1
+  </nav>
+  <p class="page-id">B1.1 · Cognition &amp; routing plane</p>
+  <h1 class="page-title">S0 deterministic mandatory first</h1>
+  <p class="page-subtitle">S0 deterministic mandatory first</p>
+  
+  <div class="story-block"><p><a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> is the capability class for behavior that already exists as a script under <code>scripts/</code>. Before any model improvises routing, validation, dashboard generation, or verify, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> must run the deterministic path and use its output.</p>
+<p>This rule—mandatory first—prevents expensive re-derivation of state the repo already encodes. <code>route-tier.py</code>, <code>check-pipeline-blocked.py</code>, and <code>validate-workflow.py</code> are canonical <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> examples referenced throughout Plane A pursuit. When a new behavior stabilizes, promote it from <a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a> worker output to <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> script; do not leave file-derived logic in chat-only form. See <a href="../branches/B.html" class="spec-link">Vision §4 — Branch B — Cognition &amp; routing plane</a>.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">Before spawning workers or advancing <code>next_action</code>, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> runs applicable <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> scripts—<code>route-tier.py</code>, <code>check-pipeline-blocked.py</code>, and <code>validate-workflow.py</code>—and treats their stdout and exit codes as authoritative routing input.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Workers must not re-derive file-backed state in chat when an <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> script exists; the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> passes script output into spawn contracts and journal <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> per mandatory-first policy.</span></li><li><span class="step-num">Step 3</span><span class="step-text">When implement work stabilizes repeatable file-derived behavior, promotion targets Plane D to extract an L2 script rather than leaving logic <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a>-only in session memory.</span></li><li><span class="step-num">Step 4</span><span class="step-text"><a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> output that reports BLOCKED or conformance failure stops the turn before any S1–<a href="../glossary.html#s4" class="glossary-link" title="S4 — governance escalation">S4</a> worker runs, with journal and state.json recording the deterministic reason.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If script output and journal disagree, or a script is bypassed for convenience, pursuit halts at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> until the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> re-runs <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> preflight and reconciles <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids B1.1</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case B1.1 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case B1.1 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;B1.1&quot;,
+  &quot;description&quot;: &quot;s0 deterministic mandatory first&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

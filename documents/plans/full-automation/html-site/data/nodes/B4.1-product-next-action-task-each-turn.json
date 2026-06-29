@@ -1,0 +1,89 @@
+{
+  "id": "B4.1",
+  "slug": "B4.1-product-next-action-task-each-turn",
+  "title": "PRODUCT next_action task each turn",
+  "branch": "B",
+  "parent": "[B4-index](B4-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "B4.1 defines product next action task each turn for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack.",
+  "scope": [
+    "Owns `B4.1` only; siblings under `B4` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a74 \u2014 Branch B \u2014 Cognition & routing plane](../../full-automation-vision-and-hierarchy.md#4-branch-b-cognition-routing-plane)."
+  ],
+  "behavior_steps": [
+    "Each product turn executes exactly one `next_action` from state.json\u2014one task card or one skill phase aligned with Plane C pipeline order\u2014without skipping to push or refactor while implement evidence is missing.",
+    "[B1.1](B1.1-s0-deterministic-mandatory-first.md) sync-state and route-tier read state.json first when available; the conductor interprets the journal mirror only when S0 output is silent.",
+    "Under interleaved [B4.2](B4.2-platform-promotion-queue-peek-drain.md) scheduling, product turns still advance `next_action` atomically so Plane C progress does not desync from recorded state.",
+    "Workers execute the delegated slice of `next_action`; only the conductor advances past the task after verify passes or structured H2 is recorded per [G1.3](G1.3-last-verify-before-advance.md).",
+    "If journal and state.json disagree on `next_action`, or required evidence is missing, [A2.1](A2.1-preflight-check-pipeline-blocked-extended.md) blocks the turn until dual-write reconciles."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"B4.1\",\n  \"description\": \"product next action task each turn\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `B4.1` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `B4.1` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `B4.1`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `B4.1` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_b4_1.py when script exists.",
+    "Validate `B4.1` against SEC-15 release checklist and parent index links.",
+    "Document `B4.1` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `B4.1`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids B4.1`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/operator/model-policy.json`",
+    "`scripts/route-tier.py`",
+    "`.cursor/skills/librarian/`",
+    "`.cursor/rules/genius-conductor.mdc`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a74",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[B4-index](B4-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids B4.1` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [B4-index](B4-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "B4.1 defines product next action task each turn for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack. In practice, the system each product turn executes exactly one `next_action` from state.json\u2014one task card or one skill phase aligned with plane c pipeline order\u2014without skipping to push or refactor while implement evidence is missing, then [b1.1](b1.1-s0-deterministic-mandatory-first.md) sync-state and route-tier read state.json first when available; the conductor interprets the journal mirror only when s0 output is silent.",
+  "reader_narrative": "<!-- prose-source: agent plane-b 2026-06-28 -->\n\nEach product turn executes the current `next_action` task from state.json\u2014one task card, one skill phase\u2014aligned with Plane C pipelines. The conductor does not skip ahead to push or refactor while implement evidence is missing.\n\nTask selection is S0 where scripts exist; otherwise conductor reads state and journal mirror. This capability binds Plane B routing to Plane C execution order so interleaved product and platform scheduling does not desynchronize project progress from recorded next_action."
+}

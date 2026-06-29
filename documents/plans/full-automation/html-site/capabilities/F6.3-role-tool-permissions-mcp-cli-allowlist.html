@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>F6.3 — role tool permissions MCP CLI allowlist</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/F.html">Plane F</a> · <a href="../chapters/F-F6.html">F6</a> ·
+    F6.3
+  </nav>
+  <p class="page-id">F6.3 · Organization plane</p>
+  <h1 class="page-title">role tool permissions MCP CLI allowlist</h1>
+  <p class="page-subtitle">role tool permissions MCP CLI allowlist</p>
+  
+  <div class="story-block"><p>Tool permissions per role encode MCP server allowlists, CLI patterns, and write scopes—programmer may run build CLI; designer may run Blender MCP; governance may read-only audit tools. Bindings live in roles/*.yaml and mirror operator policy overrides (<a href="../capabilities/B5.2-role-to-pipeline-id-skills-tool-permissions.html" class="spec-link">B5.2</a>).</p>
+<p>Violations block spawn or fail verifier with permission error—never silent downgrade to broader tools. External game tools (<a href="../capabilities/F3.3-game-studio-external-tools-blender-ue-git-ci.html" class="spec-link">F3.3</a>) and data deploy CLIs declare here. Pack authors test permission matrix with conformance scripts before publish.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">On each worker spawn, orchestrate-subagents loads the active role&#x27;s <code>roles/*.yaml</code> bindings and attaches MCP server allowlists, CLI patterns, and write scopes to the worker contract before any tool invocation.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Tool-operator and MCP preflight checks each requested path and command against the role permission matrix; a pattern outside the allowlist blocks spawn or fails the verifier with a permission error—never a silent downgrade to broader tools.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Domain packs extend the matrix for external tooling—Blender MCP for designer roles (<a href="../capabilities/F3.3-game-studio-external-tools-blender-ue-git-ci.html" class="spec-link">F3.3</a>), build and deploy CLIs for engineer roles—while <a href="../capabilities/B5.2-role-to-pipeline-id-skills-tool-permissions.html" class="spec-link">B5.2</a> keeps product vs platform permission profiles aligned with <code>pipeline_id</code>.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Pack authors run conformance scripts against the permission matrix before publish; pursuit with an active pack rejects worker runs that reference tools not declared in the role profile.</span></li><li><span class="step-num">Step 5</span><span class="step-text">Permission violations or allowlist drift between <code>state.company.active_role</code> and pack YAML stop pursuit at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> with the blocked tool pattern and owning role—operators reconcile bindings at <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> before resume.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids F6.3</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Pack role handoff while lane lease held — complete-work-order releases lease before role switch.</li><li>Edge case F6.3 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;F6.3&quot;,
+  &quot;description&quot;: &quot;role tool permissions mcp cli allowlist&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.19</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

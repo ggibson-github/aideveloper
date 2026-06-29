@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>H1.1 — State existing next action program autopilot evidence tier</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/H.html">Plane H</a> · <a href="../chapters/H-H1.html">H1</a> ·
+    H1.1
+  </nav>
+  <p class="page-id">H1.1 · Persistence &amp; state plane</p>
+  <h1 class="page-title">State existing next action program autopilot evidence tier</h1>
+  <p class="page-subtitle">state existing next_action program autopilot evidence tier</p>
+  
+  <div class="story-block"><p>The v2 machine router in <code>journal/state.json</code> carries legacy pursuit fields—<code>next_action</code>, <code>program</code>, <code>autopilot</code>, <code>evidence_required</code>, <code>model_tier</code>, <code>spawn_workers</code>—that route-tier.py and validate-workflow.py read every turn. These top-level keys remain the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a>&#x27;s first <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> lookup before any LLM interprets progress.</p>
+<p>Additive v2 blocks (goal, platform, pursuit, hitl, company) extend without breaking existing consumers; sync-state.py and journal-keeper <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> both files atomically where possible. Corrupt or partial state triggers <a href="../capabilities/A4.4-stop-integrity-validate-workflow-state-corrupt.html" class="spec-link">A4.4</a> stop. See <a href="../capabilities/APP-B-state-json-sketch.html" class="spec-link">APP-B-state-json-sketch</a> and <a href="../branches/H.html" class="spec-link">Vision §10 — Branch H — Persistence &amp; state plane</a>.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">On every pursuit wake, <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> reads top-level <code>next_action</code>, <code>program</code>, <code>autopilot</code>, <code>evidence_required</code>, <code>model_tier</code>, and <code>spawn_workers</code> from <code>journal/state.json</code> before the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> interprets <code>journal/progress.md</code> (<a href="../capabilities/B1.1-s0-deterministic-mandatory-first.html" class="spec-link">B1.1</a>).</span></li><li><span class="step-num">Step 2</span><span class="step-text"><code>route-tier.py --apply</code> and <code>validate-workflow.py</code> consume these legacy router fields to select pipeline phase, model tier, and worker spawn policy without re-deriving state in the LLM.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Additive v2 blocks (<code>goal</code>, <code>platform</code>, <code>pursuit</code>, <code>hitl</code>, <code>company</code>) extend the router atomically via journal-keeper and <code>sync-state.py</code> while preserving existing consumer keys.</span></li><li><span class="step-num">Step 4</span><span class="step-text">When <code>autopilot.active</code> is true, <code>next_action</code> advances only through <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> apply paths—manual journal edits without <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> do not change the machine router.</span></li><li><span class="step-num">Step 5</span><span class="step-text">Corrupt or partial <code>state.json</code> triggers <a href="../capabilities/A4.4-stop-integrity-validate-workflow-state-corrupt.html" class="spec-link">A4.4</a> integrity stop with <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a>; pursuit does not resume until validate-workflow passes.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids H1.1</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case H1.1 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case H1.1 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;goal&quot;: { &quot;id&quot;: &quot;g1&quot;, &quot;state&quot;: &quot;pursuing&quot; },
+  &quot;platform&quot;: { &quot;promotion_queue&quot;: [] },
+  &quot;pursuit&quot;: { &quot;mode&quot;: &quot;goal_autopilot&quot;, &quot;steps_total&quot;: 0 },
+  &quot;hitl&quot;: { &quot;pending&quot;: null },
+  &quot;company&quot;: { &quot;pack_id&quot;: null, &quot;active_role&quot;: null }
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

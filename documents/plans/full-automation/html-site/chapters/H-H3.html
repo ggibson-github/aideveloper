@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>H3 — H3</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/H.html">Plane H</a> ·
+    H3
+  </nav>
+  <p class="page-id">H3 · Persistence &amp; state plane</p>
+  <h1 class="page-title">H3</h1>
+  <div class="story-block"><p>Artifact graphs declare dependency edges between design nodes, task cards, pack fragments, and integration manifest entries—program mode reads the graph before parallel spawn (<a href="../capabilities/B5.3-handoff-manifest-artifact-graph.html" class="spec-link">B5.3</a>, <a href="../capabilities/C4.4-artifact-graph-per-program-and-pack.html" class="spec-link">C4.4</a>).</p>
+<p>reconcile-artifact-graph marks nodes stale when upstream changes; reconcile-stale plans re-runs (<a href="../capabilities/E5.1-staleness-design-graph-staleness-json.html" class="spec-link">E5.1</a>). Graph state persists in state.json program block and docs/manifest/staleness.json. Workers must not proceed on stale manifest nodes without <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> reconcile approval.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/H3-artifact-graphs.html">H3</a></span>
+  <span class="cap-title">artifact and graphs</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

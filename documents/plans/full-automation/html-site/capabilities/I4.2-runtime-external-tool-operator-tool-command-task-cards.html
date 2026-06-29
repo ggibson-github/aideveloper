@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>I4.2 — runtime external tool-operator Tool command task cards</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/I.html">Plane I</a> · <a href="../chapters/I-I4.html">I4</a> ·
+    I4.2
+  </nav>
+  <p class="page-id">I4.2 · Runtime &amp; integration plane</p>
+  <h1 class="page-title">runtime external tool-operator Tool command task cards</h1>
+  <p class="page-subtitle">runtime external tool-operator Tool command task cards</p>
+  
+  <div class="story-block"><p>Tool-operator shell workers execute literal Tool command blocks from task cards—Blender batch exports, Unreal commandlet runs, custom CLIs—writing outputs only to declared paths. tool-operator skill bounds writes; product source edits happen only via normal implement workers.</p>
+<p>Tool failures attach logs to <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>/ and trigger verify escalation (<a href="../capabilities/B2.4-verifier-tool-operator-evidence.html" class="spec-link">B2.4</a>). Pack authors declare tool patterns in task card templates; ad-hoc tool invocation without card binding is forbidden during <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>-gated implement.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When an implement task card declares a Tool command block, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> spawns a tool-operator shell worker instead of a phase implement worker, binding execution to the literal CLI on the card.</span></li><li><span class="step-num">Step 2</span><span class="step-text">The tool-operator worker runs pack-declared commands—Blender batch exports, Unreal commandlets, custom CLIs—and may write outputs only to paths explicitly declared on the task card.</span></li><li><span class="step-num">Step 3</span><span class="step-text">tool-operator skill bounds the command surface and filesystem writes; product source edits remain the domain of normal implement workers, not shell tool runs.</span></li><li><span class="step-num">Step 4</span><span class="step-text">On completion, stdout/stderr and artifact paths attach to <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>/ and route through <a href="../capabilities/B2.4-verifier-tool-operator-evidence.html" class="spec-link">B2.4</a> before last_verify can pass and pursuit advances.</span></li><li><span class="step-num">Step 5</span><span class="step-text">Tool failures, missing outputs, or ad-hoc invocations without a bound task card fail closed with verify escalation—pursuit turns stop rather than improvising undocumented tooling.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids I4.2</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case I4.2 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case I4.2 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;I4.2&quot;,
+  &quot;description&quot;: &quot;runtime external tool operator tool command task cards&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

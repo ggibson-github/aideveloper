@@ -1,0 +1,30 @@
+{
+  "id": "SEC-18",
+  "slug": "SEC-18-transistor-model-a-to-z-reference",
+  "title": "Transistor model \u2014 A to Z reference",
+  "branch": "meta",
+  "parent": "[SEC-index](SEC-index.md)",
+  "vision_section": "",
+  "release": "v2.24",
+  "purpose": "",
+  "scope": [],
+  "behavior_steps": [
+    "Operators and implementers read SEC-18 once for terminology, schemas, and release order before opening E6\u2013E7, B6, or C6 leaf specs.",
+    "Conductor and workflow-composer treat this document as authority when resolving transistor versus legacy compose-first conflicts.",
+    "Platform promotion to L6 and workflow-compose phases must conform to the schemas and acceptance checklist in sections D\u2013Q.",
+    "v2.24\u2013v2.28 release rows in section N map to implement tasks; leaf specs must not diverge without updating SEC-18 first.",
+    "Human H1 review may include the workflow DAG summary and transistor maturity targets from sections C and M."
+  ],
+  "mermaid": "flowchart LR\n  goal[Goal + success_criteria] --> deliverable[E7.1 deliverable type]\n  deliverable --> template[Pack workflow template]\n  template --> query[E6.4 list-transistors]\n  query --> rank[E6.5 rank hits]\n  rank --> stitch[E7.2 stitch DAG]\n  stitch --> validate[E7.3 validate S0]\n  validate -->|miss| promote[E7.4 promotion enqueue]\n  validate -->|pass| h1[H1 bind active_workflow]\n  promote --> h1",
+  "json_example": "{\n  \"id\": \"verify-router-invoke\",\n  \"version\": \"1.0.0\",\n  \"capability_id\": \"task.verify.pytest\",\n  \"class\": \"hard\",\n  \"maturity\": \"stable\",\n  \"provenance\": { \"pack_id\": \"_shared\", \"promoted_from\": null },\n  \"inputs\": [\n    { \"name\": \"task_card_path\", \"type\": \"path\", \"required\": true }\n  ],\n  \"outputs\": [\n    { \"name\": \"evidence_log\", \"type\": \"path\", \"required\": true },\n    { \"name\": \"exit_code\", \"type\": \"integer\", \"required\": true }\n  ],\n  \"preconditions\": [\n    { \"check\": \"file_exists\", \"path\": \"{{inputs.task_card_path}}\" }\n  ],\n  \"executor\": {\n    \"kind\": \"script\",\n    \"command\": \"python scripts/verify-router.py --task-card {{inputs.task_card_path}}\"\n  },\n  \"verify\": {\n    \"kind\": \"exit_code\",\n    \"expect\": 0\n  },\n  \"tags\": [\"sdlc\", \"verify\", \"s0\"]\n}",
+  "edge_cases": [],
+  "failure_modes": [],
+  "implementation": [],
+  "verification": [],
+  "artifacts": [],
+  "dependencies": [],
+  "acceptance": [],
+  "adversarial": [],
+  "narrative": "This capability defines Transistor model \u2014 A to Z reference. In practice, the system operators and implementers read sec-18 once for terminology, schemas, and release order before opening e6\u2013e7, b6, or c6 leaf specs, then conductor and workflow-composer treat this document as authority when resolving transistor versus legacy compose-first conflicts.",
+  "reader_narrative": "<!-- prose-source: agent meta 2026-06-28 -->\n\nThis document is the **authoritative end-to-end model** for **transistors** and **generator workflows** in the AIDeveloper expert system. It resolves design questions from the 2026-06-28 transistor brainstorming lineage, extends the full-automation north star ([INTRO-0](INTRO-0-executive-summary---0.md), [INTRO-2](INTRO-2-transistor-building-blocks-north-star.md)), and defines how v2.24\u2013v2.28 releases implement the fourth structural shift: **compose executable workflows before generating deliverables**.\n\nv2.13\u2013v2.23 reduced improvisation via compose-first catalog, S0 mandatory-first, and promotion ladder L0\u2013L5\u2014but still plans mostly in prose skills and picks one catalog component per turn. Transistors add typed I/O blocks wired into generator DAGs so agents compose before they invent, execute one verified node per turn, and promote misses to L6 on the platform queue. All E6, E7, B6, and C6 leaf specs must align with this reference.\n\nSee [Vision \u00a719 \u2014 Transistor & generator workflow model](../../full-automation-vision-and-hierarchy.md#19-transistor--generator-workflow-model) for the hierarchy map and release rows in [SEC-15-index](SEC-15-index.md)."
+}

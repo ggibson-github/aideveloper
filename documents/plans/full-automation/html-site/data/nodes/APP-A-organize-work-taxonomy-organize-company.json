@@ -1,0 +1,84 @@
+{
+  "id": "APP-A-organize",
+  "slug": "APP-A-organize-work-taxonomy-organize-company",
+  "title": "organize work taxonomy organize company",
+  "branch": "meta",
+  "parent": "\u2014",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "APP-A-organize defines work taxonomy organize company for the agent-driven expert system. Human job taxonomy \u2192 pack workflows.",
+  "scope": [
+    "Owns `APP-A-organize` only; siblings under `\u2014` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a73 \u2014 Branch A \u2014 Pursuit & control plane](../../full-automation-vision-and-hierarchy.md#3-branch-a-pursuit-control-plane)."
+  ],
+  "behavior_steps": [
+    "At H1 or company-goal instantiation, [F2.1](F2.1-company-instantiate-program-scoper-pack-select.md) loads `company.yaml` and `roles/*.yaml` from the active template-pack, dual-writing `company.pack_id`, `company.active_role`, and program workstreams into state.json without forking a separate harness per employee.",
+    "The conductor selects `active_role` from the pack per [B5.1](B5.1-active-role-from-template-pack.md), binding pipeline id, skills, and tool permissions via [B5.2](B5.2-role-to-pipeline-id-skills-tool-permissions.md) so each department turn runs under the correct org-chart context.",
+    "When parallel lanes are ready, [F2.2](F2.2-company-spawn-workstream-department-role-lane.md) spawns workstreams with lane leases while [F2.3](F2.3-company-active-role-rotates-ready-work.md) rotates `active_role` across departments that have ready queue items\u2014coordinating cross-team handoffs through the integration manifest, not ad-hoc journal edits.",
+    "Under [A3.3](A3.3-company-autopilot-multi-goal-role-workstreams.md) company autopilot, pursuit continues across role and workstream switches until each nested goal reaches goal_verify or a hard block fires; roll-up status stays on parent goals in state.json.",
+    "If pack instantiation fails, role bindings conflict, or lane leases collide, pursuit stops with a structured H2 blocker rather than silently running product work under the wrong role context."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"node\": \"APP-A-organize\",\n  \"description\": \"work taxonomy organize company\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `APP-A-organize` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `APP-A-organize` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `APP-A-organize`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `APP-A-organize` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_app-a-organize.py when script exists.",
+    "Validate `APP-A-organize` against SEC-15 release checklist and parent index links.",
+    "Document `APP-A-organize` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `APP-A-organize`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids APP-A-organize`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a73",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[\u2014-index](\u2014-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids APP-A-organize` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [\u2014-index](\u2014-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "APP-A-organize defines work taxonomy organize company for the agent-driven expert system. Human job taxonomy \u2192 pack workflows. In practice, the system at h1 or company-goal instantiation, [f2.1](f2.1-company-instantiate-program-scoper-pack-select.md) loads `company.yaml` and `roles/*.yaml` from the active template-pack, dual-writing `company.pack_id`, `company.active_role`, and program workstreams into state.json without forking a separate harness per employee, then the conductor selects `active_role` from the pack per [b5.1](b5.1-active-role-from-template-pack.md), binding pipeline id, skills, and tool permissions via [b5.2](b5.2-role-to-pipeline-id-skills-tool-permissions.md) so each department turn runs under the correct org-chart context.",
+  "reader_narrative": "<!-- prose-source: agent meta 2026-06-28 -->\n\nOrganize company work covers pack instantiation, role queues, active_role switching, and cross-team coordination inside template-packs. It is how a single harness pretends to be an org chart without forking state per employee.\n\ncompany.yaml and roles/*.yaml from Plane F are the primary artifacts here."
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>A6 — Notification (not blocking)</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/A.html">Plane A</a> ·
+    A6
+  </nav>
+  <p class="page-id">A6 · Pursuit &amp; control plane</p>
+  <h1 class="page-title">Notification (not blocking)</h1>
+  <div class="story-block"><p>A6: Notification (not blocking). Open each capability below for diagrams, verification, and contracts.</p>
+<p>Notifications inform; they do not block pursuit. Phase completion—design artifact published, implement task verified, goal transition—updates <code>docs/operator/dashboard.md</code>, <code>STATUS.md</code>, and optional webhooks so operators have situational awareness without approving each step.</p>
+<p>Regeneration is <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> where <code>generate-dashboard.py</code> exists. Webhooks fire on meaningful milestones, not every token, to avoid alert fatigue. This capability satisfies observability for unattended runs while preserving <a href="../capabilities/A6.3-operator-observe-without-unblocking-loop.html" class="spec-link">A6.3</a>: reading STATUS never substitutes for <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> resolution.</p>
+<p><a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> blockers deserve prompt, consolidated notification; routine pursuit steps do not. This capability defines digest-style alerts on blocker detection—structured reason, goal id, suggested operator action—rather than per-step pings that train operators to ignore the channel.</p>
+<p>The <a href="../glossary.html#pursuit-loop" class="glossary-link" title="Pursuit loop">pursuit loop</a> continues to <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> blockers to journal/state; notification is an Plane I integration layer. Pair with session and daemon modes (A3) so unattended runs surface only actionable interruptions. Every-step notifications violate the minimal-<a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">HITL</a> contract and recreate babysitting by another name.</p>
+<p>Operators may inspect dashboards, journals, <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> logs, and queue depth while pursuit remains blocked without that inspection counting as “unblocking.” Read-only observation must not clear <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a>, advance <code>next_action</code>, or waive gates.</p>
+<p>This separation prevents accidental resume when an operator opens STATUS to diagnose a failure. Explicit unblock actions—supplying credentials, answering a blocking question, approving <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a>—are distinct events recorded in journal Q&amp;A. Autonomous loops remain paused until preflight passes on the actual fix.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/A6.1-notify-dashboard-status-webhook-phase-complete.html">A6.1</a></span>
+  <span class="cap-title">notify dashboard STATUS webhook phase complete</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A6.2-notify-digest-on-h2-blocker-not-every-step.html">A6.2</a></span>
+  <span class="cap-title">notify digest on H2 blocker not every step</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A6.3-operator-observe-without-unblocking-loop.html">A6.3</a></span>
+  <span class="cap-title">operator, observe, without, unblocking, and loop</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

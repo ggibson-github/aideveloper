@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>F2 — Company instantiation</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/F.html">Plane F</a> ·
+    F2
+  </nav>
+  <p class="page-id">F2 · Organization plane</p>
+  <h1 class="page-title">Company instantiation</h1>
+  <div class="story-block"><p>F2: Company instantiation. Open each capability below for diagrams, verification, and contracts.</p>
+<p>Company instantiation begins when program-scoper reads the mega-spec, scores pack_keywords against available template-packs, and selects <code>pack_id</code>. Selection sets <code>state.company.pack_id</code>, default <code>active_role</code>, and initial program structure—workstreams, blocking questions, milestone gates.</p>
+<p>Wrong pack selection is high-risk: roles, pipelines, and verify suites all derive from the choice. Scoper records rationale in journal Q&amp;A; <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> plan approval covers pack choice when policy requires. Pack ceiling (<a href="../capabilities/F5.3-no-repo-outside-template-packs-ceiling.html" class="spec-link">F5.3</a>) means organization changes flow through pack updates or imports (<a href="../capabilities/F5.1-cross-pack-imports-micro-packs.html" class="spec-link">F5.1</a>), not silent consumer-repo forks.</p>
+<p>After pack bind, program-scoper spawns program workstreams mapped to departments or role lanes—each lane gets lane.json leases, work orders, and spawn_policy compatible with integration manifest. Department boundaries align with pack roles (<a href="../capabilities/F1.2-pack-roles---yaml.html" class="spec-link">F1.2</a>); parallel lanes require manifest gate clearance (<a href="../capabilities/F1.4-pack-manifest-md-integration-contracts.html" class="spec-link">F1.4</a>).</p>
+<p>orchestrate-program spawns workers only for ready lanes with valid leases (<a href="../capabilities/C4.1-workstreams-lane-json-leases.html" class="spec-link">C4.1</a>). Spawn without manifest approval violates program pipeline order. Lane spawn is <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> where lane scripts exist; otherwise <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> invokes program-scoper skill with pack context.</p>
+<p>Company <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> rotates <code>state.company.active_role</code> based on ready work in lane queues—not fixed round-robin. When a role lane has unblocked tasks and leases available, <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> switches active_role, updates spawn contracts, and schedules pursuit for that persona (<a href="../capabilities/A3.3-company-autopilot-multi-goal-role-workstreams.html" class="spec-link">A3.3</a>).</p>
+<p>Rotation must release held lane leases before role switch (complete-work-order). Role switch updates tool permissions (<a href="../capabilities/F6.3-role-tool-permissions-mcp-cli-allowlist.html" class="spec-link">F6.3</a>) and allowed_reads (<a href="../capabilities/F6.2-role-allowed-reads-scoped-playbooks-lane-tasks.html" class="spec-link">F6.2</a>) without merging permissions across roles. <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">Conductor</a> identity persists across switches (<a href="../capabilities/F6.1-role-mapping-conductor-context-switch-active-role.html" class="spec-link">F6.1</a>).</p>
+<p>The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> orchestrates cross-role handoffs using instantiated manifest.md plus artifact-graph.json—checking prerequisite nodes, updating handoff manifest sections, and spawning the next role lane when contracts satisfy. This implements pack integration contracts (<a href="../capabilities/F1.4-pack-manifest-md-integration-contracts.html" class="spec-link">F1.4</a>) at runtime.</p>
+<p>Handoffs are <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a>-owned <a href="../glossary.html#s3" class="glossary-link" title="S3 — architecture / ambiguity">S3</a> merges when ambiguity exists; mechanical prerequisite checks are <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> via reconcile-artifact-graph. Failed handoff surfaces structured <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> with missing artifact id and suggested owner role. Pair with <a href="../capabilities/B5.3-handoff-manifest-artifact-graph.html" class="spec-link">B5.3</a> and <a href="../capabilities/B5.4-conductor-stays-workers-swap-role-context.html" class="spec-link">B5.4</a> for worker vs parent separation.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/F2.1-company-instantiate-program-scoper-pack-select.html">F2.1</a></span>
+  <span class="cap-title">company instantiate program-scoper pack select</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/F2.2-company-spawn-workstream-department-role-lane.html">F2.2</a></span>
+  <span class="cap-title">company, spawn, workstream, department, role, and lane</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/F2.3-company-active-role-rotates-ready-work.html">F2.3</a></span>
+  <span class="cap-title">company, active role, rotates, ready, and work</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/F2.4-company-conductor-handoffs-manifest-graph.html">F2.4</a></span>
+  <span class="cap-title">company, conductor, handoffs, manifest, and graph</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

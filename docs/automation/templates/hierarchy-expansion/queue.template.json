@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "description": "Unified queue: ALL branches in one items[] list. Loop until EMPTY.",
+  "unified": true,
+  "source": "documents/YOUR-HIERARCHY.md",
+  "prompt": "docs/automation/YOUR-expansion-prompt.md",
+  "output_dir": "documents/plans/YOUR-TOPIC/",
+  "items": []
+}

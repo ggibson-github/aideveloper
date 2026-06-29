@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>E2.4 — compose plan task card Components</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/E.html">Plane E</a> · <a href="../chapters/E-E2.html">E2</a> ·
+    E2.4
+  </nav>
+  <p class="page-id">E2.4 · Knowledge &amp; composition plane</p>
+  <h1 class="page-title">compose plan task card Components</h1>
+  <p class="page-subtitle">compose plan task card Components</p>
+  
+  <div class="story-block"><p>The compose plan lands on the task card Components section: explicit <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> refs (script path, playbook id, skill name) bound before implement spawn. Components used is auditable <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> that <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">compose-first</a> ran—not optional prose.</p>
+<p><a href="../glossary.html#conductor" class="glossary-link" title="Conductor">Conductor</a> or task-breakdown writes Components after <a href="../capabilities/E2.3-compose-rank-script-playbook-skill-facts.html" class="spec-link">E2.3</a> ranking. Workers inherit listed refs in allowed_reads (<a href="../capabilities/E4.3-context-allowed-reads-cap-max-5.html" class="spec-link">E4.3</a>). Missing components when <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> had matches is a conformance failure; missing <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> match pairs with <a href="../capabilities/E2.5-compose-miss-l0-enqueue-promotion.html" class="spec-link">E2.5</a> promotion enqueue.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart TD
+  trigger[Trigger condition] --&gt; pre[Preconditions S0]
+  pre --&gt; exec[Execute step logic]
+  exec --&gt; verify[Verify output]
+  verify --&gt;|pass| done[Mark queue item done]
+  verify --&gt;|fail| h2[H2 blocker]</pre>
+</div>
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">After <a href="../capabilities/E2.3-compose-rank-script-playbook-skill-facts.html" class="spec-link">E2.3</a> ranks <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> hits, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> or task-breakdown phase writes ranked script paths, playbook ids, and skill names into the task card Components used section before any <a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a>+ implement worker spawns.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Each listed ref binds the pursuit turn—workers inherit those paths in <code>allowed_reads</code>. so Librarian scope matches the compose plan instead of expanding in chat.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Components used is auditable <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> that <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">compose-first</a> ran; omitting refs when <a href="../capabilities/E2.2-compose-query-catalog-list-components.html" class="spec-link">E2.2</a> returned matches triggers conformance failure and blocks advancement until the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s corrections to journal and state.json.</span></li><li><span class="step-num">Step 4</span><span class="step-text">When the <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> returned no reusable L1+ hit, compose pairs the L0 proceed path with <a href="../capabilities/E2.5-compose-miss-l0-enqueue-promotion.html" class="spec-link">E2.5</a> promotion enqueue rather than leaving Components empty without a recorded platform debt entry.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If a worker spawns without matching Components listed refs, or divergence from ranked choices is unlogged, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> stops at H2. until <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> reconciles the compose plan with <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids E2.4</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case E2.4 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case E2.4 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;E2.4&quot;,
+  &quot;description&quot;: &quot;compose plan task card components&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.17</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

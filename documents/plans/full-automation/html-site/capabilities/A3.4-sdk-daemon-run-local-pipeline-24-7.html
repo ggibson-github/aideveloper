@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>A3.4 — sdk daemon run-local-pipeline 24/7</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/A.html">Plane A</a> · <a href="../chapters/A-A3.html">A3</a> ·
+    A3.4
+  </nav>
+  <p class="page-id">A3.4 · Pursuit &amp; control plane</p>
+  <h1 class="page-title">sdk daemon run-local-pipeline 24/7</h1>
+  <p class="page-subtitle">sdk_daemon run-local-pipeline 24/7</p>
+  
+  <div class="story-block"><p>The SDK daemon turns goal <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> into an always-on local worker: <code>run-local-pipeline.py</code> polls <code>state.json</code>, runs preflight, executes one pursuit step when READY, and sleeps when BLOCKED—24/7 on the operator PC without keeping Cursor open.</p>
+<p>This is Plane I runtime integration with Plane A semantics identical to in-IDE <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a>. Requires <code>cursor-sdk</code>, <code>CURSOR_API_KEY</code>, and a genius-tier model id from operator policy. Laptop sleep or crash recovery depends on Plane H <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>: the daemon resumes from the last committed state, not from chat memory. Pair with <a href="../capabilities/A6.2-notify-digest-on-h2-blocker-not-every-step.html" class="spec-link">A6.2</a> so operators learn about blockers without watching logs.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text"><code>run-local-pipeline.py</code> polls <code>state.json</code> on an operator-configured interval; each wake runs <a href="../capabilities/A2.1-preflight-check-pipeline-blocked-extended.html" class="spec-link">A2.1</a> via <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> before invoking the Cursor SDK agent with genius-tier model from <a href="../capabilities/J1-model-policy.html" class="spec-link">J1</a>.</span></li><li><span class="step-num">Step 2</span><span class="step-text">On READY, the daemon executes exactly one <a href="../capabilities/A2.2-if-ready-execute-one-pipeline-step.html" class="spec-link">A2.2</a> pursuit phase identical to in-IDE <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a>—no chat memory, only committed journal/state from Plane H.</span></li><li><span class="step-num">Step 3</span><span class="step-text">On BLOCKED (<a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a>, budget, integrity), the daemon sleeps until the next poll or operator unblocks; it does not retry the same phase without a fresh preflight pass.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Goal <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> semantics apply without <a href="../capabilities/A3.1-session-autopilot-max-steps-per-session.html" class="spec-link">A3.1</a> session caps—24/7 unattended pursuit on the operator PC requires <code>cursor-sdk</code> and <code>CURSOR_API_KEY</code>.</span></li><li><span class="step-num">Step 5</span><span class="step-text">After laptop sleep or crash, the daemon resumes from the last <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> snapshot—not SDK chat history—and pairs with <a href="../capabilities/A6.2-notify-digest-on-h2-blocker-not-every-step.html" class="spec-link">A6.2</a> for <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> digests; if auth fails, pursuit halts at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> with a typed integration stop.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids A3.4</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>goal_verify passes but H3 rejected — goal.state returns to pursuing with rejection notes.</li><li>Edge case A3.4 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;A3.4&quot;,
+  &quot;description&quot;: &quot;sdk daemon run local pipeline 24 7&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.14</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

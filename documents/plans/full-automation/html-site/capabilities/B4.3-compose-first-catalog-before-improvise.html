@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>B4.3 — compose-first catalog before improvise</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/B.html">Plane B</a> · <a href="../chapters/B-B4.html">B4</a> ·
+    B4.3
+  </nav>
+  <p class="page-id">B4.3 · Cognition &amp; routing plane</p>
+  <h1 class="page-title">compose-first catalog before improvise</h1>
+  <p class="page-subtitle">compose-first catalog before improvise</p>
+  
+  <div class="story-block"><p>Compose-first requires <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> search before inventing new patterns: INDEX.md, playbooks, existing pack components, and facts files must be consulted and bound in the task or design record. Improvisation without <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> search is a divergence logged in Plane E.</p>
+<p>This capability implements the expert-system reuse ladder—ephemeral reasoning should shrink over time as <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> scripts and pack fragments absorb repeated patterns. See <a href="../capabilities/MASTER-E-branch-e---knowledge---composition-plane.html" class="spec-link">MASTER-E</a>.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart TD
+  trigger[Trigger condition] --&gt; pre[Preconditions S0]
+  pre --&gt; exec[Execute step logic]
+  exec --&gt; verify[Verify output]
+  verify --&gt;|pass| done[Mark queue item done]
+  verify --&gt;|fail| h2[H2 blocker]</pre>
+</div>
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">Before inventing new patterns, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> or <a href="../glossary.html#s2" class="glossary-link" title="S2 — templated artifacts">S2</a> phase skills run <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">compose-first</a> <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> search—INDEX.md, playbooks, pack components, and facts files—and bind hits in the task or design record.</span></li><li><span class="step-num">Step 2</span><span class="step-text"><a href="../capabilities/B2.2-librarian-allowed-reads-catalog-composition.html" class="spec-link">B2.2</a> Librarian briefings narrow reads; Plane E compose resolves capability_needed before improvisation.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Improvisation without <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> search is logged as divergence. and may enqueue platform promotion instead of silent one-off chat logic.</span></li><li><span class="step-num">Step 4</span><span class="step-text">This implements the reuse ladder—ephemeral reasoning shrinks as <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> scripts and pack fragments absorb repeated patterns.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> refs in the task card disagree with files on disk, pursuit blocks at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> until staleness reconcile or <a href="../glossary.html#s3" class="glossary-link" title="S3 — architecture / ambiguity">S3</a> updates the binding.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids B4.3</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case B4.3 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case B4.3 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;B4.3&quot;,
+  &quot;description&quot;: &quot;compose first catalog before improvise&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

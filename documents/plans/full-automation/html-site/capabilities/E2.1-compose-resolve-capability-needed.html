@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>E2.1 — compose, resolve, capability, and needed</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/E.html">Plane E</a> · <a href="../chapters/E-E2.html">E2</a> ·
+    E2.1
+  </nav>
+  <p class="page-id">E2.1 · Knowledge &amp; composition plane</p>
+  <h1 class="page-title">compose, resolve, capability, and needed</h1>
+  <p class="page-subtitle">compose resolve capability needed</p>
+  
+  <div class="story-block"><p>Before any <a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a>+ work, compose must resolve which capability the turn needs: routing, implement, verify, design artifact, platform promotion. Resolution names the capability id and target <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> slice—not a vague &quot;figure it out&quot; prompt.</p>
+<p>Librarian and <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> share this step; output drives <a href="../capabilities/E2.2-compose-query-catalog-list-components.html" class="spec-link">E2.2</a> query and <a href="../capabilities/E2.3-compose-rank-script-playbook-skill-facts.html" class="spec-link">E2.3</a> ranking. Unresolved capability blocks spawn until <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> search completes. This implements mandatory compose-before-invent from <a href="../capabilities/B4.3-compose-first-catalog-before-improvise.html" class="spec-link">B4.3</a> at the Plane E protocol layer.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart TD
+  trigger[Trigger condition] --&gt; pre[Preconditions S0]
+  pre --&gt; exec[Execute step logic]
+  exec --&gt; verify[Verify output]
+  verify --&gt;|pass| done[Mark queue item done]
+  verify --&gt;|fail| h2[H2 blocker]</pre>
+</div>
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">After implement diffs land, <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> touch-path detection compares task card declared files and diff stats against pack-flagged risk surfaces—auth, crypto, credentials paths, and dependency manifests—not <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> memory.</span></li><li><span class="step-num">Step 2</span><span class="step-text">When paths match risk triggers., the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> spawns a readonly security-review subagent; findings merge through the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a>, not direct journal writes.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Strict packs may require security-review pass before git-workflow advances; default self-gate records waivable findings with expiry when automated checks pass.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Blocking security findings hold pursuit at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> until remediated, waived with <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>, or escalated per pack policy.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If security-review is skipped while touch paths matched, preflight fails closed rather than pushing unreviewed risk surfaces.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids E2.1</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case E2.1 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case E2.1 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;E2.1&quot;,
+  &quot;description&quot;: &quot;compose resolve capability needed&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.17</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

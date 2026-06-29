@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>I1 — In-IDE (Cursor)</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/I.html">Plane I</a> ·
+    I1
+  </nav>
+  <p class="page-id">I1 · Runtime &amp; integration plane</p>
+  <h1 class="page-title">In-IDE (Cursor)</h1>
+  <div class="story-block"><p>I1: In-IDE (Cursor). Open each capability below for diagrams, verification, and contracts.</p>
+<p>The in-IDE <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> session is genius-tier and thin: the operator selects the orchestration model once per session from <code>docs/operator/model-policy.json</code>, then the parent agent runs <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> preflight, spawns economy workers, and <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s journal/state—never bulk-implementing when spawn_workers is true.</p>
+<p>This is the primary runtime for v2 pursuit: continue, <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a>, gate, and verify commands all assume a Cursor IDE session with AGENTS.md and rules loaded. See <a href="../capabilities/B3.1-genius-orchestration-only-thin-turns.html" class="spec-link">genius-conductor-tiered-routing.md</a> and <a href="../branches/I.html" class="spec-link">Vision §11 — Branch I — Runtime &amp; integration plane</a>.</p>
+<p>Local subagents run as economy-tier Task/explore/shell workers under <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> contracts with capped allowed_reads. The IDE runtime spawns them via orchestrate-subagents; workers return summaries without touching journal or state.json.</p>
+<p>Parallel local subagents are allowed only when integration manifest declares independent lanes (<a href="../capabilities/C4.2-orchestrate-program.html" class="spec-link">C4.2</a>). Model tier comes from route-tier.py output, not ad-hoc per spawn. Failed worker runs log to <a href="../capabilities/H5-worker-runs.html" class="spec-link">H5</a> audit trail.</p>
+<p>Slash commands—/continue, /<a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a>, /status, /gate, /task, /verify, /lane, /program—map to skills in <code>.cursor/skills/</code> and inject deterministic behavior before the LLM turn. Commands are the operator&#x27;s control surface; they do not substitute for <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> answers or <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> approval.</p>
+<p>/continue performs exactly one pipeline step; /<a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> loops until check-pipeline-blocked (<a href="../chapters/A-A3.html" class="spec-link">A3</a>). Command definitions live under <code>.cursor/commands/</code> and must stay aligned with skill contracts. SDK and headless runners invoke equivalent script entry points (<a href="../capabilities/I2.1-runtime-sdk-run-local-pipeline-goal-autopilot.html" class="spec-link">I2.1</a>).</p>
+<p>Cursor hooks—beforeSubmit, subagentStart, preToolUse, preCompact—inject journal summary, state snapshot, and context files on continue/start and trigger sync-state snapshots before compaction. Hooks are S0-thin scripts referenced from <code>.cursor/hooks.json</code>.</p>
+<p>Failed hook injection surfaces <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> when state.json is corrupt. preCompact pairs with <a href="../capabilities/H6-snapshots.html" class="spec-link">H6</a> snapshot writes. Hooks complement always-on rules (<a href="../capabilities/E4.1-context-always-on-rules-agents-md.html" class="spec-link">E4.1</a>) but do not replace reading journal/progress.md per continue skill.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/I1.1-runtime-ide-genius-conductor-session.html">I1.1</a></span>
+  <span class="cap-title">runtime IDE genius conductor session</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/I1.2-runtime-ide-local-subagents-economy.html">I1.2</a></span>
+  <span class="cap-title">runtime IDE local subagents economy</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/I1.3-runtime-ide-slash-commands-autopilot-continue-lane-verify.html">I1.3</a></span>
+  <span class="cap-title">Runtime IDE slash commands autopilot continue lane verify</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/I1.4-runtime-ide-hooks-beforesubmit-subagentstart-pretooluse-prec.html">I1.4</a></span>
+  <span class="cap-title">Runtime IDE hooks beforeSubmit subagentStart preToolUse preCompact</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

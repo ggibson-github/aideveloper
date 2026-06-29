@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>G3.2 — conformance route-tier check</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/G.html">Plane G</a> · <a href="../chapters/G-G3.html">G3</a> ·
+    G3.2
+  </nav>
+  <p class="page-id">G3.2 · Verification &amp; quality plane</p>
+  <h1 class="page-title">conformance route-tier check</h1>
+  <p class="page-subtitle">conformance route-tier check</p>
+  
+  <div class="story-block"><p>route-tier conformance ensures <code>next_action</code>, <code>capability_class</code>, <code>spawn_workers</code>, and model tier align whenever the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> changes pursuit direction. <code>python scripts/route-tier.py --apply</code> is the canonical apply path; validate-workflow cross-checks tier output against state.json.</p>
+<p>Mis-routed genius implement or missing spawn_workers when task cards expect workers is a conformance failure, not a soft warning. Pack role bindings (<a href="../capabilities/B5.2-role-to-pipeline-id-skills-tool-permissions.html" class="spec-link">B5.2</a>) feed expected tier patterns for validation.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">After <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> approves the plan, pursuit owns SDLC execution—implement, test, refactor, integrate, and deploy preparation—without requiring a human turn for each phase transition.</span></li><li><span class="step-num">Step 2</span><span class="step-text">In-scope work runs through <a href="../capabilities/A3.2-goal-autopilot-until-goal-verify-or-hard-block.html" class="spec-link">A3.2</a>: multi-role company workflows via template-packs, structured <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> blocker escalation, and platform-queue harness self-improvement alongside the active product goal.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Out-of-scope work—irreversible production without verify and rollback, silent waiver of safety gates, subjective aesthetic approval unless encoded in acceptance tests—must not enter autonomous pursuit; pack authors classify workflows against this boundary before H1.</span></li><li><span class="step-num">Step 4</span><span class="step-text">When a step needs authority, judgment of record, or external access the system cannot obtain, preflight raises H2. instead of improvising past the three touchpoints.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If scope ambiguity would let agents advance past verify or waive gates silently, <code>check-pipeline-blocked.py</code> stops pursuit fail-closed until operators clarify boundaries via journal and state.json <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids G3.2</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Flaky test — escalation S4 once, then H2 with evidence log; no silent retry loop.</li><li>Edge case G3.2 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;G3.2&quot;,
+  &quot;description&quot;: &quot;conformance route tier check&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

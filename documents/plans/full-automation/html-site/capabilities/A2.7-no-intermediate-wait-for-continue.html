@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>A2.7 — no, intermediate, wait, for, and continue</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/A.html">Plane A</a> · <a href="../chapters/A-A2.html">A2</a> ·
+    A2.7
+  </nav>
+  <p class="page-id">A2.7 · Pursuit &amp; control plane</p>
+  <h1 class="page-title">no, intermediate, wait, for, and continue</h1>
+  <p class="page-subtitle">no intermediate wait for continue</p>
+  
+  <div class="story-block"><p>Earlier automation models asked humans to type “continue” after every step. This capability forbids intermediate wait-for-continue: the loop runs autonomously between <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a>, <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a>, and <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> touchpoints.</p>
+<p>“Continue” in operator language now means one pipeline step when manually invoked—not a prompt between every phase inside <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a>. That redefinition is what makes 100% automation between touchpoints achievable.</p>
+<p>Confusion here causes products to re-introduce manual babysitting. This spec is the guardrail against regressing to burst-and-wait workflows.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">With <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a>.active true, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> runs the <a href="../capabilities/A2.6-loop-until-blocked-budget-achieved-h3-reject.html" class="spec-link">A2.6</a> canonical loop—<a href="../capabilities/A2.1-preflight-check-pipeline-blocked-extended.html" class="spec-link">A2.1</a> preflight, one <a href="../capabilities/A2.2-if-ready-execute-one-pipeline-step.html" class="spec-link">A2.2</a> phase, <a href="../capabilities/A2.3-post-step-route-tier-dual-write-increment.html" class="spec-link">A2.3</a> post-step—back-to-back in the same session without prompting the operator to type &quot;continue&quot; between skill phases.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Manual <code>/continue</code> or operator &quot;continue&quot; executes exactly one pipeline step only when <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> is inactive; it does not babysit each phase inside an active <a href="../glossary.html#pursuit-loop" class="glossary-link" title="Pursuit loop">pursuit loop</a>.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Permitted human pauses are <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> plan approval, <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> blocker resolution, and <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> final sign-off.; check-pipeline-blocked BLOCKED exits the loop until <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> clears.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Skills, rules, and run-local-pipeline must not reintroduce intermediate wait-for-user gates between post-step <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> and the next preflight except at <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a>, <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a>, or <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> touchpoints.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If a <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> turn ends while <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> remains active without advancing pursuit or dual-writing an <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> stop reason, the next wake fails closed at preflight BLOCKED until journal and state.json reconcile the stall.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids A2.7</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>goal_verify passes but H3 rejected — goal.state returns to pursuing with rejection notes.</li><li>Edge case A2.7 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;A2.7&quot;,
+  &quot;description&quot;: &quot;no intermediate wait for continue&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.14</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

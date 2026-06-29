@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>H3 — artifact and graphs</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/H.html">Plane H</a> · <a href="../chapters/H-H3.html">H3</a> ·
+    H3
+  </nav>
+  <p class="page-id">H3 · Persistence &amp; state plane</p>
+  <h1 class="page-title">artifact and graphs</h1>
+  <p class="page-subtitle">artifact graphs</p>
+  
+  <div class="story-block"><p>Artifact graphs declare dependency edges between design nodes, task cards, pack fragments, and integration manifest entries—program mode reads the graph before parallel spawn (<a href="../capabilities/B5.3-handoff-manifest-artifact-graph.html" class="spec-link">B5.3</a>, <a href="../capabilities/C4.4-artifact-graph-per-program-and-pack.html" class="spec-link">C4.4</a>).</p>
+<p>reconcile-artifact-graph marks nodes stale when upstream changes; reconcile-stale plans re-runs (<a href="../capabilities/E5.1-staleness-design-graph-staleness-json.html" class="spec-link">E5.1</a>). Graph state persists in state.json program block and docs/manifest/staleness.json. Workers must not proceed on stale manifest nodes without <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> reconcile approval.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">Before orchestrate-program spawns parallel lanes, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> loads the artifact graph from state.json and the integration manifest so each downstream node declares dependencies on upstream design, task-card, and pack artifacts (<a href="../capabilities/B5.3-handoff-manifest-artifact-graph.html" class="spec-link">B5.3</a>, <a href="../capabilities/C4.4-artifact-graph-per-program-and-pack.html" class="spec-link">C4.4</a>).</span></li><li><span class="step-num">Step 2</span><span class="step-text">When an upstream spec or design file changes, reconcile-artifact-graph marks affected graph nodes stale in docs/manifest/staleness.json and the state.json program block so pursuit cannot treat dependents as current (<a href="../capabilities/E5.1-staleness-design-graph-staleness-json.html" class="spec-link">E5.1</a>).</span></li><li><span class="step-num">Step 3</span><span class="step-text">If reconcile-stale finds stale manifest nodes, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> halts ready lane spawn until it plans the prescribed re-run or records an operator-approved waiver—workers fail closed on stale graph entries.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Graph edges tie design nodes, task cards, pack fragments, and manifest rows together so handoff and integration checks can verify cross-stream contracts before parallel execution proceeds.</span></li><li><span class="step-num">Step 5</span><span class="step-text">On missing dependency metadata, unresolved stale nodes, or graph drift between staleness.json and state.json, pursuit stops at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> until reconcile completes and preflight passes again.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids H3</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case H3 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case H3 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;H3&quot;,
+  &quot;description&quot;: &quot;artifact graphs&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

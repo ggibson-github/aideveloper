@@ -1,0 +1,89 @@
+{
+  "id": "A2.1",
+  "slug": "A2.1-preflight-check-pipeline-blocked-extended",
+  "title": "preflight check-pipeline-blocked extended",
+  "branch": "A",
+  "parent": "[A2-index](A2-index.md)",
+  "vision_section": "",
+  "release": "v2.14",
+  "purpose": "A2.1 defines preflight check pipeline blocked extended for the agent-driven expert system. Pursuit & control plane \u2014 autonomous loops until goal verified.",
+  "scope": [
+    "Owns `A2.1` only; siblings under `A2` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a73 \u2014 Branch A \u2014 Pursuit & control plane](../../full-automation-vision-and-hierarchy.md#3-branch-a-pursuit-control-plane)."
+  ],
+  "behavior_steps": [
+    "Every pursuit wake\u2014session autopilot, goal_autopilot, or SDK daemon\u2014starts with the conductor running `python scripts/automation/check-pipeline-blocked.py` (S0) against journal and state.json before any skill phase or worker spawn.",
+    "Exit code READY (0) authorizes exactly one pipeline phase via [A2.2](A2.2-if-ready-execute-one-pipeline-step.md); BLOCKED (1) halts the turn, dual-writes a structured stop reason, and leaves next_action unchanged.",
+    "Preflight tests gates_pending, blocking_questions, [A1.4](A1.4-deadline-budget-steps-tokens-wall-clock.md) budget caps, evidence_required gaps, and [A1.5](A1.5-goal-state-enum-pursuing-blocked-verifying-achieved-rejected.md) goal.state so model-heavy work never starts when the step cannot commit.",
+    "Per [B1.1](B1.1-s0-deterministic-mandatory-first.md), routing and worker spawns never precede this S0 check; [A2.3](A2.3-post-step-route-tier-dual-write-increment.md) re-invokes preflight on the next wake after each completed phase.",
+    "If BLOCKED fires for corrupt state, unresolved gates, or stale evidence, pursuit routes to H2 and goal.state becomes blocked until the operator or journal-keeper reconciles journal and state.json."
+  ],
+  "mermaid": "flowchart TD\n  start[Conductor turn start] --> s0[check-pipeline-blocked.py]\n  s0 -->|exit 0 READY| step[Execute one pipeline step]\n  s0 -->|exit 1 BLOCKED| stop[Stop pursuit / H2]\n  step --> post[route-tier + dual-write]\n  post --> start",
+  "json_example": "{\n  \"node\": \"A2.1\",\n  \"description\": \"preflight check pipeline blocked extended\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "goal_verify passes but H3 rejected \u00e2\u20ac\u201d goal.state returns to pursuing with rejection notes.",
+    "Edge case `A2.1` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `A2.1`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `goal` block to state template and journal-keeper dual-write (v2.14).",
+    "Extend `check-pipeline-blocked.py` with goal_autopilot stop reasons.",
+    "Implement `scripts/goal-verify.py` stub aggregating task evidence paths.",
+    "Add `.cursor/skills/goal-keeper/SKILL.md` for conductor H1\u00e2\u2020\u2019pursuit transition.",
+    "Document `A2.1` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `A2.1`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids A2.1`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`journal/state.json `goal`, `pursuit`, `hitl``",
+    "`scripts/automation/check-pipeline-blocked.py`",
+    "`scripts/automation/run-local-pipeline.py`",
+    "`.cursor/skills/autopilot/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a73",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[A2-index](A2-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids A2.1` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [A2-index](A2-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "A2.1 defines preflight check pipeline blocked extended for the agent-driven expert system. Pursuit & control plane \u2014 autonomous loops until goal verified. In practice, the system every pursuit wake\u2014session autopilot, goal_autopilot, or sdk daemon\u2014starts with the conductor running `python scripts/automation/check-pipeline-blocked.py` (s0) against journal and state.json before any skill phase or worker spawn, then exit code ready (0) authorizes exactly one pipeline phase via [a2.2](a2.2-if-ready-execute-one-pipeline-step.md); blocked (1) halts the turn, dual-writes a structured stop reason, and leaves next_action unchanged.",
+  "reader_narrative": "<!-- prose-source: agent pilot 2026-06-28 -->\n\nEvery pursuit turn starts with a question: is it safe to act? This capability extends preflight via `check-pipeline-blocked.py` so the conductor never executes a pipeline step while gates, blockers, budgets, or missing evidence would make that step invalid.\n\nExit code semantics are strict: READY (0) means exactly one skill phase may run; BLOCKED (1) means stop, dual-write a structured H2 or stop reason, and do not advance next_action. Preflight is S0\u2014deterministic, cheap, and mandatory before any model-heavy work ([B1.1 S0 rule](../full-automation/B1.1-s0-deterministic-mandatory-first.md)).\n\nSkipping preflight is how autonomous systems waste tokens on work that cannot commit. This step is the first node in the A2 pursuit loop and re-runs after every completed turn."
+}

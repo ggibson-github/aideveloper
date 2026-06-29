@@ -1,0 +1,89 @@
+{
+  "id": "C1.2",
+  "slug": "C1.2-pipeline-iterative-feature",
+  "title": "pipeline iterative_feature",
+  "branch": "C",
+  "parent": "[C1-index](C1-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "C1.2 defines pipeline iterative feature for the agent-driven expert system. Product execution \u2014 pipelines, tasks, program, delivery.",
+  "scope": [
+    "Owns `C1.2` only; siblings under `C1` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a75 \u2014 Branch C \u2014 Product execution plane](../../full-automation-vision-and-hierarchy.md#5-branch-c-product-execution-plane)."
+  ],
+  "behavior_steps": [
+    "When route-tier or program-scoper detects an existing delivery baseline and a feature-scoped goal, it sets `pipeline_id` to `iterative_feature` and seeds `next_action` to the iterative-feature gather phase instead of restarting greenfield skills.",
+    "Each pursuit turn runs [A2.1](A2.1-preflight-check-pipeline-blocked-extended.md) preflight then exactly one iterative phase per [A2.2](A2.2-if-ready-execute-one-pipeline-step.md)\u2014requirements \u2192 research \u2192 feature design \u2192 branch \u2192 implement \u2192 test \u2192 git-workflow\u2014skipping phases the journal already marks complete.",
+    "Feature design gating follows active pack policy: self-gate when encoded in the template-pack, otherwise H1 approval blocks implement until the feature charter is dual-written to journal and state.json.",
+    "Implement and test phases bind task cards with verify-router evidence matching [C1.1](C1.1-pipeline-software-greenfield.md) discipline; `last_verify=passed` is required before advancing past implement tasks or opening PR/push steps.",
+    "If routing selects greenfield for a feature delta, feature design lacks machine-checkable outputs, or branch/git-workflow runs without required approval, pursuit halts at H2 until the conductor corrects `pipeline_id`, gates, and dual-write sequencing."
+  ],
+  "mermaid": "flowchart TD\n  entry[Entry: spec or feature request] --> pick{pipeline_id}\n  pick -->|greenfield| gf[spec-parser \u00e2\u2020\u2019 HLD \u00e2\u2020\u2019 DD \u00e2\u2020\u2019 tasks]\n  pick -->|iterative_feature| it[iterative-feature \u00e2\u2020\u2019 design gate]\n  pick -->|program| pr[program-scoper \u00e2\u2020\u2019 manifest gate]\n  pick -->|pack| pk[company pack pipelines.yaml]",
+  "json_example": "{\n  \"node\": \"C1.2\",\n  \"description\": \"pipeline iterative feature\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `C1.2` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `C1.2` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `C1.2`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `C1.2` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_c1_2.py when script exists.",
+    "Validate `C1.2` against SEC-15 release checklist and parent index links.",
+    "Document `C1.2` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `C1.2`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids C1.2`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/tasks/`",
+    "`docs/manifest/pipelines/`",
+    "`.cursor/skills/implement-feature/`",
+    "`program/workstreams/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a75",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[C1-index](C1-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids C1.2` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [C1-index](C1-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "C1.2 defines pipeline iterative feature for the agent-driven expert system. Product execution \u2014 pipelines, tasks, program, delivery. In practice, the system when route-tier or program-scoper detects an existing delivery baseline and a feature-scoped goal, it sets `pipeline_id` to `iterative_feature` and seeds `next_action` to the iterative-feature gather phase instead of restarting greenfield skills, then each pursuit turn runs [a2.1](a2.1-preflight-check-pipeline-blocked-extended.md) preflight then exactly one iterative phase per [a2.2](a2.2-if-ready-execute-one-pipeline-step.md)\u2014requirements \u2192 research \u2192 feature design \u2192 branch \u2192 implement \u2192 test \u2192 git-workflow\u2014skipping phases the journal already marks complete.",
+  "reader_narrative": "<!-- prose-source: agent plane-c 2026-06-28 -->\n\nIterative feature pipeline continues development after initial delivery: gather requirements, research, feature design, approval (or self-gate), branch, implement, test, commit/PR/push. It avoids re-running full greenfield when the repo and harness already exist.\n\nFeature design approval can self-gate when encoded in pack policy; otherwise H1-class approval applies once per feature charter. Evidence and verify-router discipline match greenfield implement phases. Use iterative-feature skill as the conductor entry point."
+}

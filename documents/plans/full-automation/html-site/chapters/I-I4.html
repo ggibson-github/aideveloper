@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>I4 — External tools (per pack)</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/I.html">Plane I</a> ·
+    I4
+  </nav>
+  <p class="page-id">I4 · Runtime &amp; integration plane</p>
+  <h1 class="page-title">External tools (per pack)</h1>
+  <div class="story-block"><p>I4: External tools (per pack). Open each capability below for diagrams, verification, and contracts.</p>
+<p>External MCP servers—browser automation, DCC tools, cloud APIs—extend worker capability per pack configuration. MCP tools appear in worker spawn contracts with explicit permission boundaries; the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> approves which servers are active for active_role (<a href="../capabilities/B5.2-role-to-pipeline-id-skills-tool-permissions.html" class="spec-link">B5.2</a>).</p>
+<p>Auth failures and rate limits surface <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> with credential pointers in facts INDEX. MCP is integration runtime, not pursuit router—state transitions remain <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a>-owned. Browser MCP follows lock/navigate/unlock discipline to avoid rabbit-hole automation.</p>
+<p>Tool-operator shell workers execute literal Tool command blocks from task cards—Blender batch exports, Unreal commandlet runs, custom CLIs—writing outputs only to declared paths. tool-operator skill bounds writes; product source edits happen only via normal implement workers.</p>
+<p>Tool failures attach logs to <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>/ and trigger verify escalation (<a href="../capabilities/B2.4-verifier-tool-operator-evidence.html" class="spec-link">B2.4</a>). Pack authors declare tool patterns in task card templates; ad-hoc tool invocation without card binding is forbidden during <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>-gated implement.</p>
+<p>Non-pytest <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> types—checksum files, screenshot paths, export manifests, linter reports—follow <code>docs/operator/evidence-types.md</code> so verify-router and headless-verify accept them alongside test logs. Task cards declare <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> type explicitly.</p>
+<p>Mixed <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> bundles reference all paths in state evidence_files and journal <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">Evidence</a> files (<a href="../capabilities/H4-evidence.html" class="spec-link">H4</a>). Operators extending <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> types update the manifest and add <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> validation where machine-checkable.</p>
+<p>Runtime policy for transistor executors: scripts via <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a>, tools via tool-operator/MCP with role allowlist (F6.3), soft via bounded workers—never bypass preToolUse hooks.</p>
+<p>See <a href="../branches/I.html" class="spec-link">Vision §11 — Branch I — Runtime &amp; integration plane</a> and SEC-18-transistor-model-a-to-z.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/I4.1-runtime-external-mcp-browser-dcc-cloud.html">I4.1</a></span>
+  <span class="cap-title">runtime external MCP browser DCC cloud</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/I4.2-runtime-external-tool-operator-tool-command-task-cards.html">I4.2</a></span>
+  <span class="cap-title">runtime external tool-operator Tool command task cards</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/I4.3-runtime-external-evidence-types-non-pytest.html">I4.3</a></span>
+  <span class="cap-title">runtime external evidence-types non-pytest</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/I4.4-transistor-executors-mcp-tool-script-boundary.html">I4.4</a></span>
+  <span class="cap-title">transistor executors MCP tool script boundary</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

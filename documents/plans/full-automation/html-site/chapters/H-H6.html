@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>H6 — H6</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/H.html">Plane H</a> ·
+    H6
+  </nav>
+  <p class="page-id">H6 · Persistence &amp; state plane</p>
+  <h1 class="page-title">H6</h1>
+  <div class="story-block"><p>Snapshots capture pursuit state before context compaction or session handoff—preCompact hook triggers sync-state.py to write timestamped snapshot files alongside live journal/state.json (<a href="../capabilities/I1.4-runtime-ide-hooks-beforesubmit-subagentstart-pretooluse-prec.html" class="spec-link">I1.4</a>).</p>
+<p>Recovery resumes from last good <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> if operator closes mid-loop; snapshots are recovery aids, not the primary router. SDK daemon and headless runs use the same snapshot contract (<a href="../capabilities/I2.1-runtime-sdk-run-local-pipeline-goal-autopilot.html" class="spec-link">I2.1</a>). validate-workflow.py rejects corrupt state before <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> continues.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/H6-snapshots.html">H6</a></span>
+  <span class="cap-title">snapshots</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

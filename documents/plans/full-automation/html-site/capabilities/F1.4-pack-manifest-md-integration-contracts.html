@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>F1.4 — pack manifest.md integration contracts</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/F.html">Plane F</a> · <a href="../chapters/F-F1.html">F1</a> ·
+    F1.4
+  </nav>
+  <p class="page-id">F1.4 · Organization plane</p>
+  <h1 class="page-title">pack manifest.md integration contracts</h1>
+  <p class="page-subtitle">pack manifest.md integration contracts</p>
+  
+  <div class="story-block"><p><code>manifest.md</code> in the pack defines integration contracts—internal handoffs between roles and external boundaries (APIs, repos, third-party tools). This is the pack-authored precursor to <code>program/integration/manifest.md</code> that program-scoper materializes at instantiation (<a href="../capabilities/F2.4-company-conductor-handoffs-manifest-graph.html" class="spec-link">F2.4</a>).</p>
+<p>Human gate clears parallel lanes only after manifest approval (<a href="../capabilities/B5.3-handoff-manifest-artifact-graph.html" class="spec-link">B5.3</a>). Contracts must name artifact types, verify commands, and blocking dependencies—not vague &quot;coordinate with team.&quot; Cross-pack imports (<a href="../capabilities/F5.1-cross-pack-imports-micro-packs.html" class="spec-link">F5.1</a>) extend manifest rows when micro-packs add roles.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart TD
+  trigger[Trigger condition] --&gt; pre[Preconditions S0]
+  pre --&gt; exec[Execute step logic]
+  exec --&gt; verify[Verify output]
+  verify --&gt;|pass| done[Mark queue item done]
+  verify --&gt;|fail| h2[H2 blocker]</pre>
+</div>
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When <code>next_action</code> targets release or operate phases, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> routes through git-workflow, release-queue, and dashboard skills only after verify commands and rollback paths are bound in the task card and active pack.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Pack authors map APP-A-release to pipeline phases, <a href="../capabilities/F1.8-pack-verify-goal-verify-suites.html" class="spec-link">F1.8</a> verify suites, and playbooks so deploy preparation produces machine-checkable <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>—not subjective &quot;shipped&quot; chat.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Plane I runtime integrations (<a href="../capabilities/I3.2-runtime-headless-github-actions-validate-verify.html" class="spec-link">I3.2</a>, <a href="../capabilities/I5.1-runtime-notify-status-dashboard-generation.html" class="spec-link">I5.1</a>) run validate-workflow and verify-router in headless or CI context before <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> release sign-off is requested.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Operator dashboards and digest notifications surface release-queue status and <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> blockers. without unblocking <a href="../glossary.html#pursuit-loop" class="glossary-link" title="Pursuit loop">pursuit loop</a>s.</span></li><li><span class="step-num">Step 5</span><span class="step-text">Irreversible production actions without defined verify and rollback paths fail closed at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> under Plane G rollback policy—never set goal.state to achieved on undeployable or unrollbackable changes.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids F1.4</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Pack role handoff while lane lease held — complete-work-order releases lease before role switch.</li><li>Edge case F1.4 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;F1.4&quot;,
+  &quot;description&quot;: &quot;pack manifest md integration contracts&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.19</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

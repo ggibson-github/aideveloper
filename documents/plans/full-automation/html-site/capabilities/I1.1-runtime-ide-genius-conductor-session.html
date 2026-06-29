@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>I1.1 — runtime IDE genius conductor session</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/I.html">Plane I</a> · <a href="../chapters/I-I1.html">I1</a> ·
+    I1.1
+  </nav>
+  <p class="page-id">I1.1 · Runtime &amp; integration plane</p>
+  <h1 class="page-title">runtime IDE genius conductor session</h1>
+  <p class="page-subtitle">runtime IDE genius conductor session</p>
+  
+  <div class="story-block"><p>The in-IDE <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> session is genius-tier and thin: the operator selects the orchestration model once per session from <code>docs/operator/model-policy.json</code>, then the parent agent runs <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> preflight, spawns economy workers, and <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s journal/state—never bulk-implementing when spawn_workers is true.</p>
+<p>This is the primary runtime for v2 pursuit: continue, <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a>, gate, and verify commands all assume a Cursor IDE session with AGENTS.md and rules loaded. See <a href="../capabilities/B3.1-genius-orchestration-only-thin-turns.html" class="spec-link">genius-conductor-tiered-routing.md</a> and <a href="../branches/I.html" class="spec-link">Vision §11 — Branch I — Runtime &amp; integration plane</a>.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">On continue/start, beforeSubmit and subagentStart hooks in <code>.cursor/hooks.json</code> run S0-thin scripts that inject journal summary, state.json snapshot fields, and context file paths into the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> turn.</span></li><li><span class="step-num">Step 2</span><span class="step-text">preToolUse hooks enforce allowlisted commands and filesystem writes before economy workers execute shell or MCP tooling during implement tasks.</span></li><li><span class="step-num">Step 3</span><span class="step-text">preCompact fires sync-state snapshot writes paired with <a href="../capabilities/H6-snapshots.html" class="spec-link">H6</a> so pursuit can resume after context compaction without losing the last good <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> baseline.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Hooks complement always-on rules from <a href="../capabilities/E4.1-context-always-on-rules-agents-md.html" class="spec-link">E4.1</a> but do not replace the continue skill requirement to read journal/progress.md each wake.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If hook injection fails—corrupt state.json, missing journal, or script error—pursuit surfaces <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> and refuses the turn rather than running the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> on stale or empty context.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids I1.1</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case I1.1 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case I1.1 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;I1.1&quot;,
+  &quot;description&quot;: &quot;runtime ide genius conductor session&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

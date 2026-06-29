@@ -1,0 +1,89 @@
+{
+  "id": "G1.3",
+  "slug": "G1.3-last-verify-before-advance",
+  "title": "last_verify before advance",
+  "branch": "G",
+  "parent": "[G1-index](G1-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "G1.3 defines last verify before advance for the agent-driven expert system. Verification & quality \u2014 evidence, goal_verify, anti-mistake.",
+  "scope": [
+    "Owns `G1.3` only; siblings under `G1` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a79 \u2014 Branch G \u2014 Verification & quality plane (anti-mistake)](../../full-automation-vision-and-hierarchy.md#9-branch-g-verification-quality-plane-anti-mistake)."
+  ],
+  "behavior_steps": [
+    "Before context compaction or session handoff, the preCompact hook from I1.4 runs `sync-state.py` to write timestamped snapshot files alongside live `journal/state.json` and `journal/progress.md`.",
+    "On Continue or autopilot wake, the conductor treats journal/state.json as the primary router and consults snapshots only when dual-write is ambiguous or the operator closed mid-loop.",
+    "SDK daemon and headless runners via I2.1 use the same snapshot contract so 24/7 pursuit shares recovery semantics with the in-IDE session.",
+    "Autopilot resume pairs snapshots with G6.3\u2014restore from the last good dual-write or snapshot before draining the next product or platform turn.",
+    "If `validate-workflow.py` rejects state as corrupt, pursuit stops at H2 with the validation log attached rather than continuing on a snapshot substitute per A4.4."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"goal\": {\n    \"verify_command\": \"python scripts/goal-verify.py\",\n    \"state\": \"verifying\"\n  },\n  \"last_verify\": \"passed\",\n  \"evidence_required\": true\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Flaky test \u00e2\u20ac\u201d escalation S4 once, then H2 with evidence log; no silent retry loop.",
+    "Edge case `G1.3` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `G1.3`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Extend verify-router for goal-level suite invocation.",
+    "Wire CI: validate-workflow checks goal block when pursuit.mode=goal_autopilot.",
+    "Document evidence type in docs/operator/evidence-types.md.",
+    "Validate `G1.3` against SEC-15 release checklist and parent index links.",
+    "Document `G1.3` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `G1.3`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids G1.3`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`scripts/verify-router.py`",
+    "`scripts/validate-workflow.py`",
+    "`evidence/`",
+    "`.cursor/skills/verifier/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a79",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[G1-index](G1-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids G1.3` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [G1-index](G1-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "G1.3 defines last verify before advance for the agent-driven expert system. Verification & quality \u2014 evidence, goal_verify, anti-mistake. In practice, the system before context compaction or session handoff, the precompact hook from i1.4 runs `sync-state.py` to write timestamped snapshot files alongside live `journal/state.json` and `journal/progress.md`, then on continue or autopilot wake, the conductor treats journal/state.json as the primary router and consults snapshots only when dual-write is ambiguous or the operator closed mid-loop.",
+  "reader_narrative": "<!-- prose-source: agent plane-g 2026-06-28 -->\n\n`last_verify` is the machine-readable latch between verify-router output and next_action progression: only `passed` clears the implement gate; `failed` or absent values keep the conductor on the same task card and may trigger [B3.3](B3.3-escalation-loop-on-verify-fail.md) escalation.\n\nDual-write `last_verify` in the same turn as evidence log creation so resume after laptop close or session compact restores truthful state. Never advance next_action in chat while state still shows failed verify\u2014 that is the hallucinated-done mistake class ([G5.1](G5.1-mistake-hallucinated-done-evidence-gate.md))."
+}

@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "description": "Registered hierarchy expansion topics. Add a row for each new brainstorming hierarchy.",
+  "topics": {
+    "full-automation": {
+      "title": "Full automation expert system (A–J planes)",
+      "source": "documents/full-automation-vision-and-hierarchy.md",
+      "queue": "docs/automation/vision-expansion-queue.json",
+      "prompt": "docs/automation/vision-expansion-prompt.md",
+      "output_dir": "documents/plans/full-automation/",
+      "ledger": "docs/automation/hierarchy-iteration-ledger.json",
+      "quality_report_json": "docs/automation/hierarchy-quality-report.json",
+      "quality_report_md": "docs/automation/hierarchy-quality-report.md",
+      "signoff_bundle": "documents/plans/full-automation/H3-SIGNOFF-BUNDLE.md",
+      "queue_data_module": "hierarchy_queue_data",
+      "min_passes": 3,
+      "max_passes": 3,
+      "html_site_dir": "documents/plans/full-automation/html-site/",
+      "html_site_config": "docs/automation/templates/hierarchy-html/full-automation-site-config.json",
+      "html_glossary": "docs/automation/templates/hierarchy-html/full-automation-glossary.json",
+      "notes": "Reference implementation; 239 leaves; default 3 pipeline passes"
+    }
+  }
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>G1 — Evidence gates (existing)</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/G.html">Plane G</a> ·
+    G1
+  </nav>
+  <p class="page-id">G1 · Verification &amp; quality plane</p>
+  <h1 class="page-title">Evidence gates (existing)</h1>
+  <div class="story-block"><p>G1: <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">Evidence</a> gates (existing). Open each capability below for diagrams, verification, and contracts.</p>
+<p>Task-level verification runs through <code>scripts/verify-router.py</code> and the verifier skill: the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> or shell worker executes the literal Test or Tool command from the task card, writes <code>evidence/task-NNN-test.log</code>, and sets <code>last_verify</code> in state.json before any implement task advances.</p>
+<p>This is the bottom <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> gate—no narrative “tests pass” substitutes for a log file. Non-pytest <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> types follow <code>docs/operator/evidence-types.md</code>. Pair with <a href="../capabilities/G1.2-evidence-required-state.html" class="spec-link">G1.2</a> and <a href="../capabilities/B2.4-verifier-tool-operator-evidence.html" class="spec-link">B2.4</a>. See <a href="../branches/G.html" class="spec-link">Vision §9 — Branch G — Verification &amp; quality plane (anti-mistake)</a>.</p>
+<p>When <code>evidence_required: true</code> in state.json, the <a href="../glossary.html#pursuit-loop" class="glossary-link" title="Pursuit loop">pursuit loop</a> must not advance past the current implement task until <code>evidence_files</code> exist and <code>last_verify</code> is <code>passed</code>. The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> and workers treat this flag as fail-closed policy, not a journal suggestion.</p>
+<p>Git-workflow push is blocked while <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> is missing or verify failed—documented exceptions belong in the journal with operator approval. This capability encodes the <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>-required workspace rule for every pack that ships with verification discipline.</p>
+<p><code>last_verify</code> is the machine-readable latch between verify-router output and next_action progression: only <code>passed</code> clears the implement gate; <code>failed</code> or absent values keep the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> on the same task card and may trigger <a href="../capabilities/B3.3-escalation-loop-on-verify-fail.html" class="spec-link">B3.3</a> escalation.</p>
+<p><a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">Dual-write</a> <code>last_verify</code> in the same turn as <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> log creation so resume after laptop close or session compact restores truthful state. Never advance next_action in chat while state still shows failed verify— that is the hallucinated-done mistake class (<a href="../capabilities/G5.1-mistake-hallucinated-done-evidence-gate.html" class="spec-link">G5.1</a>).</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/G1.1-task-verify-router-verifier.html">G1.1</a></span>
+  <span class="cap-title">task verify-router verifier</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/G1.2-evidence-required-state.html">G1.2</a></span>
+  <span class="cap-title">evidence required and state</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/G1.3-last-verify-before-advance.html">G1.3</a></span>
+  <span class="cap-title">last verify, before, and advance</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

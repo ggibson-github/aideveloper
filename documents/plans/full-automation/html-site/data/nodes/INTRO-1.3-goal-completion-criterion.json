@@ -1,0 +1,84 @@
+{
+  "id": "INTRO-1.3",
+  "slug": "INTRO-1.3-goal-completion-criterion",
+  "title": "Goal completion criterion",
+  "branch": "meta",
+  "parent": "[INTRO-1-index](INTRO-1-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "INTRO-1.3 defines goal completion criterion for the agent-driven expert system. North star, scope, minimal HITL (H1/H2/H3).",
+  "scope": [
+    "Owns `INTRO-1.3` only; siblings under `INTRO-1` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a711 \u2014 Branch I \u2014 Runtime & integration plane](../../full-automation-vision-and-hierarchy.md#11-branch-i-runtime-integration-plane)."
+  ],
+  "behavior_steps": [
+    "When [A2.1](A2.1-preflight-check-pipeline-blocked-extended.md) reports READY, the conductor reads next_action from state.json and invokes exactly one matching skill phase\u2014implement-feature, dd-writer, or continue\u2014never batching design, implement, and verify in a single wake.",
+    "Each wake produces one ledger entry, one evidence slot, and one dual-write boundary so pursuit audit trails stay aligned with a single next_action transition per [A2.7](A2.7-no-intermediate-wait-for-continue.md).",
+    "Economy workers run only when spawn_workers is true and [B2.2](B2.2-librarian-allowed-reads-catalog-composition.md) allowed_reads constrain scope; the conductor does not chain additional phases before post-step housekeeping.",
+    "When the skill phase completes, control passes to [A2.3](A2.3-post-step-route-tier-dual-write-increment.md) for route-tier, journal-keeper dual-write, and counter increment before the next preflight cycle.",
+    "Violating one-step semantics\u2014or executing when preflight was BLOCKED\u2014halts pursuit at H2 because partial state makes resume ambiguous after crash, laptop sleep, or operator interrupt."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"node\": \"INTRO-1.3\",\n  \"description\": \"goal completion criterion\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `INTRO-1.3` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `INTRO-1.3` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `INTRO-1.3`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `INTRO-1.3` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_intro-1_3.py when script exists.",
+    "Validate `INTRO-1.3` against SEC-15 release checklist and parent index links.",
+    "Document `INTRO-1.3` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `INTRO-1.3`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids INTRO-1.3`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a711",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[INTRO-1-index](INTRO-1-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids INTRO-1.3` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [INTRO-1-index](INTRO-1-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "INTRO-1.3 defines goal completion criterion for the agent-driven expert system. North star, scope, minimal HITL (H1/H2/H3). In practice, the system when [a2.1](a2.1-preflight-check-pipeline-blocked-extended.md) reports ready, the conductor reads next_action from state.json and invokes exactly one matching skill phase\u2014implement-feature, dd-writer, or continue\u2014never batching design, implement, and verify in a single wake, then each wake produces one ledger entry, one evidence slot, and one dual-write boundary so pursuit audit trails stay aligned with a single next_action transition per [a2.7](a2.7-no-intermediate-wait-for-continue.md).",
+  "reader_narrative": "<!-- prose-source: agent meta 2026-06-28 -->\n\nA goal is achieved only when five conditions hold together: acceptance artifacts exist, automated goal verification passes, staleness and integration graphs are consistent, no blocking questions remain without deferred rationale, and platform debt for the goal is promoted or explicitly waived with expiry.\n\nThe agent does not stop for status theater. It stops on H1, H2, H3, unrecoverable failure, or resource budget caps. This criterion prevents the common failure mode of marking tasks done while the overarching goal remains unproven\u2014Plane G goal_verify exists to enforce this bar."
+}

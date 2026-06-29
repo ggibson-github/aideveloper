@@ -1,0 +1,88 @@
+{
+  "id": "J1",
+  "slug": "J1-model-policy",
+  "title": "model policy",
+  "branch": "J",
+  "parent": "\u2014",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "J1 defines model policy for the agent-driven expert system. Governance \u2014 policy, waivers, audit, export contract.",
+  "scope": [
+    "Owns `J1` only; siblings under `\u2014` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a712 \u2014 Branch J \u2014 Governance & operator plane](../../full-automation-vision-and-hierarchy.md#12-branch-j-governance-operator-plane)."
+  ],
+  "behavior_steps": [
+    "On each pursuit wake, the conductor runs `scripts/route-tier.py --apply` (S0) against `docs/operator/model-policy.json` and journal/state.json to set `model_tier`, `spawn_workers`, and `subagent_models` before any skill phase runs.",
+    "Genius-tier models from policy bind to the conductor orchestration turns under [B3.1](B3.1-genius-orchestration-only-thin-turns.md); economy tiers route to spawned workers per `capability_class`\u2014fixed model names never hardcode in skills or rules.",
+    "IDE sessions and SDK daemons ([I2.2](I2.2-runtime-sdk-cursor-api-key-autopilot-model.md)) load the same policy file so autopilot routing stays consistent across runtimes.",
+    "When operators edit tier lists or spawn defaults, `validate-workflow.py` must pass before unattended goal autopilot resumes so corrupt policy cannot silently misroute turns.",
+    "If policy JSON is missing, invalid, or contradicts state `capability_class`, preflight fails closed at H2 rather than proceeding with an undefined model tier."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"J1\",\n  \"description\": \"model policy\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `J1` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `J1` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `J1`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `J1` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_j1.py when script exists.",
+    "Validate `J1` against SEC-15 release checklist and parent index links.",
+    "Document `J1` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `J1`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids J1`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/operator/model-policy.json`",
+    "`docs/decisions/automation-waivers.md`",
+    "`docs/automation/release-queue.json`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a712",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[\u2014-index](\u2014-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids J1` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [\u2014-index](\u2014-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "J1 defines model policy for the agent-driven expert system. Governance \u2014 policy, waivers, audit, export contract. In practice, the system on each pursuit wake, the conductor runs `scripts/route-tier.py --apply` (s0) against `docs/operator/model-policy.json` and journal/state.json to set `model_tier`, `spawn_workers`, and `subagent_models` before any skill phase runs, then genius-tier models from policy bind to the conductor orchestration turns under [b3.1](b3.1-genius-orchestration-only-thin-turns.md); economy tiers route to spawned workers per `capability_class`\u2014fixed model names never hardcode in skills or rules.",
+  "reader_narrative": "<!-- prose-source: agent plane-j 2026-06-28 -->\n\n`docs/operator/model-policy.json` defines genius and economy tier Cursor model lists, autopilot defaults, spawn_workers policy, and capability_class routing hints. Operators update tiers as models evolve\u2014fixed model names are not hardcoded in skills or rules.\n\nroute-tier.py reads policy plus state to set model_tier each turn ([B3.1](B3.1-genius-orchestration-only-thin-turns.md)). SDK and IDE runtimes share the same policy file ([I2.2](I2.2-runtime-sdk-cursor-api-key-autopilot-model.md)). Policy changes should run validate-workflow.py before unattended autopilot resumes. See [Vision \u00a712](../../full-automation-vision-and-hierarchy.md#12-branch-j-governance-operator-plane)."
+}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>D6.2 — platform done verify script L2+</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/D.html">Plane D</a> · <a href="../chapters/D-D6.html">D6</a> ·
+    D6.2
+  </nav>
+  <p class="page-id">D6.2 · Platform evolution plane</p>
+  <h1 class="page-title">platform done verify script L2+</h1>
+  <p class="page-subtitle">platform done verify script L2+</p>
+  
+  <div class="story-block"><p>For L2 and above promotions, definition of done requires a verify path—unit test, verify-router command, or validate-workflow hook—that proves the script or tool behaves as specified. L1 playbooks may cite manual verify until scripted; L2+ without automated verify fails platform done.</p>
+<p><a href="../glossary.html#evidence" class="glossary-link" title="Evidence">Evidence</a> discipline mirrors product tasks but writes platform-appropriate logs under <code>evidence/</code> or unit test output. Script promotion pairs extraction (<a href="../capabilities/D4.2-platform-work-script-extraction.html" class="spec-link">D4.2</a>) with test file in <code>tests/unit/</code>. False done without verify triggers audit re-enqueue and blocks <a href="../capabilities/D2.3-dequeue-platform-turn-not-product.html" class="spec-link">D2.3</a> head advance.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">For L2 and above promotions, definition of done requires a verify path—unit test, verify-router command, or validate-workflow hook—that proves the script or tool behaves as specified.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Script promotion pairs <a href="../capabilities/D4.2-platform-work-script-extraction.html" class="spec-link">D4.2</a> extraction with a test file in <code>tests/unit/</code> before the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> dequeues the platform item.</span></li><li><span class="step-num">Step 3</span><span class="step-text">L1 playbooks may cite manual verify until scripted; L2+ without automated verify fails platform done and blocks <a href="../capabilities/D2.3-dequeue-platform-turn-not-product.html" class="spec-link">D2.3</a> head advance.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Verifier writes platform-appropriate logs under <code>evidence/</code> or captures unit test output; <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s <code>last_verify</code> before marking promotion done.</span></li><li><span class="step-num">Step 5</span><span class="step-text">False done without verify triggers audit re-enqueue and pursuit stops at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> until automated proof exists.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids D6.2</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Platform queue depth 0 but product blocked on missing playbook — D3.3 priority cut skips platform drain.</li><li>Edge case D6.2 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;D6.2&quot;,
+  &quot;description&quot;: &quot;platform done verify script l2&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.16</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

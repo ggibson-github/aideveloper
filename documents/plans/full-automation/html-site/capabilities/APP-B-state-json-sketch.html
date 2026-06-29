@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>APP-B — state, json, and sketch</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/meta.html">Plane meta</a> ·
+    APP-B
+  </nav>
+  <p class="page-id">APP-B · Front matter &amp; cross-cutting architecture</p>
+  <h1 class="page-title">state, json, and sketch</h1>
+  <p class="page-subtitle">state json sketch</p>
+  
+  <div class="story-block"><p>This appendix sketches additive state.json fields for v2 goals, platform queues, pursuit counters, <a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">HITL</a> pending markers, and company context—without breaking state.json version 2 compatibility. Implementers use it as a map when reading Plane H specs.</p>
+<p>The sketch is not a substitute for validate-workflow.py and schema tests; it orients readers before they open individual H1.x field specs.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart TD
+  trigger[Trigger condition] --&gt; pre[Preconditions S0]
+  pre --&gt; exec[Execute step logic]
+  exec --&gt; verify[Verify output]
+  verify --&gt;|pass| done[Mark queue item done]
+  verify --&gt;|fail| h2[H2 blocker]</pre>
+</div>
+  <h2 class="section-title">What this defines</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">At each pursuit wake, <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> scripts and the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> read legacy v2 router keys in <code>journal/state.json</code> first, then additive goal, platform, pursuit, hitl, and company blocks sketched here before any LLM interprets progress.</span></li><li><span class="step-num">Step 2</span><span class="step-text">New fields are additive only—sync-state.py and journal-keeper <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> journal and state atomically so existing consumers of <code>next_action</code>, <code>autopilot</code>, and <code>evidence_required</code> keep working across restarts.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Platform queue shape (<a href="../capabilities/H1.3-state-platform-block.html" class="spec-link">H1.3</a>), pursuit counters (<a href="../capabilities/H1.4-state-pursuit-block.html" class="spec-link">H1.4</a>), <a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">HITL</a> pending markers (<a href="../capabilities/H1.5-state-hitl-block.html" class="spec-link">H1.5</a>), and company context (<a href="../capabilities/H1.6-state-company-block.html" class="spec-link">H1.6</a>) cross-reference Plane H field specs rather than duplicating them in this appendix.</span></li><li><span class="step-num">Step 4</span><span class="step-text">validate-workflow.py enforces schema conformance on read; corrupt or partial JSON triggers <a href="../capabilities/A4.4-stop-integrity-validate-workflow-state-corrupt.html" class="spec-link">A4.4</a> stop before goal <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> resumes.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If a proposed state shape lacks schema tests or validate-workflow coverage, pursuit fails closed at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a>—never write ambiguous fields that break resume from the last good <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids APP-B</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case APP-B variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case APP-B variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;APP-B&quot;,
+  &quot;description&quot;: &quot;state json sketch&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

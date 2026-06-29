@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>H1.6 — state, company, and block</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/H.html">Plane H</a> · <a href="../chapters/H-H1.html">H1</a> ·
+    H1.6
+  </nav>
+  <p class="page-id">H1.6 · Persistence &amp; state plane</p>
+  <h1 class="page-title">state, company, and block</h1>
+  <p class="page-subtitle">state company block</p>
+  
+  <div class="story-block"><p>The company block binds pack_id, active_role, template-pack version, and multi-goal workstream leases for company <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a>. Role switches mid-goal require journal-recorded <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> decision (<a href="../capabilities/B5.1-active-role-from-template-pack.html" class="spec-link">B5.1</a>); workers inherit role permissions from pack schema (<a href="../capabilities/B5.2-role-to-pipeline-id-skills-tool-permissions.html" class="spec-link">B5.2</a>).</p>
+<p>Integration manifest and artifact graph refs live here for program mode (<a href="../chapters/C-C4.html" class="spec-link">C4</a>). pack_id null means default repo harness; instantiated packs override pipeline_id and verify suites per <a href="../chapters/F-F1.html" class="spec-link">F1</a>. Company block must stay consistent with journal Company section on <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">At <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> program instantiation or pack selection, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> writes pack_id, active_role, template-pack version, and workstream lease refs into state.json company block—mirroring the journal Company section on <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>.</span></li><li><span class="step-num">Step 2</span><span class="step-text">When <a href="../capabilities/B5.1-active-role-from-template-pack.html" class="spec-link">B5.1</a> signals a role switch mid-goal, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> records the decision in journal before updating active_role; workers spawned thereafter inherit permissions from <a href="../capabilities/B5.2-role-to-pipeline-id-skills-tool-permissions.html" class="spec-link">B5.2</a> pack schema.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Program-mode pursuits load integration manifest and artifact graph pointers from the company block so <a href="../chapters/C-C4.html" class="spec-link">C4</a> orchestration reads consistent cross-stream contracts.</span></li><li><span class="step-num">Step 4</span><span class="step-text">pack_id null preserves default repo harness pipelines; non-null pack_id overrides pipeline_id and verify suites. without mixing pack fragments.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If company block drifts from journal Company on <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>, or manifest refs point to stale nodes, preflight halts at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> until <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> reconcile restores consistency.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids H1.6</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case H1.6 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case H1.6 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;goal&quot;: { &quot;id&quot;: &quot;g1&quot;, &quot;state&quot;: &quot;pursuing&quot; },
+  &quot;platform&quot;: { &quot;promotion_queue&quot;: [] },
+  &quot;pursuit&quot;: { &quot;mode&quot;: &quot;goal_autopilot&quot;, &quot;steps_total&quot;: 0 },
+  &quot;hitl&quot;: { &quot;pending&quot;: null },
+  &quot;company&quot;: { &quot;pack_id&quot;: null, &quot;active_role&quot;: null }
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

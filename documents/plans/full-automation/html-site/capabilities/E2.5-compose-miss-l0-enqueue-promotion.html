@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>E2.5 — compose miss L0 enqueue promotion</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/E.html">Plane E</a> · <a href="../chapters/E-E2.html">E2</a> ·
+    E2.5
+  </nav>
+  <p class="page-id">E2.5 · Knowledge &amp; composition plane</p>
+  <h1 class="page-title">compose miss L0 enqueue promotion</h1>
+  <p class="page-subtitle">compose miss L0 enqueue promotion</p>
+  
+  <div class="story-block"><p>When compose finds no suitable <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> component, pursuit proceeds at L0 (ephemeral reasoning) for the immediate turn—but must enqueue a promotion_queue item so Plane D can distill the pattern into script, playbook, or pack fragment later.</p>
+<p>This closes the reuse loop: product is not blocked, platform debt is recorded. Pair with <a href="../capabilities/B4.4-divergence-log-when-not-composing.html" class="spec-link">B4.4</a> divergence logging and <a href="../capabilities/B4.2-platform-promotion-queue-peek-drain.html" class="spec-link">B4.2</a> K-step drain. Repeated L0 for the same capability signals <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> gap—prioritize promotion over repeated improvisation.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart LR
+  prod[Product turn] --&gt; k{step mod K == 0?}
+  k --&gt;|yes| plat[Platform turn dequeue]
+  k --&gt;|no| prod
+  plat --&gt; promote[promotion_queue drain]
+  promote --&gt; prod</pre>
+</div>
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When the game-studio pack instantiates at company_ops, program-scoper loads <a href="../capabilities/F1.2-pack-roles---yaml.html" class="spec-link">F1.2</a> role definitions and binds designer, technical artist, animator, programmer, QA, build engineer, and release manager each to pipeline slice, tools, and KPIs under one pack_id.</span></li><li><span class="step-num">Step 2</span><span class="step-text">The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> activates a role from the pack template when a workstream lane becomes ready, spawning economy workers with role-specific allowed_reads and seeded task cards instead of a flat implement loop.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Program-scoper may defer lanes for roles the milestone does not yet need—those roles stay unspawned until manifest nodes require that discipline.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Cross-pack HR onboarding imports supplemental role fragments via <a href="../capabilities/F5.1-cross-pack-imports-micro-packs.html" class="spec-link">F5.1</a> without overwriting core game-studio bindings in the active pack.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If role-to-pipeline mapping is ambiguous or a handoff targets an undefined role, pursuit stops at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> with missing owner and program-scoper guidance—not silent role collapse.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids E2.5</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case E2.5 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case E2.5 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;E2.5&quot;,
+  &quot;description&quot;: &quot;compose miss l0 enqueue promotion&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.17</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

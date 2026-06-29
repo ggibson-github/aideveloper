@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>B3 — Model policy</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/B.html">Plane B</a> ·
+    B3
+  </nav>
+  <p class="page-id">B3 · Cognition &amp; routing plane</p>
+  <h1 class="page-title">Model policy</h1>
+  <div class="story-block"><p>B3: Model policy. Open each capability below for diagrams, verification, and contracts.</p>
+<p>Genius-tier models are for orchestration turns only: routing, merge, gate decisions, and spawn planning—not for writing hundreds of lines of feature code. <code>model-policy.json</code> maps tiers; route-tier.py applies capability_class <a href="../glossary.html#s-tiers" class="glossary-link" title="Capability tiers S0 through S4">S0–S4</a> to pick worker vs parent model.</p>
+<p>Thin genius turns keep cost predictable and preserve worker parallelism. If the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> implements large task cards inline while spawn_workers is true, that violates this capability and collapses tier economics.</p>
+<p>Economy tier handles bulk mechanical work: multi-file search, repetitive refactors scoped to task cards, test fixes with clear stack traces, and <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> indexing. Bulk code search and shell subagents operate under read/write contracts stricter than the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a>’s.</p>
+<p>Escalate to <a href="../glossary.html#s3" class="glossary-link" title="S3 — architecture / ambiguity">S3</a> when search surfaces architectural conflict or missing facts not in allowed_reads. Economy tier is not “worse quality by default”—it is narrower context and narrower write scope.</p>
+<p>When verify fails, an escalation loop runs: capture log, classify failure (test, tool, environment, design), decide retry vs <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> vs refactor task—without silently marking the implement task complete. The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> owns the loop; workers do not self-clear <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> gates.</p>
+<p>Repeated verify failure on the same task card triggers <a href="../glossary.html#s4" class="glossary-link" title="S4 — governance escalation">S4</a> packaging for <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> with <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> paths attached. This prevents infinite implement→fail→implement churn without journal record.</p>
+<p><a href="../glossary.html#platform-turn" class="glossary-link" title="Platform turn">Platform turn</a>s combine economy workers with <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> scripts: queue peek, promotion apply, staleness reconcile, and manifest validation run deterministically before any model interprets platform debt.</p>
+<p><a href="../glossary.html#product-turn" class="glossary-link" title="Product turn">Product turn</a>s remain primary; <a href="../glossary.html#platform-turn" class="glossary-link" title="Platform turn">platform turns</a> interleave on schedule (<a href="../capabilities/SEC-13-pursuit-flow.html" class="spec-link">SEC-13 pursuit flow</a>). Platform workers use the same <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> discipline as product workers but write to platform queue state and pack fragments, not consumer feature branches.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/B3.1-genius-orchestration-only-thin-turns.html">B3.1</a></span>
+  <span class="cap-title">genius, orchestration, only, thin, and turns</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/B3.2-economy-bulk-code-search-shell.html">B3.2</a></span>
+  <span class="cap-title">economy, bulk, code, search, and shell</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/B3.3-escalation-loop-on-verify-fail.html">B3.3</a></span>
+  <span class="cap-title">escalation, loop, on, verify, and fail</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/B3.4-platform-turns-economy-plus-s0-scripts.html">B3.4</a></span>
+  <span class="cap-title">platform turns economy plus S0 scripts</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>E5 — Staleness &amp; traceability</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/E.html">Plane E</a> ·
+    E5
+  </nav>
+  <p class="page-id">E5 · Knowledge &amp; composition plane</p>
+  <h1 class="page-title">Staleness &amp; traceability</h1>
+  <div class="story-block"><p>E5: Staleness &amp; traceability. Open each capability below for diagrams, verification, and contracts.</p>
+<p><code>docs/manifest/staleness.json</code> is the design-graph staleness manifest: nodes for HLD, DD, diagrams, task cards with dependency edges and stale flags when upstream artifacts change. <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> update-staleness.py (or successor) maintains the graph file-derived.</p>
+<p>Staleness blocks implement spawn against obsolete design until reconcile completes. Program artifact graphs (<a href="../capabilities/C4.4-artifact-graph-per-program-and-pack.html" class="spec-link">C4.4</a>) complement this manifest for multi-stream work. Vision § changes enqueue deepen items for affected hierarchy ids. See <a href="../chapters/E-E5.html" class="spec-link">E5-index</a> for sibling extensions.</p>
+<p>The staleness graph extends beyond design docs to playbooks, scripts <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> nodes, and template-pack fragments—any reusable component that downstream pursuit depends on. When a script or playbook changes, dependent task cards and compose hits mark stale.</p>
+<p>Extension connects Plane E <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> maturity to traceability: promoted platform artifacts are first-class staleness nodes, not orphan files. Regeneration of <a href="../capabilities/E1.1-catalog-scripts-manifest-generated.html" class="spec-link">E1.1</a> and <a href="../capabilities/E1.7-catalog-platform-catalog-md-umbrella.html" class="spec-link">E1.7</a> should reconcile graph entries. Pack verify suites (<a href="../capabilities/MASTER-F-branch-f---organization-plane.html" class="spec-link">F1.8</a>) may assert graph completeness.</p>
+<p>reconcile-stale and reconcile-artifact-graph skills plan reruns or operator approval when staleness.json or program artifact graphs flag stale nodes. <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">Conductor</a> invokes before implement spawn on affected paths; workers pause until reconciliation clears flags or <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> waiver records.</p>
+<p><a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> scripts mark stale; skills decide rerun vs waive vs deepen hierarchy queue. Pair with <a href="../capabilities/C4.4-artifact-graph-per-program-and-pack.html" class="spec-link">C4.4</a> for program mode and <a href="../capabilities/E5.1-staleness-design-graph-staleness-json.html" class="spec-link">E5.1</a> for design graph source. Silent implement against stale design violates Plane E contract and undermines <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>.</p>
+<p>Staleness graph extends to workflow JSON files and transistor manifest nodes—upstream transistor version bump marks dependent workflows and active_workflow stale until reconcile.</p>
+<p>See <a href="../branches/E.html" class="spec-link">Vision §7 — Branch E — Knowledge &amp; composition plane</a> and SEC-18-transistor-model-a-to-z.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/E5.1-staleness-design-graph-staleness-json.html">E5.1</a></span>
+  <span class="cap-title">staleness design graph staleness.json</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/E5.2-staleness-extend-playbooks-scripts-pack-nodes.html">E5.2</a></span>
+  <span class="cap-title">staleness, extend, playbooks, scripts, pack, and nodes</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/E5.3-staleness-reconcile-stale-artifact-graph-skills.html">E5.3</a></span>
+  <span class="cap-title">staleness reconcile-stale artifact-graph skills</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/E5.4-staleness-workflow-graph-transistor-nodes.html">E5.4</a></span>
+  <span class="cap-title">staleness, workflow, graph, transistor, and nodes</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

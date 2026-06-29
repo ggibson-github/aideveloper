@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>I5.2 — runtime notify webhook email H2 H3 only</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/I.html">Plane I</a> · <a href="../chapters/I-I5.html">I5</a> ·
+    I5.2
+  </nav>
+  <p class="page-id">I5.2 · Runtime &amp; integration plane</p>
+  <h1 class="page-title">runtime notify webhook email H2 H3 only</h1>
+  <p class="page-subtitle">runtime notify webhook email H2 H3 only</p>
+  
+  <div class="story-block"><p>Optional webhook and email notifications fire on <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> blocker detection and <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> sign-off events only—not every pursuit step (<a href="../capabilities/A6.2-notify-digest-on-h2-blocker-not-every-step.html" class="spec-link">A6.2</a>). Payloads carry structured blocker reason, goal id, and suggested operator action.</p>
+<p>Notification failure must not block pursuit; missed alerts are recoverable from journal Blockers section. Strict environments may disable outbound notify entirely; observation remains via dashboard (<a href="../capabilities/I5.1-runtime-notify-status-dashboard-generation.html" class="spec-link">I5.1</a>).</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When journal-keeper records an <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> blocker or requests <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> sign-off, the runtime may emit an optional webhook or email.—routine pursuit steps and phase completions do not trigger outbound notify.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Notify payloads carry goal_id, structured blocker reason, and suggested operator action so recipients can act without opening the full journal.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Delivery runs outside the critical pursuit path; webhook or SMTP failure logs locally and pursuit continues without waiting for operator acknowledgment.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Strict environments may disable outbound notify in state or pack config; operators still observe status via <a href="../capabilities/I5.1-runtime-notify-status-dashboard-generation.html" class="spec-link">I5.1</a> dashboard regeneration.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If an alert was missed, the journal Blockers section and <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> pending state remain authoritative—notify is observability only and never substitutes for <a href="../capabilities/A6.3-operator-observe-without-unblocking-loop.html" class="spec-link">A6.3</a> clearance to resume <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a>.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids I5.2</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case I5.2 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case I5.2 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;I5.2&quot;,
+  &quot;description&quot;: &quot;runtime notify webhook email h2 h3 only&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

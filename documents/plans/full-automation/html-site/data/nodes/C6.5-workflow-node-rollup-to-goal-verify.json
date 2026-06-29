@@ -1,0 +1,100 @@
+{
+  "id": "C6.5",
+  "slug": "C6.5-workflow-node-rollup-to-goal-verify",
+  "title": "workflow node rollup to goal_verify",
+  "branch": "C",
+  "parent": "[C6-index](C6-index.md)",
+  "vision_section": "",
+  "release": "v2.26",
+  "purpose": "C6.5 defines workflow node rollup to goal_verify for the agent-driven expert system. Transistor & generator workflow model (\u00a719).",
+  "scope": [
+    "Owns `C6.5` only; siblings under `C6` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a75 \u2014 Branch C \u2014 Product execution plane](../../full-automation-vision-and-hierarchy.md#5-branch-c-product-execution-plane)."
+  ],
+  "behavior_steps": [
+    "A2.4 goal_scope_complete checks active_workflow.terminal_nodes all in completed_nodes[].",
+    "goal_verify_command receives manifest of evidence paths from workflow completion record.",
+    "Partial workflow completion without waived nodes blocks H3 per INTRO-1.3.",
+    "Rollback (G6.4) may reset from failed_node without rerunning succeeded upstream nodes.",
+    "Pack F1.8 verify suites may append domain checks beyond generic workflow rollup."
+  ],
+  "mermaid": "flowchart TD\n  compose[Compose workflow] --> validate[validate-workflow-dag S0]\n  validate -->|pass| exec[Execute one node]\n  exec --> nodeVerify[Transistor verify]\n  nodeVerify -->|pass| next[Advance active_workflow]\n  nodeVerify -->|fail| h2[H2 or retry gate]\n  next --> goalVerify[goal_verify rollup]",
+  "json_example": "{\n  \"node\": \"C6.5\",\n  \"description\": \"workflow node rollup to goal_verify\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\", \"active_workflow\": \"H1.7\" },\n  \"implemented_in_release\": \"v2.26+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u2014 state.json must resume from last good dual-write including active_workflow.",
+    "Transistor version bump mid-pursuit \u2014 E5.4 marks workflow stale; re-validate before next node.",
+    "L0 waiver node without promotion progress \u2014 D3.3 priority boost then H2 if threshold exceeded.",
+    "Pack overlay id collision \u2014 F5.4 semver fork per D5.3, not silent overwrite.",
+    "Parallel branch join missing typed input \u2014 validate-workflow-dag fails at compose time."
+  ],
+  "failure_modes": [
+    "**Fuzzy chain:** Implement without workflow_node_id when C6.1 applies \u2192 G5.8 blocks at preflight.",
+    "**False complete:** Node marked done without transistor verify evidence \u2192 G2.5 goal_verify fails closed.",
+    "**Stale workflow:** active_workflow.validation_hash mismatch \u2192 E5.4 reconcile before advance.",
+    "**Duplicate transistor:** G5.6 list-transistors --check-duplicates rejects promotion.",
+    "**Scope bleed:** Worker runs transistors outside bound node \u2192 C6.3 conformance failure."
+  ],
+  "implementation": [
+    "Map `C6.5` to release row in [SEC-15-index](SEC-15-index.md) (v2.26).",
+    "Implement behavior per [SEC-18](SEC-18-transistor-model-a-to-z.md) acceptance checklist.",
+    "Add or extend S0 script when behavior is file-derived.",
+    "Add unit test under `tests/unit/` when script exists.",
+    "Link from [C6-index](C6-index.md).",
+    "Run `python scripts/validate-workflow.py` after implement."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids C6.5`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "DAG validity",
+      "Command": "`python scripts/automation/validate-workflow-dag.py` when workflow exists"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/platform/transistors/`",
+    "`docs/platform/schemas/transistor.v1.json`",
+    "`docs/platform/schemas/workflow-dag.v1.json`",
+    "`docs/workflows/`",
+    "`scripts/automation/list-transistors.py`",
+    "`scripts/automation/validate-workflow-dag.py`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[SEC-18-transistor-model-a-to-z](SEC-18-transistor-model-a-to-z.md)",
+      "Why": "A\u2013Z authority"
+    },
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a719",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[C6-index](C6-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids C6.5` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [C6-index](C6-index.md)",
+    "[ ] Aligned with SEC-18 transistor model",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "C6.5 defines workflow node rollup to goal_verify for the agent-driven expert system. Transistor & generator workflow model (\u00a719). In practice, the system a2.4 goal_scope_complete checks active_workflow.terminal_nodes all in completed_nodes[], then goal_verify_command receives manifest of evidence paths from workflow completion record.",
+  "reader_narrative": "<!-- prose-source: agent transistor-expansion 2026-06-28 -->\n\nGoal scope completion requires terminal workflow nodes reached with evidence, not only legacy task checklist done. goal_verify aggregates per-node evidence paths listed in the DAG.\n\nSee [Vision \u00a75 \u2014 Branch C \u2014 Product execution plane](../../full-automation-vision-and-hierarchy.md#branch-c--product-execution-plane) and [SEC-18-transistor-model-a-to-z](SEC-18-transistor-model-a-to-z.md)."
+}

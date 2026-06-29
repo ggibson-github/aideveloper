@@ -1,0 +1,88 @@
+{
+  "id": "F6.3",
+  "slug": "F6.3-role-tool-permissions-mcp-cli-allowlist",
+  "title": "role tool permissions MCP CLI allowlist",
+  "branch": "F",
+  "parent": "[F6-index](F6-index.md)",
+  "vision_section": "",
+  "release": "v2.19",
+  "purpose": "F6.3 defines role tool permissions mcp cli allowlist for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling.",
+  "scope": [
+    "Owns `F6.3` only; siblings under `F6` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a78 \u2014 Branch F \u2014 Organization plane (template-packs = ceiling)](../../full-automation-vision-and-hierarchy.md#8-branch-f-organization-plane-template-packs-ceiling)."
+  ],
+  "behavior_steps": [
+    "On each worker spawn, orchestrate-subagents loads the active role's `roles/*.yaml` bindings and attaches MCP server allowlists, CLI patterns, and write scopes to the worker contract before any tool invocation.",
+    "Tool-operator and MCP preflight checks each requested path and command against the role permission matrix; a pattern outside the allowlist blocks spawn or fails the verifier with a permission error\u2014never a silent downgrade to broader tools.",
+    "Domain packs extend the matrix for external tooling\u2014Blender MCP for designer roles ([F3.3](F3.3-game-studio-external-tools-blender-ue-git-ci.md)), build and deploy CLIs for engineer roles\u2014while [B5.2](B5.2-role-to-pipeline-id-skills-tool-permissions.md) keeps product vs platform permission profiles aligned with `pipeline_id`.",
+    "Pack authors run conformance scripts against the permission matrix before publish; pursuit with an active pack rejects worker runs that reference tools not declared in the role profile.",
+    "Permission violations or allowlist drift between `state.company.active_role` and pack YAML stop pursuit at H2 with the blocked tool pattern and owning role\u2014operators reconcile bindings at H1 before resume."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"F6.3\",\n  \"description\": \"role tool permissions mcp cli allowlist\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Pack role handoff while lane lease held \u00e2\u20ac\u201d complete-work-order releases lease before role switch.",
+    "Edge case `F6.3` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `F6.3`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `company.yaml` + `roles/*.yaml` to template-packs schema.",
+    "program-scoper selects pack; sets state.company.active_role.",
+    "Per-role allowed_reads in lane.json work orders.",
+    "Validate `F6.3` against SEC-15 release checklist and parent index links.",
+    "Document `F6.3` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `F6.3`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids F6.3`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`template-packs/`",
+    "`program/integration/manifest.md`",
+    "`.cursor/skills/program-scoper/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a78",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[F6-index](F6-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids F6.3` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [F6-index](F6-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "F6.3 defines role tool permissions mcp cli allowlist for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling. In practice, the system on each worker spawn, orchestrate-subagents loads the active role's `roles/*.yaml` bindings and attaches mcp server allowlists, cli patterns, and write scopes to the worker contract before any tool invocation, then tool-operator and mcp preflight checks each requested path and command against the role permission matrix; a pattern outside the allowlist blocks spawn or fails the verifier with a permission error\u2014never a silent downgrade to broader tools.",
+  "reader_narrative": "<!-- prose-source: agent plane-f 2026-06-28 -->\n\nTool permissions per role encode MCP server allowlists, CLI patterns, and write scopes\u2014programmer may run build CLI; designer may run Blender MCP; governance may read-only audit tools. Bindings live in roles/*.yaml and mirror operator policy overrides ([B5.2](B5.2-role-to-pipeline-id-skills-tool-permissions.md)).\n\nViolations block spawn or fail verifier with permission error\u2014never silent downgrade to broader tools. External game tools ([F3.3](F3.3-game-studio-external-tools-blender-ue-git-ci.md)) and data deploy CLIs declare here. Pack authors test permission matrix with conformance scripts before publish."
+}

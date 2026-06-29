@@ -1,0 +1,89 @@
+{
+  "id": "B2.5",
+  "slug": "B2.5-reviewer-bugbot-security-risk-triggers",
+  "title": "Reviewer bugbot security risk triggers",
+  "branch": "B",
+  "parent": "[B2-index](B2-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "B2.5 defines reviewer bugbot security risk triggers for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack.",
+  "scope": [
+    "Owns `B2.5` only; siblings under `B2` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a74 \u2014 Branch B \u2014 Cognition & routing plane](../../full-automation-vision-and-hierarchy.md#4-branch-b-cognition-routing-plane)."
+  ],
+  "behavior_steps": [
+    "After substantial implement diffs or when pack policy flags risk, the conductor spawns readonly reviewer workers\u2014Bugbot for branch changes, security-review for touch paths and dependencies.",
+    "Reviewer findings return as bounded summaries; reviewers do not dual-write pursuit state and cannot clear gates or advance `next_action` on their own.",
+    "Review complements [B2.4](B2.4-verifier-tool-operator-evidence.md) evidence: verify-router proves commands ran; reviewers detect mistake classes from Plane G before push.",
+    "In strict mode the conductor blocks git-workflow until reviewer pass; in default self-gate mode findings may be recorded as waivable with expiry when automatable checks pass.",
+    "Critical or unresolved reviewer findings route to H2 or [B1.5](B1.5-s4-governance-escalation-h2-packaging.md) rather than merging to main or requesting H3 sign-off."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"B2.5\",\n  \"description\": \"reviewer bugbot security risk triggers\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `B2.5` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `B2.5` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `B2.5`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `B2.5` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_b2_5.py when script exists.",
+    "Validate `B2.5` against SEC-15 release checklist and parent index links.",
+    "Document `B2.5` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `B2.5`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids B2.5`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/operator/model-policy.json`",
+    "`scripts/route-tier.py`",
+    "`.cursor/skills/librarian/`",
+    "`.cursor/rules/genius-conductor.mdc`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a74",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[B2-index](B2-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids B2.5` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [B2-index](B2-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "B2.5 defines reviewer bugbot security risk triggers for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack. In practice, the system after substantial implement diffs or when pack policy flags risk, the conductor spawns readonly reviewer workers\u2014bugbot for branch changes, security-review for touch paths and dependencies, then reviewer findings return as bounded summaries; reviewers do not dual-write pursuit state and cannot clear gates or advance `next_action` on their own.",
+  "reader_narrative": "<!-- prose-source: agent plane-b 2026-06-28 -->\n\nReviewer workers run on triggers: Bugbot after substantial implement diffs, security-review when policy flags risk, risk-class controls from Plane G. They are readonly with respect to pursuit state\u2014findings go to the conductor for merge or H2.\n\nReview does not replace verify-router evidence; it adds mistake-class detection before push. Strict mode may require reviewer pass before git-workflow; default self-gate records findings as waivable with expiry when automatable checks pass."
+}

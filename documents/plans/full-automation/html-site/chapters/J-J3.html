@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>J3 — J3</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/J.html">Plane J</a> ·
+    J3
+  </nav>
+  <p class="page-id">J3 · Governance &amp; operator plane</p>
+  <h1 class="page-title">J3</h1>
+  <div class="story-block"><p><code>strict_hitl</code> mode in state.json hitl block forces explicit human clearance for gates that default self-gate would auto-pass with <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>. Enable for regulated environments, external-audit programs, or operator preference during early pack rollout.</p>
+<p>When strict_hitl is true, continue and <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> stop at every pending <a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">H1/H2/H3</a> until journal records explicit approval phrases—observation alone does not unblock (<a href="../capabilities/A6.3-operator-observe-without-unblocking-loop.html" class="spec-link">A6.3</a>). Pack defaults may set strict_hitl per role (<a href="../capabilities/H1.5-state-hitl-block.html" class="spec-link">H1.5</a>).</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/J3-strict-hitl.html">J3</a></span>
+  <span class="cap-title">strict and hitl</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

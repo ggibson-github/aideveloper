@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Glossary</title>
+  <link rel="stylesheet" href="assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="index.html">Overview</a>
+        <a href="branches/index.html">Architectural planes</a>
+        <a href="glossary.html">Glossary</a>
+        
+        <a href="data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main class="glossary-page">
+  <h1 class="page-title">Glossary</h1>
+  <p class="section-sub">Definitions for specialized terms, acronyms, and metrics used in this expert system.</p>
+  <div class="glossary-toc card">
+    <h3>Quick navigation</h3>
+    <ul class="glossary-toc-list glossary-toc-grouped"><li class="glossary-cat">Architecture<ul><li><a href="#capability">Capability</a></li><li><a href="#branch">Branch</a></li><li><a href="#architectural-planes">Architectural planes</a></li><li><a href="#expert-system">Expert system</a></li><li><a href="#evidence">Evidence</a></li><li><a href="#dual-write">Dual-write</a></li><li><a href="#catalog">Catalog (compose-first)</a></li></ul></li><li class="glossary-cat">Charts &amp; metrics<ul><li><a href="#capability-density-by-branch">Capability density by branch</a></li><li><a href="#capability-density">Capability density</a></li><li><a href="#architectural-scope-by-branch">Architectural scope by branch</a></li><li><a href="#architectural-scope">Architectural scope</a></li></ul></li><li class="glossary-cat">Human touchpoints<ul><li><a href="#h1">H1 — initial planning gate</a></li><li><a href="#h2">H2 — blocker assistance</a></li><li><a href="#h3">H3 — final sign-off</a></li><li><a href="#hitl">Human-in-the-loop touchpoints</a></li></ul></li><li class="glossary-cat">Routing &amp; tiers<ul><li><a href="#s0">S0 — deterministic scripts</a></li><li><a href="#s1">S1 — mechanical workers</a></li><li><a href="#s2">S2 — templated artifacts</a></li><li><a href="#s3">S3 — architecture / ambiguity</a></li><li><a href="#s4">S4 — governance escalation</a></li><li><a href="#s-tiers">Capability tiers S0 through S4</a></li><li><a href="#conductor">Conductor</a></li></ul></li><li class="glossary-cat">Operations &amp; pursuit<ul><li><a href="#pursuit-loop">Pursuit loop</a></li><li><a href="#product-turn">Product turn</a></li><li><a href="#platform-turn">Platform turn</a></li><li><a href="#promotion-queue">Promotion queue</a></li><li><a href="#goal-verify">Goal verification suite</a></li><li><a href="#autopilot">Autopilot</a></li></ul></li></ul>
+  </div>
+  
+<section class="glossary-entry" id="capability">
+  <p class="glossary-cat-label">Architecture</p>
+  <h2>Capability</h2>
+  <p>One clearly defined piece of what the automated system must be able to do — like a written contract that says what should happen, how to check it worked, and what can go wrong. The book lists 239 of these; together they describe the whole design.</p>
+  
+</section>
+<section class="glossary-entry" id="branch">
+  <p class="glossary-cat-label">Architecture</p>
+  <h2>Branch</h2>
+  <p>A chapter-sized grouping of related capabilities in this book — for example everything about verification, or everything about how the system runs day to day. Branches help you navigate a large design without reading it all at once.</p>
+  
+</section>
+<section class="glossary-entry" id="architectural-planes">
+  <p class="glossary-cat-label">Architecture</p>
+  <h2>Architectural planes</h2>
+  <p>Ten major chapters of the design (A through J), each owning one concern — pursuit, routing, product delivery, self-improvement, knowledge, organization, verification, persistence, runtime tools, and operator policy.</p>
+  <p class="glossary-spec"><a href="capabilities/MASTER-A-branch-a---pursuit---control-plane.html">Full specification →</a></p>
+</section>
+<section class="glossary-entry" id="expert-system">
+  <p class="glossary-cat-label">Architecture</p>
+  <h2>Expert system</h2>
+  <p>The automated software delivery system this book describes: it carries out projects with minimal human involvement, stops and asks for help when stuck, and keeps proof that each step actually worked before moving on.</p>
+  
+</section>
+<section class="glossary-entry" id="evidence">
+  <p class="glossary-cat-label">Architecture</p>
+  <h2>Evidence</h2>
+  <p>Saved proof that a step really succeeded — for example a test log, a command output, or a file checksum. The system is not allowed to claim progress without evidence on disk that a computer can re-check later.</p>
+  
+</section>
+<section class="glossary-entry" id="dual-write">
+  <p class="glossary-cat-label">Architecture</p>
+  <h2>Dual-write</h2>
+  <p>Every important status change is saved in two places: a human-readable journal file and a machine-readable state file. If the IDE closes or the process restarts, the system can pick up where it left off without relying on chat memory.</p>
+  <p class="glossary-spec"><a href="capabilities/H2-journal-progress.html">Full specification →</a></p>
+</section>
+<section class="glossary-entry" id="catalog">
+  <p class="glossary-cat-label">Architecture</p>
+  <h2>Catalog (compose-first)</h2>
+  <p>The organization&#x27;s indexed library of facts, playbooks, scripts, and reusable pieces. Before inventing something new, the system must search the catalog and reuse what already exists — like checking parts inventory before fabricating a new part.</p>
+  <p class="glossary-spec"><a href="capabilities/B4.3-compose-first-catalog-before-improvise.html">Full specification →</a></p>
+</section>
+<section class="glossary-entry" id="capability-density-by-branch">
+  <p class="glossary-cat-label">Charts &amp; metrics</p>
+  <h2>Capability density by branch</h2>
+  <p>A bar chart on the overview page showing how many capabilities are specified in each plane. Taller bars mean more design detail was written for that area. This measures documentation breadth, not how fast the software runs.</p>
+  
+</section>
+<section class="glossary-entry" id="capability-density">
+  <p class="glossary-cat-label">Charts &amp; metrics</p>
+  <h2>Capability density</h2>
+  <p>How many capabilities belong to a given plane or topic — a simple count of how much of the design lives in that section.</p>
+  
+</section>
+<section class="glossary-entry" id="architectural-scope-by-branch">
+  <p class="glossary-cat-label">Charts &amp; metrics</p>
+  <h2>Architectural scope by branch</h2>
+  <p>A doughnut chart on the overview page showing each plane&#x27;s share of all 239 capabilities — which parts of the design take up the most space on paper.</p>
+  
+</section>
+<section class="glossary-entry" id="architectural-scope">
+  <p class="glossary-cat-label">Charts &amp; metrics</p>
+  <h2>Architectural scope</h2>
+  <p>How much of the overall design a plane or component owns, measured here by counting capabilities relative to the whole book.</p>
+  
+</section>
+<section class="glossary-entry" id="h1">
+  <p class="glossary-cat-label">Human touchpoints</p>
+  <h2>H1 — initial planning gate</h2>
+  <p>The first time a human must act: you describe the goal (a product, feature, or project) and approve the plan. After H1, the system is expected to work on its own until it needs help or finishes.</p>
+  <p class="glossary-spec"><a href="capabilities/INTRO-1.2-human-touchpoint-contract-h1-h2-h3.html">Full specification →</a></p>
+</section>
+<section class="glossary-entry" id="h2">
+  <p class="glossary-cat-label">Human touchpoints</p>
+  <h2>H2 — blocker assistance</h2>
+  <p>A pause where the automation cannot continue without you — for example missing credentials, an unclear requirement, or a failed check it cannot fix alone. You provide what is missing; the system records the answer and resumes the same goal.</p>
+  <p class="glossary-spec"><a href="capabilities/INTRO-1.2-human-touchpoint-contract-h1-h2-h3.html">Full specification →</a></p>
+</section>
+<section class="glossary-entry" id="h3">
+  <p class="glossary-cat-label">Human touchpoints</p>
+  <h2>H3 — final sign-off</h2>
+  <p>The last human step: after automated tests and checks pass, you formally accept or reject the completed work. Rejection sends the system back to fix issues rather than closing the goal.</p>
+  <p class="glossary-spec"><a href="capabilities/INTRO-1.2-human-touchpoint-contract-h1-h2-h3.html">Full specification →</a></p>
+</section>
+<section class="glossary-entry" id="hitl">
+  <p class="glossary-cat-label">Human touchpoints</p>
+  <h2>Human-in-the-loop touchpoints</h2>
+  <p>The rule that humans appear only at three moments: approve the plan (H1), unblock when stuck (H2), and sign off at the end (H3). Everything between those moments is meant to run without asking you to click Continue on every step.</p>
+  <p class="glossary-spec"><a href="capabilities/INTRO-1.2-human-touchpoint-contract-h1-h2-h3.html">Full specification →</a></p>
+</section>
+<section class="glossary-entry" id="s0">
+  <p class="glossary-cat-label">Routing &amp; tiers</p>
+  <h2>S0 — deterministic scripts</h2>
+  <p>The cheapest, most reliable kind of work: small programs that read files and run fixed steps with no AI guessing. The system must run these scripts first whenever they exist, before spending tokens on an AI model.</p>
+  <p class="glossary-spec"><a href="capabilities/B1.1-s0-deterministic-mandatory-first.html">Full specification →</a></p>
+</section>
+<section class="glossary-entry" id="s1">
+  <p class="glossary-cat-label">Routing &amp; tiers</p>
+  <h2>S1 — mechanical workers</h2>
+  <p>Routine AI-assisted work with a tight brief — searching code, applying a task card, running a command — using a lower-cost model because the steps are well defined and low risk.</p>
+  <p class="glossary-spec"><a href="capabilities/B1.2-s1-mechanical-economy-workers-catalog.html">Full specification →</a></p>
+</section>
+<section class="glossary-entry" id="s2">
+  <p class="glossary-cat-label">Routing &amp; tiers</p>
+  <h2>S2 — templated artifacts</h2>
+  <p>Producing standard documents or artifacts from templates — design sections, task lists, diagrams — following patterns the organization already agreed on instead of inventing structure from scratch each time.</p>
+  <p class="glossary-spec"><a href="capabilities/B1.3-s2-templated-artifacts.html">Full specification →</a></p>
+</section>
+<section class="glossary-entry" id="s3">
+  <p class="glossary-cat-label">Routing &amp; tiers</p>
+  <h2>S3 — architecture / ambiguity</h2>
+  <p>Judgment calls where there is no single script answer — trade-offs, merges after parallel work, or gaps in the written rules. A senior orchestration model handles these turns instead of a routine worker.</p>
+  <p class="glossary-spec"><a href="capabilities/B1.4-s3-architecture-ambiguity.html">Full specification →</a></p>
+</section>
+<section class="glossary-entry" id="s4">
+  <p class="glossary-cat-label">Routing &amp; tiers</p>
+  <h2>S4 — governance escalation</h2>
+  <p>When the system must stop and package a clear question for a human because policy, legal, safety, or high-risk impact requires an explicit decision — not because a test failed.</p>
+  <p class="glossary-spec"><a href="capabilities/B1.5-s4-governance-escalation-h2-packaging.html">Full specification →</a></p>
+</section>
+<section class="glossary-entry" id="s-tiers">
+  <p class="glossary-cat-label">Routing &amp; tiers</p>
+  <h2>Capability tiers S0 through S4</h2>
+  <p>Five levels of how hard or expensive a turn of work should be: from fixed scripts (S0) up to governance escalation (S4). Routing picks the lowest tier that can safely do the job.</p>
+  <p class="glossary-spec"><a href="capabilities/B1.1-s0-deterministic-mandatory-first.html">Full specification →</a></p>
+</section>
+<section class="glossary-entry" id="conductor">
+  <p class="glossary-cat-label">Routing &amp; tiers</p>
+  <h2>Conductor</h2>
+  <p>The lead AI role that runs the show: it decides what happens next, assigns smaller worker AIs, merges their results, and writes the official record of progress. It does not do all the coding itself.</p>
+  <p class="glossary-spec"><a href="capabilities/B2.1-conductor-genius-merge-route-platform-drain.html">Full specification →</a></p>
+</section>
+<section class="glossary-entry" id="pursuit-loop">
+  <p class="glossary-cat-label">Operations &amp; pursuit</p>
+  <h2>Pursuit loop</h2>
+  <p>The main repeating cycle after you approve a plan: check whether it is safe to act, do one step of work (product or platform), save progress, and repeat until the goal is done, you are needed (H2), or you sign off (H3).</p>
+  <p class="glossary-spec"><a href="capabilities/SEC-13-pursuit-flow.html">Full specification →</a></p>
+</section>
+<section class="glossary-entry" id="product-turn">
+  <p class="glossary-cat-label">Operations &amp; pursuit</p>
+  <h2>Product turn</h2>
+  <p>One step of work directly on the current product, feature, or project — for example implementing a task, running tests, or updating design docs for that goal. This is the work the customer or team asked for.</p>
+  <p class="glossary-spec"><a href="capabilities/B4.1-product-next-action-task-each-turn.html">Full specification →</a></p>
+</section>
+<section class="glossary-entry" id="platform-turn">
+  <p class="glossary-cat-label">Operations &amp; pursuit</p>
+  <h2>Platform turn</h2>
+  <p>A step where the system works on itself instead of the current product: while delivering projects it notices repeated mistakes, manual work, or missing automation and queues improvements. On a platform turn it turns that queue into scripts, playbooks, or checks so the next project runs better. Product work and self-improvement alternate so delivery does not stop entirely for maintenance.</p>
+  <p class="glossary-spec"><a href="capabilities/B4.2-platform-promotion-queue-peek-drain.html">Full specification →</a></p>
+</section>
+<section class="glossary-entry" id="promotion-queue">
+  <p class="glossary-cat-label">Operations &amp; pursuit</p>
+  <h2>Promotion queue</h2>
+  <p>A to-do list of self-improvement items discovered during real project work — the same command run twice by hand, a pattern worth scripting, a playbook that should exist. Platform turns pull from this queue and mature each item into lasting automation.</p>
+  <p class="glossary-spec"><a href="capabilities/D2.2-platform-queue-item-schema.html">Full specification →</a></p>
+</section>
+<section class="glossary-entry" id="goal-verify">
+  <p class="glossary-cat-label">Operations &amp; pursuit</p>
+  <h2>Goal verification suite</h2>
+  <p>A final automated exam run when all tasks for a goal are finished. It aggregates tests and checks across the whole scope. Passing is required before the system asks you for H3 sign-off; failing sends work back for fixes.</p>
+  <p class="glossary-spec"><a href="capabilities/A2.4-goal-scope-complete-run-goal-verify.html">Full specification →</a></p>
+</section>
+<section class="glossary-entry" id="autopilot">
+  <p class="glossary-cat-label">Operations &amp; pursuit</p>
+  <h2>Autopilot</h2>
+  <p>Mode where the system keeps taking pursuit steps on its own after H1 — without you typing Continue after every phase — until the goal is verified, blocked for your help, or finished.</p>
+  <p class="glossary-spec"><a href="capabilities/A3.2-goal-autopilot-until-goal-verify-or-hard-block.html">Full specification →</a></p>
+</section>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

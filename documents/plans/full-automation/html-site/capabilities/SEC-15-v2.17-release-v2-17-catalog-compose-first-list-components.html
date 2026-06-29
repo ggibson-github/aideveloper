@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>SEC-15-v2.17 — Release v2.17 catalog compose-first list-components</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/meta.html">Plane meta</a> ·
+    SEC-15-v2.17
+  </nav>
+  <p class="page-id">SEC-15-v2.17 · Front matter &amp; cross-cutting architecture</p>
+  <h1 class="page-title">Release v2.17 catalog compose-first list-components</h1>
+  <p class="page-subtitle">v2.17 release v2 17 catalog compose first list components</p>
+  
+  <div class="story-block"><p>Release v2.17 ships <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> discovery and <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">compose-first</a> enforcement: list-components.py generates docs/platform/CATALOG.md, librarian suggests components, and rules require composition before <a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a>+ invention.</p>
+<p>This release reduces duplicate tooling and scope creep—Plane E becomes operational, not aspirational.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart TD
+  trigger[Trigger condition] --&gt; pre[Preconditions S0]
+  pre --&gt; exec[Execute step logic]
+  exec --&gt; verify[Verify output]
+  verify --&gt;|pass| done[Mark queue item done]
+  verify --&gt;|fail| h2[H2 blocker]</pre>
+</div>
+  <h2 class="section-title">What this defines</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">At <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> plan approval for a new repo, route-tier or program-scoper sets <code>pipeline_id</code> to <code>software-greenfield</code> and seeds state.json with the first phase skill as <code>next_action</code> (typically spec-parser).</span></li><li><span class="step-num">Step 2</span><span class="step-text">Each pursuit turn runs <a href="../capabilities/A2.1-preflight-check-pipeline-blocked-extended.html" class="spec-link">A2.1</a> preflight then exactly one greenfield phase.—spec-parser → hld-writer → dd-writer → diagrams → task-breakdown → scaffold → implement loop—skipping phases the journal already marks complete.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Self-gate and <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> gates apply after <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> unless <a href="../capabilities/J3-strict-hitl.html" class="spec-link">J3</a> strict <a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">HITL</a> overrides; implement tasks require verifier <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> before <code>last_verify=passed</code> advances the loop.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Consumer goals from <a href="../capabilities/A1.1-goal-id-parent-goal-goal-type.html" class="spec-link">A1.1</a> attach to greenfield phases via task cards and <code>next_action</code>; scope completion triggers <a href="../capabilities/A2.4-goal-scope-complete-run-goal-verify.html" class="spec-link">A2.4</a> rather than arbitrary phase skipping.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If <code>pipeline_id</code> mismatches repo state, a phase runs out of order, or <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> is missing before advance, pursuit halts at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> until the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s corrected journal sequencing and state.json routing.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids SEC-15-v2.17</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case SEC-15-v2.17 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case SEC-15-v2.17 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;SEC-15-v2.17&quot;,
+  &quot;description&quot;: &quot;release v2 17 catalog compose first list components&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

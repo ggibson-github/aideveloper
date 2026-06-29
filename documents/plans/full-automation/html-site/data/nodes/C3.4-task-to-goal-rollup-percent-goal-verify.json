@@ -1,0 +1,89 @@
+{
+  "id": "C3.4",
+  "slug": "C3.4-task-to-goal-rollup-percent-goal-verify",
+  "title": "task to goal rollup percent goal_verify",
+  "branch": "C",
+  "parent": "[C3-index](C3-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "C3.4 defines task to goal rollup percent goal verify for the agent-driven expert system. Product execution \u2014 pipelines, tasks, program, delivery.",
+  "scope": [
+    "Owns `C3.4` only; siblings under `C3` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a75 \u2014 Branch C \u2014 Product execution plane](../../full-automation-vision-and-hierarchy.md#5-branch-c-product-execution-plane)."
+  ],
+  "behavior_steps": [
+    "When platform promotion reaches L5, [D4.6](D4.6-platform-work-pack-fragment-export.md) pack-fragment-export distills stabilized L0\u2013L4 artifacts from consumer repos into `template-packs/` fragments\u2014default pipelines, role bindings, verify suites, and catalog components new goals inherit at company instantiation.",
+    "L5 fragments ship organizational capital upward from product promotions, not one-off edits in a single branch; pack authors validate against Plane F pack schema before publish and catalog INDEX marks discoverability per [D6.1](D6.1-platform-done-catalog-index-row.md).",
+    "New goals at H1 pull active template-pack fragments through [B5.1](B5.1-active-role-from-template-pack.md) role bindings and [C1.4](C1.4-pack-defined-pipelines-per-company-template.md) pipeline registry\u2014the conductor preflight loads inherited verify suites without re-deriving defaults in chat.",
+    "L5 promotion closes only when [D6.4](D6.4-platform-done-staleness-node-wired.md) artifact-graph wiring notifies downstream goals of fragment changes and dual-write records promotion_queue completion to journal and state.json.",
+    "If a fragment bypasses pack schema validation, forks without [D5.3](D5.3-fork-new-catalog-entry-provenance.md) provenance, or omits staleness graph wiring, platform pursuit fails closed at H2 until pack-fragment-export reconciles and restores invariant bindings."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"C3.4\",\n  \"description\": \"task to goal rollup percent goal verify\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `C3.4` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `C3.4` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `C3.4`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `C3.4` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_c3_4.py when script exists.",
+    "Validate `C3.4` against SEC-15 release checklist and parent index links.",
+    "Document `C3.4` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `C3.4`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids C3.4`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/tasks/`",
+    "`docs/manifest/pipelines/`",
+    "`.cursor/skills/implement-feature/`",
+    "`program/workstreams/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a75",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[C3-index](C3-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids C3.4` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [C3-index](C3-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "C3.4 defines task to goal rollup percent goal verify for the agent-driven expert system. Product execution \u2014 pipelines, tasks, program, delivery. In practice, the system when platform promotion reaches l5, [d4.6](d4.6-platform-work-pack-fragment-export.md) pack-fragment-export distills stabilized l0\u2013l4 artifacts from consumer repos into `template-packs/` fragments\u2014default pipelines, role bindings, verify suites, and catalog components new goals inherit at company instantiation, then l5 fragments ship organizational capital upward from product promotions, not one-off edits in a single branch; pack authors validate against plane f pack schema before publish and catalog index marks discoverability per [d6.1](d6.1-platform-done-catalog-index-row.md).",
+  "reader_narrative": "<!-- prose-source: agent plane-c 2026-06-28 -->\n\nTask completion rolls up to goal percent complete and goal_verify prerequisites: queue empty, all required evidence passed, conformance green. Rollup is S0 where scripts aggregate task state from state.json and journal mirror.\n\nFalse rollup\u2014marking goal ready while tasks lack evidence\u2014is a Plane G failure class. Dashboard may show percent for operators; pursuit uses machine checks only."
+}

@@ -1,0 +1,89 @@
+{
+  "id": "A5.2",
+  "slug": "A5.2-continue-not-approval-self-gate-h1-h3-only",
+  "title": "continue not approval self-gate H1 H3 only",
+  "branch": "A",
+  "parent": "[A5-index](A5-index.md)",
+  "vision_section": "",
+  "release": "v2.14",
+  "purpose": "A5.2 defines continue not approval self gate h1 h3 only for the agent-driven expert system. Pursuit & control plane \u2014 autonomous loops until goal verified.",
+  "scope": [
+    "Owns `A5.2` only; siblings under `A5` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a73 \u2014 Branch A \u2014 Pursuit & control plane](../../full-automation-vision-and-hierarchy.md#3-branch-a-pursuit-control-plane)."
+  ],
+  "behavior_steps": [
+    "When the operator types Continue or `/continue`, [A2.1](A2.1-preflight-check-pipeline-blocked-extended.md) checks gates_pending, blocking_questions, and unresolved HLD/DD/feature-design waits\u2014treating them as BLOCKED per [A4.1](A4.1-stop-human-h1-h2-h3.md) even if other fields look READY.",
+    "Continue does not waive HLD, DD, manifest, or feature-design gates; automatable design checks run as self-gate plus evidence, leaving H1 plan approval and H3 sign-off as the default human touchpoints per [INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md).",
+    "Only explicit approval phrases (e.g. \"I approve the HLD\") or recorded waivers in journal Resolved Q&A clear design gates\u2014[A5.1](A5.1-continue-resume-pursuit-if-not-blocked.md) never interprets silence or repeated Continue as consent.",
+    "S0 scripts in route-tier and validate-workflow enforce the same rule headlessly so [A3.4](A3.4-sdk-daemon-run-local-pipeline-24-7.md) daemons cannot skip gates because no human watches the chat.",
+    "If an operator believed Continue cleared a gate but preflight still blocks, pursuit dual-writes H2 with the pending gate id and re-prompts for substantive approval\u2014not another pipeline phase."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"A5.2\",\n  \"description\": \"continue not approval self gate h1 h3 only\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "goal_verify passes but H3 rejected \u00e2\u20ac\u201d goal.state returns to pursuing with rejection notes.",
+    "Edge case `A5.2` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `A5.2`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `goal` block to state template and journal-keeper dual-write (v2.14).",
+    "Extend `check-pipeline-blocked.py` with goal_autopilot stop reasons.",
+    "Implement `scripts/goal-verify.py` stub aggregating task evidence paths.",
+    "Add `.cursor/skills/goal-keeper/SKILL.md` for conductor H1\u00e2\u2020\u2019pursuit transition.",
+    "Document `A5.2` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `A5.2`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids A5.2`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`journal/state.json `goal`, `pursuit`, `hitl``",
+    "`scripts/automation/check-pipeline-blocked.py`",
+    "`scripts/automation/run-local-pipeline.py`",
+    "`.cursor/skills/autopilot/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a73",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[A5-index](A5-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids A5.2` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [A5-index](A5-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "A5.2 defines continue not approval self gate h1 h3 only for the agent-driven expert system. Pursuit & control plane \u2014 autonomous loops until goal verified. In practice, the system when the operator types continue or `/continue`, [a2.1](a2.1-preflight-check-pipeline-blocked-extended.md) checks gates_pending, blocking_questions, and unresolved hld/dd/feature-design waits\u2014treating them as blocked per [a4.1](a4.1-stop-human-h1-h2-h3.md) even if other fields look ready, then continue does not waive hld, dd, manifest, or feature-design gates; automatable design checks run as self-gate plus evidence, leaving h1 plan approval and h3 sign-off as the default human touchpoints per [intro-1.2](intro-1.2-human-touchpoint-contract-h1-h2-h3.md).",
+  "reader_narrative": "<!-- prose-source: agent plane-a 2026-06-28 -->\n\nContinue is not approval. Typing Continue or running `/continue` does not waive HLD, DD, feature design, or manifest gates\u2014those become self-gate plus evidence where automatable, with H1 and H3 remaining the only default human approvals unless strict HITL is enabled.\n\nMisreading Continue as \u201cyes, proceed anyway\u201d reintroduces silent gate skips. The conductor and S0 scripts treat unresolved blocking questions and pending human gates as BLOCKED preflight outcomes. Only explicit approval phrases or recorded waivers in the journal clear design gates."
+}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>H4 — evidence</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/H.html">Plane H</a> · <a href="../chapters/H-H4.html">H4</a> ·
+    H4
+  </nav>
+  <p class="page-id">H4 · Persistence &amp; state plane</p>
+  <h1 class="page-title">evidence</h1>
+  <p class="page-subtitle">evidence</p>
+  
+  <div class="story-block"><p>The <code>evidence/</code> directory holds immutable verify logs—pytest output, tool runs, checksums—written by verify-router.py or verifier shell workers before tasks complete. state.json <code>evidence_files</code> and journal <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">Evidence</a> files mirror paths for audit.</p>
+<p>Non-pytest <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> types follow <code>docs/operator/evidence-types.md</code> (<a href="../capabilities/I4.3-runtime-external-evidence-types-non-pytest.html" class="spec-link">I4.3</a>). <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">Evidence</a> is append-only; failed verify retains logs for escalation (<a href="../capabilities/B3.3-escalation-loop-on-verify-fail.html" class="spec-link">B3.3</a>). Push and git-workflow require last_verify passed or documented journal exception per <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>-required rule.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text"><code>journal/progress.md</code> mirrors machine state in prose—phase completions, Resolved Q&amp;A, Open questions, Blockers, <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">Evidence</a> files, Context files, Session summary, and Next action—for operators who skim without parsing state.json.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Only the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s the journal after each pipeline step via journal-keeper; workers return summaries but never edit progress.md directly.</span></li><li><span class="step-num">Step 3</span><span class="step-text">The full prompt from the queue (with <code>## Your task</code> and <code>## Reader narrative</code>), or</span></li><li><span class="step-num">Step 4</span><span class="step-text">A specific leaf ID (e.g. <code>I2.2</code>, <code>G2.4</code>) you want rewritten.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids H4</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case H4 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case H4 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;H4&quot;,
+  &quot;description&quot;: &quot;evidence&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

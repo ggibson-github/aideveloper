@@ -1,0 +1,89 @@
+{
+  "id": "D3.1",
+  "slug": "D3.1-1-platform-turn-per-k-product-turns",
+  "title": "platform turn per k product turns",
+  "branch": "D",
+  "parent": "[D3-index](D3-index.md)",
+  "vision_section": "",
+  "release": "v2.16",
+  "purpose": "D3.1 defines 1 platform turn per k product turns for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse.",
+  "scope": [
+    "Owns `D3.1` only; siblings under `D3` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a76 \u2014 Branch D \u2014 Platform evolution plane (parallel queue)](../../full-automation-vision-and-hierarchy.md#6-branch-d-platform-evolution-plane-parallel-queue)."
+  ],
+  "behavior_steps": [
+    "When compose-first cannot extend a catalog entry without breaking consumers or pack isolation, the conductor records the divergence in [B4.4](B4.4-divergence-log-when-not-composing.md) and opens a fork with provenance back to the source promotion or parent artifact.",
+    "Platform workers allocate a new catalog id, append an INDEX row, and wire a staleness graph node per [D6.4](D6.4-platform-done-staleness-node-wired.md) before marking the fork item done in the promotion queue.",
+    "Downstream task cards migrate explicitly from the old id to the new entry; silent aliasing is forbidden so goal_verify evidence remains tied to one canonical component.",
+    "Pack fragments from [D4.6](D4.6-platform-work-pack-fragment-export.md) may fork upward into the template-pack namespace when company boundaries require a separate reusable artifact.",
+    "Fork without provenance fails closed at H2 and blocks SEC-14 gap-analysis trust rather than publishing an untraceable catalog entry."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"D3.1\",\n  \"description\": \"1 platform turn per k product turns\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Platform queue depth 0 but product blocked on missing playbook \u00e2\u20ac\u201d D3.3 priority cut skips platform drain.",
+    "Edge case `D3.1` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `D3.1`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `platform.promotion_queue[]` to state.json schema.",
+    "Scheduler in autopilot workflow: `(steps_total % K) == 0` \u00e2\u2020\u2019 platform turn.",
+    "playbook-keeper + script extraction skills dequeue promotion items.",
+    "Validate `D3.1` against SEC-15 release checklist and parent index links.",
+    "Document `D3.1` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `D3.1`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids D3.1`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/playbooks/`",
+    "`scripts/`",
+    "`.cursor/skills/playbook-keeper/`",
+    "`state.platform.promotion_queue`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a76",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[D3-index](D3-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids D3.1` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [D3-index](D3-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "D3.1 defines 1 platform turn per k product turns for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse. In practice, the system when compose-first cannot extend a catalog entry without breaking consumers or pack isolation, the conductor records the divergence in [b4.4](b4.4-divergence-log-when-not-composing.md) and opens a fork with provenance back to the source promotion or parent artifact, then platform workers allocate a new catalog id, append an index row, and wire a staleness graph node per [d6.4](d6.4-platform-done-staleness-node-wired.md) before marking the fork item done in the promotion queue.",
+  "reader_narrative": "<!-- prose-source: agent plane-d 2026-06-28 -->\n\nDefault scheduling grants one platform turn every K product turns\u2014commonly K=5\u2014encoded in `platform.drain_policy.product_steps_per_platform_turn`. Autopilot evaluates `(steps_total % K) == 0` after each product phase completes; when true, the next iteration is platform dequeue instead of implement or design.\n\nIf the improvement queue is empty, the platform turn is skipped and the project continues\u2014delivery does not sit idle waiting for self-improvement work. K is pack-configurable ([D5.1](D5.1-configure-task-level-params-only.md)) without forking schedulers. Overrides from [D3.2](D3.2-priority-boost-queue-depth-threshold.md), [D3.4](D3.4-idle-drain-product-waits-h2.md), and [D3.5](D3.5-max-platform-backlog-age-force-drain.md) layer on this baseline."
+}

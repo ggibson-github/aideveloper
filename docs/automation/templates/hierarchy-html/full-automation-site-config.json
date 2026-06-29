@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "brand_title": "Expert System Blueprint",
+  "brand_subtitle": "Strategic architecture portfolio",
+  "footer_label": "Expert system architecture blueprint",
+  "hero_lead": "A ten-plane expert system that pursues goals autonomously, composes knowledge before improvising, and proves every outcome with evidence before release.",
+  "story_at_a_glance": "Operators set intent once (H1). The system pursues through product and platform turns, routing work across S0–S4 capability tiers, composing from catalog before inventing, and stopping only for blockers (H2) or final sign-off (H3). Verification runs every implement batch; evidence is mandatory before pursuit continues.",
+  "story_sub": "Autonomy with guardrails — not autonomy without proof.",
+  "branch_group_label": "Plane",
+  "branch_group_label_plural": "Architectural planes",
+  "capability_label": "capabilities",
+  "explore_branches_heading": "Explore the planes",
+  "explore_branches_sub": "From pursuit and routing through verification and governance — each plane owns a coherent slice of autonomous operation.",
+  "glossary_intro": "Definitions for specialized terms, acronyms, and metrics used in this expert system.",
+  "json_details_summary": "Implementation contract",
+  "index_stats": [
+    {"kind": "node_count", "label": "Specified capabilities"},
+    {"kind": "branch_count", "label": "Architectural planes"},
+    {"kind": "static", "value": "3", "label": "Human touchpoints (H1–H3)"},
+    {"kind": "static", "value": "5", "label": "Capability tiers (S0–S4)"}
+  ],
+  "charts": [
+    {
+      "id": "capability-density",
+      "title": "Capability density by plane",
+      "caption": "Count of specified capabilities in each architectural plane.",
+      "type": "bar"
+    },
+    {
+      "id": "architectural-scope",
+      "title": "Architectural scope by plane",
+      "caption": "Share of total capabilities owned by each plane.",
+      "type": "doughnut"
+    }
+  ],
+  "hitl_callout_node_ids": ["INTRO-1.2"],
+  "overview_mermaid_center": "Pursuit Loop",
+  "book_mode": true
+}

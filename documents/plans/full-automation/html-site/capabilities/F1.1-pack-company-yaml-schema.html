@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>F1.1 — pack company.yaml schema</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/F.html">Plane F</a> · <a href="../chapters/F-F1.html">F1</a> ·
+    F1.1
+  </nav>
+  <p class="page-id">F1.1 · Organization plane</p>
+  <h1 class="page-title">pack company.yaml schema</h1>
+  <p class="page-subtitle">pack company.yaml schema</p>
+  
+  <div class="story-block"><p><code>company.yaml</code> is the root schema for every template-pack: company name, industry, department list, role references, default pipeline, and pack metadata. Instantiation copies or binds this file into pursuit state via program-scoper—<code>state.company.pack_id</code> and initial <code>active_role</code> derive from here.</p>
+<p>The schema must compose with sibling pack artifacts (<a href="../capabilities/F1.2-pack-roles---yaml.html" class="spec-link">F1.2</a> roles, <a href="../capabilities/F1.3-pack-pipelines---yaml.html" class="spec-link">F1.3</a> pipelines, <a href="../capabilities/F1.8-pack-verify-goal-verify-suites.html" class="spec-link">F1.8</a> verify suites) without ad hoc fields in consumer repos. Pack authors validate against conformance scripts before publish; consumer goals reference pack version, not forked company.yaml inline. See <a href="../branches/F.html" class="spec-link">Vision §8 — Branch F — Organization plane (template-packs = ceiling)</a>.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart TD
+  trigger[Trigger condition] --&gt; pre[Preconditions S0]
+  pre --&gt; exec[Execute step logic]
+  exec --&gt; verify[Verify output]
+  verify --&gt;|pass| done[Mark queue item done]
+  verify --&gt;|fail| h2[H2 blocker]</pre>
+</div>
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">Before spawning implement or explore workers, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> resolves per-role <code>allowed_reads</code> from pack YAML—role playbooks, lane task cards, facts entries, and declared design slices—not the full vision monolith or unrelated department lanes.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Librarian returns at most five paths within that cap. before spawn; workers inherit the list in their contract and cannot expand scope beyond it.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Lane.json work orders may further narrow reads for parallel slots so concurrent lanes do not cross-read another department&#x27;s playbooks or task cards.</span></li><li><span class="step-num">Step 4</span><span class="step-text">When <code>state.company.active_role</code> rotates (<a href="../capabilities/F6.1-role-mapping-conductor-context-switch-active-role.html" class="spec-link">F6.1</a>), <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> reloads the new role&#x27;s allowed_reads and explicit forbidden deny list before the next worker spawn.</span></li><li><span class="step-num">Step 5</span><span class="step-text">Scope bleed (e.g., a QA worker reaching finance playbooks) or reads outside the cap fail closed at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a>—<a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> withholds spawn until operators reconcile permissions at H1.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids F1.1</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Pack role handoff while lane lease held — complete-work-order releases lease before role switch.</li><li>Edge case F1.1 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;F1.1&quot;,
+  &quot;description&quot;: &quot;pack company yaml schema&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.19</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

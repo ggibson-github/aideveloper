@@ -1,0 +1,89 @@
+{
+  "id": "B1.5",
+  "slug": "B1.5-s4-governance-escalation-h2-packaging",
+  "title": "S4 governance escalation H2 packaging",
+  "branch": "B",
+  "parent": "[B1-index](B1-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "B1.5 defines s4 governance escalation h2 packaging for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack.",
+  "scope": [
+    "Owns `B1.5` only; siblings under `B1` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a74 \u2014 Branch B \u2014 Cognition & routing plane](../../full-automation-vision-and-hierarchy.md#4-branch-b-cognition-routing-plane)."
+  ],
+  "behavior_steps": [
+    "When policy, pack authority, or unresolved external dependency requires human judgment beyond [B1.4](B1.4-s3-architecture-ambiguity.md) self-gate, [B2.1](B2.1-conductor-genius-merge-route-platform-drain.md) classifies the turn as S4 and stops pursuit before another [A2.2](A2.2-if-ready-execute-one-pipeline-step.md) phase runs.",
+    "The conductor packages an H2 blocker with goal_id, missing artifact or authority, typed stop class per [A4.1](A4.1-stop-human-h1-h2-h3.md), and a concrete operator action\u2014never a vague \u201cneed help.\u201d",
+    "Waiver requests, legal/finance pack gates, and multi-goal conflicts dual-write to journal Blockers and state.json `hitl` fields so [A2.1](A2.1-preflight-check-pipeline-blocked-extended.md) returns BLOCKED until cleared.",
+    "[A6.2](A6.2-notify-digest-on-h2-blocker-not-every-step.md) emits a digest notification on S4 escalation; pursuit does not busy-loop waiting for operator chat acknowledgment.",
+    "If S4 is invoked for work resolvable by S0/S1/S3, preflight flags mis-routing at H2\u2014S4 is reserved for imminent H2 or policy-mandated review, not default genius-tier convenience."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"B1.5\",\n  \"description\": \"s4 governance escalation h2 packaging\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `B1.5` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `B1.5` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `B1.5`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `B1.5` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_b1_5.py when script exists.",
+    "Validate `B1.5` against SEC-15 release checklist and parent index links.",
+    "Document `B1.5` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `B1.5`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids B1.5`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/operator/model-policy.json`",
+    "`scripts/route-tier.py`",
+    "`.cursor/skills/librarian/`",
+    "`.cursor/rules/genius-conductor.mdc`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a74",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[B1-index](B1-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids B1.5` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [B1-index](B1-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "B1.5 defines s4 governance escalation h2 packaging for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack. In practice, the system when policy, pack authority, or unresolved external dependency requires human judgment beyond [b1.4](b1.4-s3-architecture-ambiguity.md) self-gate, [b2.1](b2.1-conductor-genius-merge-route-platform-drain.md) classifies the turn as s4 and stops pursuit before another [a2.2](a2.2-if-ready-execute-one-pipeline-step.md) phase runs, then the conductor packages an h2 blocker with goal_id, missing artifact or authority, typed stop class per [a4.1](a4.1-stop-human-h1-h2-h3.md), and a concrete operator action\u2014never a vague \u201cneed help.\u201d.",
+  "reader_narrative": "<!-- prose-source: agent plane-b 2026-06-28 -->\n\nS4 packages governance escalation: structured H2 blockers, waiver requests, legal/finance pack authority, and multi-goal conflict resolution that cannot be self-gated. The conductor formats blockers with goal id, missing artifact, and suggested operator action\u2014never a vague \u201cneed help.\u201d\n\nS4 does not mean \u201cuse the biggest model for everything.\u201d It means human touchpoint class H2 or policy-mandated review is imminent and the loop must stop cleanly. Pair with [A4.1](A4.1-stop-human-h1-h2-h3.md) stop taxonomy and [A6.2](A6.2-notify-digest-on-h2-blocker-not-every-step.md) notification digest."
+}

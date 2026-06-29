@@ -1,0 +1,89 @@
+{
+  "id": "E5.2",
+  "slug": "E5.2-staleness-extend-playbooks-scripts-pack-nodes",
+  "title": "staleness extend playbooks scripts pack nodes",
+  "branch": "E",
+  "parent": "[E5-index](E5-index.md)",
+  "vision_section": "",
+  "release": "v2.17",
+  "purpose": "E5.2 defines staleness extend playbooks scripts pack nodes for the agent-driven expert system. Knowledge & composition \u2014 catalog, compose-first, staleness.",
+  "scope": [
+    "Owns `E5.2` only; siblings under `E5` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a77 \u2014 Branch E \u2014 Knowledge & composition plane](../../full-automation-vision-and-hierarchy.md#7-branch-e-knowledge-composition-plane)."
+  ],
+  "behavior_steps": [
+    "When platform promotion lands playbooks, scripts, or pack fragments, reconcile-stale registers each reusable path in docs/manifest/staleness.json so downstream task cards and compose hits can mark dependencies stale.",
+    "On script or playbook change during pursuit, the staleness graph propagates to dependent task cards and [E2.2](E2.2-compose-query-catalog-list-components.md) compose results\u2014workers reconcile before advancing implement steps.",
+    "Regeneration of [E1.1](E1.1-catalog-scripts-manifest-generated.md) and [E1.7](E1.7-catalog-platform-catalog-md-umbrella.md) reconciles graph entries with live catalog INDEX rows after platform drain completes.",
+    "Pack verify suites from [F1.8](F1.8-pack-verify-goal-verify-suites.md) may assert graph completeness at goal_verify\u2014missing nodes fail closed rather than allowing pursuit on orphan artifact paths.",
+    "If a promoted artifact lacks a staleness node or graph drift leaves dependents unmarked, pursuit stops at H2 until reconcile-stale or [D4.5](D4.5-platform-work-catalog-regeneration.md) restores traceability."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"E5.2\",\n  \"description\": \"staleness extend playbooks scripts pack nodes\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `E5.2` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `E5.2` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `E5.2`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `E5.2` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_e5_2.py when script exists.",
+    "Validate `E5.2` against SEC-15 release checklist and parent index links.",
+    "Document `E5.2` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `E5.2`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids E5.2`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/facts/INDEX.md`",
+    "`docs/playbooks/INDEX.md`",
+    "`docs/manifest/staleness.json`",
+    "`allowed_reads`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a77",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[E5-index](E5-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids E5.2` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [E5-index](E5-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "E5.2 defines staleness extend playbooks scripts pack nodes for the agent-driven expert system. Knowledge & composition \u2014 catalog, compose-first, staleness. In practice, the system when platform promotion lands playbooks, scripts, or pack fragments, reconcile-stale registers each reusable path in docs/manifest/staleness.json so downstream task cards and compose hits can mark dependencies stale, then on script or playbook change during pursuit, the staleness graph propagates to dependent task cards and [e2.2](e2.2-compose-query-catalog-list-components.md) compose results\u2014workers reconcile before advancing implement steps.",
+  "reader_narrative": "<!-- prose-source: agent plane-e 2026-06-28 -->\n\nThe staleness graph extends beyond design docs to playbooks, scripts catalog nodes, and template-pack fragments\u2014any reusable component that downstream pursuit depends on. When a script or playbook changes, dependent task cards and compose hits mark stale.\n\nExtension connects Plane E catalog maturity to traceability: promoted platform artifacts are first-class staleness nodes, not orphan files. Regeneration of [E1.1](E1.1-catalog-scripts-manifest-generated.md) and [E1.7](E1.7-catalog-platform-catalog-md-umbrella.md) should reconcile graph entries. Pack verify suites ([F1.8](../full-automation/MASTER-F-branch-f---organization-plane.md)) may assert graph completeness."
+}

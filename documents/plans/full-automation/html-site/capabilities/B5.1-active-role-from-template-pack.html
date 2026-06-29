@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>B5.1 — active role, from, template, and pack</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/B.html">Plane B</a> · <a href="../chapters/B-B5.html">B5</a> ·
+    B5.1
+  </nav>
+  <p class="page-id">B5.1 · Cognition &amp; routing plane</p>
+  <h1 class="page-title">active role, from, template, and pack</h1>
+  <p class="page-subtitle">active_role from template pack</p>
+  
+  <div class="story-block"><p>Active role comes from the instantiated template-pack: developer, operator, platform, legal reviewer—each with default pipeline_id and tool permissions. <code>state.json</code> carries active_role so pursuit, spawn policy, and <a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">HITL</a> strictness match pack intent.</p>
+<p>Switching roles mid-goal requires manifest or <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> decision recorded in journal; workers inherit role context in spawn contracts. Company <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> (<a href="../capabilities/A3.3-company-autopilot-multi-goal-role-workstreams.html" class="spec-link">A3.3</a>) schedules across roles without merging their permissions.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">On pack instantiation (<a href="../capabilities/F2.1-company-instantiate-program-scoper-pack-select.html" class="spec-link">F2.1</a>), <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> loads <code>roles.yaml</code> from the active template-pack and sets <code>state.active_role</code> to the pack default for the current workstream—each role encodes pipeline_id, enabled skills, and tool permissions.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Each pursuit wake reads <code>active_role</code> before <a href="../capabilities/A2.1-preflight-check-pipeline-blocked-extended.html" class="spec-link">A2.1</a> preflight so route-tier, spawn policy, and <a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">HITL</a> strictness match pack intent—not the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a>&#x27;s improvised defaults.</span></li><li><span class="step-num">Step 3</span><span class="step-text">When switching roles mid-goal, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> records manifest approval or an explicit journal decision, updates <code>active_role</code> in the same <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> turn, and re-runs preflight so workers receive refreshed spawn contracts with role-scoped <code>allowed_reads</code>.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Under <a href="../capabilities/A3.3-company-autopilot-multi-goal-role-workstreams.html" class="spec-link">A3.3</a> company <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a>, scheduling rotates across roles via <a href="../capabilities/F2.3-company-active-role-rotates-ready-work.html" class="spec-link">F2.3</a> without merging permissions—each spawned worker inherits only its role&#x27;s pipeline_id and tool allowlist.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If <code>active_role</code> is missing, references an undefined pack role, or conflicts with manifest lane bindings, pursuit stops at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> until operators repair pack config or record a valid role switch—never routing implement phases with ambiguous role context.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids B5.1</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case B5.1 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case B5.1 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;B5.1&quot;,
+  &quot;description&quot;: &quot;active role from template pack&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

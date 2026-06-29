@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>D1.6 — L5 template-pack fragment</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/D.html">Plane D</a> · <a href="../chapters/D-D1.html">D1</a> ·
+    D1.6
+  </nav>
+  <p class="page-id">D1.6 · Platform evolution plane</p>
+  <h1 class="page-title">L5 template-pack fragment</h1>
+  <p class="page-subtitle">L5 template-pack fragment</p>
+  
+  <div class="story-block"><p>L5 is the top rung: template-pack fragments in <code>template-packs/</code> that ship with company instantiation—default pipelines, role bindings, verify suites, and <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> components new goals inherit on day one. Fragments export upward from consumer repo promotions (<a href="../capabilities/D4.6-platform-work-pack-fragment-export.html" class="spec-link">D4.6</a>), not one-off edits inside a single product <a href="../glossary.html#branch" class="glossary-link" title="Branch">branch</a>.</p>
+<p>Pack authors validate fragments against pack schema (Plane F) before publish. An L5 promotion closes the loop started at L0 ephemeral reasoning: the pattern is now organizational capital. Definition-of-done for L5 includes <a href="../capabilities/D6.4-platform-done-staleness-node-wired.html" class="spec-link">D6.4</a> graph wiring so downstream goals know when fragments change.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">Before routing workers to <a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a>+ work each pursuit turn, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> and Librarian jointly resolve the needed capability—routing, implement, verify, design artifact, or platform promotion—and name the capability id plus target <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> slice in the briefing.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Resolution output feeds <a href="../capabilities/E2.2-compose-query-catalog-list-components.html" class="spec-link">E2.2</a> <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> query and <a href="../capabilities/E2.3-compose-rank-script-playbook-skill-facts.html" class="spec-link">E2.3</a> ranking so <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">compose-first</a> (<a href="../capabilities/B4.3-compose-first-catalog-before-improvise.html" class="spec-link">B4.3</a>) runs at the Plane E protocol layer before improvisation.</span></li><li><span class="step-num">Step 3</span><span class="step-text"><a href="../capabilities/B1.1-s0-deterministic-mandatory-first.html" class="spec-link">B1.1</a> preflight may short-circuit resolution when <code>next_action</code> and the task card already bind a <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> component; otherwise Librarian blocks worker spawn until capability lookup completes.</span></li><li><span class="step-num">Step 4</span><span class="step-text">When resolution names a capability with no <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> match, <a href="../capabilities/E2.5-compose-miss-l0-enqueue-promotion.html" class="spec-link">E2.5</a> enqueues L0 promotion instead of inventing ad hoc behavior; <a href="../capabilities/B4.4-divergence-log-when-not-composing.html" class="spec-link">B4.4</a> logs divergence if compose is bypassed.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If capability remains unresolved after <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> search, pursuit stops at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> with <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>—never spawn <a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a>+ workers on a vague improvised prompt.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids D1.6</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Platform queue depth 0 but product blocked on missing playbook — D3.3 priority cut skips platform drain.</li><li>Edge case D1.6 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;D1.6&quot;,
+  &quot;description&quot;: &quot;l5 template pack fragment&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.16</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

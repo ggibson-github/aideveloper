@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>F3.3 — game studio external tools Blender UE Git CI</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/F.html">Plane F</a> · <a href="../chapters/F-F3.html">F3</a> ·
+    F3.3
+  </nav>
+  <p class="page-id">F3.3 · Organization plane</p>
+  <h1 class="page-title">game studio external tools Blender UE Git CI</h1>
+  <p class="page-subtitle">game studio external tools Blender UE Git CI</p>
+  
+  <div class="story-block"><p>Game studio packs declare external tools: Blender, Unreal Engine, Perforce or Git, CI build farms—MCP servers, CLI allowlists, and tool-operator task card patterns per role (<a href="../capabilities/F6.3-role-tool-permissions-mcp-cli-allowlist.html" class="spec-link">F6.3</a>). Tool-operator and verifier workers run bounded exports and engine tests; they do not edit pursuit state.</p>
+<p>Missing tool install or credentials is <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a>—not skip. Facts INDEX holds download URLs and credential locations (<a href="../chapters/E-E1.html" class="spec-link">E1.4</a>). <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">Evidence</a> for tool runs follows <a href="../capabilities/F6.4-role-evidence-requirements-per-output-type.html" class="spec-link">F6.4</a> output types (render checksum, export log, CI artifact path). Compose-first searches pack playbooks before improvising tool commands.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When a game-studio pack is active, pursuit loads declared external tools—Blender, Unreal Engine, Perforce or Git, and CI build farms—from pack YAML plus role bindings in <a href="../capabilities/F6.3-role-tool-permissions-mcp-cli-allowlist.html" class="spec-link">F6.3</a> before spawning tool-operator workers.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Compose-first resolves pack playbooks and facts INDEX entries (<a href="../chapters/E-E1.html" class="spec-link">E1.4</a>) for install paths and credential locations before any worker improvises MCP or CLI commands.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Tool-operator and verifier workers execute bounded exports, engine tests, and CI invocations under the role allowlist; they attach <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>. but never mutate pursuit state in journal or state.json.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Preflight blocks spawn when a required tool is missing from the host, an MCP server is down, or credentials are absent—raising <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> with facts INDEX pointers rather than skipping the task.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If allowlist drift, credential expiry, or tool failure leaves <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> incomplete, pursuit stays fail-closed at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> until operators reconcile tool bindings at <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> and workers re-run with passing verifier output.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids F3.3</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Pack role handoff while lane lease held — complete-work-order releases lease before role switch.</li><li>Edge case F3.3 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;F3.3&quot;,
+  &quot;description&quot;: &quot;game studio external tools blender ue git ci&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.19</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

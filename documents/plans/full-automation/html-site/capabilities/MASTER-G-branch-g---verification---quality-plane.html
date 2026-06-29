@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>MASTER-G — Branch G — Verification &amp; quality plane</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/meta.html">Plane meta</a> ·
+    MASTER-G
+  </nav>
+  <p class="page-id">MASTER-G · Front matter &amp; cross-cutting architecture</p>
+  <h1 class="page-title">Branch G — Verification &amp; quality plane</h1>
+  <p class="page-subtitle">Branch G — Verification &amp; quality plane</p>
+  
+  <div class="story-block"><p>Plane G is verification and quality: <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> gates, goal-level verification, workflow conformance, automated review triggers, mistake-class controls, and rollback. It ensures &quot;done&quot; means proven, not asserted.</p>
+<p>Task-level verify-router <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> is necessary; <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> is sufficient for H3.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart TD
+  trigger[Trigger condition] --&gt; pre[Preconditions S0]
+  pre --&gt; exec[Execute step logic]
+  exec --&gt; verify[Verify output]
+  verify --&gt;|pass| done[Mark queue item done]
+  verify --&gt;|fail| h2[H2 blocker]</pre>
+</div>
+  <h2 class="section-title">What this defines</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">Plane G ensures done means proven: task-level verify-router <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> is necessary before implement tasks advance.</span></li><li><span class="step-num">Step 2</span><span class="step-text">After each implement batch, verifier or verify-router runs the task card Test/Tool command and writes <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> logs when evidence_required is true—advancement blocked until last_verify=passed.</span></li><li><span class="step-num">Step 3</span><span class="step-text">When scope completes, <a href="../capabilities/G2.1-goal-verify-command-state-pack.html" class="spec-link">G2.1</a> aggregates unit, integration, e2e, and tool proof via goal_verify_command; <a href="../capabilities/G2.3-goal-verify-blocks-h3-until-pass.html" class="spec-link">G2.3</a> prevents <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> pending until aggregate passes.</span></li><li><span class="step-num">Step 4</span><span class="step-text"><a href="../chapters/G-G3.html" class="spec-link">G3</a> conformance checks (validate-workflow, route-tier) run <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> before pursuit improvises; <a href="../chapters/G-G4.html" class="spec-link">G4</a> review triggers fire on large diffs or touch-path changes; <a href="../chapters/G-G5.html" class="spec-link">G5</a> mistake-class guards block hallucinated done states.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If verification fails, regression appears mid-pursuit, or <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> paths go stale, Plane G emits verify stops. and goal.state stays pursuing until proof reconciles.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids MASTER-G</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case MASTER-G variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case MASTER-G variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;MASTER-G&quot;,
+  &quot;description&quot;: &quot;branch g   verification   quality plane&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

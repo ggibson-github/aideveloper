@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>A4.5 — stop, completion, goal, achieved, program, and done</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/A.html">Plane A</a> · <a href="../chapters/A-A4.html">A4</a> ·
+    A4.5
+  </nav>
+  <p class="page-id">A4.5 · Pursuit &amp; control plane</p>
+  <h1 class="page-title">stop, completion, goal, achieved, program, and done</h1>
+  <p class="page-subtitle">stop completion goal achieved program done</p>
+  
+  <div class="story-block"><p>Completion stops are successful termination: <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> passed, <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> accepted (or waived under policy), program manifest complete, or company_ops goal criteria satisfied per <a href="../capabilities/INTRO-1.3-goal-completion-criterion.html" class="spec-link">INTRO-1.3</a>. The goal state transitions to achieved or program_done with timestamps and <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> pointers.</p>
+<p>Unlike H3-pending (<a href="../capabilities/A2.5-goal-verify-pass-transition-h3-pending.html" class="spec-link">A2.5</a>), this stop closes pursuit for that goal id. Multi-goal company <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> (<a href="../capabilities/A3.3-company-autopilot-multi-goal-role-workstreams.html" class="spec-link">A3.3</a>) may immediately advance to the next queued goal. Operators should see completion on dashboard/STATUS without parsing journals.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When <code>goal_verify_command</code> passes and <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> accepts (or policy waives <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a>), pursuit records stop class <code>completion:achieved</code>—<code>goal.state</code> transitions to achieved with timestamps and <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> pointers.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Unlike <a href="../capabilities/A2.5-goal-verify-pass-transition-h3-pending.html" class="spec-link">A2.5</a> <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> pending, completion closes pursuit for that goal_id—no further <a href="../capabilities/A2.2-if-ready-execute-one-pipeline-step.html" class="spec-link">A2.2</a> phases run against the same scope unless a new goal opens.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Program manifest complete or company_ops criteria satisfied produce analogous completion stops with roll-up fields for parent goals so dashboards show closure without journal parsing.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Under <a href="../capabilities/A3.3-company-autopilot-multi-goal-role-workstreams.html" class="spec-link">A3.3</a> company <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a>, completion on one goal may immediately advance scheduling to the next ready queued goal when preflight allows.</span></li><li><span class="step-num">Step 5</span><span class="step-text">Premature completion without proof is blocked by <a href="../capabilities/A4.2-stop-verify-evidence-goal-verify-regression.html" class="spec-link">A4.2</a>—<a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> must pass and <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> must clear before <code>completion:*</code> is written.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids A4.5</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>goal_verify passes but H3 rejected — goal.state returns to pursuing with rejection notes.</li><li>Edge case A4.5 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;A4.5&quot;,
+  &quot;description&quot;: &quot;stop completion goal achieved program done&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.14</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

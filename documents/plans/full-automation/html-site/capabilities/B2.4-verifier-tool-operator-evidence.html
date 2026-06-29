@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>B2.4 — Verifier tool-operator evidence</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/B.html">Plane B</a> · <a href="../chapters/B-B2.html">B2</a> ·
+    B2.4
+  </nav>
+  <p class="page-id">B2.4 · Cognition &amp; routing plane</p>
+  <h1 class="page-title">Verifier tool-operator evidence</h1>
+  <p class="page-subtitle">Verifier tool-operator evidence</p>
+  
+  <div class="story-block"><p>Verifier and tool-operator are shell-class workers for bounded CLI runs: pytest via verify-router, Blender/Unreal export commands, checksum tools—anything with a literal command block on the task card. They write <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> logs under <code>evidence/</code> and set <code>last_verify</code> in state.</p>
+<p>Non-pytest <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> types follow <code>docs/operator/evidence-types.md</code>. Verifier failure blocks task completion and may trigger <a href="../capabilities/B3.3-escalation-loop-on-verify-fail.html" class="spec-link">B3.3</a> escalation without clearing gates. Tool-operator never edits product source except via declared tool output paths.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When a task card declares a Test command or Tool command, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> spawns Verifier or tool-operator shell workers to run the literal CLI block and capture output under <code>evidence/</code>.</span></li><li><span class="step-num">Step 2</span><span class="step-text">verify-router.py dispatches pytest and records <code>last_verify</code> in state.json; non-pytest <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> follows <code>docs/operator/evidence-types.md</code> paths declared on the card.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Verifier and tool-operator workers do not edit product source except through declared tool output paths; they return bounded logs to the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> for merge.</span></li><li><span class="step-num">Step 4</span><span class="step-text"><code>last_verify=passed</code> is required before the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> marks an <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>-required implement task complete or advances past implement-feature.</span></li><li><span class="step-num">Step 5</span><span class="step-text">Verifier failure blocks task completion and may invoke <a href="../capabilities/B3.3-escalation-loop-on-verify-fail.html" class="spec-link">B3.3</a>; workers cannot self-clear <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> gates without <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> re-run.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids B2.4</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case B2.4 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case B2.4 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;B2.4&quot;,
+  &quot;description&quot;: &quot;verifier tool operator evidence&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

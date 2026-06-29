@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>INTRO-1 — North star definition (§1)</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/meta.html">Plane meta</a> ·
+    INTRO-1
+  </nav>
+  <p class="page-id">INTRO-1 · Front matter &amp; cross-cutting architecture</p>
+  <h1 class="page-title">North star definition (§1)</h1>
+  <div class="story-block"><p>Defines 100% automation scope, the <a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">H1/H2/H3</a> contract, and when a goal is truly achieved—policy boundaries every plane assumes.</p>
+<p>One hundred percent automation does not mean humans disappear—it means humans appear only where policy requires authority, judgment of record, or external access the system cannot obtain. After initial planning is approved, the system owns SDLC execution: implement, test, refactor, integrate, and deploy preparation.</p>
+<p>In scope: multi-role company workflows via template-packs, blocker detection with structured escalation, and harness self-improvement through the platform queue. Out of scope: irreversible production actions without verify and rollback, silent waiver of safety gates, and subjective aesthetic approval unless encoded in acceptance tests.</p>
+<p>Pack authors and operators use this boundary list when deciding whether a workflow belongs in autonomous pursuit or must remain H2-always. See <a href="../capabilities/INTRO-1.2-human-touchpoint-contract-h1-h2-h3.html" class="spec-link">INTRO-1.2</a> for where humans still interact.</p>
+<p>The <a href="../glossary.html#expert-system" class="glossary-link" title="Expert system">expert system</a> recognizes exactly three human touchpoint classes. <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> is initial planning: the operator supplies a spec or company charter and receives an approved plan artifact—once per project, program, or pack instantiation. <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> is blocker assistance: triggered when preflight blocks, goal verification fails, or an external dependency is missing; the system pauses, notifies, and resumes when unblocked. <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> is final sign-off: triggered only after <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> passes; accept or reject with notes, where rejection re-enters pursuit.</p>
+<p>Everything else—including HLD and DD review by default—becomes agent self-gate with <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> unless strict <a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">HITL</a> mode is enabled. This contract is the social license for <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a>: operators know when they must act versus when they may read dashboards only.</p>
+<p>A goal is achieved only when five conditions hold together: acceptance artifacts exist, automated goal verification passes, staleness and integration graphs are consistent, no blocking questions remain without deferred rationale, and platform debt for the goal is promoted or explicitly waived with expiry.</p>
+<p>The agent does not stop for status theater. It stops on <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a>, <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a>, <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a>, unrecoverable failure, or resource budget caps. This criterion prevents the common failure mode of marking tasks done while the overarching goal remains unproven—Plane G <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> exists to enforce this bar.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/INTRO-1.1-100--automation-scope-in-out.html">INTRO-1.1</a></span>
+  <span class="cap-title">100% automation scope in/out</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/INTRO-1.2-human-touchpoint-contract-h1-h2-h3.html">INTRO-1.2</a></span>
+  <span class="cap-title">Human touchpoint contract H1 H2 H3</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/INTRO-1.3-goal-completion-criterion.html">INTRO-1.3</a></span>
+  <span class="cap-title">Goal completion criterion</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

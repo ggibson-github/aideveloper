@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>F1.7 — pack, template, tasks, seed, and cards</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/F.html">Plane F</a> · <a href="../chapters/F-F1.html">F1</a> ·
+    F1.7
+  </nav>
+  <p class="page-id">F1.7 · Organization plane</p>
+  <h1 class="page-title">pack, template, tasks, seed, and cards</h1>
+  <p class="page-subtitle">pack template tasks seed cards</p>
+  
+  <div class="story-block"><p><code>template tasks/</code> seeds task cards per role—pre-written Components, Test commands, <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> types, and promotion_note stubs so instantiation does not start from empty TODOS. program-scoper or task-breakdown copies seeds into <code>docs/features/</code> or program lanes with pack_id provenance.</p>
+<p>Seed cards bind pack verify suites (<a href="../capabilities/F1.8-pack-verify-goal-verify-suites.html" class="spec-link">F1.8</a>) and role <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> rules (<a href="../capabilities/F6.4-role-evidence-requirements-per-output-type.html" class="spec-link">F6.4</a>) at first implement turn. Seeds are templates, not completed work—<a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> gates still apply. Platform promotion (<a href="../capabilities/D6.3-platform-done-task-card-references.html" class="spec-link">D6.3</a>) requires task cards reference promoted artifacts after they have been promoted from the improvement queue into lasting <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> entries.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart TD
+  trigger[Trigger condition] --&gt; pre[Preconditions S0]
+  pre --&gt; exec[Execute step logic]
+  exec --&gt; verify[Verify output]
+  verify --&gt;|pass| done[Mark queue item done]
+  verify --&gt;|fail| h2[H2 blocker]</pre>
+</div>
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">During pursuit, <code>state.pursuit</code> records mode (continue, <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">goal_autopilot</a>, company_autopilot), steps_total, capability_class, last_verify, evidence_files, and gates_pending—the live control surface <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> preflight reads before each turn.</span></li><li><span class="step-num">Step 2</span><span class="step-text"><a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">Autopilot</a> modes increment steps_total each iteration until check-pipeline-blocked, budget exhaustion, or a hard stop from Plane A fires.</span></li><li><span class="step-num">Step 3</span><span class="step-text">When evidence_required is true, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> must hold <code>last_verify: passed</code> and list <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> paths before advancing past implement tasks—workers cannot clear verification state themselves.</span></li><li><span class="step-num">Step 4</span><span class="step-text">gates_pending retains HLD, DD, and feature-design waits; <a href="../capabilities/A5.2-continue-not-approval-self-gate-h1-h3-only.html" class="spec-link">A5.2</a> ensures Continue does not waive them without explicit <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> approval or waiver text in the journal.</span></li><li><span class="step-num">Step 5</span><span class="step-text">After <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>, route-tier.py applies model tier and spawn_workers when next_action shifts; pursuit counters that drift from the journal mirror trigger an integrity stop at H2.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids F1.7</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Pack role handoff while lane lease held — complete-work-order releases lease before role switch.</li><li>Edge case F1.7 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;F1.7&quot;,
+  &quot;description&quot;: &quot;pack template tasks seed cards&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.19</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>E2 — Composition protocol (mandatory before S1+)</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/E.html">Plane E</a> ·
+    E2
+  </nav>
+  <p class="page-id">E2 · Knowledge &amp; composition plane</p>
+  <h1 class="page-title">Composition protocol (mandatory before S1+)</h1>
+  <div class="story-block"><p>E2: Composition protocol (mandatory before <a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a>+). The <a href="../glossary.html#capability" class="glossary-link" title="Capability">capabilities</a> below follow a sequential flow—read them in order.</p>
+<p>Before any <a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a>+ work, compose must resolve which capability the turn needs: routing, implement, verify, design artifact, platform promotion. Resolution names the capability id and target <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> slice—not a vague &quot;figure it out&quot; prompt.</p>
+<p>Librarian and <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> share this step; output drives <a href="../capabilities/E2.2-compose-query-catalog-list-components.html" class="spec-link">E2.2</a> query and <a href="../capabilities/E2.3-compose-rank-script-playbook-skill-facts.html" class="spec-link">E2.3</a> ranking. Unresolved capability blocks spawn until <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> search completes. This implements mandatory compose-before-invent from <a href="../capabilities/B4.3-compose-first-catalog-before-improvise.html" class="spec-link">B4.3</a> at the Plane E protocol layer.</p>
+<p><a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">Catalog</a> query runs through <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> <code>list-components.py</code> (or successor) against the umbrella and child INDEX manifests—returning candidate paths, maturity tier, and component type. Queries are deterministic; conductors use output rather than re-deriving hits in chat.</p>
+<p>Input is the resolved capability from <a href="../capabilities/E2.1-compose-resolve-capability-needed.html" class="spec-link">E2.1</a>; output feeds <a href="../capabilities/E2.3-compose-rank-script-playbook-skill-facts.html" class="spec-link">E2.3</a> ranking and task card Components (<a href="../capabilities/E2.4-compose-plan-task-card-components.html" class="spec-link">E2.4</a>). Empty results trigger <a href="../capabilities/E2.5-compose-miss-l0-enqueue-promotion.html" class="spec-link">E2.5</a> L0 proceed plus promotion enqueue—not silent invention.</p>
+<p>Compose ranking orders <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> hits: script (<a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a>) first, then playbook, then skill, then facts. v2.24+ extends this via <a href="../capabilities/E6.5-compose-rank-hard-transistor-script-soft.html" class="spec-link">E6.5</a>: hard_transistor &gt; script &gt; soft_transistor &gt; playbook &gt; skill &gt; facts.</p>
+<p>Ranking applies after <a href="../capabilities/E2.2-compose-query-catalog-list-components.html" class="spec-link">E2.2</a> list-components returns hits. Ties break toward higher maturity and pack-authored fragments. Divergence from ranked choice requires <a href="../capabilities/B4.4-divergence-log-when-not-composing.html" class="spec-link">B4.4</a> log entry. Ranking aligns with capability_class <a href="../glossary.html#s-tiers" class="glossary-link" title="Capability tiers S0 through S4">S0–S4</a> in Plane B.</p>
+<p>The compose plan lands on the task card Components section: explicit <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> refs (script path, playbook id, skill name) bound before implement spawn. Components used is auditable <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> that <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">compose-first</a> ran—not optional prose.</p>
+<p><a href="../glossary.html#conductor" class="glossary-link" title="Conductor">Conductor</a> or task-breakdown writes Components after <a href="../capabilities/E2.3-compose-rank-script-playbook-skill-facts.html" class="spec-link">E2.3</a> ranking. Workers inherit listed refs in allowed_reads (<a href="../capabilities/E4.3-context-allowed-reads-cap-max-5.html" class="spec-link">E4.3</a>). Missing components when <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> had matches is a conformance failure; missing <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> match pairs with <a href="../capabilities/E2.5-compose-miss-l0-enqueue-promotion.html" class="spec-link">E2.5</a> promotion enqueue.</p>
+<p>When compose finds no suitable <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> component, pursuit proceeds at L0 (ephemeral reasoning) for the immediate turn—but must enqueue a promotion_queue item so Plane D can distill the pattern into script, playbook, or pack fragment later.</p>
+<p>This closes the reuse loop: product is not blocked, platform debt is recorded. Pair with <a href="../capabilities/B4.4-divergence-log-when-not-composing.html" class="spec-link">B4.4</a> divergence logging and <a href="../capabilities/B4.2-platform-promotion-queue-peek-drain.html" class="spec-link">B4.2</a> K-step drain. Repeated L0 for the same capability signals <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> gap—prioritize promotion over repeated improvisation.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart LR
+  E2_1[&quot;E2.1&lt;br/&gt;compose, resolve, capability, and needed&quot;]
+  E2_2[&quot;E2.2&lt;br/&gt;compose query catalog list-components&quot;]
+  E2_3[&quot;E2.3&lt;br/&gt;compose, rank, script, playbook, skill, &quot;]
+  E2_4[&quot;E2.4&lt;br/&gt;compose plan task card Components&quot;]
+  E2_5[&quot;E2.5&lt;br/&gt;compose miss L0 enqueue promotion&quot;]
+  E2_1 --&gt; E2_2
+  E2_2 --&gt; E2_3
+  E2_3 --&gt; E2_4
+  E2_4 --&gt; E2_5</pre>
+</div>
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/E2.1-compose-resolve-capability-needed.html">E2.1</a></span>
+  <span class="cap-title">compose, resolve, capability, and needed</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/E2.2-compose-query-catalog-list-components.html">E2.2</a></span>
+  <span class="cap-title">compose query catalog list-components</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/E2.3-compose-rank-script-playbook-skill-facts.html">E2.3</a></span>
+  <span class="cap-title">compose, rank, script, playbook, skill, and facts</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/E2.4-compose-plan-task-card-components.html">E2.4</a></span>
+  <span class="cap-title">compose plan task card Components</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/E2.5-compose-miss-l0-enqueue-promotion.html">E2.5</a></span>
+  <span class="cap-title">compose miss L0 enqueue promotion</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

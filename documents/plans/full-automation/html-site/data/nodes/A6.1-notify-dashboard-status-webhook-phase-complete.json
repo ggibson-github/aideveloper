@@ -1,0 +1,89 @@
+{
+  "id": "A6.1",
+  "slug": "A6.1-notify-dashboard-status-webhook-phase-complete",
+  "title": "notify dashboard STATUS webhook phase complete",
+  "branch": "A",
+  "parent": "[A6-index](A6-index.md)",
+  "vision_section": "",
+  "release": "v2.14",
+  "purpose": "A6.1 defines notify dashboard status webhook phase complete for the agent-driven expert system. Pursuit & control plane \u2014 autonomous loops until goal verified.",
+  "scope": [
+    "Owns `A6.1` only; siblings under `A6` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a73 \u2014 Branch A \u2014 Pursuit & control plane](../../full-automation-vision-and-hierarchy.md#3-branch-a-pursuit-control-plane)."
+  ],
+  "behavior_steps": [
+    "After each meaningful phase completion\u2014design artifact written, implement task verified with evidence, or goal state transition\u2014journal-keeper invokes [S0](B1.1-s0-deterministic-mandatory-first.md) `generate-dashboard.py` to regenerate `docs/operator/dashboard.md` and `STATUS.md` without blocking the next pursuit turn.",
+    "Configured webhooks fire on milestones (phase complete, H3 pending, goal achieved)\u2014not every conductor turn\u2014so [A3.2](A3.2-goal-autopilot-until-goal-verify-or-hard-block.md) unattended runs remain observable without alert fatigue per [A6.2](A6.2-notify-digest-on-h2-blocker-not-every-step.md).",
+    "Notifications dual-write snapshot fields in state.json for headless consumers ([I5.1](I5.1-runtime-notify-status-dashboard-generation.md)) while pursuit continues; notification failure never blocks [A2.2](A2.2-if-ready-execute-one-pipeline-step.md) execution.",
+    "Reading STATUS or dashboard output does not clear H2 blockers or substitute for operator action\u2014[A6.3](A6.3-operator-observe-without-unblocking-loop.md) preserves strict HITL separation.",
+    "If dashboard regeneration fails, the conductor logs the error and optionally enqueues a platform notification item\u2014pursuit advances only when preflight is READY, not when the operator acknowledged the digest."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"A6.1\",\n  \"description\": \"notify dashboard status webhook phase complete\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "goal_verify passes but H3 rejected \u00e2\u20ac\u201d goal.state returns to pursuing with rejection notes.",
+    "Edge case `A6.1` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `A6.1`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `goal` block to state template and journal-keeper dual-write (v2.14).",
+    "Extend `check-pipeline-blocked.py` with goal_autopilot stop reasons.",
+    "Implement `scripts/goal-verify.py` stub aggregating task evidence paths.",
+    "Add `.cursor/skills/goal-keeper/SKILL.md` for conductor H1\u00e2\u2020\u2019pursuit transition.",
+    "Document `A6.1` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `A6.1`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids A6.1`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`journal/state.json `goal`, `pursuit`, `hitl``",
+    "`scripts/automation/check-pipeline-blocked.py`",
+    "`scripts/automation/run-local-pipeline.py`",
+    "`.cursor/skills/autopilot/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a73",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[A6-index](A6-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids A6.1` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [A6-index](A6-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "A6.1 defines notify dashboard status webhook phase complete for the agent-driven expert system. Pursuit & control plane \u2014 autonomous loops until goal verified. In practice, the system after each meaningful phase completion\u2014design artifact written, implement task verified with evidence, or goal state transition\u2014journal-keeper invokes [s0](b1.1-s0-deterministic-mandatory-first.md) `generate-dashboard.py` to regenerate `docs/operator/dashboard.md` and `status.md` without blocking the next pursuit turn, then configured webhooks fire on milestones (phase complete, h3 pending, goal achieved)\u2014not every conductor turn\u2014so [a3.2](a3.2-goal-autopilot-until-goal-verify-or-hard-block.md) unattended runs remain observable without alert fatigue per [a6.2](a6.2-notify-digest-on-h2-blocker-not-every-step.md).",
+  "reader_narrative": "<!-- prose-source: agent plane-a 2026-06-28 -->\n\nNotifications inform; they do not block pursuit. Phase completion\u2014design artifact published, implement task verified, goal transition\u2014updates `docs/operator/dashboard.md`, `STATUS.md`, and optional webhooks so operators have situational awareness without approving each step.\n\nRegeneration is S0 where `generate-dashboard.py` exists. Webhooks fire on meaningful milestones, not every token, to avoid alert fatigue. This capability satisfies observability for unattended runs while preserving [A6.3](A6.3-operator-observe-without-unblocking-loop.md): reading STATUS never substitutes for H2 resolution."
+}

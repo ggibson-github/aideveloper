@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>D4.3 — platform, work, skill, command, and wrapper</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/D.html">Plane D</a> · <a href="../chapters/D-D4.html">D4</a> ·
+    D4.3
+  </nav>
+  <p class="page-id">D4.3 · Platform evolution plane</p>
+  <h1 class="page-title">platform, work, skill, command, and wrapper</h1>
+  <p class="page-subtitle">platform work skill command wrapper</p>
+  
+  <div class="story-block"><p>Skill and command wrapper work packages L2 scripts plus journal-keeper hooks into L3 <code>.cursor/skills/</code> or <code>/commands</code> entry points—thin orchestration surfaces the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> invokes by name. Wrappers encode allowed_reads, <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> requirements, and forbidden paths consistent with active role (<a href="../capabilities/B5.1-active-role-from-template-pack.html" class="spec-link">B5.1</a>).</p>
+<p>Wrapper promotion does not duplicate script logic inside SKILL.md; it calls <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> scripts and cites playbook paths. New commands register in operator dashboard docs when user-facing. Failed wrapper verify leaves queue item open; partial SKILL without command or vice versa re-enqueues until both surfaces exist or pack policy declares skill-only.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When the <a href="../glossary.html#promotion-queue" class="glossary-link" title="Promotion queue">promotion queue</a> targets skill or command wrapper work, an economy worker packages promoted L2 scripts plus journal-keeper hooks into <code>.cursor/skills/</code> or command entry points the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> invokes by name.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Wrapper surfaces call <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> scripts by path, cite playbook locations, and encode allowed_reads, <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> requirements, and forbidden paths consistent with <a href="../capabilities/B5.1-active-role-from-template-pack.html" class="spec-link">B5.1</a>—never duplicating script logic inside SKILL.md.</span></li><li><span class="step-num">Step 3</span><span class="step-text">User-facing commands register in operator dashboard docs when pack policy requires operator discoverability.</span></li><li><span class="step-num">Step 4</span><span class="step-text">The verifier runs the promotion verify pattern; on pass the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> dequeues the item and <a href="../glossary.html#product-turn" class="glossary-link" title="Product turn">product turns</a> may compose the new surface via <a href="../capabilities/B4.3-compose-first-catalog-before-improvise.html" class="spec-link">B4.3</a>.</span></li><li><span class="step-num">Step 5</span><span class="step-text">Failed wrapper verify, a partial SKILL without command, or pack binding mismatch leaves the item open—re-enqueue until both surfaces exist or pack policy declares skill-only.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids D4.3</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Platform queue depth 0 but product blocked on missing playbook — D3.3 priority cut skips platform drain.</li><li>Edge case D4.3 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;D4.3&quot;,
+  &quot;description&quot;: &quot;platform work skill command wrapper&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.16</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,89 @@
+{
+  "id": "D6.3",
+  "slug": "D6.3-platform-done-task-card-references",
+  "title": "platform done task card references",
+  "branch": "D",
+  "parent": "[D6-index](D6-index.md)",
+  "vision_section": "",
+  "release": "v2.16",
+  "purpose": "D6.3 defines platform done task card references for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse.",
+  "scope": [
+    "Owns `D6.3` only; siblings under `D6` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a76 \u2014 Branch D \u2014 Platform evolution plane (parallel queue)](../../full-automation-vision-and-hierarchy.md#6-branch-d-platform-evolution-plane-parallel-queue)."
+  ],
+  "behavior_steps": [
+    "Before marking platform promotion done, audit confirms at least one task card\u2014or playbook procedure consumed by task cards\u2014references the promoted artifact in Components, Test command, or `allowed_reads`.",
+    "Playbook-keeper adds reference guidance when capturing patterns from a source task so future implement turns exercise the tool under evidence gates.",
+    "Orphan scripts unused by pursuit are platform debt; promotion without a reference fails D6.3 and reopens the queue item.",
+    "Reference closes the loop from product repetition to reusable tooling back to product per [C3.1](C3.1-task-cards-components-promotion-note.md) promotion_note intent.",
+    "If no task card or playbook procedure cites the artifact, pursuit blocks platform done at H2 until a template or active card is updated and dual-written."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"D6.3\",\n  \"description\": \"platform done task card references\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Platform queue depth 0 but product blocked on missing playbook \u00e2\u20ac\u201d D3.3 priority cut skips platform drain.",
+    "Edge case `D6.3` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `D6.3`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `platform.promotion_queue[]` to state.json schema.",
+    "Scheduler in autopilot workflow: `(steps_total % K) == 0` \u00e2\u2020\u2019 platform turn.",
+    "playbook-keeper + script extraction skills dequeue promotion items.",
+    "Validate `D6.3` against SEC-15 release checklist and parent index links.",
+    "Document `D6.3` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `D6.3`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids D6.3`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/playbooks/`",
+    "`scripts/`",
+    "`.cursor/skills/playbook-keeper/`",
+    "`state.platform.promotion_queue`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a76",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[D6-index](D6-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids D6.3` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [D6-index](D6-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "D6.3 defines platform done task card references for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse. In practice, the system before marking platform promotion done, audit confirms at least one task card\u2014or playbook procedure consumed by task cards\u2014references the promoted artifact in components, test command, or `allowed_reads`, then playbook-keeper adds reference guidance when capturing patterns from a source task so future implement turns exercise the tool under evidence gates.",
+  "reader_narrative": "<!-- prose-source: agent plane-d 2026-06-28 -->\n\nAt least one task card\u2014or playbook procedure consumed by task cards\u2014must reference the promoted artifact so future implement turns exercise it under evidence gates. Orphan scripts unused by pursuit are platform debt, not maturity.\n\nReference can be Components field, Test command, or explicit allowed_reads entry on a template task card. Playbook-keeper should add reference guidance when capturing patterns from a source task. D6.3 closes the loop from product repetition to reusable tooling back to product\u2014without reference, promotion did not enter the delivery loop and [C3.1](C3.1-task-cards-components-promotion-note.md) promotion_note intent is unfulfilled."
+}

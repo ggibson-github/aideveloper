@@ -1,0 +1,89 @@
+{
+  "id": "D4.6",
+  "slug": "D4.6-platform-work-pack-fragment-export",
+  "title": "platform work pack fragment export",
+  "branch": "D",
+  "parent": "[D4-index](D4-index.md)",
+  "vision_section": "",
+  "release": "v2.16",
+  "purpose": "D4.6 defines platform work pack fragment export for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse.",
+  "scope": [
+    "Owns `D4.6` only; siblings under `D4` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a76 \u2014 Branch D \u2014 Platform evolution plane (parallel queue)](../../full-automation-vision-and-hierarchy.md#6-branch-d-platform-evolution-plane-parallel-queue)."
+  ],
+  "behavior_steps": [
+    "On L5 pack-fragment export items, a platform worker promotes vetted repo artifacts into `template-packs/` fragments\u2014default skills, pipeline stubs, verify suites, glossary rows\u2014for future company instantiations.",
+    "Export requires pack-author authority; missing external pack repo access escalates H2 rather than forking fragments inline in a consumer goal repo.",
+    "Fragments receive semver-style version stamps and provenance links to the source promotion id per [D5.3](D5.3-fork-new-catalog-entry-provenance.md).",
+    "Before publish, [F1.8](F1.8-pack-verify-goal-verify-suites.md) pack verify suites must pass on the fragment slice.",
+    "Consumer goals reference pack version from catalog, not ad-hoc inline forks; failed pack verify or missing provenance leaves the export queue item open at H2."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"D4.6\",\n  \"description\": \"platform work pack fragment export\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Platform queue depth 0 but product blocked on missing playbook \u00e2\u20ac\u201d D3.3 priority cut skips platform drain.",
+    "Edge case `D4.6` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `D4.6`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `platform.promotion_queue[]` to state.json schema.",
+    "Scheduler in autopilot workflow: `(steps_total % K) == 0` \u00e2\u2020\u2019 platform turn.",
+    "playbook-keeper + script extraction skills dequeue promotion items.",
+    "Validate `D4.6` against SEC-15 release checklist and parent index links.",
+    "Document `D4.6` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `D4.6`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids D4.6`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/playbooks/`",
+    "`scripts/`",
+    "`.cursor/skills/playbook-keeper/`",
+    "`state.platform.promotion_queue`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a76",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[D4-index](D4-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids D4.6` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [D4-index](D4-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "D4.6 defines platform work pack fragment export for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse. In practice, the system on l5 pack-fragment export items, a platform worker promotes vetted repo artifacts into `template-packs/` fragments\u2014default skills, pipeline stubs, verify suites, glossary rows\u2014for future company instantiations, then export requires pack-author authority; missing external pack repo access escalates h2 rather than forking fragments inline in a consumer goal repo.",
+  "reader_narrative": "<!-- prose-source: agent plane-d 2026-06-28 -->\n\nPack fragment export is upward promotion: vetted repo artifacts become `template-packs/` fragments new instantiations inherit\u2014default skills, pipeline stubs, verify suites, glossary rows. Export is organizational, not a hotfix to one consumer repo.\n\nExport requires pack-author authority or H2 when external pack repo access is missing. Fragments version semver-style; provenance links to source promotion id ([D5.3](D5.3-fork-new-catalog-entry-provenance.md)). This is the L5 capstone work type paired with [D1.6](D1.6-l5-template-pack-fragment.md); consumer goals should reference pack version, not fork fragments inline. Plane F pack verify suites gate publish."
+}

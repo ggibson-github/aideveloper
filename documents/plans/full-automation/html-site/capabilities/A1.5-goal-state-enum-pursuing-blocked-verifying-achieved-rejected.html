@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>A1.5 — Goal state enum pursuing blocked verifying achieved rejected</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/A.html">Plane A</a> · <a href="../chapters/A-A1.html">A1</a> ·
+    A1.5
+  </nav>
+  <p class="page-id">A1.5 · Pursuit &amp; control plane</p>
+  <h1 class="page-title">Goal state enum pursuing blocked verifying achieved rejected</h1>
+  <p class="page-subtitle">goal_state enum pursuing blocked verifying achieved rejected</p>
+  
+  <div class="story-block"><p>Operators and dashboards need a single, honest lifecycle state for each goal. This capability defines the goal state enum: pursuing, blocked, verifying, achieved, and rejected—transitions driven by preflight, step execution, <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a>, and <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> outcomes.</p>
+<p>The enum prevents ambiguous records such as “done” without verification or “in progress” while <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> is pending. Blocked correlates with <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> assistance; verifying means scope is complete and <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> is running; rejected captures <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> denial with notes so pursuit can resume with corrected criteria.</p>
+<p>State must stay synchronized across journal/progress.md and state.json. Resume after laptop sleep or daemon restart relies on this enum being authoritative. See the A2 <a href="../glossary.html#pursuit-loop" class="glossary-link" title="Pursuit loop">pursuit loop</a> for when each transition fires in sequence.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">At <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> plan approval, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> sets goal.state to pursuing in state.json—dual-written to journal—alongside <a href="../capabilities/A1.1-goal-id-parent-goal-goal-type.html" class="spec-link">A1.1</a> identity fields so every wake and dashboard reads the same lifecycle starting point.</span></li><li><span class="step-num">Step 2</span><span class="step-text">On each <a href="../capabilities/A2.1-preflight-check-pipeline-blocked-extended.html" class="spec-link">A2.1</a> wake, READY keeps goal.state at pursuing while BLOCKED sets blocked and routes to <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> assistance; preflight never schedules pipeline phases when the enum is blocked or verifying.</span></li><li><span class="step-num">Step 3</span><span class="step-text">When <a href="../capabilities/A2.4-goal-scope-complete-run-goal-verify.html" class="spec-link">A2.4</a> marks scope complete, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> transitions goal.state to verifying and runs <a href="../capabilities/A1.3-goal-verify-command-meta-test.html" class="spec-link">A1.3</a> <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> before requesting operator sign-off.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Passing <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> advances to <a href="../capabilities/A2.5-goal-verify-pass-transition-h3-pending.html" class="spec-link">A2.5</a> <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> pending without claiming achieved; <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> acceptance sets achieved while <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> rejection records structured notes and returns goal.state to pursuing with corrected criteria.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If journal and state.json disagree on goal.state after laptop resume or concurrent edit, preflight fails closed at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> until journal-keeper reconciles the enum before pursuit continues.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids A1.5</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>goal_verify passes but H3 rejected — goal.state returns to pursuing with rejection notes.</li><li>Edge case A1.5 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;goal&quot;: {
+    &quot;id&quot;: &quot;goal-001&quot;,
+    &quot;parent_goal&quot;: null,
+    &quot;type&quot;: &quot;program&quot;,
+    &quot;success_criteria&quot;: [&quot;manifest approved&quot;, &quot;goal_verify exit 0&quot;],
+    &quot;verify_command&quot;: &quot;python scripts/goal-verify.py&quot;,
+    &quot;state&quot;: &quot;pursuing&quot;
+  }
+}</pre></div>
+  <p class="release-note">Target release: v2.14</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

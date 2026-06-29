@@ -1,0 +1,1210 @@
+{
+  "generated": "2026-06-28",
+  "items": [
+    {
+      "item_id": "A3.1",
+      "title": "session autopilot max steps per session",
+      "path": "documents/plans/full-automation/A3.1-session-autopilot-max-steps-per-session.md",
+      "branch": "A",
+      "branch_title": "Branch A \u2014 Pursuit & control plane",
+      "group_id": "A3",
+      "group_title": "Autopilot modes",
+      "siblings": [
+        "A3.2",
+        "A3.3",
+        "A3.4"
+      ],
+      "purpose": "A3.1 defines session autopilot max steps per session for the agent-driven expert system. Pursuit & control plane \u2014 autonomous loops until goal verified.",
+      "behavior_steps": [
+        "Session autopilot is the in-IDE mode most operators use first: the conductor loops pursuit steps inside one Cursor session until a cap, a block, or goal completion",
+        "When the cap is hit, pursuit dual-writes a structured stop reason and exits cleanly so the next wake\u2014manual Continue or daemon poll\u2014resumes from the last good journal/state snapshot",
+        "During pursuit, enforce the session autopilot and max steps per session contract within Autopilot modes (Plane A).",
+        "Run [S0](B1.1-s0-deterministic-mandatory-first.md) scripts before improvising when file-derived behavior exists.",
+        "Dual-write journal and state.json after the step; attach evidence when verification applies."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "goal_verify passes but H3 rejected \u00e2\u20ac\u201d goal.state returns to pursuing with rejection notes.",
+        "Edge case `A3.1` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch A \u2014 Pursuit & control plane",
+      "reader_excerpt": "Session autopilot is the in-IDE mode most operators use first: the conductor loops pursuit steps inside one Cursor session until a cap, a block, or goal completion. This capability defines `max_steps_per_session`\u2014a safety valve so a single chat cannot run unbounded turns if preflight mis-reads state or a worker hangs.\n\nThe limit is not a product goal; goal autopilot (A3.2) and the SDK daemon (A3.4) lift it for long-running work. When the cap is hit, pursuit dual-writes a structured stop reason and exits cleanly so the next wake\u2014manual Continue or daemon poll\u2014resumes from the last good journal/state snapshot. See [A2.6 loop until blocked](A2.6-loop-until-blocked-budget-achieved-h3-reject.md) for the inner loop this mode wraps.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `A3.1: session autopilot max steps per session`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch A \u2014 Pursuit & control plane`\n3. Group: `A3: Autopilot modes` \u00b7 Plane `A` \u2014 `Branch A \u2014 Pursuit & control plane`\n4. Siblings: `A3.2, A3.3, A3.4`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/A3.1-session-autopilot-max-steps-per-session.md\n\n## Reader narrative (authoritative context)\n\nSession autopilot is the in-IDE mode most operators use first: the conductor loops pursuit steps inside one Cursor session until a cap, a block, or goal completion. This capability defines `max_steps_per_session`\u2014a safety valve so a single chat cannot run unbounded turns if preflight mis-reads state or a worker hangs.\n\nThe limit is not a product goal; goal autopilot (A3.2) and the SDK daemon (A3.4) lift it for long-running work. When the cap is hit, pursuit dual-writes a structured stop reason and exits cleanly so the next wake\u2014manual Continue or daemon poll\u2014resumes from the last good journal/state snapshot. See [A2.6 loop until blocked](A2.6-loop-until-blocked-budget-achieved-h3-reject.md) for the inner loop this mode wraps."
+    },
+    {
+      "item_id": "A4.3",
+      "title": "stop resource max steps max cost lease expired",
+      "path": "documents/plans/full-automation/A4.3-stop-resource-max-steps-max-cost-lease-expired.md",
+      "branch": "A",
+      "branch_title": "Branch A \u2014 Pursuit & control plane",
+      "group_id": "A4",
+      "group_title": "Stop reasons (exhaustive taxonomy)",
+      "siblings": [
+        "A4.1",
+        "A4.2",
+        "A4.4",
+        "A4.5"
+      ],
+      "purpose": "A4.3 defines stop resource max steps max cost lease expired for the agent-driven expert system. Pursuit & control plane \u2014 autonomous loops until goal verified.",
+      "behavior_steps": [
+        "When a budget is exhausted, pursuit halts with a stop reason that operators can extend at H2 if policy allows",
+        "These limits implement A1.4 in the stop taxonomy so \u201calways-on\u201d never means \u201cunbounded.\u201d Scheduling in Plane D may reprioritize work when leases expire, but the stop record must remain auditable",
+        "During pursuit, enforce the stop, resource, max steps, max cost, and lease expired contract within Stop reasons (exhaustive taxonomy) (Plane A).",
+        "Run [S0](B1.1-s0-deterministic-mandatory-first.md) scripts before improvising when file-derived behavior exists.",
+        "Dual-write journal and state.json after the step; attach evidence when verification applies."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "goal_verify passes but H3 rejected \u00e2\u20ac\u201d goal.state returns to pursuing with rejection notes.",
+        "Edge case `A4.3` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch A \u2014 Pursuit & control plane",
+      "reader_excerpt": "Resource stops bound autonomous pursuit in measurable units: max steps per session or goal, token budgets, cost caps, and lease expiry on shared runners. When a budget is exhausted, pursuit halts with a stop reason that operators can extend at H2 if policy allows.\n\nThese limits implement [A1.4](A1.4-deadline-budget-steps-tokens-wall-clock.md) in the stop taxonomy so \u201calways-on\u201d never means \u201cunbounded.\u201d Scheduling in Plane D may reprioritize work when leases expire, but the stop record must remain auditable. Too-tight budgets cause false stops; too-loose budgets waste spend\u2014pack authors set defaults per goal_type.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `A4.3: stop resource max steps max cost lease expired`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch A \u2014 Pursuit & control plane`\n3. Group: `A4: Stop reasons (exhaustive taxonomy)` \u00b7 Plane `A` \u2014 `Branch A \u2014 Pursuit & control plane`\n4. Siblings: `A4.1, A4.2, A4.4, A4.5`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/A4.3-stop-resource-max-steps-max-cost-lease-expired.md\n\n## Reader narrative (authoritative context)\n\nResource stops bound autonomous pursuit in measurable units: max steps per session or goal, token budgets, cost caps, and lease expiry on shared runners. When a budget is exhausted, pursuit halts with a stop reason that operators can extend at H2 if policy allows.\n\nThese limits implement [A1.4](A1.4-deadline-budget-steps-tokens-wall-clock.md) in the stop taxonomy so \u201calways-on\u201d never means \u201cunbounded.\u201d Scheduling in Plane D may reprioritize work when leases expire, but the stop record must remain auditable. Too-tight budgets cause false stops; too-loose budgets waste spend\u2014pack authors set defaults per goal_type."
+    },
+    {
+      "item_id": "A6.1",
+      "title": "notify dashboard status webhook phase complete",
+      "path": "documents/plans/full-automation/A6.1-notify-dashboard-status-webhook-phase-complete.md",
+      "branch": "A",
+      "branch_title": "Branch A \u2014 Pursuit & control plane",
+      "group_id": "A6",
+      "group_title": "Notification (not blocking)",
+      "siblings": [
+        "A6.2",
+        "A6.3"
+      ],
+      "purpose": "A6.1 defines notify dashboard status webhook phase complete for the agent-driven expert system. Pursuit & control plane \u2014 autonomous loops until goal verified.",
+      "behavior_steps": [
+        "Phase completion\u2014design artifact published, implement task verified, goal transition\u2014updates docs/operator/dashboard.md, STATUS.md, and optional webhooks so operators have situational awareness without approving each step",
+        "This capability satisfies observability for unattended runs while preserving A6.3: reading STATUS never substitutes for H2 resolution",
+        "During pursuit, enforce the notify dashboard STATUS webhook phase complete contract within Notification (not blocking) (Plane A).",
+        "Run [S0](B1.1-s0-deterministic-mandatory-first.md) scripts before improvising when file-derived behavior exists.",
+        "Dual-write journal and state.json after the step; attach evidence when verification applies."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "goal_verify passes but H3 rejected \u00e2\u20ac\u201d goal.state returns to pursuing with rejection notes.",
+        "Edge case `A6.1` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch A \u2014 Pursuit & control plane",
+      "reader_excerpt": "Notifications inform; they do not block pursuit. Phase completion\u2014design artifact published, implement task verified, goal transition\u2014updates `docs/operator/dashboard.md`, `STATUS.md`, and optional webhooks so operators have situational awareness without approving each step.\n\nRegeneration is S0 where `generate-dashboard.py` exists. Webhooks fire on meaningful milestones, not every token, to avoid alert fatigue. This capability satisfies observability for unattended runs while preserving [A6.3](A6.3-operator-observe-without-unblocking-loop.md): reading STATUS never substitutes for H2 resolution.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `A6.1: notify dashboard status webhook phase complete`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch A \u2014 Pursuit & control plane`\n3. Group: `A6: Notification (not blocking)` \u00b7 Plane `A` \u2014 `Branch A \u2014 Pursuit & control plane`\n4. Siblings: `A6.2, A6.3`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/A6.1-notify-dashboard-status-webhook-phase-complete.md\n\n## Reader narrative (authoritative context)\n\nNotifications inform; they do not block pursuit. Phase completion\u2014design artifact published, implement task verified, goal transition\u2014updates `docs/operator/dashboard.md`, `STATUS.md`, and optional webhooks so operators have situational awareness without approving each step.\n\nRegeneration is S0 where `generate-dashboard.py` exists. Webhooks fire on meaningful milestones, not every token, to avoid alert fatigue. This capability satisfies observability for unattended runs while preserving [A6.3](A6.3-operator-observe-without-unblocking-loop.md): reading STATUS never substitutes for H2 resolution."
+    },
+    {
+      "item_id": "APP-A-improve",
+      "title": "work taxonomy improve platform",
+      "path": "documents/plans/full-automation/APP-A-improve-work-taxonomy-improve-platform.md",
+      "branch": "meta",
+      "branch_title": "Branch A \u2014 Pursuit & control plane",
+      "group_id": "APP-A",
+      "group_title": "Full human job taxonomy (\u00a718)",
+      "siblings": [
+        "APP-A-build",
+        "APP-A-design",
+        "APP-A-discover",
+        "APP-A-organize",
+        "APP-A-release",
+        "APP-A-verify"
+      ],
+      "purpose": "APP-A-improve defines work taxonomy improve platform for the agent-driven expert system. Human job taxonomy \u2192 pack workflows.",
+      "behavior_steps": [
+        "Classify improve-platform work as promotion, turning repeated patterns into playbooks, script extraction, and catalog curation\u2014Plane D and E activities that run alongside product pursuits via the platform queue",
+        "Without this slice in packs, organizations revert to one-off heroics instead of maturing reuse",
+        "Appendix material sketches state fields, taxonomies, or operator views that support the planes without duplicating them.",
+        "Readers consult appendices when implementing state.json, work classification, or operator dashboards.",
+        "On failure: structured H2 in journal; do not mark related queue item done."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Edge case `APP-A-improve` variant 3: verify state dual-write before continuing pursuit.",
+        "Edge case `APP-A-improve` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch A \u2014 Pursuit & control plane",
+      "reader_excerpt": "Improve platform work is promotion, turning repeated patterns into playbooks, script extraction, and catalog curation\u2014Plane D and E activities that run alongside product pursuits via the platform queue.\n\nWithout this slice in packs, organizations revert to one-off heroics instead of maturing reuse.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `APP-A-improve: work taxonomy improve platform`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch A \u2014 Pursuit & control plane`\n3. Group: `APP-A: Full human job taxonomy (\u00a718)` \u00b7 Plane `meta` \u2014 `Branch A \u2014 Pursuit & control plane`\n4. Siblings: `APP-A-build, APP-A-design, APP-A-discover, APP-A-organize, APP-A-release, APP-A-verify`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/APP-A-improve-work-taxonomy-improve-platform.md\n\n## Reader narrative (authoritative context)\n\nImprove platform work is promotion, turning repeated patterns into playbooks, script extraction, and catalog curation\u2014Plane D and E activities that run alongside product pursuits via the platform queue.\n\nWithout this slice in packs, organizations revert to one-off heroics instead of maturing reuse."
+    },
+    {
+      "item_id": "B1.2",
+      "title": "s1 mechanical economy workers catalog",
+      "path": "documents/plans/full-automation/B1.2-s1-mechanical-economy-workers-catalog.md",
+      "branch": "B",
+      "branch_title": "Branch B \u2014 Cognition & routing plane",
+      "group_id": "B1",
+      "group_title": "Capability classes (S0\u2013S4)",
+      "siblings": [
+        "B1.1",
+        "B1.3",
+        "B1.4",
+        "B1.5"
+      ],
+      "purpose": "B1.2 defines s1 mechanical economy workers catalog for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack.",
+      "behavior_steps": [
+        "Economy workers from model-policy.json execute S1 under conductor contracts with allowed_reads caps",
+        "Workers must not expand scope, dual-write journal/state, or skip evidence",
+        "During pursuit, enforce the S1 mechanical economy workers catalog contract within Capability classes (S0\u2013S4) (Plane B).",
+        "Run [S0](B1.1-s0-deterministic-mandatory-first.md) scripts before improvising when file-derived behavior exists.",
+        "Dual-write journal and state.json after the step; attach evidence when verification applies."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Edge case `B1.2` variant 3: verify state dual-write before continuing pursuit.",
+        "Edge case `B1.2` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch B \u2014 Cognition & routing plane",
+      "reader_excerpt": "S1 covers mechanical work that still needs a model but not genius-tier judgment: bounded code edits from task cards, catalog lookups, shell verification, and bulk search. Economy workers from `model-policy.json` execute S1 under conductor contracts with `allowed_reads` caps.\n\nS1 is the default implement tier when `spawn_workers` is true. Workers must not expand scope, dual-write journal/state, or skip evidence. The catalog in Plane E tells the conductor which worker role fits which task pattern. Mis-routing S3 architecture questions to S1 causes rework; mis-routing S1 mechanical tasks to genius tier wastes cost.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `B1.2: s1 mechanical economy workers catalog`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch B \u2014 Cognition & routing plane`\n3. Group: `B1: Capability classes (S0\u2013S4)` \u00b7 Plane `B` \u2014 `Branch B \u2014 Cognition & routing plane`\n4. Siblings: `B1.1, B1.3, B1.4, B1.5`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/B1.2-s1-mechanical-economy-workers-catalog.md\n\n## Reader narrative (authoritative context)\n\nS1 covers mechanical work that still needs a model but not genius-tier judgment: bounded code edits from task cards, catalog lookups, shell verification, and bulk search. Economy workers from `model-policy.json` execute S1 under conductor contracts with `allowed_reads` caps.\n\nS1 is the default implement tier when `spawn_workers` is true. Workers must not expand scope, dual-write journal/state, or skip evidence. The catalog in Plane E tells the conductor which worker role fits which task pattern. Mis-routing S3 architecture questions to S1 causes rework; mis-routing S1 mechanical tasks to genius tier wastes cost."
+    },
+    {
+      "item_id": "B2.3",
+      "title": "phase workers implement design explore",
+      "path": "documents/plans/full-automation/B2.3-phase-workers-implement-design-explore.md",
+      "branch": "B",
+      "branch_title": "Branch B \u2014 Cognition & routing plane",
+      "group_id": "B2",
+      "group_title": "Role model (conductor + workers)",
+      "siblings": [
+        "B2.1",
+        "B2.2",
+        "B2.4",
+        "B2.5",
+        "B2.6"
+      ],
+      "purpose": "B2.3 defines phase workers implement design explore for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack.",
+      "behavior_steps": [
+        "The conductor selects the worker type from next_action and route-tier output",
+        "Workers return summaries; the conductor merges and verifies before marking progress",
+        "During pursuit, enforce the Phase workers implement design explore contract within Role model (conductor + workers) (Plane B).",
+        "Run [S0](B1.1-s0-deterministic-mandatory-first.md) scripts before improvising when file-derived behavior exists.",
+        "Dual-write journal and state.json after the step; attach evidence when verification applies."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Edge case `B2.3` variant 3: verify state dual-write before continuing pursuit.",
+        "Edge case `B2.3` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch B \u2014 Cognition & routing plane",
+      "reader_excerpt": "Phase workers implement one skill phase under contract: implement-feature, dd-writer, explore, refactor\u2014each with task card paths, evidence requirements, and no journal writes. The conductor selects the worker type from `next_action` and route-tier output.\n\nParallel phase workers are allowed only when the integration manifest declares independent lanes; otherwise one worker per turn preserves auditability. Workers return summaries; the conductor merges and verifies before marking progress.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `B2.3: phase workers implement design explore`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch B \u2014 Cognition & routing plane`\n3. Group: `B2: Role model (conductor + workers)` \u00b7 Plane `B` \u2014 `Branch B \u2014 Cognition & routing plane`\n4. Siblings: `B2.1, B2.2, B2.4, B2.5, B2.6`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/B2.3-phase-workers-implement-design-explore.md\n\n## Reader narrative (authoritative context)\n\nPhase workers implement one skill phase under contract: implement-feature, dd-writer, explore, refactor\u2014each with task card paths, evidence requirements, and no journal writes. The conductor selects the worker type from `next_action` and route-tier output.\n\nParallel phase workers are allowed only when the integration manifest declares independent lanes; otherwise one worker per turn preserves auditability. Workers return summaries; the conductor merges and verifies before marking progress."
+    },
+    {
+      "item_id": "B3.3",
+      "title": "escalation loop on verify fail",
+      "path": "documents/plans/full-automation/B3.3-escalation-loop-on-verify-fail.md",
+      "branch": "B",
+      "branch_title": "Branch B \u2014 Cognition & routing plane",
+      "group_id": "B3",
+      "group_title": "Model policy",
+      "siblings": [
+        "B3.1",
+        "B3.2",
+        "B3.4"
+      ],
+      "purpose": "B3.3 defines escalation loop on verify fail for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack.",
+      "behavior_steps": [
+        "When verify fails, an escalation loop runs: capture log, classify failure (test, tool, environment, design), decide retry vs H2 vs refactor task\u2014without silently marking the implement task complete",
+        "Repeated verify failure on the same task card triggers S4 packaging for H2 with evidence paths attached",
+        "During pursuit, enforce the escalation, loop, on, verify, and fail contract within Model policy (Plane B).",
+        "Run [S0](B1.1-s0-deterministic-mandatory-first.md) scripts before improvising when file-derived behavior exists.",
+        "Dual-write journal and state.json after the step; attach evidence when verification applies."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Edge case `B3.3` variant 3: verify state dual-write before continuing pursuit.",
+        "Edge case `B3.3` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch B \u2014 Cognition & routing plane",
+      "reader_excerpt": "When verify fails, an escalation loop runs: capture log, classify failure (test, tool, environment, design), decide retry vs H2 vs refactor task\u2014without silently marking the implement task complete. The conductor owns the loop; workers do not self-clear evidence gates.\n\nRepeated verify failure on the same task card triggers S4 packaging for H2 with evidence paths attached. This prevents infinite implement\u2192fail\u2192implement churn without journal record.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `B3.3: escalation loop on verify fail`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch B \u2014 Cognition & routing plane`\n3. Group: `B3: Model policy` \u00b7 Plane `B` \u2014 `Branch B \u2014 Cognition & routing plane`\n4. Siblings: `B3.1, B3.2, B3.4`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/B3.3-escalation-loop-on-verify-fail.md\n\n## Reader narrative (authoritative context)\n\nWhen verify fails, an escalation loop runs: capture log, classify failure (test, tool, environment, design), decide retry vs H2 vs refactor task\u2014without silently marking the implement task complete. The conductor owns the loop; workers do not self-clear evidence gates.\n\nRepeated verify failure on the same task card triggers S4 packaging for H2 with evidence paths attached. This prevents infinite implement\u2192fail\u2192implement churn without journal record."
+    },
+    {
+      "item_id": "B5.1",
+      "title": "active role from template pack",
+      "path": "documents/plans/full-automation/B5.1-active-role-from-template-pack.md",
+      "branch": "B",
+      "branch_title": "Branch B \u2014 Cognition & routing plane",
+      "group_id": "B5",
+      "group_title": "Company role switching (template-pack)",
+      "siblings": [
+        "B5.2",
+        "B5.3",
+        "B5.4"
+      ],
+      "purpose": "B5.1 defines active role from template pack for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack.",
+      "behavior_steps": [
+        "Active role comes from the instantiated template-pack: developer, operator, platform, legal reviewer\u2014each with default pipeline_id and tool permissions. state.json carries active_role so pursuit, spawn policy, and HITL strictness match pack intent",
+        "Switching roles mid-goal requires manifest or conductor decision recorded in journal; workers inherit role context in spawn contracts",
+        "During pursuit, enforce the active role, from, template, and pack contract within Company role switching (template-pack) (Plane B).",
+        "Run [S0](B1.1-s0-deterministic-mandatory-first.md) scripts before improvising when file-derived behavior exists.",
+        "Dual-write journal and state.json after the step; attach evidence when verification applies."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Edge case `B5.1` variant 3: verify state dual-write before continuing pursuit.",
+        "Edge case `B5.1` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch B \u2014 Cognition & routing plane",
+      "reader_excerpt": "Active role comes from the instantiated template-pack: developer, operator, platform, legal reviewer\u2014each with default pipeline_id and tool permissions. `state.json` carries active_role so pursuit, spawn policy, and HITL strictness match pack intent.\n\nSwitching roles mid-goal requires manifest or conductor decision recorded in journal; workers inherit role context in spawn contracts. Company autopilot ([A3.3](A3.3-company-autopilot-multi-goal-role-workstreams.md)) schedules across roles without merging their permissions.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `B5.1: active role from template pack`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch B \u2014 Cognition & routing plane`\n3. Group: `B5: Company role switching (template-pack)` \u00b7 Plane `B` \u2014 `Branch B \u2014 Cognition & routing plane`\n4. Siblings: `B5.2, B5.3, B5.4`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/B5.1-active-role-from-template-pack.md\n\n## Reader narrative (authoritative context)\n\nActive role comes from the instantiated template-pack: developer, operator, platform, legal reviewer\u2014each with default pipeline_id and tool permissions. `state.json` carries active_role so pursuit, spawn policy, and HITL strictness match pack intent.\n\nSwitching roles mid-goal requires manifest or conductor decision recorded in journal; workers inherit role context in spawn contracts. Company autopilot ([A3.3](A3.3-company-autopilot-multi-goal-role-workstreams.md)) schedules across roles without merging their permissions."
+    },
+    {
+      "item_id": "C1.3",
+      "title": "pipeline multi domain program",
+      "path": "documents/plans/full-automation/C1.3-pipeline-multi-domain-program.md",
+      "branch": "C",
+      "branch_title": "Branch C \u2014 Product execution plane",
+      "group_id": "C1",
+      "group_title": "Pipeline registry",
+      "siblings": [
+        "C1.1",
+        "C1.2",
+        "C1.4"
+      ],
+      "purpose": "C1.3 defines pipeline multi domain program for the agent-driven expert system. Product execution \u2014 pipelines, tasks, program, delivery.",
+      "behavior_steps": [
+        "Multi-domain program pipeline decomposes mega-specs into milestones, workstreams, integration manifest, and parallel lanes\u2014program-scoper first, manifest human gate, then orchestrate-program when lanes are unblocked",
+        "Each stream runs its own phase progression under manifest dependencies; company-level goal_verify rolls up stream completion",
+        "Register pipeline behavior for `pipeline multi-domain-program` in `docs/manifest/pipelines/`.",
+        "Map `pipeline_id` to ordered skill phases and gates in manifest JSON/YAML.",
+        "program-scoper or route-tier selects this pipeline for matching specs/features."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Edge case `C1.3` variant 3: verify state dual-write before continuing pursuit.",
+        "Edge case `C1.3` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch C \u2014 Product execution plane",
+      "reader_excerpt": "Multi-domain program pipeline decomposes mega-specs into milestones, workstreams, integration manifest, and parallel lanes\u2014program-scoper first, manifest human gate, then orchestrate-program when lanes are unblocked.\n\nEach stream runs its own phase progression under manifest dependencies; company-level goal_verify rolls up stream completion. This pipeline_id activates when spec size or cross-team coupling exceeds single-stream greenfield assumptions.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `C1.3: pipeline multi domain program`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch C \u2014 Product execution plane`\n3. Group: `C1: Pipeline registry` \u00b7 Plane `C` \u2014 `Branch C \u2014 Product execution plane`\n4. Siblings: `C1.1, C1.2, C1.4`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/C1.3-pipeline-multi-domain-program.md\n\n## Reader narrative (authoritative context)\n\nMulti-domain program pipeline decomposes mega-specs into milestones, workstreams, integration manifest, and parallel lanes\u2014program-scoper first, manifest human gate, then orchestrate-program when lanes are unblocked.\n\nEach stream runs its own phase progression under manifest dependencies; company-level goal_verify rolls up stream completion. This pipeline_id activates when spec size or cross-team coupling exceeds single-stream greenfield assumptions."
+    },
+    {
+      "item_id": "C2.5",
+      "title": "phase inputs outputs verify catalog refs",
+      "path": "documents/plans/full-automation/C2.5-phase-inputs-outputs-verify-catalog-refs.md",
+      "branch": "C",
+      "branch_title": "Branch C \u2014 Product execution plane",
+      "group_id": "C2",
+      "group_title": "Phase chain (composable)",
+      "siblings": [
+        "C2.1",
+        "C2.2",
+        "C2.3",
+        "C2.4"
+      ],
+      "purpose": "C2.5 defines phase inputs outputs verify catalog refs for the agent-driven expert system. Product execution \u2014 pipelines, tasks, program, delivery.",
+      "behavior_steps": [
+        "Each phase declares inputs, outputs, verify commands, and catalog refs so S0 and reviewers can audit completeness",
+        "Phase verify is not goal_verify\u2014it proves phase artifacts exist before next_action advances",
+        "During pursuit, enforce the phase, inputs, outputs, verify, catalog, and refs contract within Phase chain (composable) (Plane C).",
+        "Run [S0](B1.1-s0-deterministic-mandatory-first.md) scripts before improvising when file-derived behavior exists.",
+        "Dual-write journal and state.json after the step; attach evidence when verification applies."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Edge case `C2.5` variant 3: verify state dual-write before continuing pursuit.",
+        "Edge case `C2.5` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch C \u2014 Product execution plane",
+      "reader_excerpt": "Each phase declares inputs, outputs, verify commands, and catalog refs so S0 and reviewers can audit completeness. Phase contracts live in skills and playbooks; pack schema may extend with pack-specific verify.\n\nMissing catalog refs on phase outputs trigger compose-first divergence logging ([B4.4](B4.4-divergence-log-when-not-composing.md)). Phase verify is not goal_verify\u2014it proves phase artifacts exist before next_action advances.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `C2.5: phase inputs outputs verify catalog refs`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch C \u2014 Product execution plane`\n3. Group: `C2: Phase chain (composable)` \u00b7 Plane `C` \u2014 `Branch C \u2014 Product execution plane`\n4. Siblings: `C2.1, C2.2, C2.3, C2.4`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/C2.5-phase-inputs-outputs-verify-catalog-refs.md\n\n## Reader narrative (authoritative context)\n\nEach phase declares inputs, outputs, verify commands, and catalog refs so S0 and reviewers can audit completeness. Phase contracts live in skills and playbooks; pack schema may extend with pack-specific verify.\n\nMissing catalog refs on phase outputs trigger compose-first divergence logging ([B4.4](B4.4-divergence-log-when-not-composing.md)). Phase verify is not goal_verify\u2014it proves phase artifacts exist before next_action advances."
+    },
+    {
+      "item_id": "C4.2",
+      "title": "orchestrate program",
+      "path": "documents/plans/full-automation/C4.2-orchestrate-program.md",
+      "branch": "C",
+      "branch_title": "Branch C \u2014 Product execution plane",
+      "group_id": "C4",
+      "group_title": "Program / parallel execution",
+      "siblings": [
+        "C4.1",
+        "C4.3",
+        "C4.4"
+      ],
+      "purpose": "C4.2 defines orchestrate program for the agent-driven expert system. Product execution \u2014 pipelines, tasks, program, delivery.",
+      "behavior_steps": [
+        "Orchestrate-program skill spawns ready lanes when manifest approved, blocking questions cleared, and spawn_workers true",
+        "Failed lane blocks program goal_verify until manifest reconciliation or H2 waiver",
+        "During pursuit, enforce the orchestrate-program contract within Program / parallel execution (Plane C).",
+        "Run [S0](B1.1-s0-deterministic-mandatory-first.md) scripts before improvising when file-derived behavior exists.",
+        "Dual-write journal and state.json after the step; attach evidence when verification applies."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Edge case `C4.2` variant 3: verify state dual-write before continuing pursuit.",
+        "Edge case `C4.2` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch C \u2014 Product execution plane",
+      "reader_excerpt": "Orchestrate-program skill spawns ready lanes when manifest approved, blocking questions cleared, and spawn_workers true. Each lane worker receives allowed_reads from Librarian briefing and manifest slice only.\n\nParent conductor merges lane summaries, updates artifact graph, and never clears gates without approval. Failed lane blocks program goal_verify until manifest reconciliation or H2 waiver.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `C4.2: orchestrate program`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch C \u2014 Product execution plane`\n3. Group: `C4: Program / parallel execution` \u00b7 Plane `C` \u2014 `Branch C \u2014 Product execution plane`\n4. Siblings: `C4.1, C4.3, C4.4`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/C4.2-orchestrate-program.md\n\n## Reader narrative (authoritative context)\n\nOrchestrate-program skill spawns ready lanes when manifest approved, blocking questions cleared, and spawn_workers true. Each lane worker receives allowed_reads from Librarian briefing and manifest slice only.\n\nParent conductor merges lane summaries, updates artifact graph, and never clears gates without approval. Failed lane blocks program goal_verify until manifest reconciliation or H2 waiver."
+    },
+    {
+      "item_id": "D1.1",
+      "title": "l0 ephemeral one off reasoning",
+      "path": "documents/plans/full-automation/D1.1-l0-ephemeral-one-off-reasoning.md",
+      "branch": "D",
+      "branch_title": "Branch D \u2014 Platform evolution plane (parallel queue)",
+      "group_id": "D1",
+      "group_title": "Promotion ladder (reuse maturity)",
+      "siblings": [
+        "D1.2",
+        "D1.3",
+        "D1.4",
+        "D1.5",
+        "D1.6"
+      ],
+      "purpose": "D1.1 defines l0 ephemeral one off reasoning for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse.",
+      "behavior_steps": [
+        "L0 is the bottom rung of the promotion ladder: reasoning that lives only in the current agent turn\u2014useful once, not yet captured as a reusable artifact",
+        "When the same manual sequence, explanation, or routing choice appears twice, enqueue a promotion item with target_level above L0",
+        "During pursuit, enforce the L0 ephemeral one-off reasoning contract within Promotion ladder (reuse maturity) (Plane D).",
+        "Run [S0](B1.1-s0-deterministic-mandatory-first.md) scripts before improvising when file-derived behavior exists.",
+        "Dual-write journal and state.json after the step; attach evidence when verification applies."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Platform queue depth 0 but product blocked on missing playbook \u00e2\u20ac\u201d D3.3 priority cut skips platform drain.",
+        "Edge case `D1.1` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch D \u2014 Platform evolution plane (parallel queue)",
+      "reader_excerpt": "L0 is the bottom rung of the promotion ladder: reasoning that lives only in the current agent turn\u2014useful once, not yet captured as a reusable artifact. Every pursuit session starts here for novel problems; the platform queue exists so repeated L0 patterns can graduate upward instead of being re-derived every sprint.\n\nL0 work is legitimate product progress but a liability for scale. When the same manual sequence, explanation, or routing choice appears twice, enqueue a promotion item with target_level above L0. Pair with [D2.1 enqueue triggers](D2.1-index.md) and [Vision \u00a76 \u2014 Branch D](../../full-automation-vision-and-hierarchy.md#6-branch-d-platform-evolution-plane-parallel-queue) for the parallel-queue model.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `D1.1: l0 ephemeral one off reasoning`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch D \u2014 Platform evolution plane (parallel queue)`\n3. Group: `D1: Promotion ladder (reuse maturity)` \u00b7 Plane `D` \u2014 `Branch D \u2014 Platform evolution plane (parallel queue)`\n4. Siblings: `D1.2, D1.3, D1.4, D1.5, D1.6`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/D1.1-l0-ephemeral-one-off-reasoning.md\n\n## Reader narrative (authoritative context)\n\nL0 is the bottom rung of the promotion ladder: reasoning that lives only in the current agent turn\u2014useful once, not yet captured as a reusable artifact. Every pursuit session starts here for novel problems; the platform queue exists so repeated L0 patterns can graduate upward instead of being re-derived every sprint.\n\nL0 work is legitimate product progress but a liability for scale. When the same manual sequence, explanation, or routing choice appears twice, enqueue a promotion item with target_level above L0. Pair with [D2.1 enqueue triggers](D2.1-index.md) and [Vision \u00a76 \u2014 Branch D](../../full-automation-vision-and-hierarchy.md#6-branch-d-platform-evolution-plane-parallel-queue) for the parallel-queue model."
+    },
+    {
+      "item_id": "D2.1.1",
+      "title": "enqueue repeated manual command 2x",
+      "path": "documents/plans/full-automation/D2.1.1-enqueue-repeated-manual-command-2x.md",
+      "branch": "D",
+      "branch_title": "Branch D \u2014 Platform evolution plane (parallel queue)",
+      "group_id": "D2",
+      "group_title": "Platform queue",
+      "siblings": [
+        "D2.1.2",
+        "D2.1.3",
+        "D2.1.4",
+        "D2.2",
+        "D2.3"
+      ],
+      "purpose": "D2.1.1 defines enqueue repeated manual command 2x for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse.",
+      "behavior_steps": [
+        "When an operator or agent runs the same manual shell command twice in pursuit\u2014pytest with identical flags, a export script, a validate call\u2014the system enqueues a promotion candidate instead of tolerating endless repetition",
+        "Enqueue attaches source task or journal context, suggested target_level (often L2 script), and priority per D2.2",
+        "Product turn completes \u2192 evaluate scheduler (K product steps per platform turn).",
+        "Platform turn dequeues head of `platform.promotion_queue` unless D3.3 product blocked.",
+        "Execute promotion work (playbook-keeper, script extraction, catalog row) to L1\u2013L5 done."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Platform queue depth 0 but product blocked on missing playbook \u00e2\u20ac\u201d D3.3 priority cut skips platform drain.",
+        "Edge case `D2.1.1` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch D \u2014 Platform evolution plane (parallel queue)",
+      "reader_excerpt": "When an operator or agent runs the same manual shell command twice in pursuit\u2014pytest with identical flags, a export script, a validate call\u2014the system enqueues a promotion candidate instead of tolerating endless repetition. The trigger is observation of duplicated manual invocation, not a guess after one run.\n\nEnqueue attaches source task or journal context, suggested target_level (often L2 script), and priority per [D2.2](D2.2-platform-queue-item-schema.md). Processing happens on platform turns ([D2.3](D2.3-dequeue-platform-turn-not-product.md)) under [D3.1](D3.1-1-platform-turn-per-k-product-turns.md) scheduling\u2014the project schedule does not defer all delivery until every improvement is finished unless [D3.3](D3.3-priority-cut-product-blocked-missing-tool.md) inverts priority.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `D2.1.1: enqueue repeated manual command 2x`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch D \u2014 Platform evolution plane (parallel queue)`\n3. Group: `D2: Platform queue` \u00b7 Plane `D` \u2014 `Branch D \u2014 Platform evolution plane (parallel queue)`\n4. Siblings: `D2.1.2, D2.1.3, D2.1.4, D2.2, D2.3`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/D2.1.1-enqueue-repeated-manual-command-2x.md\n\n## Reader narrative (authoritative context)\n\nWhen an operator or agent runs the same manual shell command twice in pursuit\u2014pytest with identical flags, a export script, a validate call\u2014the system enqueues a promotion candidate instead of tolerating endless repetition. The trigger is observation of duplicated manual invocation, not a guess after one run.\n\nEnqueue attaches source task or journal context, suggested target_level (often L2 script), and priority per [D2.2](D2.2-platform-queue-item-schema.md). Processing happens on platform turns ([D2.3](D2.3-dequeue-platform-turn-not-product.md)) under [D3.1](D3.1-1-platform-turn-per-k-product-turns.md) scheduling\u2014the project schedule does not defer all delivery until every improvement is finished unless [D3.3](D3.3-priority-cut-product-blocked-missing-tool.md) inverts priority."
+    },
+    {
+      "item_id": "D3.1",
+      "title": "1 platform turn per k product turns",
+      "path": "documents/plans/full-automation/D3.1-1-platform-turn-per-k-product-turns.md",
+      "branch": "D",
+      "branch_title": "Branch D \u2014 Platform evolution plane (parallel queue)",
+      "group_id": "D3",
+      "group_title": "Scheduling policy (parallel product and self-improvement)",
+      "siblings": [
+        "D3.2",
+        "D3.3",
+        "D3.4",
+        "D3.5"
+      ],
+      "purpose": "D3.1 defines 1 platform turn per k product turns for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse.",
+      "behavior_steps": [
+        "Autopilot evaluates (steps_total % K) == 0 after each product phase completes; when true, the next iteration is platform dequeue instead of implement or design",
+        "If the improvement queue is empty, the platform turn is skipped and the project continues\u2014delivery does not sit idle waiting for self-improvement work",
+        "During pursuit, enforce the 1 platform turn per K product turns contract within Scheduling policy (parallel product and self-improvement) (Plane D).",
+        "Run [S0](B1.1-s0-deterministic-mandatory-first.md) scripts before improvising when file-derived behavior exists.",
+        "Dual-write journal and state.json after the step; attach evidence when verification applies."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Platform queue depth 0 but product blocked on missing playbook \u00e2\u20ac\u201d D3.3 priority cut skips platform drain.",
+        "Edge case `D3.1` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch D \u2014 Platform evolution plane (parallel queue)",
+      "reader_excerpt": "Default scheduling grants one platform turn every K product turns\u2014commonly K=5\u2014encoded in `platform.drain_policy.product_steps_per_platform_turn`. Autopilot evaluates `(steps_total % K) == 0` after each product phase completes; when true, the next iteration is platform dequeue instead of implement or design.\n\nIf the improvement queue is empty, the platform turn is skipped and the project continues\u2014delivery does not sit idle waiting for self-improvement work. K is pack-configurable ([D5.1](D5.1-configure-task-level-params-only.md)) without forking schedulers. Overrides from [D3.2](D3.2-priority-boost-queue-depth-threshold.md), [D3.4](D3.4-idle-drain-product-waits-h2.md), and [D3.5](D3.5-max-platform-backlog-age-force-drain.md) layer on this baseline.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `D3.1: 1 platform turn per k product turns`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch D \u2014 Platform evolution plane (parallel queue)`\n3. Group: `D3: Scheduling policy (parallel product and self-improvement)` \u00b7 Plane `D` \u2014 `Branch D \u2014 Platform evolution plane (parallel queue)`\n4. Siblings: `D3.2, D3.3, D3.4, D3.5`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/D3.1-1-platform-turn-per-k-product-turns.md\n\n## Reader narrative (authoritative context)\n\nDefault scheduling grants one platform turn every K product turns\u2014commonly K=5\u2014encoded in `platform.drain_policy.product_steps_per_platform_turn`. Autopilot evaluates `(steps_total % K) == 0` after each product phase completes; when true, the next iteration is platform dequeue instead of implement or design.\n\nIf the improvement queue is empty, the platform turn is skipped and the project continues\u2014delivery does not sit idle waiting for self-improvement work. K is pack-configurable ([D5.1](D5.1-configure-task-level-params-only.md)) without forking schedulers. Overrides from [D3.2](D3.2-priority-boost-queue-depth-threshold.md), [D3.4](D3.4-idle-drain-product-waits-h2.md), and [D3.5](D3.5-max-platform-backlog-age-force-drain.md) layer on this baseline."
+    },
+    {
+      "item_id": "D4.2",
+      "title": "platform work script extraction",
+      "path": "documents/plans/full-automation/D4.2-platform-work-script-extraction.md",
+      "branch": "D",
+      "branch_title": "Branch D \u2014 Platform evolution plane (parallel queue)",
+      "group_id": "D4",
+      "group_title": "Platform work types",
+      "siblings": [
+        "D4.1",
+        "D4.3",
+        "D4.4",
+        "D4.5",
+        "D4.6"
+      ],
+      "purpose": "D4.2 defines platform work script extraction for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse.",
+      "behavior_steps": [
+        "Script extraction promotes L1 playbook steps\u2014or verified manual commands\u2014into S0 Python under scripts/ with tests",
+        "Wire verify-router when script replaces task-card Test command",
+        "During pursuit, enforce the platform, work, script, and extraction contract within Platform work types (Plane D).",
+        "Run [S0](B1.1-s0-deterministic-mandatory-first.md) scripts before improvising when file-derived behavior exists.",
+        "Dual-write journal and state.json after the step; attach evidence when verification applies."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Platform queue depth 0 but product blocked on missing playbook \u00e2\u20ac\u201d D3.3 priority cut skips platform drain.",
+        "Edge case `D4.2` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch D \u2014 Platform evolution plane (parallel queue)",
+      "reader_excerpt": "Script extraction promotes L1 playbook steps\u2014or verified manual commands\u2014into S0 Python under `scripts/` with tests. Extraction is platform work: changes tooling for all future goals, not the current consumer feature branch unless explicitly shared.\n\nExtracted scripts must be idempotent, CLI-invokable, and referenced from playbook diff. Wire verify-router when script replaces task-card Test command. Backwards-compatible extensions use [D5.2](D5.2-extend-backwards-compatible-staleness-bump.md); behavior breaks require [D5.3](D5.3-fork-new-catalog-entry-provenance.md) fork with new catalog id. [B1.1](B1.1-s0-deterministic-mandatory-first.md) mandates conductor runs script before model re-derivation.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `D4.2: platform work script extraction`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch D \u2014 Platform evolution plane (parallel queue)`\n3. Group: `D4: Platform work types` \u00b7 Plane `D` \u2014 `Branch D \u2014 Platform evolution plane (parallel queue)`\n4. Siblings: `D4.1, D4.3, D4.4, D4.5, D4.6`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/D4.2-platform-work-script-extraction.md\n\n## Reader narrative (authoritative context)\n\nScript extraction promotes L1 playbook steps\u2014or verified manual commands\u2014into S0 Python under `scripts/` with tests. Extraction is platform work: changes tooling for all future goals, not the current consumer feature branch unless explicitly shared.\n\nExtracted scripts must be idempotent, CLI-invokable, and referenced from playbook diff. Wire verify-router when script replaces task-card Test command. Backwards-compatible extensions use [D5.2](D5.2-extend-backwards-compatible-staleness-bump.md); behavior breaks require [D5.3](D5.3-fork-new-catalog-entry-provenance.md) fork with new catalog id. [B1.1](B1.1-s0-deterministic-mandatory-first.md) mandates conductor runs script before model re-derivation."
+    },
+    {
+      "item_id": "D5.2",
+      "title": "extend backwards compatible staleness bump",
+      "path": "documents/plans/full-automation/D5.2-extend-backwards-compatible-staleness-bump.md",
+      "branch": "D",
+      "branch_title": "Branch D \u2014 Platform evolution plane (parallel queue)",
+      "group_id": "D5",
+      "group_title": "Extend vs fork vs configure",
+      "siblings": [
+        "D5.1",
+        "D5.3"
+      ],
+      "purpose": "D5.2 defines extend backwards compatible staleness bump for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse.",
+      "behavior_steps": [
+        "Extend means backwards-compatible improvement to an existing catalog artifact\u2014add optional flag to script, append playbook section, extend skill without breaking callers",
+        "Platform queue items targeting extend must cite parent catalog id and compatibility proof\u2014tests green, validate-workflow passes",
+        "During pursuit, enforce the extend backwards-compatible staleness bump contract within Extend vs fork vs configure (Plane D).",
+        "Run [S0](B1.1-s0-deterministic-mandatory-first.md) scripts before improvising when file-derived behavior exists.",
+        "Dual-write journal and state.json after the step; attach evidence when verification applies."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Platform queue depth 0 but product blocked on missing playbook \u00e2\u20ac\u201d D3.3 priority cut skips platform drain.",
+        "Edge case `D5.2` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch D \u2014 Platform evolution plane (parallel queue)",
+      "reader_excerpt": "Extend means backwards-compatible improvement to an existing catalog artifact\u2014add optional flag to script, append playbook section, extend skill without breaking callers. Extension triggers staleness bump on dependent design nodes and task cards per Plane E reconcile rules.\n\nPlatform queue items targeting extend must cite parent catalog id and compatibility proof\u2014tests green, validate-workflow passes. Extend is preferred over fork when compose-first can absorb the change ([B4.3](B4.3-compose-first-catalog-before-improvise.md)). Non-compatible behavior change is fork, not extend, even if filename stays the same\u2014semver and provenance matter.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `D5.2: extend backwards compatible staleness bump`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch D \u2014 Platform evolution plane (parallel queue)`\n3. Group: `D5: Extend vs fork vs configure` \u00b7 Plane `D` \u2014 `Branch D \u2014 Platform evolution plane (parallel queue)`\n4. Siblings: `D5.1, D5.3`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/D5.2-extend-backwards-compatible-staleness-bump.md\n\n## Reader narrative (authoritative context)\n\nExtend means backwards-compatible improvement to an existing catalog artifact\u2014add optional flag to script, append playbook section, extend skill without breaking callers. Extension triggers staleness bump on dependent design nodes and task cards per Plane E reconcile rules.\n\nPlatform queue items targeting extend must cite parent catalog id and compatibility proof\u2014tests green, validate-workflow passes. Extend is preferred over fork when compose-first can absorb the change ([B4.3](B4.3-compose-first-catalog-before-improvise.md)). Non-compatible behavior change is fork, not extend, even if filename stays the same\u2014semver and provenance matter."
+    },
+    {
+      "item_id": "E1.1",
+      "title": "catalog scripts manifest generated",
+      "path": "documents/plans/full-automation/E1.1-catalog-scripts-manifest-generated.md",
+      "branch": "E",
+      "branch_title": "Branch E \u2014 Knowledge & composition plane",
+      "group_id": "E1",
+      "group_title": "Catalog (single discovery surface)",
+      "siblings": [
+        "E1.5",
+        "E1.6",
+        "E1.7"
+      ],
+      "purpose": "E1.1 defines catalog scripts manifest generated for the agent-driven expert system. Knowledge & composition \u2014 catalog, compose-first, staleness.",
+      "behavior_steps": [
+        "The scripts catalog is a generated manifest under scripts/ that lists every S0-capable entry point\u2014route-tier, validate-workflow, verify-router, hierarchy automation\u2014so conductors and compose queries discover deterministic behavior without grep-ing the tree",
+        "Regeneration runs via S0 when scripts change; the manifest feeds E2.2 list-components and the umbrella E1.7",
+        "During pursuit, enforce the catalog, scripts, manifest, and generated contract within Catalog (single discovery surface) (Plane E).",
+        "Run [S0](B1.1-s0-deterministic-mandatory-first.md) scripts before improvising when file-derived behavior exists.",
+        "Dual-write journal and state.json after the step; attach evidence when verification applies."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Edge case `E1.1` variant 3: verify state dual-write before continuing pursuit.",
+        "Edge case `E1.1` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch E \u2014 Knowledge & composition plane",
+      "reader_excerpt": "The scripts catalog is a generated manifest under `scripts/` that lists every S0-capable entry point\u2014route-tier, validate-workflow, verify-router, hierarchy automation\u2014so conductors and compose queries discover deterministic behavior without grep-ing the tree.\n\nRegeneration runs via S0 when scripts change; the manifest feeds [E2.2](E2.2-compose-query-catalog-list-components.md) list-components and the umbrella [E1.7](E1.7-catalog-platform-catalog-md-umbrella.md). Stale manifest rows trigger [E5.2](E5.2-staleness-extend-playbooks-scripts-pack-nodes.md) graph updates. See [Vision \u00a77 \u2014 Branch E](../../full-automation-vision-and-hierarchy.md#7-branch-e-knowledge-composition-plane).",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `E1.1: catalog scripts manifest generated`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch E \u2014 Knowledge & composition plane`\n3. Group: `E1: Catalog (single discovery surface)` \u00b7 Plane `E` \u2014 `Branch E \u2014 Knowledge & composition plane`\n4. Siblings: `E1.5, E1.6, E1.7`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/E1.1-catalog-scripts-manifest-generated.md\n\n## Reader narrative (authoritative context)\n\nThe scripts catalog is a generated manifest under `scripts/` that lists every S0-capable entry point\u2014route-tier, validate-workflow, verify-router, hierarchy automation\u2014so conductors and compose queries discover deterministic behavior without grep-ing the tree.\n\nRegeneration runs via S0 when scripts change; the manifest feeds [E2.2](E2.2-compose-query-catalog-list-components.md) list-components and the umbrella [E1.7](E1.7-catalog-platform-catalog-md-umbrella.md). Stale manifest rows trigger [E5.2](E5.2-staleness-extend-playbooks-scripts-pack-nodes.md) graph updates. See [Vision \u00a77 \u2014 Branch E](../../full-automation-vision-and-hierarchy.md#7-branch-e-knowledge-composition-plane)."
+    },
+    {
+      "item_id": "E2.3",
+      "title": "compose rank script playbook skill facts",
+      "path": "documents/plans/full-automation/E2.3-compose-rank-script-playbook-skill-facts.md",
+      "branch": "E",
+      "branch_title": "Branch E \u2014 Knowledge & composition plane",
+      "group_id": "E2",
+      "group_title": "Composition protocol (mandatory before S1+)",
+      "siblings": [
+        "E2.1",
+        "E2.2",
+        "E2.4",
+        "E2.5"
+      ],
+      "purpose": "E2.3 defines compose rank script playbook skill facts for the agent-driven expert system. Knowledge & composition \u2014 catalog, compose-first, staleness.",
+      "behavior_steps": [
+        "Compose ranking orders catalog hits: script (S0) first, then playbook, then skill, then facts",
+        "Ties break toward higher maturity and pack-authored fragments",
+        "Before S1+ work, Librarian/compose resolves capability to catalog components.",
+        "Task card lists `Components used`; missing L0 triggers promotion_queue enqueue.",
+        "Record divergence when not composing from catalog (B4.4)."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Edge case `E2.3` variant 3: verify state dual-write before continuing pursuit.",
+        "Edge case `E2.3` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch E \u2014 Knowledge & composition plane",
+      "reader_excerpt": "Compose ranking orders catalog hits: script (S0) first, then playbook, then skill, then facts. The ladder maximizes determinism and reuse\u2014run the script before invoking a skill that wraps the same behavior; read facts only to disambiguate, not to replace executable components.\n\nRanking applies after [E2.2](E2.2-compose-query-catalog-list-components.md) list-components returns hits. Ties break toward higher maturity and pack-authored fragments. Divergence from ranked choice requires [B4.4](B4.4-divergence-log-when-not-composing.md) log entry. Ranking aligns with capability_class S0\u2013S4 in Plane B.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `E2.3: compose rank script playbook skill facts`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch E \u2014 Knowledge & composition plane`\n3. Group: `E2: Composition protocol (mandatory before S1+)` \u00b7 Plane `E` \u2014 `Branch E \u2014 Knowledge & composition plane`\n4. Siblings: `E2.1, E2.2, E2.4, E2.5`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/E2.3-compose-rank-script-playbook-skill-facts.md\n\n## Reader narrative (authoritative context)\n\nCompose ranking orders catalog hits: script (S0) first, then playbook, then skill, then facts. The ladder maximizes determinism and reuse\u2014run the script before invoking a skill that wraps the same behavior; read facts only to disambiguate, not to replace executable components.\n\nRanking applies after [E2.2](E2.2-compose-query-catalog-list-components.md) list-components returns hits. Ties break toward higher maturity and pack-authored fragments. Divergence from ranked choice requires [B4.4](B4.4-divergence-log-when-not-composing.md) log entry. Ranking aligns with capability_class S0\u2013S4 in Plane B."
+    },
+    {
+      "item_id": "E4.1",
+      "title": "context always on rules agents md",
+      "path": "documents/plans/full-automation/E4.1-context-always-on-rules-agents-md.md",
+      "branch": "E",
+      "branch_title": "Branch E \u2014 Knowledge & composition plane",
+      "group_id": "E4",
+      "group_title": "Context retrieval layers",
+      "siblings": [
+        "E4.2",
+        "E4.3"
+      ],
+      "purpose": "E4.1 defines context always on rules agents md for the agent-driven expert system. Knowledge & composition \u2014 catalog, compose-first, staleness.",
+      "behavior_steps": [
+        "Always-on context layers inject project rules and AGENTS.md every session\u2014the baseline conductor contract, evidence rules, approval gates, and pipeline semantics",
+        "Pack authors may extend always-on rules through template-pack fragments",
+        "During pursuit, enforce the context always-on rules AGENTS.md contract within Context retrieval layers (Plane E).",
+        "Run [S0](B1.1-s0-deterministic-mandatory-first.md) scripts before improvising when file-derived behavior exists.",
+        "Dual-write journal and state.json after the step; attach evidence when verification applies."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Edge case `E4.1` variant 3: verify state dual-write before continuing pursuit.",
+        "Edge case `E4.1` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch E \u2014 Knowledge & composition plane",
+      "reader_excerpt": "Always-on context layers inject project rules and `AGENTS.md` every session\u2014the baseline conductor contract, evidence rules, approval gates, and pipeline semantics. Workers inherit applicable rules via spawn context; they do not re-read the full AGENTS monolith unless allowed.\n\nThis is layer zero of context retrieval\u2014below hooks ([E4.2](E4.2-context-hooks-inject-continue-start.md)) and Librarian allowed_reads ([E4.3](E4.3-context-allowed-reads-cap-max-5.md)). Pack authors may extend always-on rules through template-pack fragments. Changes to AGENTS.md mark dependent playbooks and skills stale in [E5.2](E5.2-staleness-extend-playbooks-scripts-pack-nodes.md).",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `E4.1: context always on rules agents md`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch E \u2014 Knowledge & composition plane`\n3. Group: `E4: Context retrieval layers` \u00b7 Plane `E` \u2014 `Branch E \u2014 Knowledge & composition plane`\n4. Siblings: `E4.2, E4.3`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/E4.1-context-always-on-rules-agents-md.md\n\n## Reader narrative (authoritative context)\n\nAlways-on context layers inject project rules and `AGENTS.md` every session\u2014the baseline conductor contract, evidence rules, approval gates, and pipeline semantics. Workers inherit applicable rules via spawn context; they do not re-read the full AGENTS monolith unless allowed.\n\nThis is layer zero of context retrieval\u2014below hooks ([E4.2](E4.2-context-hooks-inject-continue-start.md)) and Librarian allowed_reads ([E4.3](E4.3-context-allowed-reads-cap-max-5.md)). Pack authors may extend always-on rules through template-pack fragments. Changes to AGENTS.md mark dependent playbooks and skills stale in [E5.2](E5.2-staleness-extend-playbooks-scripts-pack-nodes.md)."
+    },
+    {
+      "item_id": "F1.1",
+      "title": "pack company yaml schema",
+      "path": "documents/plans/full-automation/F1.1-pack-company-yaml-schema.md",
+      "branch": "F",
+      "branch_title": "Branch F \u2014 Organization plane (template-packs = ceiling)",
+      "group_id": "F1",
+      "group_title": "Pack structure (target schema)",
+      "siblings": [
+        "F1.2",
+        "F1.3",
+        "F1.4",
+        "F1.5",
+        "F1.6",
+        "F1.7",
+        "F1.8"
+      ],
+      "purpose": "F1.1 defines pack company yaml schema for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling.",
+      "behavior_steps": [
+        "company.yaml is the root schema for every template-pack: company name, industry, department list, role references, default pipeline, and pack metadata",
+        "The schema must compose with sibling pack artifacts (F1.2 roles, F1.3 pipelines, F1.8 verify suites) without ad hoc fields in consumer repos",
+        "Define pack artifact for `F1.1` under `template-packs/<pack-id>/`.",
+        "Schema must be composable: company.yaml references roles, pipelines, verify suites.",
+        "program-scoper binds pack; sets `state.company.pack_id` and `active_role`."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Pack role handoff while lane lease held \u00e2\u20ac\u201d complete-work-order releases lease before role switch.",
+        "Edge case `F1.1` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch F \u2014 Organization plane (template-packs = ceiling)",
+      "reader_excerpt": "`company.yaml` is the root schema for every template-pack: company name, industry, department list, role references, default pipeline, and pack metadata. Instantiation copies or binds this file into pursuit state via program-scoper\u2014`state.company.pack_id` and initial `active_role` derive from here.\n\nThe schema must compose with sibling pack artifacts ([F1.2](F1.2-pack-roles---yaml.md) roles, [F1.3](F1.3-pack-pipelines---yaml.md) pipelines, [F1.8](F1.8-pack-verify-goal-verify-suites.md) verify suites) without ad hoc fields in consumer repos. Pack authors validate against conformance scripts before publish; consumer goals reference pack version, not forked company.yaml inline. See [Vision \u00a78 \u2014 Branch F](../../full-automation-vision-and-hierarchy.md#8-branch-f-organization-plane-template-packs-ceiling).",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `F1.1: pack company yaml schema`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch F \u2014 Organization plane (template-packs = ceiling)`\n3. Group: `F1: Pack structure (target schema)` \u00b7 Plane `F` \u2014 `Branch F \u2014 Organization plane (template-packs = ceiling)`\n4. Siblings: `F1.2, F1.3, F1.4, F1.5, F1.6, F1.7, F1.8`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/F1.1-pack-company-yaml-schema.md\n\n## Reader narrative (authoritative context)\n\n`company.yaml` is the root schema for every template-pack: company name, industry, department list, role references, default pipeline, and pack metadata. Instantiation copies or binds this file into pursuit state via program-scoper\u2014`state.company.pack_id` and initial `active_role` derive from here.\n\nThe schema must compose with sibling pack artifacts ([F1.2](F1.2-pack-roles---yaml.md) roles, [F1.3](F1.3-pack-pipelines---yaml.md) pipelines, [F1.8](F1.8-pack-verify-goal-verify-suites.md) verify suites) without ad hoc fields in consumer repos. Pack authors validate against conformance scripts before publish; consumer goals reference pack version, not forked company.yaml inline. See [Vision \u00a78 \u2014 Branch F](../../full-automation-vision-and-hierarchy.md#8-branch-f-organization-plane-template-packs-ceiling)."
+    },
+    {
+      "item_id": "F1.7",
+      "title": "pack template tasks seed cards",
+      "path": "documents/plans/full-automation/F1.7-pack-template-tasks-seed-cards.md",
+      "branch": "F",
+      "branch_title": "Branch F \u2014 Organization plane (template-packs = ceiling)",
+      "group_id": "F1",
+      "group_title": "Pack structure (target schema)",
+      "siblings": [
+        "F1.1",
+        "F1.2",
+        "F1.3",
+        "F1.4",
+        "F1.5",
+        "F1.6",
+        "F1.8"
+      ],
+      "purpose": "F1.7 defines pack template tasks seed cards for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling.",
+      "behavior_steps": [
+        "template tasks/ seeds task cards per role\u2014pre-written Components, Test commands, evidence types, and promotion_note stubs so instantiation does not start from empty TODOS. program-scoper or task-breakdown copies seeds into docs/features/ or program lanes with pack_id provenance",
+        "Seed cards bind pack verify suites (F1.8) and role evidence rules (F6.4) at first implement turn",
+        "Define pack artifact for `F1.7` under `template-packs/<pack-id>/`.",
+        "Schema must be composable: company.yaml references roles, pipelines, verify suites.",
+        "program-scoper binds pack; sets `state.company.pack_id` and `active_role`."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Pack role handoff while lane lease held \u00e2\u20ac\u201d complete-work-order releases lease before role switch.",
+        "Edge case `F1.7` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch F \u2014 Organization plane (template-packs = ceiling)",
+      "reader_excerpt": "`template tasks/` seeds task cards per role\u2014pre-written Components, Test commands, evidence types, and promotion_note stubs so instantiation does not start from empty TODOS. program-scoper or task-breakdown copies seeds into `docs/features/` or program lanes with pack_id provenance.\n\nSeed cards bind pack verify suites ([F1.8](F1.8-pack-verify-goal-verify-suites.md)) and role evidence rules ([F6.4](F6.4-role-evidence-requirements-per-output-type.md)) at first implement turn. Seeds are templates, not completed work\u2014evidence gates still apply. Platform promotion ([D6.3](D6.3-platform-done-task-card-references.md)) requires task cards reference promoted artifacts after they have been promoted from the improvement queue into lasting catalog entries.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `F1.7: pack template tasks seed cards`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch F \u2014 Organization plane (template-packs = ceiling)`\n3. Group: `F1: Pack structure (target schema)` \u00b7 Plane `F` \u2014 `Branch F \u2014 Organization plane (template-packs = ceiling)`\n4. Siblings: `F1.1, F1.2, F1.3, F1.4, F1.5, F1.6, F1.8`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/F1.7-pack-template-tasks-seed-cards.md\n\n## Reader narrative (authoritative context)\n\n`template tasks/` seeds task cards per role\u2014pre-written Components, Test commands, evidence types, and promotion_note stubs so instantiation does not start from empty TODOS. program-scoper or task-breakdown copies seeds into `docs/features/` or program lanes with pack_id provenance.\n\nSeed cards bind pack verify suites ([F1.8](F1.8-pack-verify-goal-verify-suites.md)) and role evidence rules ([F6.4](F6.4-role-evidence-requirements-per-output-type.md)) at first implement turn. Seeds are templates, not completed work\u2014evidence gates still apply. Platform promotion ([D6.3](D6.3-platform-done-task-card-references.md)) requires task cards reference promoted artifacts after they have been promoted from the improvement queue into lasting catalog entries."
+    },
+    {
+      "item_id": "F3.1",
+      "title": "game studio roles designer ta animator programmer qa build r",
+      "path": "documents/plans/full-automation/F3.1-game-studio-roles-designer-ta-animator-programmer-qa-build-r.md",
+      "branch": "F",
+      "branch_title": "Branch F \u2014 Organization plane (template-packs = ceiling)",
+      "group_id": "F3",
+      "group_title": "Example: game studio pack",
+      "siblings": [
+        "F3.2",
+        "F3.3",
+        "F3.4"
+      ],
+      "purpose": "F3.1 defines game studio roles designer ta animator programmer qa build r for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling.",
+      "behavior_steps": [
+        "The game studio example pack defines roles: designer, technical artist, animator, programmer, QA, build engineer, release manager\u2014each with pipeline slice, tools, and KPIs appropriate to concept-to-ship asset work",
+        "This pack is reference, not mandatory\u2014all studios need not use every role; program-scoper may defer lanes until milestone needs them",
+        "During pursuit, enforce the game studio roles designer TA animator programmer QA build release contract within Example: game studio pack (Plane F).",
+        "Run [S0](B1.1-s0-deterministic-mandatory-first.md) scripts before improvising when file-derived behavior exists.",
+        "Dual-write journal and state.json after the step; attach evidence when verification applies."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Pack role handoff while lane lease held \u00e2\u20ac\u201d complete-work-order releases lease before role switch.",
+        "Edge case `F3.1` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch F \u2014 Organization plane (template-packs = ceiling)",
+      "reader_excerpt": "The game studio example pack defines roles: designer, technical artist, animator, programmer, QA, build engineer, release manager\u2014each with pipeline slice, tools, and KPIs appropriate to concept-to-ship asset work. Roles map to [F1.2](F1.2-pack-roles---yaml.md) schema and demonstrate multi-disciplinary company pursuit under one pack_id.\n\nThis pack is reference, not mandatory\u2014all studios need not use every role; program-scoper may defer lanes until milestone needs them. External tool bindings ([F3.3](F3.3-game-studio-external-tools-blender-ue-git-ci.md)) and pipelines ([F3.2](F3.2-game-studio-pipelines-concept-to-build.md)) specialize these roles. Cross-pack HR onboarding may import via [F5.1](F5.1-cross-pack-imports-micro-packs.md).",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `F3.1: game studio roles designer ta animator programmer qa build r`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch F \u2014 Organization plane (template-packs = ceiling)`\n3. Group: `F3: Example: game studio pack` \u00b7 Plane `F` \u2014 `Branch F \u2014 Organization plane (template-packs = ceiling)`\n4. Siblings: `F3.2, F3.3, F3.4`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/F3.1-game-studio-roles-designer-ta-animator-programmer-qa-build-r.md\n\n## Reader narrative (authoritative context)\n\nThe game studio example pack defines roles: designer, technical artist, animator, programmer, QA, build engineer, release manager\u2014each with pipeline slice, tools, and KPIs appropriate to concept-to-ship asset work. Roles map to [F1.2](F1.2-pack-roles---yaml.md) schema and demonstrate multi-disciplinary company pursuit under one pack_id.\n\nThis pack is reference, not mandatory\u2014all studios need not use every role; program-scoper may defer lanes until milestone needs them. External tool bindings ([F3.3](F3.3-game-studio-external-tools-blender-ue-git-ci.md)) and pipelines ([F3.2](F3.2-game-studio-pipelines-concept-to-build.md)) specialize these roles. Cross-pack HR onboarding may import via [F5.1](F5.1-cross-pack-imports-micro-packs.md)."
+    },
+    {
+      "item_id": "F5.1",
+      "title": "cross pack imports micro packs",
+      "path": "documents/plans/full-automation/F5.1-cross-pack-imports-micro-packs.md",
+      "branch": "F",
+      "branch_title": "Branch F \u2014 Organization plane (template-packs = ceiling)",
+      "group_id": "F5",
+      "group_title": "Cross-pack composition",
+      "siblings": [
+        "F5.2",
+        "F5.3"
+      ],
+      "purpose": "F5.1 defines cross pack imports micro packs for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling.",
+      "behavior_steps": [
+        "Imports merge roles, playbooks, and verify fragments without copying entire foreign packs into consumer repos",
+        "Import resolution is S0 at instantiation; broken import path is H2 with missing pack id",
+        "Define pack artifact for `F5.1` under `template-packs/<pack-id>/`.",
+        "Schema must be composable: company.yaml references roles, pipelines, verify suites.",
+        "program-scoper binds pack; sets `state.company.pack_id` and `active_role`."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Pack role handoff while lane lease held \u00e2\u20ac\u201d complete-work-order releases lease before role switch.",
+        "Edge case `F5.1` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch F \u2014 Organization plane (template-packs = ceiling)",
+      "reader_excerpt": "Cross-pack imports let a company pack compose micro-packs\u2014studio pack imports generic HR/onboarding, data pack imports security baseline\u2014via declared import list in company.yaml or manifest. Imports merge roles, playbooks, and verify fragments without copying entire foreign packs into consumer repos.\n\nImport resolution is S0 at instantiation; broken import path is H2 with missing pack id. Imports must respect ceiling ([F5.3](F5.3-no-repo-outside-template-packs-ceiling.md))\u2014only template-packs namespace, not ad hoc paths. Provenance links support SEC-14 gap analysis and [D5.3](D5.3-fork-new-catalog-entry-provenance.md) when imported fragment diverges.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `F5.1: cross pack imports micro packs`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch F \u2014 Organization plane (template-packs = ceiling)`\n3. Group: `F5: Cross-pack composition` \u00b7 Plane `F` \u2014 `Branch F \u2014 Organization plane (template-packs = ceiling)`\n4. Siblings: `F5.2, F5.3`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/F5.1-cross-pack-imports-micro-packs.md\n\n## Reader narrative (authoritative context)\n\nCross-pack imports let a company pack compose micro-packs\u2014studio pack imports generic HR/onboarding, data pack imports security baseline\u2014via declared import list in company.yaml or manifest. Imports merge roles, playbooks, and verify fragments without copying entire foreign packs into consumer repos.\n\nImport resolution is S0 at instantiation; broken import path is H2 with missing pack id. Imports must respect ceiling ([F5.3](F5.3-no-repo-outside-template-packs-ceiling.md))\u2014only template-packs namespace, not ad hoc paths. Provenance links support SEC-14 gap analysis and [D5.3](D5.3-fork-new-catalog-entry-provenance.md) when imported fragment diverges."
+    },
+    {
+      "item_id": "F6.4",
+      "title": "role evidence requirements per output type",
+      "path": "documents/plans/full-automation/F6.4-role-evidence-requirements-per-output-type.md",
+      "branch": "F",
+      "branch_title": "Branch F \u2014 Organization plane (template-packs = ceiling)",
+      "group_id": "F6",
+      "group_title": "Role \u2192 agent mapping",
+      "siblings": [
+        "F6.1",
+        "F6.2",
+        "F6.3"
+      ],
+      "purpose": "F6.4 defines role evidence requirements per output type for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling.",
+      "behavior_steps": [
+        "Evidence requirements per role output type define what verify must prove for each deliverable\u2014code diff + pytest for programmer tasks, export checksum + render for TA tasks, schema migration log for DBA tasks",
+        "Task cards reference output_type; verify-router and tool-operator write matching evidence paths (G-plane task evidence). goal_verify (F1.8) aggregates role evidence at scope complete",
+        "During pursuit, enforce the role, evidence, requirements, per, output, and type contract within Role \u2192 agent mapping (Plane F).",
+        "Run [S0](B1.1-s0-deterministic-mandatory-first.md) scripts before improvising when file-derived behavior exists.",
+        "Dual-write journal and state.json after the step; attach evidence when verification applies."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Pack role handoff while lane lease held \u00e2\u20ac\u201d complete-work-order releases lease before role switch.",
+        "Edge case `F6.4` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch F \u2014 Organization plane (template-packs = ceiling)",
+      "reader_excerpt": "Evidence requirements per role output type define what verify must prove for each deliverable\u2014code diff + pytest for programmer tasks, export checksum + render for TA tasks, schema migration log for DBA tasks. Requirements extend generic evidence_required in state with pack-specific output_type rows.\n\nTask cards reference output_type; verify-router and tool-operator write matching evidence paths ([G-plane task evidence](C3.3-evidence-per-task.md)). goal_verify ([F1.8](F1.8-pack-verify-goal-verify-suites.md)) aggregates role evidence at scope complete. Missing output_type evidence blocks task completion even when generic last_verify passed\u2014fail closed per role contract.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `F6.4: role evidence requirements per output type`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch F \u2014 Organization plane (template-packs = ceiling)`\n3. Group: `F6: Role \u2192 agent mapping` \u00b7 Plane `F` \u2014 `Branch F \u2014 Organization plane (template-packs = ceiling)`\n4. Siblings: `F6.1, F6.2, F6.3`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/F6.4-role-evidence-requirements-per-output-type.md\n\n## Reader narrative (authoritative context)\n\nEvidence requirements per role output type define what verify must prove for each deliverable\u2014code diff + pytest for programmer tasks, export checksum + render for TA tasks, schema migration log for DBA tasks. Requirements extend generic evidence_required in state with pack-specific output_type rows.\n\nTask cards reference output_type; verify-router and tool-operator write matching evidence paths ([G-plane task evidence](C3.3-evidence-per-task.md)). goal_verify ([F1.8](F1.8-pack-verify-goal-verify-suites.md)) aggregates role evidence at scope complete. Missing output_type evidence blocks task completion even when generic last_verify passed\u2014fail closed per role contract."
+    },
+    {
+      "item_id": "G2.3",
+      "title": "goal verify blocks h3 until pass",
+      "path": "documents/plans/full-automation/G2.3-goal-verify-blocks-h3-until-pass.md",
+      "branch": "G",
+      "branch_title": "Branch G \u2014 Verification & quality plane (anti-mistake)",
+      "group_id": "G2",
+      "group_title": "Goal-level verification (NEW)",
+      "siblings": [
+        "G2.1",
+        "G2.2",
+        "G2.4"
+      ],
+      "purpose": "G2.3 defines goal verify blocks h3 until pass for the agent-driven expert system. Verification & quality \u2014 evidence, goal_verify, anti-mistake.",
+      "behavior_steps": [
+        "Passing task-level evidence alone does not set hitl.pending=H3; goal verify success transitions goal.state through verifying and only then surfaces H3 for operator acceptance",
+        "Failed goal verify packages structured H2 with aggregated log paths; pursuit resumes only after fix and re-run",
+        "Resolve `goal.verify_command` from `state.goal` or active pack `F1.8` verify suite.",
+        "Aggregate task evidence paths; fail closed if any required evidence missing.",
+        "On exit 0: set `goal.state=verifying` then `hitl.pending=H3` when scope complete."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Flaky test \u00e2\u20ac\u201d escalation S4 once, then H2 with evidence log; no silent retry loop.",
+        "Edge case `G2.3` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch G \u2014 Verification & quality plane (anti-mistake)",
+      "reader_excerpt": "Human H3 sign-off stays blocked until `goal.verify_command` exits zero. Passing task-level evidence alone does not set `hitl.pending=H3`; goal verify success transitions `goal.state` through verifying and only then surfaces H3 for operator acceptance.\n\nAutomatic H3 clearance on implement completion is forbidden\u2014operators sign verified outcomes, not assumed ones ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)). Failed goal verify packages structured H2 with aggregated log paths; pursuit resumes only after fix and re-run.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `G2.3: goal verify blocks h3 until pass`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch G \u2014 Verification & quality plane (anti-mistake)`\n3. Group: `G2: Goal-level verification (NEW)` \u00b7 Plane `G` \u2014 `Branch G \u2014 Verification & quality plane (anti-mistake)`\n4. Siblings: `G2.1, G2.2, G2.4`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/G2.3-goal-verify-blocks-h3-until-pass.md\n\n## Reader narrative (authoritative context)\n\nHuman H3 sign-off stays blocked until `goal.verify_command` exits zero. Passing task-level evidence alone does not set `hitl.pending=H3`; goal verify success transitions `goal.state` through verifying and only then surfaces H3 for operator acceptance.\n\nAutomatic H3 clearance on implement completion is forbidden\u2014operators sign verified outcomes, not assumed ones ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)). Failed goal verify packages structured H2 with aggregated log paths; pursuit resumes only after fix and re-run."
+    },
+    {
+      "item_id": "G4.2",
+      "title": "review bugbot large diffs",
+      "path": "documents/plans/full-automation/G4.2-review-bugbot-large-diffs.md",
+      "branch": "G",
+      "branch_title": "Branch G \u2014 Verification & quality plane (anti-mistake)",
+      "group_id": "G4",
+      "group_title": "Review triggers (automated)",
+      "siblings": [
+        "G4.1",
+        "G4.3",
+        "G4.4"
+      ],
+      "purpose": "G4.2 defines review bugbot large diffs for the agent-driven expert system. Verification & quality \u2014 evidence, goal_verify, anti-mistake.",
+      "behavior_steps": [
+        "Substantial feature work gets mistake-class scanning before push even when task verify passed, catching logic errors tests may miss",
+        "Failed or blocking Bugbot outcomes route to conductor merge or H2; repeated issues on the same task pattern may enqueue platform promotion (D2.1)",
+        "During pursuit, enforce the review, bugbot, large, and diffs contract within Review triggers (automated) (Plane G).",
+        "Run [S0](B1.1-s0-deterministic-mandatory-first.md) scripts before improvising when file-derived behavior exists.",
+        "Dual-write journal and state.json after the step; attach evidence when verification applies."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Flaky test \u00e2\u20ac\u201d escalation S4 once, then H2 with evidence log; no silent retry loop.",
+        "Edge case `G4.2` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch G \u2014 Verification & quality plane (anti-mistake)",
+      "reader_excerpt": "Bugbot review triggers on large implement diffs\u2014line-count and file-count thresholds from operator policy or pack overrides. Substantial feature work gets mistake-class scanning before push even when task verify passed, catching logic errors tests may miss.\n\nBugbot does not replace verify-router evidence; it adds review signal. Failed or blocking Bugbot outcomes route to conductor merge or H2; repeated issues on the same task pattern may enqueue platform promotion ([D2.1](D2.1-index.md)).",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `G4.2: review bugbot large diffs`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch G \u2014 Verification & quality plane (anti-mistake)`\n3. Group: `G4: Review triggers (automated)` \u00b7 Plane `G` \u2014 `Branch G \u2014 Verification & quality plane (anti-mistake)`\n4. Siblings: `G4.1, G4.3, G4.4`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/G4.2-review-bugbot-large-diffs.md\n\n## Reader narrative (authoritative context)\n\nBugbot review triggers on large implement diffs\u2014line-count and file-count thresholds from operator policy or pack overrides. Substantial feature work gets mistake-class scanning before push even when task verify passed, catching logic errors tests may miss.\n\nBugbot does not replace verify-router evidence; it adds review signal. Failed or blocking Bugbot outcomes route to conductor merge or H2; repeated issues on the same task pattern may enqueue platform promotion ([D2.1](D2.1-index.md))."
+    },
+    {
+      "item_id": "G5.4",
+      "title": "mistake skipped tests verify router mandatory",
+      "path": "documents/plans/full-automation/G5.4-mistake-skipped-tests-verify-router-mandatory.md",
+      "branch": "G",
+      "branch_title": "Branch G \u2014 Verification & quality plane (anti-mistake)",
+      "group_id": "G5",
+      "group_title": "Mistake class \u2192 control mapping",
+      "siblings": [
+        "G5.1",
+        "G5.2",
+        "G5.3",
+        "G5.5",
+        "G5.6",
+        "G5.7"
+      ],
+      "purpose": "G5.4 defines mistake skipped tests verify router mandatory for the agent-driven expert system. Verification & quality \u2014 evidence, goal_verify, anti-mistake.",
+      "behavior_steps": [
+        "Skipped tests is bypassing verify-router or marking tasks done without running the task card Test command\u2014often under token pressure or \u201ctests are slow.\u201d Controls: mandatory verify-router dispatch, evidence path requirements, and git-workflow blocked when last_verify is not passed",
+        "Headless and CI paths use the same commands via verify-router/headless-verify.py\u2014no alternate \u201ctrust me\u201d path",
+        "Run verify-router for task-level commands; persist log under `evidence/`.",
+        "Set `last_verify=passed|failed` in state before advancing implement tasks.",
+        "Block git-workflow push when evidence_required and verify not passed."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Flaky test \u00e2\u20ac\u201d escalation S4 once, then H2 with evidence log; no silent retry loop.",
+        "Edge case `G5.4` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch G \u2014 Verification & quality plane (anti-mistake)",
+      "reader_excerpt": "Skipped tests is bypassing verify-router or marking tasks done without running the task card Test command\u2014often under token pressure or \u201ctests are slow.\u201d Controls: mandatory verify-router dispatch, evidence path requirements, and git-workflow blocked when `last_verify` is not passed.\n\nHeadless and CI paths use the same commands via verify-router/headless-verify.py\u2014no alternate \u201ctrust me\u201d path. Skipping is indistinguishable from hallucinated done for audit purposes.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `G5.4: mistake skipped tests verify router mandatory`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch G \u2014 Verification & quality plane (anti-mistake)`\n3. Group: `G5: Mistake class \u2192 control mapping` \u00b7 Plane `G` \u2014 `Branch G \u2014 Verification & quality plane (anti-mistake)`\n4. Siblings: `G5.1, G5.2, G5.3, G5.5, G5.6, G5.7`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/G5.4-mistake-skipped-tests-verify-router-mandatory.md\n\n## Reader narrative (authoritative context)\n\nSkipped tests is bypassing verify-router or marking tasks done without running the task card Test command\u2014often under token pressure or \u201ctests are slow.\u201d Controls: mandatory verify-router dispatch, evidence path requirements, and git-workflow blocked when `last_verify` is not passed.\n\nHeadless and CI paths use the same commands via verify-router/headless-verify.py\u2014no alternate \u201ctrust me\u201d path. Skipping is indistinguishable from hallucinated done for audit purposes."
+    },
+    {
+      "item_id": "G6.3",
+      "title": "rollback autopilot resume precompact snapshot",
+      "path": "documents/plans/full-automation/G6.3-rollback-autopilot-resume-precompact-snapshot.md",
+      "branch": "G",
+      "branch_title": "Branch G \u2014 Verification & quality plane (anti-mistake)",
+      "group_id": "G6",
+      "group_title": "Rollback & recovery",
+      "siblings": [
+        "G6.1",
+        "G6.2"
+      ],
+      "purpose": "G6.3 defines rollback autopilot resume precompact snapshot for the agent-driven expert system. Verification & quality \u2014 evidence, goal_verify, anti-mistake.",
+      "behavior_steps": [
+        "Autopilot resume after session compact or IDE restart reloads preCompact snapshot plus last good dual-write of journal/state.json\u2014never chat memory",
+        "Snapshot includes next_action, evidence_files, last_verify, gates_pending, and autopilot.active so check-pipeline-blocked reproduces the same stop/continue decision",
+        "During pursuit, enforce the rollback autopilot resume preCompact snapshot contract within Rollback & recovery (Plane G).",
+        "Run [S0](B1.1-s0-deterministic-mandatory-first.md) scripts before improvising when file-derived behavior exists.",
+        "Dual-write journal and state.json after the step; attach evidence when verification applies."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Flaky test \u00e2\u20ac\u201d escalation S4 once, then H2 with evidence log; no silent retry loop.",
+        "Edge case `G6.3` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch G \u2014 Verification & quality plane (anti-mistake)",
+      "reader_excerpt": "Autopilot resume after session compact or IDE restart reloads preCompact snapshot plus last good dual-write of journal/state.json\u2014never chat memory. Hooks may inject a summary; conductor still reads full journal and Context files before continue.\n\nSnapshot includes next_action, evidence_files, last_verify, gates_pending, and autopilot.active so check-pipeline-blocked reproduces the same stop/continue decision. Corrupt snapshot triggers validate-workflow failure and H2, not best-effort guess.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `G6.3: rollback autopilot resume precompact snapshot`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch G \u2014 Verification & quality plane (anti-mistake)`\n3. Group: `G6: Rollback & recovery` \u00b7 Plane `G` \u2014 `Branch G \u2014 Verification & quality plane (anti-mistake)`\n4. Siblings: `G6.1, G6.2`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/G6.3-rollback-autopilot-resume-precompact-snapshot.md\n\n## Reader narrative (authoritative context)\n\nAutopilot resume after session compact or IDE restart reloads preCompact snapshot plus last good dual-write of journal/state.json\u2014never chat memory. Hooks may inject a summary; conductor still reads full journal and Context files before continue.\n\nSnapshot includes next_action, evidence_files, last_verify, gates_pending, and autopilot.active so check-pipeline-blocked reproduces the same stop/continue decision. Corrupt snapshot triggers validate-workflow failure and H2, not best-effort guess."
+    },
+    {
+      "item_id": "H1.6",
+      "title": "state company block",
+      "path": "documents/plans/full-automation/H1.6-state-company-block.md",
+      "branch": "H",
+      "branch_title": "Branch H \u2014 Persistence & state plane",
+      "group_id": "H1",
+      "group_title": "journal/state.json (v2 additive fields)",
+      "siblings": [
+        "H1.1",
+        "H1.2",
+        "H1.3",
+        "H1.4",
+        "H1.5"
+      ],
+      "purpose": "H1.6 defines state company block for the agent-driven expert system. Persistence \u2014 journal, state.json, graphs, evidence.",
+      "behavior_steps": [
+        "Role switches mid-goal require journal-recorded conductor decision (B5.1); workers inherit role permissions from pack schema (B5.2)",
+        "Company block must stay consistent with journal Company section on dual-write",
+        "During pursuit, enforce the state, company, and block contract within journal/state.json (v2 additive fields) (Plane H).",
+        "Run [S0](B1.1-s0-deterministic-mandatory-first.md) scripts before improvising when file-derived behavior exists.",
+        "Dual-write journal and state.json after the step; attach evidence when verification applies."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Edge case `H1.6` variant 3: verify state dual-write before continuing pursuit.",
+        "Edge case `H1.6` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch H \u2014 Persistence & state plane",
+      "reader_excerpt": "The company block binds pack_id, active_role, template-pack version, and multi-goal workstream leases for company autopilot. Role switches mid-goal require journal-recorded conductor decision ([B5.1](B5.1-active-role-from-template-pack.md)); workers inherit role permissions from pack schema ([B5.2](B5.2-role-to-pipeline-id-skills-tool-permissions.md)).\n\nIntegration manifest and artifact graph refs live here for program mode ([C4](C4-index.md)). pack_id null means default repo harness; instantiated packs override pipeline_id and verify suites per [F1](F1-index.md). Company block must stay consistent with journal Company section on dual-write.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `H1.6: state company block`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch H \u2014 Persistence & state plane`\n3. Group: `H1: journal/state.json (v2 additive fields)` \u00b7 Plane `H` \u2014 `Branch H \u2014 Persistence & state plane`\n4. Siblings: `H1.1, H1.2, H1.3, H1.4, H1.5`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/H1.6-state-company-block.md\n\n## Reader narrative (authoritative context)\n\nThe company block binds pack_id, active_role, template-pack version, and multi-goal workstream leases for company autopilot. Role switches mid-goal require journal-recorded conductor decision ([B5.1](B5.1-active-role-from-template-pack.md)); workers inherit role permissions from pack schema ([B5.2](B5.2-role-to-pipeline-id-skills-tool-permissions.md)).\n\nIntegration manifest and artifact graph refs live here for program mode ([C4](C4-index.md)). pack_id null means default repo harness; instantiated packs override pipeline_id and verify suites per [F1](F1-index.md). Company block must stay consistent with journal Company section on dual-write."
+    },
+    {
+      "item_id": "I1.1",
+      "title": "runtime ide genius conductor session",
+      "path": "documents/plans/full-automation/I1.1-runtime-ide-genius-conductor-session.md",
+      "branch": "I",
+      "branch_title": "Branch I \u2014 Runtime & integration plane",
+      "group_id": "I1",
+      "group_title": "In-IDE (Cursor)",
+      "siblings": [
+        "I1.2",
+        "I1.3",
+        "I1.4"
+      ],
+      "purpose": "I1.1 defines runtime ide genius conductor session for the agent-driven expert system. Runtime & integration \u2014 IDE, SDK, headless, MCP tools.",
+      "behavior_steps": [
+        "The in-IDE conductor session is genius-tier and thin: the operator selects the orchestration model once per session from docs/operator/model-policy.json, then the parent agent runs S0 preflight, spawns economy workers, and dual-writes journal/state\u2014never bulk-implementing when spawn_workers is true",
+        "This is the primary runtime for v2 pursuit: continue, autopilot, gate, and verify commands all assume a Cursor IDE session with AGENTS.md and rules loaded",
+        "During pursuit, enforce the runtime IDE genius conductor session contract within In-IDE (Cursor) (Plane I).",
+        "Run [S0](B1.1-s0-deterministic-mandatory-first.md) scripts before improvising when file-derived behavior exists.",
+        "Dual-write journal and state.json after the step; attach evidence when verification applies."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Edge case `I1.1` variant 3: verify state dual-write before continuing pursuit.",
+        "Edge case `I1.1` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch I \u2014 Runtime & integration plane",
+      "reader_excerpt": "The in-IDE conductor session is genius-tier and thin: the operator selects the orchestration model once per session from `docs/operator/model-policy.json`, then the parent agent runs S0 preflight, spawns economy workers, and dual-writes journal/state\u2014never bulk-implementing when spawn_workers is true.\n\nThis is the primary runtime for v2 pursuit: continue, autopilot, gate, and verify commands all assume a Cursor IDE session with AGENTS.md and rules loaded. See [genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md) and [Vision \u00a711](../../full-automation-vision-and-hierarchy.md#11-branch-i-runtime-integration-plane).",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `I1.1: runtime ide genius conductor session`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch I \u2014 Runtime & integration plane`\n3. Group: `I1: In-IDE (Cursor)` \u00b7 Plane `I` \u2014 `Branch I \u2014 Runtime & integration plane`\n4. Siblings: `I1.2, I1.3, I1.4`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/I1.1-runtime-ide-genius-conductor-session.md\n\n## Reader narrative (authoritative context)\n\nThe in-IDE conductor session is genius-tier and thin: the operator selects the orchestration model once per session from `docs/operator/model-policy.json`, then the parent agent runs S0 preflight, spawns economy workers, and dual-writes journal/state\u2014never bulk-implementing when spawn_workers is true.\n\nThis is the primary runtime for v2 pursuit: continue, autopilot, gate, and verify commands all assume a Cursor IDE session with AGENTS.md and rules loaded. See [genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md) and [Vision \u00a711](../../full-automation-vision-and-hierarchy.md#11-branch-i-runtime-integration-plane)."
+    },
+    {
+      "item_id": "I2.3",
+      "title": "runtime sdk operator pc worker server",
+      "path": "documents/plans/full-automation/I2.3-runtime-sdk-operator-pc-worker-server.md",
+      "branch": "I",
+      "branch_title": "Branch I \u2014 Runtime & integration plane",
+      "group_id": "I2",
+      "group_title": "Local SDK daemon",
+      "siblings": [
+        "I2.1",
+        "I2.2"
+      ],
+      "purpose": "I2.3 defines runtime sdk operator pc worker server for the agent-driven expert system. Runtime & integration \u2014 IDE, SDK, headless, MCP tools.",
+      "behavior_steps": [
+        "Operator PC as worker server extends SDK daemon: a dedicated machine drains work-order lanes, runs verify suites, or hosts GPU/tool workloads while the conductor IDE session stays thin",
+        "Network partition between conductor and worker server triggers H2 with last-known lease state\u2014workers must not assume conductor is reachable for journal writes",
+        "During pursuit, enforce the runtime SDK operator PC worker server contract within Local SDK daemon (Plane I).",
+        "Run [S0](B1.1-s0-deterministic-mandatory-first.md) scripts before improvising when file-derived behavior exists.",
+        "Dual-write journal and state.json after the step; attach evidence when verification applies."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Edge case `I2.3` variant 3: verify state dual-write before continuing pursuit.",
+        "Edge case `I2.3` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch I \u2014 Runtime & integration plane",
+      "reader_excerpt": "Operator PC as worker server extends SDK daemon: a dedicated machine drains work-order lanes, runs verify suites, or hosts GPU/tool workloads while the conductor IDE session stays thin. Lease semantics follow [C4.1](C4.1-workstreams-lane-json-leases.md) lane JSON.\n\nNetwork partition between conductor and worker server triggers H2 with last-known lease state\u2014workers must not assume conductor is reachable for journal writes. Evidence and logs write to shared evidence/ paths or sync back on completion.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `I2.3: runtime sdk operator pc worker server`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch I \u2014 Runtime & integration plane`\n3. Group: `I2: Local SDK daemon` \u00b7 Plane `I` \u2014 `Branch I \u2014 Runtime & integration plane`\n4. Siblings: `I2.1, I2.2`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/I2.3-runtime-sdk-operator-pc-worker-server.md\n\n## Reader narrative (authoritative context)\n\nOperator PC as worker server extends SDK daemon: a dedicated machine drains work-order lanes, runs verify suites, or hosts GPU/tool workloads while the conductor IDE session stays thin. Lease semantics follow [C4.1](C4.1-workstreams-lane-json-leases.md) lane JSON.\n\nNetwork partition between conductor and worker server triggers H2 with last-known lease state\u2014workers must not assume conductor is reachable for journal writes. Evidence and logs write to shared evidence/ paths or sync back on completion."
+    },
+    {
+      "item_id": "I4.3",
+      "title": "runtime external evidence types non pytest",
+      "path": "documents/plans/full-automation/I4.3-runtime-external-evidence-types-non-pytest.md",
+      "branch": "I",
+      "branch_title": "Branch I \u2014 Runtime & integration plane",
+      "group_id": "I4",
+      "group_title": "External tools (per pack)",
+      "siblings": [
+        "I4.1",
+        "I4.2"
+      ],
+      "purpose": "I4.3 defines runtime external evidence types non pytest for the agent-driven expert system. Runtime & integration \u2014 IDE, SDK, headless, MCP tools.",
+      "behavior_steps": [
+        "Non-pytest evidence types\u2014checksum files, screenshot paths, export manifests, linter reports\u2014follow docs/operator/evidence-types.md so verify-router and headless-verify accept them alongside test logs",
+        "Operators extending evidence types update the manifest and add S0 validation where machine-checkable",
+        "During pursuit, enforce the runtime external evidence-types non-pytest contract within External tools (per pack) (Plane I).",
+        "Run [S0](B1.1-s0-deterministic-mandatory-first.md) scripts before improvising when file-derived behavior exists.",
+        "Dual-write journal and state.json after the step; attach evidence when verification applies."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Edge case `I4.3` variant 3: verify state dual-write before continuing pursuit.",
+        "Edge case `I4.3` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch I \u2014 Runtime & integration plane",
+      "reader_excerpt": "Non-pytest evidence types\u2014checksum files, screenshot paths, export manifests, linter reports\u2014follow `docs/operator/evidence-types.md` so verify-router and headless-verify accept them alongside test logs. Task cards declare evidence type explicitly.\n\nMixed evidence bundles reference all paths in state evidence_files and journal Evidence files ([H4](H4-evidence.md)). Operators extending evidence types update the manifest and add S0 validation where machine-checkable.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `I4.3: runtime external evidence types non pytest`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch I \u2014 Runtime & integration plane`\n3. Group: `I4: External tools (per pack)` \u00b7 Plane `I` \u2014 `Branch I \u2014 Runtime & integration plane`\n4. Siblings: `I4.1, I4.2`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/I4.3-runtime-external-evidence-types-non-pytest.md\n\n## Reader narrative (authoritative context)\n\nNon-pytest evidence types\u2014checksum files, screenshot paths, export manifests, linter reports\u2014follow `docs/operator/evidence-types.md` so verify-router and headless-verify accept them alongside test logs. Task cards declare evidence type explicitly.\n\nMixed evidence bundles reference all paths in state evidence_files and journal Evidence files ([H4](H4-evidence.md)). Operators extending evidence types update the manifest and add S0 validation where machine-checkable."
+    },
+    {
+      "item_id": "INTRO-1.3",
+      "title": "goal completion criterion",
+      "path": "documents/plans/full-automation/INTRO-1.3-goal-completion-criterion.md",
+      "branch": "meta",
+      "branch_title": "Branch I \u2014 Runtime & integration plane",
+      "group_id": "INTRO-1",
+      "group_title": "North star definition (\u00a71)",
+      "siblings": [
+        "INTRO-1.1",
+        "INTRO-1.2"
+      ],
+      "purpose": "INTRO-1.3 defines goal completion criterion for the agent-driven expert system. North star, scope, minimal HITL (H1/H2/H3).",
+      "behavior_steps": [
+        "A goal is achieved only when five conditions hold together: acceptance artifacts exist, automated goal verification passes, staleness and integration graphs are consistent, no blocking questions remain without deferred rationale, and platform debt for the goal is promoted or explicitly waived with expiry",
+        "This criterion prevents the common failure mode of marking tasks done while the overarching goal remains unproven\u2014Plane G goal_verify exists to enforce this bar",
+        "At H1, the operator supplies a spec or charter; the approved plan reflects this summary\u2014north star, scope, and minimal HITL (H1/H2/H3).",
+        "All pursuit and plane specs assume three structural shifts: always-on pursuit until goals verify, parallel product and self-improvement work, and template-packs at company scale.",
+        "When scope or stop behavior is ambiguous, agents resolve conflicts using this summary before inventing new policy."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Edge case `INTRO-1.3` variant 3: verify state dual-write before continuing pursuit.",
+        "Edge case `INTRO-1.3` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch I \u2014 Runtime & integration plane",
+      "reader_excerpt": "A goal is achieved only when five conditions hold together: acceptance artifacts exist, automated goal verification passes, staleness and integration graphs are consistent, no blocking questions remain without deferred rationale, and platform debt for the goal is promoted or explicitly waived with expiry.\n\nThe agent does not stop for status theater. It stops on H1, H2, H3, unrecoverable failure, or resource budget caps. This criterion prevents the common failure mode of marking tasks done while the overarching goal remains unproven\u2014Plane G goal_verify exists to enforce this bar.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `INTRO-1.3: goal completion criterion`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch I \u2014 Runtime & integration plane`\n3. Group: `INTRO-1: North star definition (\u00a71)` \u00b7 Plane `meta` \u2014 `Branch I \u2014 Runtime & integration plane`\n4. Siblings: `INTRO-1.1, INTRO-1.2`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/INTRO-1.3-goal-completion-criterion.md\n\n## Reader narrative (authoritative context)\n\nA goal is achieved only when five conditions hold together: acceptance artifacts exist, automated goal verification passes, staleness and integration graphs are consistent, no blocking questions remain without deferred rationale, and platform debt for the goal is promoted or explicitly waived with expiry.\n\nThe agent does not stop for status theater. It stops on H1, H2, H3, unrecoverable failure, or resource budget caps. This criterion prevents the common failure mode of marking tasks done while the overarching goal remains unproven\u2014Plane G goal_verify exists to enforce this bar."
+    },
+    {
+      "item_id": "J6",
+      "title": "release queue",
+      "path": "documents/plans/full-automation/J6-release-queue.md",
+      "branch": "J",
+      "branch_title": "Branch J \u2014 Governance & operator plane",
+      "group_id": "J6",
+      "group_title": "J6",
+      "siblings": [],
+      "purpose": "J6 defines release queue for the agent-driven expert system. Governance \u2014 policy, waivers, audit, export contract.",
+      "behavior_steps": [
+        "docs/automation/release-queue.json tracks harness evolution rows\u2014v2.14 through v2.23 SEC-15 capabilities\u2014with implement status, verify commands, and waiver links",
+        "Release queue drain promotes S0 scripts, skills, and pack fragments when rows ship; stale rows re-enqueue via hierarchy-expander audit",
+        "During pursuit, enforce the release and queue contract within J6 (Plane J).",
+        "Run [S0](B1.1-s0-deterministic-mandatory-first.md) scripts before improvising when file-derived behavior exists.",
+        "Dual-write journal and state.json after the step; attach evidence when verification applies."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Edge case `J6` variant 3: verify state dual-write before continuing pursuit.",
+        "Edge case `J6` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Branch J \u2014 Governance & operator plane",
+      "reader_excerpt": "`docs/automation/release-queue.json` tracks harness evolution rows\u2014v2.14 through v2.23 SEC-15 capabilities\u2014with implement status, verify commands, and waiver links. It is the operator-facing backlog for platform maturity separate from consumer product goals.\n\nRelease queue drain promotes S0 scripts, skills, and pack fragments when rows ship; stale rows re-enqueue via hierarchy-expander audit. Pair with platform promotion_queue in state ([H1.3](H1.3-state-platform-block.md)) and SEC-15-index release checklist. Completed rows update dashboard maturity indicators ([I5.1](I5.1-runtime-notify-status-dashboard-generation.md)).",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `J6: release queue`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Branch J \u2014 Governance & operator plane`\n3. Group: `J6: J6` \u00b7 Plane `J` \u2014 `Branch J \u2014 Governance & operator plane`\n4. Siblings: `(none)`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/J6-release-queue.md\n\n## Reader narrative (authoritative context)\n\n`docs/automation/release-queue.json` tracks harness evolution rows\u2014v2.14 through v2.23 SEC-15 capabilities\u2014with implement status, verify commands, and waiver links. It is the operator-facing backlog for platform maturity separate from consumer product goals.\n\nRelease queue drain promotes S0 scripts, skills, and pack fragments when rows ship; stale rows re-enqueue via hierarchy-expander audit. Pair with platform promotion_queue in state ([H1.3](H1.3-state-platform-block.md)) and SEC-15-index release checklist. Completed rows update dashboard maturity indicators ([I5.1](I5.1-runtime-notify-status-dashboard-generation.md))."
+    },
+    {
+      "item_id": "MASTER-F",
+      "title": "branch f   organization plane",
+      "path": "documents/plans/full-automation/MASTER-F-branch-f---organization-plane.md",
+      "branch": "meta",
+      "branch_title": "Master hierarchy (top level)",
+      "group_id": "MASTER",
+      "group_title": "Master hierarchy \u2014 planes A\u2013J (\u00a72)",
+      "siblings": [
+        "MASTER-A",
+        "MASTER-B",
+        "MASTER-C",
+        "MASTER-D",
+        "MASTER-E",
+        "MASTER-G",
+        "MASTER-H",
+        "MASTER-I",
+        "MASTER-J"
+      ],
+      "purpose": "MASTER-F defines branch f   organization plane for the agent-driven expert system. Top-level decomposition into ten planes.",
+      "behavior_steps": [
+        "Plane F defines organization through template-packs\u2014company schema, roles, pipelines, integrations, and example packs (game studio, data platform)",
+        "Cross-pack shared libraries and role-to-agent mapping live here as well",
+        "Plane meta groups related capabilities; this master summary orients readers before opening meta1\u2013meta6 detail pages.",
+        "Each child capability under Plane meta must stay consistent with this plane\u2019s role in pursuit, routing, or verification.",
+        "Operators use master pages as reading order hints\u2014not as separate runtime state."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Edge case `MASTER-F` variant 3: verify state dual-write before continuing pursuit.",
+        "Edge case `MASTER-F` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Master hierarchy (top level)",
+      "reader_excerpt": "Plane F defines organization through template-packs\u2014company schema, roles, pipelines, integrations, and example packs (game studio, data platform). A pack is a company slice the harness can instantiate and pursue goals within.\n\nCross-pack shared libraries and role-to-agent mapping live here as well.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `MASTER-F: branch f   organization plane`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Master hierarchy (top level)`\n3. Group: `MASTER: Master hierarchy \u2014 planes A\u2013J (\u00a72)` \u00b7 Plane `meta` \u2014 `Master hierarchy (top level)`\n4. Siblings: `MASTER-A, MASTER-B, MASTER-C, MASTER-D, MASTER-E, MASTER-G, MASTER-H, MASTER-I, MASTER-J`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/MASTER-F-branch-f---organization-plane.md\n\n## Reader narrative (authoritative context)\n\nPlane F defines organization through template-packs\u2014company schema, roles, pipelines, integrations, and example packs (game studio, data platform). A pack is a company slice the harness can instantiate and pursue goals within.\n\nCross-pack shared libraries and role-to-agent mapping live here as well."
+    },
+    {
+      "item_id": "SEC-14",
+      "title": "gap analysis",
+      "path": "documents/plans/full-automation/SEC-14-gap-analysis.md",
+      "branch": "meta",
+      "branch_title": "Gap analysis: today \u2192 target",
+      "group_id": "SEC-14",
+      "group_title": "Gap analysis: today \u2192 target (\u00a714)",
+      "siblings": [],
+      "purpose": "SEC-14 defines gap analysis for the agent-driven expert system. Roadmap, gap analysis, pursuit flow, decisions.",
+      "behavior_steps": [
+        "Each row names what v2.13 does today, what the north star requires, and which plane sections bridge the gap\u2014pursuit loop depth, human gate reduction, platform queue, catalog compose-first, pack schema, goal_verify, role switching, and stop-reason taxonomy",
+        "Implementers should treat this table as a program backlog ordered by SEC-15 releases rather than as prose alone",
+        "This section documents cross-cutting architecture: pursuit flow, migration gaps, or release sequencing for the expert system.",
+        "Implementers treat SEC rows as program backlog ordering, not as ad hoc prose.",
+        "Release slices (SEC-15) map harness versions to shippable capability bundles."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Edge case `SEC-14` variant 3: verify state dual-write before continuing pursuit.",
+        "Edge case `SEC-14` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Gap analysis: today \u2192 target",
+      "reader_excerpt": "Gap analysis makes the migration from today's harness to the target architecture auditable. Each row names what v2.13 does today, what the north star requires, and which plane sections bridge the gap\u2014pursuit loop depth, human gate reduction, platform queue, catalog compose-first, pack schema, goal_verify, role switching, and stop-reason taxonomy.\n\nImplementers should treat this table as a program backlog ordered by SEC-15 releases rather than as prose alone.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `SEC-14: gap analysis`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Gap analysis: today \u2192 target`\n3. Group: `SEC-14: Gap analysis: today \u2192 target (\u00a714)` \u00b7 Plane `meta` \u2014 `Gap analysis: today \u2192 target`\n4. Siblings: `(none)`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/SEC-14-gap-analysis.md\n\n## Reader narrative (authoritative context)\n\nGap analysis makes the migration from today's harness to the target architecture auditable. Each row names what v2.13 does today, what the north star requires, and which plane sections bridge the gap\u2014pursuit loop depth, human gate reduction, platform queue, catalog compose-first, pack schema, goal_verify, role switching, and stop-reason taxonomy.\n\nImplementers should treat this table as a program backlog ordered by SEC-15 releases rather than as prose alone."
+    },
+    {
+      "item_id": "SEC-15-v2.19",
+      "title": "release v2 19 company pack schema active role",
+      "path": "documents/plans/full-automation/SEC-15-v2.19-release-v2-19-company-pack-schema-active-role.md",
+      "branch": "meta",
+      "branch_title": "Implementation roadmap (additive v2 releases)",
+      "group_id": "SEC-15",
+      "group_title": "Implementation roadmap v2.14\u2013v2.23 (\u00a715)",
+      "siblings": [
+        "SEC-15-v2.14",
+        "SEC-15-v2.15",
+        "SEC-15-v2.16",
+        "SEC-15-v2.17",
+        "SEC-15-v2.18",
+        "SEC-15-v2.20",
+        "SEC-15-v2.21",
+        "SEC-15-v2.22",
+        "SEC-15-v2.23"
+      ],
+      "purpose": "SEC-15-v2.19 defines release v2 19 company pack schema active role for the agent-driven expert system. Roadmap, gap analysis, pursuit flow, decisions.",
+      "behavior_steps": [
+        "This release slice defines company pack schema v1: company.yaml, roles/*.yaml, and state.company.active_role",
+        "Pack validation tests should fail if roles reference pipelines or tools not declared in the pack manifest",
+        "This section documents cross-cutting architecture: pursuit flow, migration gaps, or release sequencing for the expert system.",
+        "Implementers treat SEC rows as program backlog ordering, not as ad hoc prose.",
+        "Release slices (SEC-15) map harness versions to shippable capability bundles."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Edge case `SEC-15-v2.19` variant 3: verify state dual-write before continuing pursuit.",
+        "Edge case `SEC-15-v2.19` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Implementation roadmap (additive v2 releases)",
+      "reader_excerpt": "Release v2.19 defines company pack schema v1: company.yaml, roles/*.yaml, and state.company.active_role. Template-packs become instantiable companies the harness can switch roles within during pursuit.\n\nThis bridges Plane F organization to Plane H persistence fields. Pack validation tests should fail if roles reference pipelines or tools not declared in the pack manifest.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `SEC-15-v2.19: release v2 19 company pack schema active role`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Implementation roadmap (additive v2 releases)`\n3. Group: `SEC-15: Implementation roadmap v2.14\u2013v2.23 (\u00a715)` \u00b7 Plane `meta` \u2014 `Implementation roadmap (additive v2 releases)`\n4. Siblings: `SEC-15-v2.14, SEC-15-v2.15, SEC-15-v2.16, SEC-15-v2.17, SEC-15-v2.18, SEC-15-v2.20, SEC-15-v2.21, SEC-15-v2.22, SEC-15-v2.23`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/SEC-15-v2.19-release-v2-19-company-pack-schema-active-role.md\n\n## Reader narrative (authoritative context)\n\nRelease v2.19 defines company pack schema v1: company.yaml, roles/*.yaml, and state.company.active_role. Template-packs become instantiable companies the harness can switch roles within during pursuit.\n\nThis bridges Plane F organization to Plane H persistence fields. Pack validation tests should fail if roles reference pipelines or tools not declared in the pack manifest."
+    },
+    {
+      "item_id": "SEC-17-2",
+      "title": "decision h3 scope task milestone release company",
+      "path": "documents/plans/full-automation/SEC-17-2-decision-h3-scope-task-milestone-release-company.md",
+      "branch": "meta",
+      "branch_title": "Open design decisions",
+      "group_id": "SEC-17",
+      "group_title": "Open design decisions (\u00a717)",
+      "siblings": [
+        "SEC-17-1",
+        "SEC-17-3",
+        "SEC-17-4",
+        "SEC-17-5",
+        "SEC-17-6"
+      ],
+      "purpose": "SEC-17-2 defines decision h3 scope task milestone release company for the agent-driven expert system. Roadmap, gap analysis, pursuit flow, decisions.",
+      "behavior_steps": [
+        "Finer H3 increases operator load; coarser H3 increases blast radius of acceptance",
+        "Pack authors should declare H3 scope in company.yaml so pursuit knows when to request sign-off",
+        "This section documents cross-cutting architecture: pursuit flow, migration gaps, or release sequencing for the expert system.",
+        "Implementers treat SEC rows as program backlog ordering, not as ad hoc prose.",
+        "Release slices (SEC-15) map harness versions to shippable capability bundles."
+      ],
+      "edge_cases": [
+        "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+        "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+        "Edge case `SEC-17-2` variant 3: verify state dual-write before continuing pursuit.",
+        "Edge case `SEC-17-2` variant 4: verify state dual-write before continuing pursuit."
+      ],
+      "vision_excerpt": "Open design decisions",
+      "reader_excerpt": "Open decision: what granularity triggers H3? Per task, milestone, release, or company-level goal? Finer H3 increases operator load; coarser H3 increases blast radius of acceptance.\n\nPack authors should declare H3 scope in company.yaml so pursuit knows when to request sign-off.",
+      "prompt": "# Agent timeline writer \u2014 hierarchy leaf\n\nYou are a senior technical writer producing **timeline steps** for an architecture book capability page. The audience is professional engineers who need to understand **how this capability works in the running expert system**\u2014not how to implement the spec document.\n\n## Your task\n\nWrite **3\u20135 numbered steps** for capability `SEC-17-2: decision h3 scope task milestone release company`.\n\nThese steps appear under **How it works** (runtime capabilities) or **What this defines** (front matter / MASTER / SEC / APP). Each step is one short operational sentence about pursuit, routing, verification, or policy\u2014not doc pipeline work.\n\n## Research (read before writing)\n\n1. The leaf markdown file (especially `## Reader narrative`)\n2. Vision excerpt: `Open design decisions`\n3. Group: `SEC-17: Open design decisions (\u00a717)` \u00b7 Plane `meta` \u2014 `Open design decisions`\n4. Siblings: `SEC-17-1, SEC-17-3, SEC-17-4, SEC-17-5, SEC-17-6`\n\n## Writing rules\n\n- Steps describe **expert-system behavior** during pursuit (conductor, workers, state.json, H1/H2/H3, platform queue, evidence)\n- Do **not** write: \"Define and implement\u2026\", \"Map to SEC-15 release row\", \"Add unit test\", or publication meta\n- Use complete sentences; link related capabilities as `[B1.1](B1.1-s0-deterministic-mandatory-first.md)` when helpful\n- End with failure handling (H2 / fail closed) when relevant\n- Match the reader narrative\u2014do not contradict it\n\n## Output format\n\nReturn **only** numbered steps, one per line:\n\n```\n1. First operational step\u2026\n2. Second step\u2026\n3. \u2026\n```\n\nNo heading, no markdown fences, no commentary.\n\n\n---\n\n## Leaf file\n\nRead: documents/plans/full-automation/SEC-17-2-decision-h3-scope-task-milestone-release-company.md\n\n## Reader narrative (authoritative context)\n\nOpen decision: what granularity triggers H3? Per task, milestone, release, or company-level goal? Finer H3 increases operator load; coarser H3 increases blast radius of acceptance.\n\nPack authors should declare H3 scope in company.yaml so pursuit knows when to request sign-off."
+    }
+  ]
+}

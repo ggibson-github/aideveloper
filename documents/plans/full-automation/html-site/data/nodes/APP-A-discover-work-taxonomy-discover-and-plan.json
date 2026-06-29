@@ -1,0 +1,84 @@
+{
+  "id": "APP-A-discover",
+  "slug": "APP-A-discover-work-taxonomy-discover-and-plan",
+  "title": "discover work taxonomy discover and plan",
+  "branch": "meta",
+  "parent": "\u2014",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "APP-A-discover defines work taxonomy discover and plan for the agent-driven expert system. Human job taxonomy \u2192 pack workflows.",
+  "scope": [
+    "Owns `APP-A-discover` only; siblings under `\u2014` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a73 \u2014 Branch A \u2014 Pursuit & control plane](../../full-automation-vision-and-hierarchy.md#3-branch-a-pursuit-control-plane)."
+  ],
+  "behavior_steps": [
+    "When `next_action` targets discover or plan phases (`run spec-parser`, `program-scoper`, requirements research), the conductor invokes the matching S2 skill with librarian-bounded `allowed_reads` per [E4.3](E4.3-context-allowed-reads-cap-max-5.md) instead of ad hoc repo exploration.",
+    "Elicitation and research turns produce machine-checkable artifacts\u2014parsed requirements, open-question lists, tradeoff notes, and milestone sketches\u2014that dual-write to journal and state.json for H1 review before design or implement phases start.",
+    "At H1 the operator approves or amends the plan; journal-keeper records resolved Q&A, clears blocking questions, and sets `next_action` so [A5.3](A5.3-default-after-h1-auto-enter-goal-autopilot.md) can enter goal autopilot without re-asking baseline discovery.",
+    "Template-pack authors map this taxonomy slice to pipeline phases, verification commands, and playbooks in pack YAML so company autopilot spawns discover roles with the correct skills and catalog paths per [F1.3](F1.3-pack-pipelines---yaml.md).",
+    "If discovery ends with prose-only chat, unresolved blocking questions, or no approved plan artifacts, pursuit fails closed at H2\u2014never advance to HLD, DD, or implement until machine-checkable outputs exist."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"node\": \"APP-A-discover\",\n  \"description\": \"work taxonomy discover and plan\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `APP-A-discover` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `APP-A-discover` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `APP-A-discover`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `APP-A-discover` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_app-a-discover.py when script exists.",
+    "Validate `APP-A-discover` against SEC-15 release checklist and parent index links.",
+    "Document `APP-A-discover` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `APP-A-discover`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids APP-A-discover`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a73",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[\u2014-index](\u2014-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids APP-A-discover` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [\u2014-index](\u2014-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "APP-A-discover defines work taxonomy discover and plan for the agent-driven expert system. Human job taxonomy \u2192 pack workflows. In practice, the system when `next_action` targets discover or plan phases (`run spec-parser`, `program-scoper`, requirements research), the conductor invokes the matching s2 skill with librarian-bounded `allowed_reads` per [e4.3](e4.3-context-allowed-reads-cap-max-5.md) instead of ad hoc repo exploration, then elicitation and research turns produce machine-checkable artifacts\u2014parsed requirements, open-question lists, tradeoff notes, and milestone sketches\u2014that dual-write to journal and state.json for h1 review before design or implement phases start.",
+  "reader_narrative": "<!-- prose-source: agent meta 2026-06-28 -->\n\nDiscover and plan work covers requirements elicitation (with H1 assist), research, architecture tradeoffs, and milestone planning. In a template-pack, each leaf maps to pipeline phases, verification commands, and playbooks\u2014not informal chat.\n\nPack authors use this taxonomy slice to ensure planning roles produce approved artifacts the pursuit loop can consume without re-asking baseline questions."
+}

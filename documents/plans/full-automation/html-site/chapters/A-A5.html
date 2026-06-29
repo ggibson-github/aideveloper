@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>A5 — Continue semantics (redefined)</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/A.html">Plane A</a> ·
+    A5
+  </nav>
+  <p class="page-id">A5 · Pursuit &amp; control plane</p>
+  <h1 class="page-title">Continue semantics (redefined)</h1>
+  <div class="story-block"><p>A5: Continue semantics (redefined). Open each capability below for diagrams, verification, and contracts.</p>
+<p>“Continue” in the target architecture means resume the <a href="../glossary.html#pursuit-loop" class="glossary-link" title="Pursuit loop">pursuit loop</a> if preflight reports READY—not approval of design gates, not answers to open questions, and not permission to skip <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>. Manual <code>/continue</code> invokes one step when <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> is off; daemons invoke the same semantics on poll.</p>
+<p>This capability prevents the v2.13 failure mode where operators typed Continue dozens of times per feature. Blocked preflight must re-prompt for <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> assistance instead of advancing <code>next_action</code>. See <a href="../capabilities/A5.2-continue-not-approval-self-gate-h1-h3-only.html" class="spec-link">A5.2</a> for what Continue explicitly does not mean.</p>
+<p>Continue is not approval. Typing Continue or running <code>/continue</code> does not waive HLD, DD, feature design, or manifest gates—those become self-gate plus <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> where automatable, with <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> and <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> remaining the only default human approvals unless strict <a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">HITL</a> is enabled.</p>
+<p>Misreading Continue as “yes, proceed anyway” reintroduces silent gate skips. The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> and <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> scripts treat unresolved blocking questions and pending human gates as BLOCKED preflight outcomes. Only explicit approval phrases or recorded waivers in the journal clear design gates.</p>
+<p>After <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> approves a plan, the default transition is automatic entry into goal <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a>—no manual “start pursuit” step. The goal-keeper skill (or equivalent <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> path) sets <code>autopilot.active</code>, populates goal fields from A1, and runs the first preflight in the same session when possible.</p>
+<p>This default encodes “100% automation between touchpoints”: the operator supplies intent once, then observes until <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> or H3. Opt-out remains for strict <a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">HITL</a> packs or debugging single steps. Pair with <a href="../capabilities/A3.2-goal-autopilot-until-goal-verify-or-hard-block.html" class="spec-link">A3.2</a> for the run mode entered here.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/A5.1-continue-resume-pursuit-if-not-blocked.html">A5.1</a></span>
+  <span class="cap-title">continue, resume, pursuit, if, not, and blocked</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A5.2-continue-not-approval-self-gate-h1-h3-only.html">A5.2</a></span>
+  <span class="cap-title">continue not approval self-gate H1 H3 only</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A5.3-default-after-h1-auto-enter-goal-autopilot.html">A5.3</a></span>
+  <span class="cap-title">default after H1 auto-enter goal autopilot</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

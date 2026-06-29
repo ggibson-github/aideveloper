@@ -1,0 +1,89 @@
+{
+  "id": "D4.2",
+  "slug": "D4.2-platform-work-script-extraction",
+  "title": "platform work script extraction",
+  "branch": "D",
+  "parent": "[D4-index](D4-index.md)",
+  "vision_section": "",
+  "release": "v2.16",
+  "purpose": "D4.2 defines platform work script extraction for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse.",
+  "scope": [
+    "Owns `D4.2` only; siblings under `D4` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a76 \u2014 Branch D \u2014 Platform evolution plane (parallel queue)](../../full-automation-vision-and-hierarchy.md#6-branch-d-platform-evolution-plane-parallel-queue)."
+  ],
+  "behavior_steps": [
+    "On platform drain for script-extraction items, an economy worker promotes stable L1 playbook steps or verified manual commands into idempotent S0 Python under `scripts/` with tests.",
+    "The worker wires verify-router when the extracted script replaces a task-card Test command so future implement turns invoke S0 instead of ad-hoc shell.",
+    "Playbook diff references the new script path; the conductor enforces [B1.1](B1.1-s0-deterministic-mandatory-first.md)\u2014run the script before the model re-derives the same behavior.",
+    "Backwards-compatible behavior changes follow [D5.2](D5.2-extend-backwards-compatible-staleness-bump.md); breaking changes require [D5.3](D5.3-fork-new-catalog-entry-provenance.md) fork with new catalog id and provenance.",
+    "If extraction lacks tests, a CLI entry point, or playbook linkage, the queue item stays open and pursuit blocks false L2 promotion at H2."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"D4.2\",\n  \"description\": \"platform work script extraction\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Platform queue depth 0 but product blocked on missing playbook \u00e2\u20ac\u201d D3.3 priority cut skips platform drain.",
+    "Edge case `D4.2` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `D4.2`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `platform.promotion_queue[]` to state.json schema.",
+    "Scheduler in autopilot workflow: `(steps_total % K) == 0` \u00e2\u2020\u2019 platform turn.",
+    "playbook-keeper + script extraction skills dequeue promotion items.",
+    "Validate `D4.2` against SEC-15 release checklist and parent index links.",
+    "Document `D4.2` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `D4.2`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids D4.2`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/playbooks/`",
+    "`scripts/`",
+    "`.cursor/skills/playbook-keeper/`",
+    "`state.platform.promotion_queue`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a76",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[D4-index](D4-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids D4.2` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [D4-index](D4-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "D4.2 defines platform work script extraction for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse. In practice, the system on platform drain for script-extraction items, an economy worker promotes stable l1 playbook steps or verified manual commands into idempotent s0 python under `scripts/` with tests, then the worker wires verify-router when the extracted script replaces a task-card test command so future implement turns invoke s0 instead of ad-hoc shell.",
+  "reader_narrative": "<!-- prose-source: agent plane-d 2026-06-28 -->\n\nScript extraction promotes L1 playbook steps\u2014or verified manual commands\u2014into S0 Python under `scripts/` with tests. Extraction is platform work: changes tooling for all future goals, not the current consumer feature branch unless explicitly shared.\n\nExtracted scripts must be idempotent, CLI-invokable, and referenced from playbook diff. Wire verify-router when script replaces task-card Test command. Backwards-compatible extensions use [D5.2](D5.2-extend-backwards-compatible-staleness-bump.md); behavior breaks require [D5.3](D5.3-fork-new-catalog-entry-provenance.md) fork with new catalog id. [B1.1](B1.1-s0-deterministic-mandatory-first.md) mandates conductor runs script before model re-derivation."
+}

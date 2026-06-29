@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>F3.4 — game, studio, goal verify, asset, engine, tests, and perf</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/F.html">Plane F</a> · <a href="../chapters/F-F3.html">F3</a> ·
+    F3.4
+  </nav>
+  <p class="page-id">F3.4 · Organization plane</p>
+  <h1 class="page-title">game, studio, goal verify, asset, engine, tests, and perf</h1>
+  <p class="page-subtitle">game studio goal_verify asset engine tests perf</p>
+  
+  <div class="story-block"><p>Game studio <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> proves assets load in engine, automated tests pass, and performance budgets hold—beyond per-task pytest <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>. The suite aggregates tool-operator logs, engine test output, and perf counters into one <code>goal.verify_command</code> resolved at scope complete (<a href="../capabilities/A2.4-goal-scope-complete-run-goal-verify.html" class="spec-link">A2.4</a>).</p>
+<p>Weak <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> (smoke import only) is an accepted risk documented in adversarial review—pack authors tighten suites over releases. Failure blocks <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> and packages <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> with <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> paths attached. Extends generic pack verify (<a href="../capabilities/F1.8-pack-verify-goal-verify-suites.html" class="spec-link">F1.8</a>) without replacing task-level verify-router discipline.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When platform promotion lands playbooks, scripts, or pack fragments, reconcile-stale registers each reusable path in docs/manifest/staleness.json so downstream task cards and compose hits can mark dependencies stale.</span></li><li><span class="step-num">Step 2</span><span class="step-text">On script or playbook change during pursuit, the staleness graph propagates to dependent task cards and <a href="../capabilities/E2.2-compose-query-catalog-list-components.html" class="spec-link">E2.2</a> compose results—workers reconcile before advancing implement steps.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Regeneration of <a href="../capabilities/E1.1-catalog-scripts-manifest-generated.html" class="spec-link">E1.1</a> and <a href="../capabilities/E1.7-catalog-platform-catalog-md-umbrella.html" class="spec-link">E1.7</a> reconciles graph entries with live <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> INDEX rows after platform drain completes.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Pack verify suites from <a href="../capabilities/F1.8-pack-verify-goal-verify-suites.html" class="spec-link">F1.8</a> may assert graph completeness at <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a>—missing nodes fail closed rather than allowing pursuit on orphan artifact paths.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If a promoted artifact lacks a staleness node or graph drift leaves dependents unmarked, pursuit stops at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> until reconcile-stale or <a href="../capabilities/D4.5-platform-work-catalog-regeneration.html" class="spec-link">D4.5</a> restores traceability.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids F3.4</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Pack role handoff while lane lease held — complete-work-order releases lease before role switch.</li><li>Edge case F3.4 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;F3.4&quot;,
+  &quot;description&quot;: &quot;game studio goal verify asset engine tests perf&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.19</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

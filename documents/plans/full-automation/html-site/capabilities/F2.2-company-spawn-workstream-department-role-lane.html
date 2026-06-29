@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>F2.2 — company, spawn, workstream, department, role, and lane</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/F.html">Plane F</a> · <a href="../chapters/F-F2.html">F2</a> ·
+    F2.2
+  </nav>
+  <p class="page-id">F2.2 · Organization plane</p>
+  <h1 class="page-title">company, spawn, workstream, department, role, and lane</h1>
+  <p class="page-subtitle">company spawn workstream department role lane</p>
+  
+  <div class="story-block"><p>After pack bind, program-scoper spawns program workstreams mapped to departments or role lanes—each lane gets lane.json leases, work orders, and spawn_policy compatible with integration manifest. Department boundaries align with pack roles (<a href="../capabilities/F1.2-pack-roles---yaml.html" class="spec-link">F1.2</a>); parallel lanes require manifest gate clearance (<a href="../capabilities/F1.4-pack-manifest-md-integration-contracts.html" class="spec-link">F1.4</a>).</p>
+<p>orchestrate-program spawns workers only for ready lanes with valid leases (<a href="../capabilities/C4.1-workstreams-lane-json-leases.html" class="spec-link">C4.1</a>). Spawn without manifest approval violates program pipeline order. Lane spawn is <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> where lane scripts exist; otherwise <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> invokes program-scoper skill with pack context.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">Each promotion item in <code>state.platform.promotion_queue</code> carries age; after <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> preflight the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> compares oldest backlog age to <code>drain_policy.max_platform_backlog_age</code> from the active pack (<a href="../capabilities/D5.1-configure-task-level-params-only.html" class="spec-link">D5.1</a>).</span></li><li><span class="step-num">Step 2</span><span class="step-text">When oldest backlog exceeds the cap, force-drain policy schedules <a href="../glossary.html#platform-turn" class="glossary-link" title="Platform turn">platform turns</a> until age falls below the threshold or the queue empties—even if <a href="../capabilities/D3.1-1-platform-turn-per-k-product-turns.html" class="spec-link">D3.1</a> K-step cadence would defer the next platform drain.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Force drain is the adversarial-review backstop across D-<a href="../glossary.html#branch" class="glossary-link" title="Branch">branch</a> scheduling: it prevents promotion debt from rotting during long product-only sprints without overriding active product <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> gates or clearing <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> blockers.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Partial promotion with re-enqueue resets item age; marking promotion done without passing <a href="../chapters/D-D6.html" class="spec-link">D6</a> checklist fails closed and reopens the queue item at H2.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If force drain would starve <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>-blocked product work, the operator tunes age and force intensity per pack, or <a href="../capabilities/D3.3-priority-cut-product-blocked-missing-tool.html" class="spec-link">D3.3</a> suspends drain until the missing artifact class is enqueued.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids F2.2</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Pack role handoff while lane lease held — complete-work-order releases lease before role switch.</li><li>Edge case F2.2 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;F2.2&quot;,
+  &quot;description&quot;: &quot;company spawn workstream department role lane&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.19</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

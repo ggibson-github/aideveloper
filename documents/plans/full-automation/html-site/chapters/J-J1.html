@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>J1 — J1</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/J.html">Plane J</a> ·
+    J1
+  </nav>
+  <p class="page-id">J1 · Governance &amp; operator plane</p>
+  <h1 class="page-title">J1</h1>
+  <div class="story-block"><p><code>docs/operator/model-policy.json</code> defines genius and economy tier Cursor model lists, <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> defaults, spawn_workers policy, and capability_class routing hints. Operators update tiers as models evolve—fixed model names are not hardcoded in skills or rules.</p>
+<p>route-tier.py reads policy plus state to set model_tier each turn (<a href="../capabilities/B3.1-genius-orchestration-only-thin-turns.html" class="spec-link">B3.1</a>). SDK and IDE runtimes share the same policy file (<a href="../capabilities/I2.2-runtime-sdk-cursor-api-key-autopilot-model.html" class="spec-link">I2.2</a>). Policy changes should run validate-workflow.py before unattended <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> resumes. See <a href="../branches/J.html" class="spec-link">Vision §12 — Branch J — Governance &amp; operator plane</a>.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/J1-model-policy.html">J1</a></span>
+  <span class="cap-title">model and policy</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

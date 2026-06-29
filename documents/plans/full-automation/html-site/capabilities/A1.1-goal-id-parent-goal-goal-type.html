@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>A1.1 — goal id, parent goal, and goal type</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/A.html">Plane A</a> · <a href="../chapters/A-A1.html">A1</a> ·
+    A1.1
+  </nav>
+  <p class="page-id">A1.1 · Pursuit &amp; control plane</p>
+  <h1 class="page-title">goal id, parent goal, and goal type</h1>
+  <p class="page-subtitle">goal_id parent_goal goal_type</p>
+  
+  <div class="story-block"><p>Every pursuit in the <a href="../glossary.html#expert-system" class="glossary-link" title="Expert system">expert system</a> begins with a goal record that can be found again after restarts, nested under the right parent, and classified by type. This capability defines the three identity fields that make that possible: a unique goal_id, an optional parent_goal for tree structure, and goal_type (app, feature, milestone, or company_ops).</p>
+<p>The type enum is not cosmetic. It tells preflight, routing, and verification which contracts apply—a milestone goal may require manifest approval while a feature goal binds to task cards and <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> paths. Nesting via parent_goal lets a program decompose into parallel streams without losing roll-up status at H3.</p>
+<p>Operators set these fields at <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> when approving a plan; afterward the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> and <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> scripts maintain them through <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> to journal and state.json. If identity drifts (duplicate ids, wrong parent), pursuit turns attach <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> to the wrong scope and <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> cannot succeed. See <a href="../branches/A.html" class="spec-link">Vision §3 — Branch A — Pursuit &amp; control plane</a> for how the goal model anchors Plane A.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">At <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> plan approval, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> stamps goal_id, optional parent_goal, and goal_type into state.json and the journal—the identity record every pursuit wake reloads before routing or verification.</span></li><li><span class="step-num">Step 2</span><span class="step-text">On each wake, <a href="../capabilities/A2.1-preflight-check-pipeline-blocked-extended.html" class="spec-link">A2.1</a> reads goal_type to bind contracts: milestone goals require manifest gates, feature goals bind task cards and <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> paths, and company_ops goals follow the ops queue.</span></li><li><span class="step-num">Step 3</span><span class="step-text">When parent_goal is set, child pursuits inherit roll-up scope so parallel program streams report status to the parent without duplicating identity at each leaf or losing <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> roll-up.</span></li><li><span class="step-num">Step 4</span><span class="step-text">The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> and journal-keeper <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> any <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> amendments to these fields; <a href="../capabilities/B1.1-s0-deterministic-mandatory-first.html" class="spec-link">B1.1</a> scripts refuse progression when goal_id collides or parent_goal points to a missing ancestor.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If identity drifts—duplicate ids, wrong parent—pursuit halts at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a>, <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> must not attach to the wrong scope, and <a href="../capabilities/A1.3-goal-verify-command-meta-test.html" class="spec-link">A1.3</a> cannot pass until fields are reconciled.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids A1.1</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>goal_verify passes but H3 rejected — goal.state returns to pursuing with rejection notes.</li><li>Edge case A1.1 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;goal&quot;: {
+    &quot;id&quot;: &quot;goal-001&quot;,
+    &quot;parent_goal&quot;: null,
+    &quot;type&quot;: &quot;program&quot;,
+    &quot;success_criteria&quot;: [&quot;manifest approved&quot;, &quot;goal_verify exit 0&quot;],
+    &quot;verify_command&quot;: &quot;python scripts/goal-verify.py&quot;,
+    &quot;state&quot;: &quot;pursuing&quot;
+  }
+}</pre></div>
+  <p class="release-note">Target release: v2.14</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

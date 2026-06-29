@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>J5 — export and contract</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/J.html">Plane J</a> · <a href="../chapters/J-J5.html">J5</a> ·
+    J5
+  </nav>
+  <p class="page-id">J5 · Governance &amp; operator plane</p>
+  <h1 class="page-title">export and contract</h1>
+  <p class="page-subtitle">export contract</p>
+  
+  <div class="story-block"><p><code>docs/operator/export-contract.md</code> defines what pursuit state, <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> bundles, and dashboard artifacts may leave the repo boundary—fields redacted, formats required, and approval needed for external sharing. Export scripts follow the contract; ad-hoc copy/paste of state.json is discouraged.</p>
+<p>Pack authors extend export profiles per company template. Export for <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> sign-off packages may include <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> rollup (<a href="../capabilities/C3.4-task-to-goal-rollup-percent-goal-verify.html" class="spec-link">C3.4</a>). Contract violations surface <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> before data leaves controlled storage.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">Before pursuit state, <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> bundles, or dashboard artifacts cross the repo boundary, export scripts resolve the active profile from <code>docs/operator/export-contract.md</code> and the company template-pack—redacting fields, enforcing required formats, and checking <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> approval when external sharing demands it.</span></li><li><span class="step-num">Step 2</span><span class="step-text"><a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> sign-off packages may aggregate <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>.; the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> includes only contract-approved paths and never ad-hoc copy/paste of <code>state.json</code>.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Pack authors extend export profiles per template-pack; pursuit inherits the profile for the active company goal so external orchestrators receive consistent, policy-bound bundles.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Pre-export validation runs as <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> where scripted (<a href="../capabilities/B1.1-s0-deterministic-mandatory-first.html" class="spec-link">B1.1</a>); contract violations surface <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> before data leaves controlled storage.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If the export profile is missing, ambiguous, or would leak blocked fields, pursuit halts at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> until operators reconcile the contract or explicitly resolve the gap at H3.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids J5</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case J5 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case J5 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;J5&quot;,
+  &quot;description&quot;: &quot;export contract&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

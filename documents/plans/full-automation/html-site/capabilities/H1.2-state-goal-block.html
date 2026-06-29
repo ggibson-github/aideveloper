@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>H1.2 — state, goal, and block</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/H.html">Plane H</a> · <a href="../chapters/H-H1.html">H1</a> ·
+    H1.2
+  </nav>
+  <p class="page-id">H1.2 · Persistence &amp; state plane</p>
+  <h1 class="page-title">state, goal, and block</h1>
+  <p class="page-subtitle">state goal block</p>
+  
+  <div class="story-block"><p>The goal block records goal id, parent goal, goal type, success criteria, verify command, budget counters, and state enum (pursuing, blocked, verifying, achieved, rejected). Goal-verify is the terminal gate—<a href="../glossary.html#pursuit-loop" class="glossary-link" title="Pursuit loop">pursuit loop</a>s until <code>goal_verify</code> passes or <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> rejects per <a href="../capabilities/A2.4-goal-scope-complete-run-goal-verify.html" class="spec-link">A2.4</a>.</p>
+<p>Machine-checkable success criteria bind to <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> paths in Plane G; subjective criteria remain H3. Company <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> schedules multiple goal blocks without merging their scopes (<a href="../capabilities/A3.3-company-autopilot-multi-goal-role-workstreams.html" class="spec-link">A3.3</a>). Only the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> writes goal transitions after verify <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">At <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> plan approval, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> stamps goal id, parent_goal, goal_type, machine-checkable success_criteria, and verify_command into state.json goal block—establishing pursuit scope every wake reloads before routing.</span></li><li><span class="step-num">Step 2</span><span class="step-text">During pursuit, only the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> transitions goal.state among pursuing, blocked, verifying, achieved, and rejected after verify <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>.</span></li><li><span class="step-num">Step 3</span><span class="step-text"><a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> aggregates <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> from Plane G; subjective success language without machine checks remains <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a>, not autonomous achieved.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Budget counters in the goal block increment each wake.; exhaustion <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s structured stop reasons without marking achieved.</span></li><li><span class="step-num">Step 5</span><span class="step-text">Company <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> may schedule multiple goal blocks in parallel., but scopes never merge—<a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> attaches only to the goal_id active on the current turn.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids H1.2</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case H1.2 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case H1.2 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;goal&quot;: { &quot;id&quot;: &quot;g1&quot;, &quot;state&quot;: &quot;pursuing&quot; },
+  &quot;platform&quot;: { &quot;promotion_queue&quot;: [] },
+  &quot;pursuit&quot;: { &quot;mode&quot;: &quot;goal_autopilot&quot;, &quot;steps_total&quot;: 0 },
+  &quot;hitl&quot;: { &quot;pending&quot;: null },
+  &quot;company&quot;: { &quot;pack_id&quot;: null, &quot;active_role&quot;: null }
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

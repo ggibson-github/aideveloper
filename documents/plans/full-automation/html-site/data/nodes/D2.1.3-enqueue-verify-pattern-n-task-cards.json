@@ -1,0 +1,89 @@
+{
+  "id": "D2.1.3",
+  "slug": "D2.1.3-enqueue-verify-pattern-n-task-cards",
+  "title": "enqueue verify pattern N task cards",
+  "branch": "D",
+  "parent": "[D2.1-index](D2.1-index.md)",
+  "vision_section": "",
+  "release": "v2.16",
+  "purpose": "D2.1.3 defines enqueue verify pattern n task cards for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse.",
+  "scope": [
+    "Owns `D2.1.3` only; siblings under `D2.1` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a76 \u2014 Branch D \u2014 Platform evolution plane (parallel queue)](../../full-automation-vision-and-hierarchy.md#6-branch-d-platform-evolution-plane-parallel-queue)."
+  ],
+  "behavior_steps": [
+    "During pursuit, verify-router and task-breakdown logs accumulate identical Test command blocks across task cards; when repetition reaches pack policy threshold N, S0 enqueue scripts file a platform promotion item instead of waiting for manual duplication.",
+    "Each enqueue record captures N, representative task ids, and target_level (script L2 or playbook L1) so platform drain knows whether to run [D4.2](D4.2-platform-work-script-extraction.md) or [D4.1](D4.1-platform-work-playbook-keeper.md).",
+    "After every K product turns, the conductor peeks the platform promotion queue and drains eligible verify-pattern items during economy platform slots without blocking the active product next_action.",
+    "Pack authors tune N in template-pack drain_policy alongside K so premature enqueue does not waste platform turns on immature patterns.",
+    "If N is below threshold or enqueue lacks sample task evidence, platform promotion stays deferred; forcing drain without proof fails closed at H2 until verify-router logs justify the pattern."
+  ],
+  "mermaid": "flowchart LR\n  prod[Product turn] --> k{step mod K == 0?}\n  k -->|yes| plat[Platform turn dequeue]\n  k -->|no| prod\n  plat --> promote[promotion_queue drain]\n  promote --> prod",
+  "json_example": "{\n  \"platform\": {\n    \"promotion_queue\": [\n      {\n        \"id\": \"promo-001\",\n        \"source\": \"task-012\",\n        \"target_level\": \"L2\",\n        \"priority\": 50,\n        \"reason\": \"repeated manual pytest invocation\"\n      }\n    ],\n    \"drain_policy\": { \"product_steps_per_platform_turn\": 5 }\n  }\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Platform queue depth 0 but product blocked on missing playbook \u00e2\u20ac\u201d D3.3 priority cut skips platform drain.",
+    "Edge case `D2.1.3` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `D2.1.3`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `platform.promotion_queue[]` to state.json schema.",
+    "Scheduler in autopilot workflow: `(steps_total % K) == 0` \u00e2\u2020\u2019 platform turn.",
+    "playbook-keeper + script extraction skills dequeue promotion items.",
+    "Validate `D2.1.3` against SEC-15 release checklist and parent index links.",
+    "Document `D2.1.3` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `D2.1.3`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids D2.1.3`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/playbooks/`",
+    "`scripts/`",
+    "`.cursor/skills/playbook-keeper/`",
+    "`state.platform.promotion_queue`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a76",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[D2.1-index](D2.1-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids D2.1.3` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [D2.1-index](D2.1-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "D2.1.3 defines enqueue verify pattern n task cards for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse. In practice, the system during pursuit, verify-router and task-breakdown logs accumulate identical test command blocks across task cards; when repetition reaches pack policy threshold n, s0 enqueue scripts file a platform promotion item instead of waiting for manual duplication, then each enqueue record captures n, representative task ids, and target_level (script l2 or playbook l1) so platform drain knows whether to run [d4.2](d4.2-platform-work-script-extraction.md) or [d4.1](d4.1-platform-work-playbook-keeper.md).",
+  "reader_narrative": "<!-- prose-source: agent plane-d 2026-06-28 -->\n\nIf the same verify or test command shape appears on N task cards\u2014default N from pack policy\u2014the pattern is mature enough for script or playbook promotion without waiting for manual duplication. Task-breakdown and verify-router logs supply evidence: identical command blocks, same failure class, same evidence path template.\n\nEnqueue records N, sample task ids, and target_level. Platform drain executes script extraction or playbook-keeper per target level ([D4.2](D4.2-platform-work-script-extraction.md), [D4.1](D4.1-platform-work-playbook-keeper.md)). Premature enqueue (N too low) wastes platform slots; pack authors tune N in template-pack drain policy alongside K product steps."
+}

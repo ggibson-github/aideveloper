@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>H4 — H4</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/H.html">Plane H</a> ·
+    H4
+  </nav>
+  <p class="page-id">H4 · Persistence &amp; state plane</p>
+  <h1 class="page-title">H4</h1>
+  <div class="story-block"><p>The <code>evidence/</code> directory holds immutable verify logs—pytest output, tool runs, checksums—written by verify-router.py or verifier shell workers before tasks complete. state.json <code>evidence_files</code> and journal <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">Evidence</a> files mirror paths for audit.</p>
+<p>Non-pytest <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> types follow <code>docs/operator/evidence-types.md</code> (<a href="../capabilities/I4.3-runtime-external-evidence-types-non-pytest.html" class="spec-link">I4.3</a>). <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">Evidence</a> is append-only; failed verify retains logs for escalation (<a href="../capabilities/B3.3-escalation-loop-on-verify-fail.html" class="spec-link">B3.3</a>). Push and git-workflow require last_verify passed or documented journal exception per <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>-required rule.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/H4-evidence.html">H4</a></span>
+  <span class="cap-title">evidence</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

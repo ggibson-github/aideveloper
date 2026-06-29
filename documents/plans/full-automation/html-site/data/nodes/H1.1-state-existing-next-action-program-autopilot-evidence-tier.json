@@ -1,0 +1,89 @@
+{
+  "id": "H1.1",
+  "slug": "H1.1-state-existing-next-action-program-autopilot-evidence-tier",
+  "title": "state existing next_action program autopilot evidence tier",
+  "branch": "H",
+  "parent": "[H1-index](H1-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "H1.1 defines state existing next action program autopilot evidence tier for the agent-driven expert system. Persistence \u2014 journal, state.json, graphs, evidence.",
+  "scope": [
+    "Owns `H1.1` only; siblings under `H1` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a710 \u2014 Branch H \u2014 Persistence & state plane](../../full-automation-vision-and-hierarchy.md#10-branch-h-persistence-state-plane)."
+  ],
+  "behavior_steps": [
+    "On every pursuit wake, S0 reads top-level `next_action`, `program`, `autopilot`, `evidence_required`, `model_tier`, and `spawn_workers` from `journal/state.json` before the conductor interprets `journal/progress.md` ([B1.1](B1.1-s0-deterministic-mandatory-first.md)).",
+    "`route-tier.py --apply` and `validate-workflow.py` consume these legacy router fields to select pipeline phase, model tier, and worker spawn policy without re-deriving state in the LLM.",
+    "Additive v2 blocks (`goal`, `platform`, `pursuit`, `hitl`, `company`) extend the router atomically via journal-keeper and `sync-state.py` while preserving existing consumer keys per [APP-B](APP-B-state-json-sketch.md).",
+    "When `autopilot.active` is true, `next_action` advances only through S0 apply paths\u2014manual journal edits without dual-write do not change the machine router.",
+    "Corrupt or partial `state.json` triggers [A4.4](A4.4-stop-integrity-validate-workflow-state-corrupt.md) integrity stop with H2; pursuit does not resume until validate-workflow passes."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"goal\": { \"id\": \"g1\", \"state\": \"pursuing\" },\n  \"platform\": { \"promotion_queue\": [] },\n  \"pursuit\": { \"mode\": \"goal_autopilot\", \"steps_total\": 0 },\n  \"hitl\": { \"pending\": null },\n  \"company\": { \"pack_id\": null, \"active_role\": null }\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `H1.1` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `H1.1` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `H1.1`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `H1.1` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_h1_1.py when script exists.",
+    "Validate `H1.1` against SEC-15 release checklist and parent index links.",
+    "Document `H1.1` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `H1.1`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids H1.1`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`journal/state.json`",
+    "`journal/progress.md`",
+    "`evidence/`",
+    "`docs/manifest/staleness.json`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a710",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[H1-index](H1-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids H1.1` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [H1-index](H1-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "H1.1 defines state existing next action program autopilot evidence tier for the agent-driven expert system. Persistence \u2014 journal, state.json, graphs, evidence. In practice, the system on every pursuit wake, s0 reads top-level `next_action`, `program`, `autopilot`, `evidence_required`, `model_tier`, and `spawn_workers` from `journal/state.json` before the conductor interprets `journal/progress.md` ([b1.1](b1.1-s0-deterministic-mandatory-first.md)), then `route-tier.py --apply` and `validate-workflow.py` consume these legacy router fields to select pipeline phase, model tier, and worker spawn policy without re-deriving state in the llm.",
+  "reader_narrative": "<!-- prose-source: agent plane-h 2026-06-28 -->\n\nThe v2 machine router in `journal/state.json` carries legacy pursuit fields\u2014`next_action`, `program`, `autopilot`, `evidence_required`, `model_tier`, `spawn_workers`\u2014that route-tier.py and validate-workflow.py read every turn. These top-level keys remain the conductor's first S0 lookup before any LLM interprets progress.\n\nAdditive v2 blocks (goal, platform, pursuit, hitl, company) extend without breaking existing consumers; sync-state.py and journal-keeper dual-write both files atomically where possible. Corrupt or partial state triggers [A4.4](A4.4-stop-integrity-validate-workflow-state-corrupt.md) stop. See [APP-B-state-json-sketch](APP-B-state-json-sketch.md) and [Vision \u00a710](../../full-automation-vision-and-hierarchy.md#10-branch-h-persistence-state-plane)."
+}

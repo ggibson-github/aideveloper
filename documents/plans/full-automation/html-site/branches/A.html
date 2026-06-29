@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>A — Pursuit &amp; control plane</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb"><a href="../index.html">Overview</a> · <a href="index.html">Architectural planes</a> · Plane A</nav>
+  <p class="page-id">Plane A</p>
+  <h1 class="page-title">Pursuit &amp; control plane</h1>
+  <div class="story-block"><p>Plane A is the pursuit and control layer. It replaces burst-and-wait automation with goal-directed loops: define the goal, run preflight, execute one step, verify, and stop only for human touchpoints, budgets, or completion.</p>
+<p>This plane has 6 topic groups listed below. Open a group to see its <a href="../glossary.html#capability" class="glossary-link" title="Capability">capabilities</a>; sequential groups include a flow diagram.</p></div>
+  
+  <p><span class="badge">27 <a href="../glossary.html#capability" class="glossary-link" title="Capability">capabilities</a></span></p>
+  
+<section class="cap-group">
+  <h2 class="section-title"><a href="../chapters/A-A1.html">A1: Goal model</a></h2>
+  
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/A1.1-goal-id-parent-goal-goal-type.html">A1.1</a></span>
+  <span class="cap-title">goal id, parent goal, and goal type</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A1.2-success-criteria-machine-checkable.html">A1.2</a></span>
+  <span class="cap-title">success criteria machine-checkable</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A1.3-goal-verify-command-meta-test.html">A1.3</a></span>
+  <span class="cap-title">goal verify command meta-test</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A1.4-deadline-budget-steps-tokens-wall-clock.html">A1.4</a></span>
+  <span class="cap-title">deadline, budget, steps, tokens, wall, and clock</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A1.5-goal-state-enum-pursuing-blocked-verifying-achieved-rejected.html">A1.5</a></span>
+  <span class="cap-title">Goal state enum pursuing blocked verifying achieved rejected</span>
+</li></ul></div>
+</section>
+<section class="cap-group">
+  <h2 class="section-title"><a href="../chapters/A-A2.html">A2: Pursuit loop (always-on)</a></h2>
+  <div class="diagram-panel"><pre class="mermaid">flowchart LR
+  A2_1[&quot;A2.1&lt;br/&gt;preflight check-pipeline-blocked extende&quot;]
+  A2_2[&quot;A2.2&lt;br/&gt;if READY execute one pipeline step&quot;]
+  A2_3[&quot;A2.3&lt;br/&gt;post-step route-tier dual-write incremen&quot;]
+  A2_4[&quot;A2.4&lt;br/&gt;goal scope complete, run, and goal verif&quot;]
+  A2_5[&quot;A2.5&lt;br/&gt;goal verify pass transition H3 pending&quot;]
+  A2_6[&quot;A2.6&lt;br/&gt;loop until blocked budget achieved H3 re&quot;]
+  A2_7[&quot;A2.7&lt;br/&gt;no, intermediate, wait, for, and continu&quot;]
+  A2_1 --&gt; A2_2
+  A2_2 --&gt; A2_3
+  A2_3 --&gt; A2_4
+  A2_4 --&gt; A2_5
+  A2_5 --&gt; A2_6
+  A2_6 --&gt; A2_7</pre></div>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/A2.1-preflight-check-pipeline-blocked-extended.html">A2.1</a></span>
+  <span class="cap-title">preflight check-pipeline-blocked extended</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A2.2-if-ready-execute-one-pipeline-step.html">A2.2</a></span>
+  <span class="cap-title">if READY execute one pipeline step</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A2.3-post-step-route-tier-dual-write-increment.html">A2.3</a></span>
+  <span class="cap-title">post-step route-tier dual-write increment</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A2.4-goal-scope-complete-run-goal-verify.html">A2.4</a></span>
+  <span class="cap-title">goal scope complete, run, and goal verify</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A2.5-goal-verify-pass-transition-h3-pending.html">A2.5</a></span>
+  <span class="cap-title">goal verify pass transition H3 pending</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A2.6-loop-until-blocked-budget-achieved-h3-reject.html">A2.6</a></span>
+  <span class="cap-title">loop until blocked budget achieved H3 reject</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A2.7-no-intermediate-wait-for-continue.html">A2.7</a></span>
+  <span class="cap-title">no, intermediate, wait, for, and continue</span>
+</li></ul></div>
+</section>
+<section class="cap-group">
+  <h2 class="section-title"><a href="../chapters/A-A3.html">A3: Autopilot modes</a></h2>
+  
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/A3.1-session-autopilot-max-steps-per-session.html">A3.1</a></span>
+  <span class="cap-title">session autopilot and max steps per session</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A3.2-goal-autopilot-until-goal-verify-or-hard-block.html">A3.2</a></span>
+  <span class="cap-title">goal autopilot, until, goal verify, or, hard, and block</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A3.3-company-autopilot-multi-goal-role-workstreams.html">A3.3</a></span>
+  <span class="cap-title">company autopilot multi-goal role workstreams</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A3.4-sdk-daemon-run-local-pipeline-24-7.html">A3.4</a></span>
+  <span class="cap-title">sdk daemon run-local-pipeline 24/7</span>
+</li></ul></div>
+</section>
+<section class="cap-group">
+  <h2 class="section-title"><a href="../chapters/A-A4.html">A4: Stop reasons (exhaustive taxonomy)</a></h2>
+  
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/A4.1-stop-human-h1-h2-h3.html">A4.1</a></span>
+  <span class="cap-title">stop human H1 H2 H3</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A4.2-stop-verify-evidence-goal-verify-regression.html">A4.2</a></span>
+  <span class="cap-title">stop, verify, evidence, goal verify, and regression</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A4.3-stop-resource-max-steps-max-cost-lease-expired.html">A4.3</a></span>
+  <span class="cap-title">stop, resource, max steps, max cost, and lease expired</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A4.4-stop-integrity-validate-workflow-state-corrupt.html">A4.4</a></span>
+  <span class="cap-title">stop integrity validate-workflow state corrupt</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A4.5-stop-completion-goal-achieved-program-done.html">A4.5</a></span>
+  <span class="cap-title">stop, completion, goal, achieved, program, and done</span>
+</li></ul></div>
+</section>
+<section class="cap-group">
+  <h2 class="section-title"><a href="../chapters/A-A5.html">A5: Continue semantics (redefined)</a></h2>
+  
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/A5.1-continue-resume-pursuit-if-not-blocked.html">A5.1</a></span>
+  <span class="cap-title">continue, resume, pursuit, if, not, and blocked</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A5.2-continue-not-approval-self-gate-h1-h3-only.html">A5.2</a></span>
+  <span class="cap-title">continue not approval self-gate H1 H3 only</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A5.3-default-after-h1-auto-enter-goal-autopilot.html">A5.3</a></span>
+  <span class="cap-title">default after H1 auto-enter goal autopilot</span>
+</li></ul></div>
+</section>
+<section class="cap-group">
+  <h2 class="section-title"><a href="../chapters/A-A6.html">A6: Notification (not blocking)</a></h2>
+  
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/A6.1-notify-dashboard-status-webhook-phase-complete.html">A6.1</a></span>
+  <span class="cap-title">notify dashboard STATUS webhook phase complete</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A6.2-notify-digest-on-h2-blocker-not-every-step.html">A6.2</a></span>
+  <span class="cap-title">notify digest on H2 blocker not every step</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A6.3-operator-observe-without-unblocking-loop.html">A6.3</a></span>
+  <span class="cap-title">operator, observe, without, unblocking, and loop</span>
+</li></ul></div>
+</section>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

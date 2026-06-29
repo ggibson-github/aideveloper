@@ -1,0 +1,89 @@
+{
+  "id": "G4.3",
+  "slug": "G4.3-review-escalation-s4-repeated-verify-fail",
+  "title": "review escalation S4 repeated verify fail",
+  "branch": "G",
+  "parent": "[G4-index](G4-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "G4.3 defines review escalation s4 repeated verify fail for the agent-driven expert system. Verification & quality \u2014 evidence, goal_verify, anti-mistake.",
+  "scope": [
+    "Owns `G4.3` only; siblings under `G4` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a79 \u2014 Branch G \u2014 Verification & quality plane (anti-mistake)](../../full-automation-vision-and-hierarchy.md#9-branch-g-verification-quality-plane-anti-mistake)."
+  ],
+  "behavior_steps": [
+    "At H1, the operator supplies a spec or company charter; after plan approval the conductor dual-writes the approved plan to journal and state.json and pursuit may enter goal_autopilot\u2014this touchpoint occurs once per project, program, or pack instantiation.",
+    "On each wake, preflight and `check-pipeline-blocked.py` distinguish H2 blockers (missing dependency, preflight failure, goal_verify fail) from routable work; H2 pauses pursuit, sends digest notification per [A6.2](A6.2-notify-digest-on-h2-blocker-not-every-step.md), and resumes only when the operator clears the blocker.",
+    "HLD, DD, and manifest review run as agent self-gates with evidence paths unless `strict_hitl` is enabled in state\u2014Continue does not substitute for H1/H2/H3 approval per [A5.2](A5.2-continue-not-approval-self-gate-h1-h3-only.md).",
+    "After [goal_verify](A1.3-goal-verify-command-meta-test.md) passes, the conductor requests H3 sign-off; acceptance closes the goal while rejection dual-writes notes and returns goal.state to pursuing.",
+    "If an agent treats Continue as approval, skips notify on H2, or advances to H3 before goal_verify passes, pursuit halts fail-closed until the touchpoint contract is restored in journal and state.json."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"node\": \"G4.3\",\n  \"description\": \"review escalation s4 repeated verify fail\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Flaky test \u00e2\u20ac\u201d escalation S4 once, then H2 with evidence log; no silent retry loop.",
+    "Edge case `G4.3` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `G4.3`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Extend verify-router for goal-level suite invocation.",
+    "Wire CI: validate-workflow checks goal block when pursuit.mode=goal_autopilot.",
+    "Document evidence type in docs/operator/evidence-types.md.",
+    "Validate `G4.3` against SEC-15 release checklist and parent index links.",
+    "Document `G4.3` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `G4.3`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids G4.3`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`scripts/verify-router.py`",
+    "`scripts/validate-workflow.py`",
+    "`evidence/`",
+    "`.cursor/skills/verifier/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a79",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[G4-index](G4-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids G4.3` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [G4-index](G4-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "G4.3 defines review escalation s4 repeated verify fail for the agent-driven expert system. Verification & quality \u2014 evidence, goal_verify, anti-mistake. In practice, the system at h1, the operator supplies a spec or company charter; after plan approval the conductor dual-writes the approved plan to journal and state.json and pursuit may enter goal_autopilot\u2014this touchpoint occurs once per project, program, or pack instantiation, then on each wake, preflight and `check-pipeline-blocked.py` distinguish h2 blockers (missing dependency, preflight failure, goal_verify fail) from routable work; h2 pauses pursuit, sends digest notification per [a6.2](a6.2-notify-digest-on-h2-blocker-not-every-step.md), and resumes only when the operator clears the blocker.",
+  "reader_narrative": "<!-- prose-source: agent plane-g 2026-06-28 -->\n\nRepeated verify failure on the same task card escalates to S4 H2 packaging: attach evidence logs, failure class, retry count, and suggested operator action\u2014never silent retry loops ([B3.3](B3.3-escalation-loop-on-verify-fail.md)). One structured escalation per task before human assist is mandatory.\n\nThis review trigger prevents autopilot from burning budget on flaky or mis-specified tests. Conductor records escalation in journal Last failure for rollback and audit ([G6.2](G6.2-rollback-journal-last-failure-structured-h2.md))."
+}

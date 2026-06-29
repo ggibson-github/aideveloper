@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>D4.4 — platform work hook validate-workflow</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/D.html">Plane D</a> · <a href="../chapters/D-D4.html">D4</a> ·
+    D4.4
+  </nav>
+  <p class="page-id">D4.4 · Platform evolution plane</p>
+  <h1 class="page-title">platform work hook validate-workflow</h1>
+  <p class="page-subtitle">platform work hook validate-workflow</p>
+  
+  <div class="story-block"><p>Hook and validate-workflow extension is L4 platform work: extend <code>.cursor/hooks.json</code> or CI steps so validate-workflow, check-pipeline-blocked, or staleness scripts run on session events without <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> turns. Changes must pass <code>python scripts/validate-workflow.py</code> on the PR that introduces them.</p>
+<p>Hooks are not <a href="../glossary.html#pursuit-loop" class="glossary-link" title="Pursuit loop">pursuit loop</a>s—they fail closed into journal notes when scripts error. Extend-only hook changes follow <a href="../capabilities/D5.2-extend-backwards-compatible-staleness-bump.html" class="spec-link">D5.2</a>; hook behavior that alters gate semantics needs explicit pack review. Successful promotion moves ambient enforcement up the <a href="../capabilities/D1.5-l4-ambient-hooks-ci-scheduled.html" class="spec-link">D1.5</a> ladder so <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> scripts run even when the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> forgets.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">On L4 hook promotion items, a platform worker extends <code>.cursor/hooks.json</code> or CI steps so validate-workflow, check-pipeline-blocked, or staleness scripts fire on session events without a <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> turn.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Introduced hooks must pass <code>python scripts/validate-workflow.py</code> on the same PR; hook script errors fail closed into journal notes rather than silently continuing pursuit.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Successful promotion advances ambient enforcement on the <a href="../capabilities/D1.5-l4-ambient-hooks-ci-scheduled.html" class="spec-link">D1.5</a> ladder so <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> scripts run even when the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> omits them.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Extend-only hook changes follow <a href="../capabilities/D5.2-extend-backwards-compatible-staleness-bump.html" class="spec-link">D5.2</a>; hook edits that alter gate semantics require explicit pack review and may escalate H2.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If hooked scripts error or alter <a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">H1/H2/H3</a> semantics without approval, pursuit stops with an integrity stop. until hooks are repaired or reverted.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids D4.4</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Platform queue depth 0 but product blocked on missing playbook — D3.3 priority cut skips platform drain.</li><li>Edge case D4.4 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;D4.4&quot;,
+  &quot;description&quot;: &quot;platform work hook validate workflow&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.16</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

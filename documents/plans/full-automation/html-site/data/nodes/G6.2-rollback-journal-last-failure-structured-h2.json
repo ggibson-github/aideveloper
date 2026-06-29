@@ -1,0 +1,89 @@
+{
+  "id": "G6.2",
+  "slug": "G6.2-rollback-journal-last-failure-structured-h2",
+  "title": "rollback journal last_failure structured H2",
+  "branch": "G",
+  "parent": "[G6-index](G6-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "G6.2 defines rollback journal last failure structured h2 for the agent-driven expert system. Verification & quality \u2014 evidence, goal_verify, anti-mistake.",
+  "scope": [
+    "Owns `G6.2` only; siblings under `G6` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a79 \u2014 Branch G \u2014 Verification & quality plane (anti-mistake)](../../full-automation-vision-and-hierarchy.md#9-branch-g-verification-quality-plane-anti-mistake)."
+  ],
+  "behavior_steps": [
+    "Conductor appends spawn metadata to `worker-runs.jsonl` on each orchestrate-subagents spawn; workers never touch journal/state.",
+    "Outcome summary and duration logged on return for [J4](J4-audit.md) governance.",
+    "Parallel lanes correlated by goal_id + [C4.1](C4.1-workstreams-lane-json-leases.md) lease.",
+    "Failures/timeouts logged before H2; scope bleed visible when allowed_reads exceeded.",
+    "Retention per operator pack; default full local history for autopilot resume."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"G6.2\",\n  \"description\": \"rollback journal last failure structured h2\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Flaky test \u00e2\u20ac\u201d escalation S4 once, then H2 with evidence log; no silent retry loop.",
+    "Edge case `G6.2` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `G6.2`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Extend verify-router for goal-level suite invocation.",
+    "Wire CI: validate-workflow checks goal block when pursuit.mode=goal_autopilot.",
+    "Document evidence type in docs/operator/evidence-types.md.",
+    "Validate `G6.2` against SEC-15 release checklist and parent index links.",
+    "Document `G6.2` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `G6.2`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids G6.2`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`scripts/verify-router.py`",
+    "`scripts/validate-workflow.py`",
+    "`evidence/`",
+    "`.cursor/skills/verifier/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a79",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[G6-index](G6-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids G6.2` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [G6-index](G6-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "G6.2 defines rollback journal last failure structured h2 for the agent-driven expert system. Verification & quality \u2014 evidence, goal_verify, anti-mistake. In practice, the system conductor appends spawn metadata to `worker-runs.jsonl` on each orchestrate-subagents spawn; workers never touch journal/state, then outcome summary and duration logged on return for [j4](j4-audit.md) governance.",
+  "reader_narrative": "<!-- prose-source: agent plane-g 2026-06-28 -->\n\nStructured `last_failure` in journal and state captures verify regressions, conformance failures, and H2 blockers with goal id, evidence paths, and suggested operator action\u2014enabling resume without re-deriving context. Rollback decisions read this block before rewinding git or resetting next_action.\n\nEmpty or vague failure notes violate S4 packaging ([B1.5](B1.5-s4-governance-escalation-h2-packaging.md)). Dual-write failure metadata in the same turn as stop so [G6.3](G6.3-rollback-autopilot-resume-precompact-snapshot.md) snapshots remain trustworthy."
+}

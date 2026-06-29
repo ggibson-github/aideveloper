@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>E7.5 — pack, generator, workflow, templates, and inherit</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/E.html">Plane E</a> · <a href="../chapters/E-E7.html">E7</a> ·
+    E7.5
+  </nav>
+  <p class="page-id">E7.5 · Knowledge &amp; composition plane</p>
+  <h1 class="page-title">pack, generator, workflow, templates, and inherit</h1>
+  <p class="page-subtitle">pack generator workflow templates inherit</p>
+  
+  <div class="story-block"><p>Template-packs ship more than roles and prose playbooks: they carry generator workflow templates and domain transistor libraries that a new company inherits on day one. Under <a href="../capabilities/F1.9-pack-transistors-and-generator-workflows.html" class="spec-link">F1.9</a>, each pack may include <code>workflows/*.json</code> seed DAGs and <code>transistors/*.json</code> blocks for its industry—game studio mesh/rig/import chains, data platform ingest/model/deploy paths, or software delivery scaffold sequences. <a href="../capabilities/E7.1-resolve-deliverable-type-workflow-template.html" class="spec-link">E7.1</a> resolves the goal deliverable type to one of these templates before the composer customizes nodes.</p>
+<p>Instantiation copies template references into pursuit state; program-scoper does not silently fork pack files into the consumer repo (<a href="../capabilities/F5.3-no-repo-outside-template-packs-ceiling.html" class="spec-link">F5.3</a>). Cross-pack imports via <a href="../capabilities/F5.1-cross-pack-imports-micro-packs.html" class="spec-link">F5.1</a> may add supplemental workflow fragments. Generic blocks live in <a href="../capabilities/F5.4-shared-transistors-library-template-packs--shared.html" class="spec-link">F5.4</a> <code>_shared</code> and merge with pack overlay at query time. Pack CI validates all templates against workflow-dag and transistor v1 schemas before publish.</p>
+<p>See <a href="../../../../full-automation-vision-and-hierarchy.md#19-transistor-generator-workflow-model" class="spec-link">Vision §19 — Transistor &amp; generator workflow model</a> and <a href="../capabilities/SEC-15-v2.27-release-v2-27-pack-workflow-templates-cross-domain.html" class="spec-link">SEC-15-v2.27</a> for the release that operationalizes pack inheritance.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart TD
+  compose[Compose workflow] --&gt; validate[validate-workflow-dag S0]
+  validate --&gt;|pass| exec[Execute one node]
+  exec --&gt; nodeVerify[Transistor verify]
+  nodeVerify --&gt;|pass| next[Advance active_workflow]
+  nodeVerify --&gt;|fail| h2[H2 or retry gate]
+  next --&gt; goalVerify[goal_verify rollup]</pre>
+</div>
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">F1.9 defines pack workflows/ and transistors/ directories in pack schema.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Company instantiate copies template refs into pursuit state; does not fork silently.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Cross-pack import via F5.1 for micro-pack workflow fragments.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Pack verify suites (F1.8) may require end-to-end template dry-run in CI.</span></li><li><span class="step-num">Step 5</span><span class="step-text">Pack ceiling F5.3 applies to transistor forks as with other artifacts.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids E7.5</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>DAG validity</td><td>`python scripts/automation/validate-workflow-dag.py` when workflow exists</td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write including active_workflow.</li><li>Transistor version bump mid-pursuit — E5.4 marks workflow stale; re-validate before next node.</li><li>L0 waiver node without promotion progress — D3.3 priority boost then H2 if threshold exceeded.</li><li>Pack overlay id collision — F5.4 semver fork per D5.3, not silent overwrite.</li><li>Parallel branch join missing typed input — validate-workflow-dag fails at compose time.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;E7.5&quot;,
+  &quot;description&quot;: &quot;pack generator workflow templates inherit&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot;, &quot;active_workflow&quot;: &quot;H1.7&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.27+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.27</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

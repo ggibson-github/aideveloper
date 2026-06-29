@@ -1,0 +1,89 @@
+{
+  "id": "E2.4",
+  "slug": "E2.4-compose-plan-task-card-components",
+  "title": "compose plan task card Components",
+  "branch": "E",
+  "parent": "[E2-index](E2-index.md)",
+  "vision_section": "",
+  "release": "v2.17",
+  "purpose": "E2.4 defines compose plan task card components for the agent-driven expert system. Knowledge & composition \u2014 catalog, compose-first, staleness.",
+  "scope": [
+    "Owns `E2.4` only; siblings under `E2` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a77 \u2014 Branch E \u2014 Knowledge & composition plane](../../full-automation-vision-and-hierarchy.md#7-branch-e-knowledge-composition-plane)."
+  ],
+  "behavior_steps": [
+    "After [E2.3](E2.3-compose-rank-script-playbook-skill-facts.md) ranks catalog hits, the conductor or task-breakdown phase writes ranked script paths, playbook ids, and skill names into the task card **Components used** section before any S1+ implement worker spawns.",
+    "Each listed ref binds the pursuit turn\u2014workers inherit those paths in `allowed_reads` per [E4.3](E4.3-context-allowed-reads-cap-max-5.md) so Librarian scope matches the compose plan instead of expanding in chat.",
+    "**Components used** is auditable evidence that compose-first ran; omitting refs when [E2.2](E2.2-compose-query-catalog-list-components.md) returned matches triggers conformance failure and blocks advancement until the conductor dual-writes corrections to journal and state.json.",
+    "When the catalog returned no reusable L1+ hit, compose pairs the L0 proceed path with [E2.5](E2.5-compose-miss-l0-enqueue-promotion.md) promotion enqueue rather than leaving Components empty without a recorded platform debt entry.",
+    "If a worker spawns without matching Components listed refs, or divergence from ranked choices is unlogged, the conductor stops at H2 per [B4.4](B4.4-divergence-log-when-not-composing.md) until dual-write reconciles the compose plan with evidence."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"node\": \"E2.4\",\n  \"description\": \"compose plan task card components\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `E2.4` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `E2.4` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `E2.4`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `E2.4` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_e2_4.py when script exists.",
+    "Validate `E2.4` against SEC-15 release checklist and parent index links.",
+    "Document `E2.4` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `E2.4`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids E2.4`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/facts/INDEX.md`",
+    "`docs/playbooks/INDEX.md`",
+    "`docs/manifest/staleness.json`",
+    "`allowed_reads`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a77",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[E2-index](E2-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids E2.4` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [E2-index](E2-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "E2.4 defines compose plan task card components for the agent-driven expert system. Knowledge & composition \u2014 catalog, compose-first, staleness. In practice, the system after [e2.3](e2.3-compose-rank-script-playbook-skill-facts.md) ranks catalog hits, the conductor or task-breakdown phase writes ranked script paths, playbook ids, and skill names into the task card **components used** section before any s1+ implement worker spawns, then each listed ref binds the pursuit turn\u2014workers inherit those paths in `allowed_reads` per [e4.3](e4.3-context-allowed-reads-cap-max-5.md) so librarian scope matches the compose plan instead of expanding in chat.",
+  "reader_narrative": "<!-- prose-source: agent plane-e 2026-06-28 -->\n\nThe compose plan lands on the task card Components section: explicit catalog refs (script path, playbook id, skill name) bound before implement spawn. Components used is auditable evidence that compose-first ran\u2014not optional prose.\n\nConductor or task-breakdown writes Components after [E2.3](E2.3-compose-rank-script-playbook-skill-facts.md) ranking. Workers inherit listed refs in allowed_reads ([E4.3](E4.3-context-allowed-reads-cap-max-5.md)). Missing components when catalog had matches is a conformance failure; missing catalog match pairs with [E2.5](E2.5-compose-miss-l0-enqueue-promotion.md) promotion enqueue."
+}

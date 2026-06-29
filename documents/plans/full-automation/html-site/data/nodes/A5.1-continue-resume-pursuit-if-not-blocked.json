@@ -1,0 +1,89 @@
+{
+  "id": "A5.1",
+  "slug": "A5.1-continue-resume-pursuit-if-not-blocked",
+  "title": "continue resume pursuit if not blocked",
+  "branch": "A",
+  "parent": "[A5-index](A5-index.md)",
+  "vision_section": "",
+  "release": "v2.14",
+  "purpose": "A5.1 defines continue resume pursuit if not blocked for the agent-driven expert system. Pursuit & control plane \u2014 autonomous loops until goal verified.",
+  "scope": [
+    "Owns `A5.1` only; siblings under `A5` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a73 \u2014 Branch A \u2014 Pursuit & control plane](../../full-automation-vision-and-hierarchy.md#3-branch-a-pursuit-control-plane)."
+  ],
+  "behavior_steps": [
+    "When the operator types `/continue` or a daemon poll fires with autopilot inactive, the conductor runs [A2.1](A2.1-preflight-check-pipeline-blocked-extended.md) via `check-pipeline-blocked.py`\u2014advancing only when status is READY.",
+    "If preflight reports BLOCKED from [A4](A4-index.md), Continue re-prompts for the specific human action instead of advancing next_action or treating the word as implicit approval.",
+    "On READY, exactly one [A2.2](A2.2-if-ready-execute-one-pipeline-step.md) skill phase executes followed by [A2.3](A2.3-post-step-route-tier-dual-write-increment.md) dual-write\u2014matching [A2.7](A2.7-no-intermediate-wait-for-continue.md) one-step semantics.",
+    "[A3.4](A3.4-sdk-daemon-run-local-pipeline-24-7.md) SDK daemon invokes the same contract on poll when goal autopilot is off\u2014IDE and headless runners share identical semantics.",
+    "If the operator intended to approve a design gate or answer a blocker, pursuit stays blocked until an explicit approval phrase per [A5.2](A5.2-continue-not-approval-self-gate-h1-h3-only.md)\u2014Continue alone never clears self-gates."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"A5.1\",\n  \"description\": \"continue resume pursuit if not blocked\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "goal_verify passes but H3 rejected \u00e2\u20ac\u201d goal.state returns to pursuing with rejection notes.",
+    "Edge case `A5.1` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `A5.1`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `goal` block to state template and journal-keeper dual-write (v2.14).",
+    "Extend `check-pipeline-blocked.py` with goal_autopilot stop reasons.",
+    "Implement `scripts/goal-verify.py` stub aggregating task evidence paths.",
+    "Add `.cursor/skills/goal-keeper/SKILL.md` for conductor H1\u00e2\u2020\u2019pursuit transition.",
+    "Document `A5.1` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `A5.1`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids A5.1`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`journal/state.json `goal`, `pursuit`, `hitl``",
+    "`scripts/automation/check-pipeline-blocked.py`",
+    "`scripts/automation/run-local-pipeline.py`",
+    "`.cursor/skills/autopilot/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a73",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[A5-index](A5-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids A5.1` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [A5-index](A5-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "A5.1 defines continue resume pursuit if not blocked for the agent-driven expert system. Pursuit & control plane \u2014 autonomous loops until goal verified. In practice, the system when the operator types `/continue` or a daemon poll fires with autopilot inactive, the conductor runs [a2.1](a2.1-preflight-check-pipeline-blocked-extended.md) via `check-pipeline-blocked.py`\u2014advancing only when status is ready, then if preflight reports blocked from [a4](a4-index.md), continue re-prompts for the specific human action instead of advancing next_action or treating the word as implicit approval.",
+  "reader_narrative": "<!-- prose-source: agent plane-a 2026-06-28 -->\n\n\u201cContinue\u201d in the target architecture means resume the pursuit loop if preflight reports READY\u2014not approval of design gates, not answers to open questions, and not permission to skip evidence. Manual `/continue` invokes one step when autopilot is off; daemons invoke the same semantics on poll.\n\nThis capability prevents the v2.13 failure mode where operators typed Continue dozens of times per feature. Blocked preflight must re-prompt for H2 assistance instead of advancing `next_action`. See [A5.2](A5.2-continue-not-approval-self-gate-h1-h3-only.md) for what Continue explicitly does not mean."
+}

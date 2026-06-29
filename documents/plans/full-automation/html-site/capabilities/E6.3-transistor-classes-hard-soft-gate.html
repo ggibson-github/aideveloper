@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>E6.3 — transistor, classes, hard, soft, and gate</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/E.html">Plane E</a> · <a href="../chapters/E-E6.html">E6</a> ·
+    E6.3
+  </nav>
+  <p class="page-id">E6.3 · Knowledge &amp; composition plane</p>
+  <h1 class="page-title">transistor, classes, hard, soft, and gate</h1>
+  <p class="page-subtitle">transistor classes hard soft gate</p>
+  
+  <div class="story-block"><p>Three executor classes: hard (deterministic script/tool), soft (bounded LLM with output schema), gate (<a href="../glossary.html#branch" class="glossary-link" title="Branch">branch</a> on verify/predicate). Target maturity mix: ~70% hard, ~20% soft, ~10% gate.</p>
+<p>See <a href="../branches/E.html" class="spec-link">Vision §7 — Branch E — Knowledge &amp; composition plane</a> and SEC-18-transistor-model-a-to-z.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart TD
+  compose[Compose workflow] --&gt; validate[validate-workflow-dag S0]
+  validate --&gt;|pass| exec[Execute one node]
+  exec --&gt; nodeVerify[Transistor verify]
+  nodeVerify --&gt;|pass| next[Advance active_workflow]
+  nodeVerify --&gt;|fail| h2[H2 or retry gate]
+  next --&gt; goalVerify[goal_verify rollup]</pre>
+</div>
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">hard: executor.kind script|tool; no LLM in block; preferred for all control-adjacent work.</span></li><li><span class="step-num">Step 2</span><span class="step-text">soft: executor.kind soft_template with prompt_template_path, output_schema, max_tokens, capability_class S1.</span></li><li><span class="step-num">Step 3</span><span class="step-text">gate: executor.kind gate with predicate script only; edges defined in workflow DAG not in prose.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Pack maturity report (SEC-15-v2.28) flags soft-heavy workflows for promotion debt.</span></li><li><span class="step-num">Step 5</span><span class="step-text">Ranking in E6.5 always prefers hard over soft for same capability_id.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids E6.3</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>DAG validity</td><td>`python scripts/automation/validate-workflow-dag.py` when workflow exists</td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write including active_workflow.</li><li>Transistor version bump mid-pursuit — E5.4 marks workflow stale; re-validate before next node.</li><li>L0 waiver node without promotion progress — D3.3 priority boost then H2 if threshold exceeded.</li><li>Pack overlay id collision — F5.4 semver fork per D5.3, not silent overwrite.</li><li>Parallel branch join missing typed input — validate-workflow-dag fails at compose time.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;E6.3&quot;,
+  &quot;description&quot;: &quot;transistor classes hard soft gate&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot;, &quot;active_workflow&quot;: &quot;H1.7&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.24+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.24</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

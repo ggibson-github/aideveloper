@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>G5.6 — mistake, duplicate, tooling, platform, queue, and catalog</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/G.html">Plane G</a> · <a href="../chapters/G-G5.html">G5</a> ·
+    G5.6
+  </nav>
+  <p class="page-id">G5.6 · Verification &amp; quality plane</p>
+  <h1 class="page-title">mistake, duplicate, tooling, platform, queue, and catalog</h1>
+  <p class="page-subtitle">mistake duplicate tooling platform queue catalog</p>
+  
+  <div class="story-block"><p>Duplicate tooling is inventing a second script, skill, or queue handler when <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> or platform queue already provides one—often after skipped <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">compose-first</a> (<a href="../capabilities/B4.3-compose-first-catalog-before-improvise.html" class="spec-link">B4.3</a>). Controls: divergence logs (<a href="../capabilities/B4.4-divergence-log-when-not-composing.html" class="spec-link">B4.4</a>), platform <a href="../glossary.html#promotion-queue" class="glossary-link" title="Promotion queue">promotion queue</a>, and conformance checks for duplicate command shapes.</p>
+<p>New tooling requires <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> entry or promotion item, not ad hoc <code>scripts/</code> forks. Duplicate verify or routing scripts confuse route-tier and validate-workflow expectations.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">Duplicate tooling is inventing a second script, skill, or queue handler when <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> or platform queue already provides one—often after skipped <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">compose-first</a> (B4.3)</span></li><li><span class="step-num">Step 2</span><span class="step-text">Duplicate verify or routing scripts confuse route-tier and validate-workflow expectations</span></li><li><span class="step-num">Step 3</span><span class="step-text">During pursuit, enforce the mistake, duplicate, tooling, platform, queue, and <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> contract within Mistake class → control mapping (Plane G).</span></li><li><span class="step-num">Step 4</span><span class="step-text">Run <a href="../capabilities/B1.1-s0-deterministic-mandatory-first.html" class="spec-link">S0</a> scripts before improvising when file-derived behavior exists.</span></li><li><span class="step-num">Step 5</span><span class="step-text"><a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">Dual-write</a> journal and state.json after the step; attach <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> when verification applies.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids G5.6</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Flaky test — escalation S4 once, then H2 with evidence log; no silent retry loop.</li><li>Edge case G5.6 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;G5.6&quot;,
+  &quot;description&quot;: &quot;mistake duplicate tooling platform queue catalog&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

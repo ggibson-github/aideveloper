@@ -1,0 +1,89 @@
+{
+  "id": "E1.5",
+  "slug": "E1.5-catalog-pipelines-manifest",
+  "title": "catalog pipelines manifest",
+  "branch": "E",
+  "parent": "[E1-index](E1-index.md)",
+  "vision_section": "",
+  "release": "v2.17",
+  "purpose": "E1.5 defines catalog pipelines manifest for the agent-driven expert system. Knowledge & composition \u2014 catalog, compose-first, staleness.",
+  "scope": [
+    "Owns `E1.5` only; siblings under `E1` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a77 \u2014 Branch E \u2014 Knowledge & composition plane](../../full-automation-vision-and-hierarchy.md#7-branch-e-knowledge-composition-plane)."
+  ],
+  "behavior_steps": [
+    "Before any shell or tool invocation, preToolUse hooks in `.cursor/hooks.json` evaluate the proposed command against role allowlists from [B5.2](B5.2-role-to-pipeline-id-skills-tool-permissions.md) and active pack policy\u2014deny is fail-closed with a journal note, not silent strip.",
+    "Tool-operator and verifier workers run only bounded literal commands listed on the active task card; economy search and explore workers must not escalate to destructive or unapproved system commands.",
+    "When a worker proposes a command outside the card or role permission set, the conductor rejects the invocation before merge rather than accepting out-of-allowlist shell access.",
+    "Forbidden patterns\u2014destructive file ops, credential exfiltration, disallowed network calls\u2014block pursuit immediately at the hook layer without advancing implement or verify turns.",
+    "If an unsafe command is attempted or a hook deny is overridden in chat, pursuit fails closed at H2 with command evidence attached until the operator approves a bounded alternative or updates pack policy at H1."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"E1.5\",\n  \"description\": \"catalog pipelines manifest\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `E1.5` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `E1.5` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `E1.5`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `E1.5` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_e1_5.py when script exists.",
+    "Validate `E1.5` against SEC-15 release checklist and parent index links.",
+    "Document `E1.5` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `E1.5`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids E1.5`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/facts/INDEX.md`",
+    "`docs/playbooks/INDEX.md`",
+    "`docs/manifest/staleness.json`",
+    "`allowed_reads`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a77",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[E1-index](E1-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids E1.5` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [E1-index](E1-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "E1.5 defines catalog pipelines manifest for the agent-driven expert system. Knowledge & composition \u2014 catalog, compose-first, staleness. In practice, the system before any shell or tool invocation, pretooluse hooks in `.cursor/hooks.json` evaluate the proposed command against role allowlists from [b5.2](b5.2-role-to-pipeline-id-skills-tool-permissions.md) and active pack policy\u2014deny is fail-closed with a journal note, not silent strip, then tool-operator and verifier workers run only bounded literal commands listed on the active task card; economy search and explore workers must not escalate to destructive or unapproved system commands.",
+  "reader_narrative": "<!-- prose-source: agent plane-e 2026-06-28 -->\n\nThe pipelines manifest under `docs/manifest/pipelines/` declares pipeline_id values\u2014greenfield, iterative_feature, program\u2014with phase order, default skills, and verify suites. Instantiation sets `pipeline_id` in state.json; route-tier selects the active pipeline for next_action.\n\nThis catalog binds Plane E discovery to Plane C execution ([C1.4](C1.4-pack-defined-pipelines-per-company-template.md)). Pack-defined pipelines differ per company template without forking conductor code. Changes mark dependent task cards stale via [E5.1](E5.1-staleness-design-graph-staleness-json.md) and may require reconcile-stale ([E5.3](E5.3-staleness-reconcile-stale-artifact-graph-skills.md))."
+}

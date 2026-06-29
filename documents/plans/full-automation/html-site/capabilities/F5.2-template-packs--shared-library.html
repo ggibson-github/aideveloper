@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>F5.2 — template-packs  shared library</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/F.html">Plane F</a> · <a href="../chapters/F-F5.html">F5</a> ·
+    F5.2
+  </nav>
+  <p class="page-id">F5.2 · Organization plane</p>
+  <h1 class="page-title">template-packs  shared library</h1>
+  <p class="page-subtitle">template-packs _shared library</p>
+  
+  <div class="story-block"><p><code>template-packs/_shared/</code> is the generic library: onboarding micro-packs, security baselines, common verify hooks, and reusable role fragments consumed by industry packs via <a href="../capabilities/F5.1-cross-pack-imports-micro-packs.html" class="spec-link">F5.1</a>. Shared content versions independently from game studio or data platform packs.</p>
+<p>Authors promote mature fragments from product repos into _shared via Plane D pack fragment export (<a href="../capabilities/D4.6-platform-work-pack-fragment-export.html" class="spec-link">D4.6</a>). INDEX and <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> regeneration (<a href="../capabilities/E1.7-catalog-platform-catalog-md-umbrella.html" class="spec-link">E1.7</a>) must list _shared entries for <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">compose-first</a> discovery. Editing _shared affects all importers—extend with backwards compatibility (<a href="../capabilities/D5.2-extend-backwards-compatible-staleness-bump.html" class="spec-link">D5.2</a>) or fork (<a href="../capabilities/D5.3-fork-new-catalog-entry-provenance.html" class="spec-link">D5.3</a>).</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart TD
+  trigger[Trigger condition] --&gt; pre[Preconditions S0]
+  pre --&gt; exec[Execute step logic]
+  exec --&gt; verify[Verify output]
+  verify --&gt;|pass| done[Mark queue item done]
+  verify --&gt;|fail| h2[H2 blocker]</pre>
+</div>
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text"><code>scripts/automation/run-local-pipeline.py</code> is the SDK/local daemon entry for <code>goal_autopilot</code>—repeated Continue-equivalent steps without manual <code>/continue</code>, using the same journal/state contract as IDE pursuit.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Before each iteration the daemon runs <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> <code>check-pipeline-blocked.py</code> and halts on human gates, budget exhaustion, or integrity failures from Plane A stop rules.</span></li><li><span class="step-num">Step 3</span><span class="step-text">The daemon spawns Cursor agents or SDK equivalents per <code>docs/operator/model-policy.json</code>; unattended 24/7 operation still respects <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> blockers and <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> sign-off—no silent gate waiver.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Each completed iteration expects <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a>-style <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> to journal and state.json; daemon logs pair with <a href="../capabilities/H5-worker-runs.html" class="spec-link">H5</a> for audit when agent turns fail or time out.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If <code>state.json</code> is corrupt or <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> would advance past <code>evidence_required</code> without <code>last_verify: passed</code>, the daemon exits non-zero and leaves pursuit blocked at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> rather than looping blindly.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids F5.2</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Pack role handoff while lane lease held — complete-work-order releases lease before role switch.</li><li>Edge case F5.2 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;F5.2&quot;,
+  &quot;description&quot;: &quot;template packs  shared library&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.19</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

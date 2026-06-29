@@ -1,0 +1,88 @@
+{
+  "id": "F5.3",
+  "slug": "F5.3-no-repo-outside-template-packs-ceiling",
+  "title": "no repo outside template-packs ceiling",
+  "branch": "F",
+  "parent": "[F5-index](F5-index.md)",
+  "vision_section": "",
+  "release": "v2.19",
+  "purpose": "F5.3 defines no repo outside template packs ceiling for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling.",
+  "scope": [
+    "Owns `F5.3` only; siblings under `F5` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a78 \u2014 Branch F \u2014 Organization plane (template-packs = ceiling)](../../full-automation-vision-and-hierarchy.md#8-branch-f-organization-plane-template-packs-ceiling)."
+  ],
+  "behavior_steps": [
+    "`state.hitl` records `pending` as H1 plan approval, H2 blocker, H3 sign-off, or null when pursuit is unblocked, plus `since` and a payload with structured reason, goal_id, missing artifact, and suggested operator action per [INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md).",
+    "S0 preflight and check-pipeline-blocked read `hitl.pending` each wake; any non-null touchpoint halts autopilot until the conductor dual-writes clearance or the operator supplies an explicit approval or waiver phrase in the journal.",
+    "Under [J3](J3-strict-hitl.md) strict mode every H1/H2/H3 requires explicit operator clearance; default self-gate allows evidence-backed middle gates without treating Continue as approval ([A5.2](A5.2-continue-not-approval-self-gate-h1-h3-only.md)).",
+    "Operators may observe pursuit status without clearing `hitl.pending` ([A6.3](A6.3-operator-observe-without-unblocking-loop.md)); outbound notifications fire on H2/H3 only via [I5.2](I5.2-runtime-notify-webhook-email-h2-h3-only.md), not on every pursuit step.",
+    "If `hitl.pending` is H2 but the payload lacks required fields, the loop fail-closes and keeps goal.state blocked until dual-write restores a valid touchpoint record."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"node\": \"F5.3\",\n  \"description\": \"no repo outside template packs ceiling\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Pack role handoff while lane lease held \u00e2\u20ac\u201d complete-work-order releases lease before role switch.",
+    "Edge case `F5.3` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `F5.3`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `company.yaml` + `roles/*.yaml` to template-packs schema.",
+    "program-scoper selects pack; sets state.company.active_role.",
+    "Per-role allowed_reads in lane.json work orders.",
+    "Validate `F5.3` against SEC-15 release checklist and parent index links.",
+    "Document `F5.3` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `F5.3`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids F5.3`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`template-packs/`",
+    "`program/integration/manifest.md`",
+    "`.cursor/skills/program-scoper/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a78",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[F5-index](F5-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids F5.3` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [F5-index](F5-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "F5.3 defines no repo outside template packs ceiling for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling. In practice, the system `state.hitl` records `pending` as h1 plan approval, h2 blocker, h3 sign-off, or null when pursuit is unblocked, plus `since` and a payload with structured reason, goal_id, missing artifact, and suggested operator action per [intro-1.2](intro-1.2-human-touchpoint-contract-h1-h2-h3.md), then s0 preflight and check-pipeline-blocked read `hitl.pending` each wake; any non-null touchpoint halts autopilot until the conductor dual-writes clearance or the operator supplies an explicit approval or waiver phrase in the journal.",
+  "reader_narrative": "<!-- prose-source: agent plane-f 2026-06-28 -->\n\nThe template-packs ceiling rule: no organizational authority lives outside `template-packs/` for pack-defined roles, pipelines, governance, and verify suites. Consumer repos instantiate packs; they do not silently fork company.yaml, roles, or pipelines into undocumented paths\u2014this capability enforces auditability.\n\nUrgent hotfixes flow through pack version bump, import, or operator policy override recorded in journal\u2014not permanent shadow copies. Platform promotion targets pack fragments ([D4.6](D4.6-platform-work-pack-fragment-export.md)); consumer-only patterns fail maturity claims. Vision \u00a78 treats template-packs as whole-company organizational ceiling."
+}

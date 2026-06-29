@@ -1,0 +1,88 @@
+{
+  "id": "F3.3",
+  "slug": "F3.3-game-studio-external-tools-blender-ue-git-ci",
+  "title": "game studio external tools Blender UE Git CI",
+  "branch": "F",
+  "parent": "[F3-index](F3-index.md)",
+  "vision_section": "",
+  "release": "v2.19",
+  "purpose": "F3.3 defines game studio external tools blender ue git ci for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling.",
+  "scope": [
+    "Owns `F3.3` only; siblings under `F3` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a78 \u2014 Branch F \u2014 Organization plane (template-packs = ceiling)](../../full-automation-vision-and-hierarchy.md#8-branch-f-organization-plane-template-packs-ceiling)."
+  ],
+  "behavior_steps": [
+    "When a game-studio pack is active, pursuit loads declared external tools\u2014Blender, Unreal Engine, Perforce or Git, and CI build farms\u2014from pack YAML plus role bindings in [F6.3](F6.3-role-tool-permissions-mcp-cli-allowlist.md) before spawning tool-operator workers.",
+    "Compose-first resolves pack playbooks and facts INDEX entries ([E1.4](E1.4-catalog-facts-index.md)) for install paths and credential locations before any worker improvises MCP or CLI commands.",
+    "Tool-operator and verifier workers execute bounded exports, engine tests, and CI invocations under the role allowlist; they attach evidence per [F6.4](F6.4-role-evidence-requirements-per-output-type.md) but never mutate pursuit state in journal or state.json.",
+    "Preflight blocks spawn when a required tool is missing from the host, an MCP server is down, or credentials are absent\u2014raising H2 with facts INDEX pointers rather than skipping the task.",
+    "If allowlist drift, credential expiry, or tool failure leaves evidence incomplete, pursuit stays fail-closed at H2 until operators reconcile tool bindings at H1 and workers re-run with passing verifier output."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"F3.3\",\n  \"description\": \"game studio external tools blender ue git ci\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Pack role handoff while lane lease held \u00e2\u20ac\u201d complete-work-order releases lease before role switch.",
+    "Edge case `F3.3` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `F3.3`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `company.yaml` + `roles/*.yaml` to template-packs schema.",
+    "program-scoper selects pack; sets state.company.active_role.",
+    "Per-role allowed_reads in lane.json work orders.",
+    "Validate `F3.3` against SEC-15 release checklist and parent index links.",
+    "Document `F3.3` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `F3.3`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids F3.3`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`template-packs/`",
+    "`program/integration/manifest.md`",
+    "`.cursor/skills/program-scoper/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a78",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[F3-index](F3-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids F3.3` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [F3-index](F3-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "F3.3 defines game studio external tools blender ue git ci for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling. In practice, the system when a game-studio pack is active, pursuit loads declared external tools\u2014blender, unreal engine, perforce or git, and ci build farms\u2014from pack yaml plus role bindings in [f6.3](f6.3-role-tool-permissions-mcp-cli-allowlist.md) before spawning tool-operator workers, then compose-first resolves pack playbooks and facts index entries ([e1.4](e1.4-catalog-facts-index.md)) for install paths and credential locations before any worker improvises mcp or cli commands.",
+  "reader_narrative": "<!-- prose-source: agent plane-f 2026-06-28 -->\n\nGame studio packs declare external tools: Blender, Unreal Engine, Perforce or Git, CI build farms\u2014MCP servers, CLI allowlists, and tool-operator task card patterns per role ([F6.3](F6.3-role-tool-permissions-mcp-cli-allowlist.md)). Tool-operator and verifier workers run bounded exports and engine tests; they do not edit pursuit state.\n\nMissing tool install or credentials is H2\u2014not skip. Facts INDEX holds download URLs and credential locations ([E1.4](E1.4-catalog-facts-index.md)). Evidence for tool runs follows [F6.4](F6.4-role-evidence-requirements-per-output-type.md) output types (render checksum, export log, CI artifact path). Compose-first searches pack playbooks before improvising tool commands."
+}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>G5.1 — mistake, hallucinated, done, evidence, and gate</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/G.html">Plane G</a> · <a href="../chapters/G-G5.html">G5</a> ·
+    G5.1
+  </nav>
+  <p class="page-id">G5.1 · Verification &amp; quality plane</p>
+  <h1 class="page-title">mistake, hallucinated, done, evidence, and gate</h1>
+  <p class="page-subtitle">mistake hallucinated done evidence gate</p>
+  
+  <div class="story-block"><p>Hallucinated done is declaring a task or goal complete without <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> files and passed verify—a common agent failure mode. Controls: <code>evidence_required</code>, mandatory verify-router runs, validate-workflow checks on <code>last_verify</code>, and <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> discipline never marking TODOS complete in prose alone.</p>
+<p>Audit and hierarchy quality scripts re-enqueue deepen when queue items close without artifacts. This mistake class is the philosophical core of Plane G: success is demonstrated, not assumed.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">A leaf ID (e.g. <code>G4.3</code>, <code>G5.2</code>, <code>F5.1</code>), or</span></li><li><span class="step-num">Step 2</span><span class="step-text">The full prompt from the queue (includes reader narrative and output rules)</span></li><li><span class="step-num">Step 3</span><span class="step-text">After each verify-router run on a task card, <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> increments retry_count in state and compares it to the escalation threshold from the active pack.</span></li><li><span class="step-num">Step 4</span><span class="step-text">On the first repeated failure for the same task, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> spawns a bounded rework turn with the prior <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> log paths in allowed_reads—no silent <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> retry loop.</span></li><li><span class="step-num">Step 5</span><span class="step-text">When retry_count crosses the <a href="../glossary.html#s4" class="glossary-link" title="S4 — governance escalation">S4</a> threshold, pursuit pauses at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> with a structured escalation package: <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> paths, failure class, retry count, and suggested operator action.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids G5.1</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Flaky test — escalation S4 once, then H2 with evidence log; no silent retry loop.</li><li>Edge case G5.1 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;G5.1&quot;,
+  &quot;description&quot;: &quot;mistake hallucinated done evidence gate&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

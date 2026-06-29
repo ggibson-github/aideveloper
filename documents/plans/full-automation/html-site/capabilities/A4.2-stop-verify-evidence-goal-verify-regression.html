@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>A4.2 — stop, verify, evidence, goal verify, and regression</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/A.html">Plane A</a> · <a href="../chapters/A-A4.html">A4</a> ·
+    A4.2
+  </nav>
+  <p class="page-id">A4.2 · Pursuit &amp; control plane</p>
+  <h1 class="page-title">stop, verify, evidence, goal verify, and regression</h1>
+  <p class="page-subtitle">stop verify evidence goal_verify regression</p>
+  
+  <div class="story-block"><p>Verification stops protect quality when <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> or goal-level proof fails. Task <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> missing, <code>verify-router</code> failure, <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> regression, or conformance script exit non-zero all produce a hard stop with structured <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a>—not a silent retry loop.</p>
+<p>Fail-closed behavior prevents false “achieved” states that would reach <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> without proof. The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> records which command failed and which <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> paths were absent so the operator or a resumed pursuit knows exactly what to fix. This stop class connects Plane A to Plane G; it is distinct from resource exhaustion (A4.3) and integrity corruption (A4.4).</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When preflight finds missing task <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> (<code>evidence_required</code> true but paths absent), <a href="../capabilities/G1.1-task-verify-router-verifier.html" class="spec-link">G1.1</a> or verify-router exit non-zero, <code>goal_verify_command</code> failure, or <a href="../capabilities/G2.4-goal-verify-regression-every-implement-batch.html" class="spec-link">G2.4</a> regression, check-pipeline-blocked emits stop class <code>verify:*</code> and exits the <a href="../capabilities/A2.6-loop-until-blocked-budget-achieved-h3-reject.html" class="spec-link">A2.6</a> loop without advancing <code>next_action</code>.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Journal-keeper <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s the failed command, missing <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> paths, and <code>last_verify=failed</code> to journal and state.json so resumed pursuit or the operator knows exactly what to fix—fail-closed, no silent retry loop.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Task-level verify failures block implement task completion; goal-level failures block <a href="../capabilities/A2.5-goal-verify-pass-transition-h3-pending.html" class="spec-link">A2.5</a> <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> pending transition., preventing false achieved states that would reach <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> without proof.</span></li><li><span class="step-num">Step 4</span><span class="step-text">This stop class connects Plane A pursuit to Plane G verification—it is distinct from resource exhaustion (<a href="../capabilities/A4.3-stop-resource-max-steps-max-cost-lease-expired.html" class="spec-link">A4.3</a>) and state corruption (<a href="../capabilities/A4.4-stop-integrity-validate-workflow-state-corrupt.html" class="spec-link">A4.4</a>).</span></li><li><span class="step-num">Step 5</span><span class="step-text">If verify stops fire but <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> later passes on re-run, pursuit resumes only after preflight confirms all required proof paths exist—never auto-clearing <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> without successful verifier output.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids A4.2</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>goal_verify passes but H3 rejected — goal.state returns to pursuing with rejection notes.</li><li>Edge case A4.2 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;A4.2&quot;,
+  &quot;description&quot;: &quot;stop verify evidence goal verify regression&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.14</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

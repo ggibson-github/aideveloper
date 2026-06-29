@@ -1,0 +1,88 @@
+{
+  "id": "F5.1",
+  "slug": "F5.1-cross-pack-imports-micro-packs",
+  "title": "cross-pack imports micro-packs",
+  "branch": "F",
+  "parent": "[F5-index](F5-index.md)",
+  "vision_section": "",
+  "release": "v2.19",
+  "purpose": "F5.1 defines cross pack imports micro packs for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling.",
+  "scope": [
+    "Owns `F5.1` only; siblings under `F5` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a78 \u2014 Branch F \u2014 Organization plane (template-packs = ceiling)](../../full-automation-vision-and-hierarchy.md#8-branch-f-organization-plane-template-packs-ceiling)."
+  ],
+  "behavior_steps": [
+    "When program-scoper instantiates a company pursuit, S0 resolves the declared import list in company.yaml\u2014merging roles, playbooks, and verify fragments from micro-packs into the active pack without copying foreign packs into the consumer repo.",
+    "Resolved imports bind to state.company.pack_id and active_role so conductor routing and [B5.2](B5.2-role-to-pipeline-id-skills-tool-permissions.md) tool permissions reflect the composed organization model on every wake.",
+    "Import paths must stay inside the template-packs namespace per [F5.3](F5.3-no-repo-outside-template-packs-ceiling.md); ad hoc filesystem paths are rejected before pursuit advances.",
+    "When an imported fragment diverges from its source micro-pack, provenance links feed [D5.3](D5.3-fork-new-catalog-entry-provenance.md) and SEC-14 gap analysis without blocking unrelated product turns.",
+    "If import resolution fails\u2014missing pack id or broken path\u2014pursuit stops at H2 with the unresolved import recorded in journal and state.json until the operator fixes the manifest at H1."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"node\": \"F5.1\",\n  \"description\": \"cross pack imports micro packs\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Pack role handoff while lane lease held \u00e2\u20ac\u201d complete-work-order releases lease before role switch.",
+    "Edge case `F5.1` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `F5.1`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `company.yaml` + `roles/*.yaml` to template-packs schema.",
+    "program-scoper selects pack; sets state.company.active_role.",
+    "Per-role allowed_reads in lane.json work orders.",
+    "Validate `F5.1` against SEC-15 release checklist and parent index links.",
+    "Document `F5.1` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `F5.1`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids F5.1`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`template-packs/`",
+    "`program/integration/manifest.md`",
+    "`.cursor/skills/program-scoper/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a78",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[F5-index](F5-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids F5.1` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [F5-index](F5-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "F5.1 defines cross pack imports micro packs for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling. In practice, the system when program-scoper instantiates a company pursuit, s0 resolves the declared import list in company.yaml\u2014merging roles, playbooks, and verify fragments from micro-packs into the active pack without copying foreign packs into the consumer repo, then resolved imports bind to state.company.pack_id and active_role so conductor routing and [b5.2](b5.2-role-to-pipeline-id-skills-tool-permissions.md) tool permissions reflect the composed organization model on every wake.",
+  "reader_narrative": "<!-- prose-source: agent plane-f 2026-06-28 -->\n\nCross-pack imports let a company pack compose micro-packs\u2014studio pack imports generic HR/onboarding, data pack imports security baseline\u2014via declared import list in company.yaml or manifest. Imports merge roles, playbooks, and verify fragments without copying entire foreign packs into consumer repos.\n\nImport resolution is S0 at instantiation; broken import path is H2 with missing pack id. Imports must respect ceiling ([F5.3](F5.3-no-repo-outside-template-packs-ceiling.md))\u2014only template-packs namespace, not ad hoc paths. Provenance links support SEC-14 gap analysis and [D5.3](D5.3-fork-new-catalog-entry-provenance.md) when imported fragment diverges."
+}

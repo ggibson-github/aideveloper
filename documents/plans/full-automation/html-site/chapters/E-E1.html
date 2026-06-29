@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>E1 — Catalog (single discovery surface)</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/E.html">Plane E</a> ·
+    E1
+  </nav>
+  <p class="page-id">E1 · Knowledge &amp; composition plane</p>
+  <h1 class="page-title">Catalog (single discovery surface)</h1>
+  <div class="story-block"><p>E1: <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">Catalog</a> (single discovery surface). Open each capability below for diagrams, verification, and contracts.</p>
+<p>The scripts <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> is a generated manifest under <code>scripts/</code> that lists every S0-capable entry point—route-tier, validate-workflow, verify-router, hierarchy automation—so conductors and compose queries discover deterministic behavior without grep-ing the tree.</p>
+<p>Regeneration runs via <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> when scripts change; the manifest feeds <a href="../capabilities/E2.2-compose-query-catalog-list-components.html" class="spec-link">E2.2</a> list-components and the umbrella <a href="../capabilities/E1.7-catalog-platform-catalog-md-umbrella.html" class="spec-link">E1.7</a>. Stale manifest rows trigger <a href="../capabilities/E5.2-staleness-extend-playbooks-scripts-pack-nodes.html" class="spec-link">E5.2</a> graph updates. See <a href="../branches/E.html" class="spec-link">Vision §7 — Branch E — Knowledge &amp; composition plane</a>.</p>
+<p>The pipelines manifest under <code>docs/manifest/pipelines/</code> declares pipeline_id values—greenfield, iterative_feature, program—with phase order, default skills, and verify suites. Instantiation sets <code>pipeline_id</code> in state.json; route-tier selects the active pipeline for next_action.</p>
+<p>This <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> binds Plane E discovery to Plane C execution (<a href="../capabilities/C1.4-pack-defined-pipelines-per-company-template.html" class="spec-link">C1.4</a>). Pack-defined pipelines differ per company template without forking <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> code. Changes mark dependent task cards stale via <a href="../capabilities/E5.1-staleness-design-graph-staleness-json.html" class="spec-link">E5.1</a> and may require reconcile-stale (<a href="../capabilities/E5.3-staleness-reconcile-stale-artifact-graph-skills.html" class="spec-link">E5.3</a>).</p>
+<p>Each template-pack publishes a README cataloging pack fragments: roles, pipeline overrides, verify suites, and governance defaults. README files under <code>template-packs/*/</code> are discoverable <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> nodes for compose and pack instantiation.</p>
+<p>Pack READMEs complement the generated platform umbrella (<a href="../capabilities/E1.7-catalog-platform-catalog-md-umbrella.html" class="spec-link">E1.7</a>) with consumer-specific bindings (<a href="../capabilities/B5.2-role-to-pipeline-id-skills-tool-permissions.html" class="spec-link">B5.2</a>). Promotion from L0 reasoning should target pack fragments listed here. Staleness extends to pack nodes when vision or parent pack schema changes (<a href="../capabilities/E5.2-staleness-extend-playbooks-scripts-pack-nodes.html" class="spec-link">E5.2</a>).</p>
+<p><code>docs/platform/CATALOG.md</code> is the generated umbrella index merging scripts, playbooks, skills, facts, pipelines, and pack README entries into one discovery surface. <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> regeneration keeps the umbrella current when any child <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> changes.</p>
+<p>Operators and conductors start compose queries here before deep tree walks. The umbrella feeds <a href="../capabilities/E2.2-compose-query-catalog-list-components.html" class="spec-link">E2.2</a> and satisfies the single discovery surface goal of E1. Cross-links to child INDEX files must stay bidirectional. Platform maturity claims in Plane D depend on umbrella completeness and staleness graph coverage (<a href="../capabilities/E5.1-staleness-design-graph-staleness-json.html" class="spec-link">E5.1</a>).</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/E1.1-catalog-scripts-manifest-generated.html">E1.1</a></span>
+  <span class="cap-title">catalog, scripts, manifest, and generated</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/E1.5-catalog-pipelines-manifest.html">E1.5</a></span>
+  <span class="cap-title">catalog, pipelines, and manifest</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/E1.6-catalog-template-packs-readme.html">E1.6</a></span>
+  <span class="cap-title">catalog template-packs README</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/E1.7-catalog-platform-catalog-md-umbrella.html">E1.7</a></span>
+  <span class="cap-title">catalog platform CATALOG.md umbrella</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

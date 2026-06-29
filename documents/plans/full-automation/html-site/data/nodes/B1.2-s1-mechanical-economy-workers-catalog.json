@@ -1,0 +1,89 @@
+{
+  "id": "B1.2",
+  "slug": "B1.2-s1-mechanical-economy-workers-catalog",
+  "title": "S1 mechanical economy workers catalog",
+  "branch": "B",
+  "parent": "[B1-index](B1-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "B1.2 defines s1 mechanical economy workers catalog for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack.",
+  "scope": [
+    "Owns `B1.2` only; siblings under `B1` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a74 \u2014 Branch B \u2014 Cognition & routing plane](../../full-automation-vision-and-hierarchy.md#4-branch-b-cognition-routing-plane)."
+  ],
+  "behavior_steps": [
+    "When route-tier classifies a turn as S1 and `spawn_workers` is true, the conductor spawns economy-tier implement workers from `model-policy.json` with task-card scope and `allowed_reads` caps\u2014never genius models for mechanical bounded edits.",
+    "S1 workers execute catalog lookups, shell verification, and bulk search under orchestrate-subagents contracts and must not expand scope, dual-write journal/state, or mark tasks complete without evidence paths.",
+    "The conductor selects worker roles using Plane E catalog component refs so recurring implement patterns map to verifier or tool-operator roles instead of improvising role choice each wake.",
+    "[B1.1](B1.1-s0-deterministic-mandatory-first.md) scripts remain mandatory before S1 workers run when file-derived routing, validation, or verify already exists in `scripts/`.",
+    "Mis-routed S3 architecture work assigned to S1, or S1 tasks escalated to genius without `model_escalation`, stops at H2 until route-tier re-classifies capability and dual-writes corrected `model_tier`."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"B1.2\",\n  \"description\": \"s1 mechanical economy workers catalog\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `B1.2` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `B1.2` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `B1.2`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `B1.2` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_b1_2.py when script exists.",
+    "Validate `B1.2` against SEC-15 release checklist and parent index links.",
+    "Document `B1.2` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `B1.2`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids B1.2`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/operator/model-policy.json`",
+    "`scripts/route-tier.py`",
+    "`.cursor/skills/librarian/`",
+    "`.cursor/rules/genius-conductor.mdc`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a74",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[B1-index](B1-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids B1.2` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [B1-index](B1-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "B1.2 defines s1 mechanical economy workers catalog for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack. In practice, the system when route-tier classifies a turn as s1 and `spawn_workers` is true, the conductor spawns economy-tier implement workers from `model-policy.json` with task-card scope and `allowed_reads` caps\u2014never genius models for mechanical bounded edits, then s1 workers execute catalog lookups, shell verification, and bulk search under orchestrate-subagents contracts and must not expand scope, dual-write journal/state, or mark tasks complete without evidence paths.",
+  "reader_narrative": "<!-- prose-source: agent plane-b 2026-06-28 -->\n\nS1 covers mechanical work that still needs a model but not genius-tier judgment: bounded code edits from task cards, catalog lookups, shell verification, and bulk search. Economy workers from `model-policy.json` execute S1 under conductor contracts with `allowed_reads` caps.\n\nS1 is the default implement tier when `spawn_workers` is true. Workers must not expand scope, dual-write journal/state, or skip evidence. The catalog in Plane E tells the conductor which worker role fits which task pattern. Mis-routing S3 architecture questions to S1 causes rework; mis-routing S1 mechanical tasks to genius tier wastes cost."
+}

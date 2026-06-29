@@ -1,0 +1,89 @@
+{
+  "id": "D1.2",
+  "slug": "D1.2-l1-playbook-docs-playbooks",
+  "title": "L1 playbook docs/playbooks",
+  "branch": "D",
+  "parent": "[D1-index](D1-index.md)",
+  "vision_section": "",
+  "release": "v2.16",
+  "purpose": "D1.2 defines l1 playbook docs playbooks for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse.",
+  "scope": [
+    "Owns `D1.2` only; siblings under `D1` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a76 \u2014 Branch D \u2014 Platform evolution plane (parallel queue)](../../full-automation-vision-and-hierarchy.md#6-branch-d-platform-evolution-plane-parallel-queue)."
+  ],
+  "behavior_steps": [
+    "Every conductor and worker session loads always-on context\u2014[E4.1](E4.1-context-always-on-rules-agents-md.md) rules and `AGENTS.md`\u2014as layer zero before hooks ([E4.2](E4.2-context-hooks-inject-continue-start.md)) or Librarian `allowed_reads` ([E4.3](E4.3-context-allowed-reads-cap-max-5.md)) narrow the turn.",
+    "`AGENTS.md` encodes the baseline pursuit contract: evidence gates, H1/H2/H3 approval semantics, journal dual-write, and pipeline phase order that the genius conductor enforces each wake.",
+    "Economy workers inherit applicable rule excerpts in spawn context; they do not re-read the full `AGENTS.md` monolith unless the conductor bound it in `allowed_reads`.",
+    "Active template packs may extend always-on rules via pack fragments merged at role switch so company-specific policy layers atop repo defaults without replacing core conductor obligations.",
+    "When `AGENTS.md` or always-on rules change, [E5.2](E5.2-staleness-extend-playbooks-scripts-pack-nodes.md) marks dependent playbooks and skills stale and pursuit pauses at H2 until reconcile-stale or operator H1 confirms downstream artifacts are current."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"D1.2\",\n  \"description\": \"l1 playbook docs playbooks\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Platform queue depth 0 but product blocked on missing playbook \u00e2\u20ac\u201d D3.3 priority cut skips platform drain.",
+    "Edge case `D1.2` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `D1.2`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `platform.promotion_queue[]` to state.json schema.",
+    "Scheduler in autopilot workflow: `(steps_total % K) == 0` \u00e2\u2020\u2019 platform turn.",
+    "playbook-keeper + script extraction skills dequeue promotion items.",
+    "Validate `D1.2` against SEC-15 release checklist and parent index links.",
+    "Document `D1.2` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `D1.2`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids D1.2`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/playbooks/`",
+    "`scripts/`",
+    "`.cursor/skills/playbook-keeper/`",
+    "`state.platform.promotion_queue`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a76",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[D1-index](D1-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids D1.2` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [D1-index](D1-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "D1.2 defines l1 playbook docs playbooks for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse. In practice, the system every conductor and worker session loads always-on context\u2014[e4.1](e4.1-context-always-on-rules-agents-md.md) rules and `agents.md`\u2014as layer zero before hooks ([e4.2](e4.2-context-hooks-inject-continue-start.md)) or librarian `allowed_reads` ([e4.3](e4.3-context-allowed-reads-cap-max-5.md)) narrow the turn, then `agents.md` encodes the baseline pursuit contract: evidence gates, h1/h2/h3 approval semantics, journal dual-write, and pipeline phase order that the genius conductor enforces each wake.",
+  "reader_narrative": "<!-- prose-source: agent plane-d 2026-06-28 -->\n\nL1 promotes distilled procedure into `docs/playbooks/<slug>.md`: step lists, constraints, and pointers that humans and agents can follow without re-reading full design monoliths. Playbook-keeper skill ([D4.1](D4.1-platform-work-playbook-keeper.md)) is the primary platform worker for L1 creation from divergence logs and task post-mortems.\n\nAn L1 playbook is not a script\u2014it encodes intent and ordering while leaving file-derived steps to future L2 extraction. INDEX rows and task-card references ([D6.1](D6.1-platform-done-catalog-index-row.md), [D6.3](D6.3-platform-done-task-card-references.md)) prove the playbook is discoverable. Stale upstream design should bump dependents via Plane E staleness, not silent drift."
+}

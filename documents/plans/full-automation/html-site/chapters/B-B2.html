@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>B2 — Role model (conductor + workers)</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/B.html">Plane B</a> ·
+    B2
+  </nav>
+  <p class="page-id">B2 · Cognition &amp; routing plane</p>
+  <h1 class="page-title">Role model (conductor + workers)</h1>
+  <div class="story-block"><p>B2: Role model (<a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> + workers). Open each capability below for diagrams, verification, and contracts.</p>
+<p>The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> is genius-tier and thin: merge worker summaries, run <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> preflight, choose next_action, spawn workers, and route platform queue drains—it does not implement large task cards inline when <code>spawn_workers</code> is true.</p>
+<p>Each turn may peek at or drain the platform <a href="../glossary.html#promotion-queue" class="glossary-link" title="Promotion queue">promotion queue</a> on the interleaved product-and-improvement schedule so self-improvement work advances alongside the current project. After workers finish, only the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s journal and state.json. This role separation is the core of <a href="../capabilities/B3.1-genius-orchestration-only-thin-turns.html" class="spec-link">genius-conductor-tiered-routing.md</a>.</p>
+<p>The Librarian is a readonly explore worker that returns <code>allowed_reads</code> (max five paths), forbidden expansions, and a suggested worker role before anyone opens full design docs. It reads journal/state.json and INDEX manifests—not the entire tree.</p>
+<p>Librarian runs before implement phases and during program orchestration to bound context cost and prevent workers from grep-ing vision monoliths. Output feeds <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> spawn contracts in orchestrate-subagents. Compose-first <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> search (<a href="../capabilities/B4.3-compose-first-catalog-before-improvise.html" class="spec-link">B4.3</a>) complements Librarian for Plane E.</p>
+<p>Phase workers implement one skill phase under contract: implement-feature, dd-writer, explore, refactor—each with task card paths, <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> requirements, and no journal writes. The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> selects the worker type from <code>next_action</code> and route-tier output.</p>
+<p>Parallel phase workers are allowed only when the integration manifest declares independent lanes; otherwise one worker per turn preserves auditability. Workers return summaries; the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> merges and verifies before marking progress.</p>
+<p>Verifier and tool-operator are shell-class workers for bounded CLI runs: pytest via verify-router, Blender/Unreal export commands, checksum tools—anything with a literal command block on the task card. They write <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> logs under <code>evidence/</code> and set <code>last_verify</code> in state.</p>
+<p>Non-pytest <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> types follow <code>docs/operator/evidence-types.md</code>. Verifier failure blocks task completion and may trigger <a href="../capabilities/B3.3-escalation-loop-on-verify-fail.html" class="spec-link">B3.3</a> escalation without clearing gates. Tool-operator never edits product source except via declared tool output paths.</p>
+<p>Reviewer workers run on triggers: Bugbot after substantial implement diffs, security-review when policy flags risk, risk-class controls from Plane G. They are readonly with respect to pursuit state—findings go to the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> for merge or H2.</p>
+<p>Review does not replace verify-router <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>; it adds mistake-class detection before push. Strict mode may require reviewer pass before git-workflow; default self-gate records findings as waivable with expiry when automatable checks pass.</p>
+<p>(6 <a href="../glossary.html#capability" class="glossary-link" title="Capability">capabilities</a> in this chapter.)</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/B2.1-conductor-genius-merge-route-platform-drain.html">B2.1</a></span>
+  <span class="cap-title">Conductor genius merge route platform drain</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/B2.2-librarian-allowed-reads-catalog-composition.html">B2.2</a></span>
+  <span class="cap-title">Librarian allowed reads catalog composition</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/B2.3-phase-workers-implement-design-explore.html">B2.3</a></span>
+  <span class="cap-title">Phase workers implement design explore</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/B2.4-verifier-tool-operator-evidence.html">B2.4</a></span>
+  <span class="cap-title">Verifier tool-operator evidence</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/B2.5-reviewer-bugbot-security-risk-triggers.html">B2.5</a></span>
+  <span class="cap-title">Reviewer bugbot security risk triggers</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/B2.6-platform-worker-promotion-queue-parallel-slot.html">B2.6</a></span>
+  <span class="cap-title">Platform worker promotion queue parallel slot</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

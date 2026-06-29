@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>I2 — Local SDK daemon</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/I.html">Plane I</a> ·
+    I2
+  </nav>
+  <p class="page-id">I2 · Runtime &amp; integration plane</p>
+  <h1 class="page-title">Local SDK daemon</h1>
+  <div class="story-block"><p>I2: Local SDK daemon. Open each capability below for diagrams, verification, and contracts.</p>
+<p><code>scripts/automation/run-local-pipeline.py</code> is the SDK/local daemon entry for <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">goal_autopilot</a>—repeated continue steps without manual /continue, using the same journal/state contract as IDE pursuit (<a href="../capabilities/A3.4-sdk-daemon-run-local-pipeline-24-7.html" class="spec-link">A3.4</a>).</p>
+<p>The daemon runs <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> check-pipeline-blocked before each iteration and stops on gates, budget exhaustion, or integrity failures. It spawns Cursor agents or SDK equivalents per model-policy; unattended 24/7 operation still respects H2/<a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> stops. Pair with worker-runs audit (<a href="../capabilities/H5-worker-runs.html" class="spec-link">H5</a>).</p>
+<p>SDK runtime requires <code>CURSOR_API_KEY</code> and optional <code>AUTOPILOT_MODEL</code> override for headless or remote worker sessions. Secrets never commit to repo; operators configure via environment or local secrets store documented in facts INDEX.</p>
+<p>Model override must still conform to model-policy.json tier mapping—daemon does not bypass genius/economy routing for <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> vs worker roles. Missing credentials produce structured <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> with setup instructions, not silent fallback to unauthenticated calls.</p>
+<p>Operator PC as worker server extends SDK daemon: a dedicated machine drains work-order lanes, runs verify suites, or hosts GPU/tool workloads while the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> IDE session stays thin. Lease semantics follow <a href="../capabilities/C4.1-workstreams-lane-json-leases.html" class="spec-link">C4.1</a> lane JSON.</p>
+<p>Network partition between <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> and worker server triggers <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> with last-known lease state—workers must not assume <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> is reachable for journal writes. <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">Evidence</a> and logs write to shared <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>/ paths or sync back on completion.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart LR
+  I2_1[&quot;I2.1&lt;br/&gt;runtime SDK run-local-pipeline goal auto&quot;]
+  I2_2[&quot;I2.2&lt;br/&gt;runtime SDK CURSOR API KEY AUTOPILOT MOD&quot;]
+  I2_3[&quot;I2.3&lt;br/&gt;runtime SDK operator PC worker server&quot;]
+  I2_1 --&gt; I2_2
+  I2_2 --&gt; I2_3</pre>
+</div>
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/I2.1-runtime-sdk-run-local-pipeline-goal-autopilot.html">I2.1</a></span>
+  <span class="cap-title">runtime SDK run-local-pipeline goal autopilot</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/I2.2-runtime-sdk-cursor-api-key-autopilot-model.html">I2.2</a></span>
+  <span class="cap-title">runtime SDK CURSOR API KEY AUTOPILOT MODEL</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/I2.3-runtime-sdk-operator-pc-worker-server.html">I2.3</a></span>
+  <span class="cap-title">runtime SDK operator PC worker server</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

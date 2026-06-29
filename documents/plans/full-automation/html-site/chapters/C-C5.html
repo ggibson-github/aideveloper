@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>C5 — Feature &amp; app delivery</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/C.html">Plane C</a> ·
+    C5
+  </nav>
+  <p class="page-id">C5 · Product execution plane</p>
+  <h1 class="page-title">Feature &amp; app delivery</h1>
+  <div class="story-block"><p>C5: Feature &amp; app delivery. Open each capability below for diagrams, verification, and contracts.</p>
+<p>Delivery layout standardizes src (or app root), tests/unit, tests/integration, tests/e2e when UI exists, docs paths from AGENTS.md. Scaffold and implement tasks must preserve layout so verify-router and CI find tests predictably.</p>
+<p>Pack-defined layouts extend but do not break <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> paths without manifest update. Delivery structure is verify input for goal slices and pack conformance.</p>
+<p>Environment setup tasks—portable Python, venv, VS solution, GitHub clone—must appear in task breakdown before library install tasks. AGENTS.md rule 17 requires the agent to install and verify local runnability, not leave setup to the user.</p>
+<p>Ordering is enforced in task-breakdown skill behavior and audited in task card dependencies. Skipping env setup causes false implement complete when code cannot run locally.</p>
+<p>Definition of done for a goal slice: tasks complete, tests pass (or documented exceptions), <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> on disk, <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> ready, no unresolved blocking questions. Differs from task done and phase done—slice satisfied means rollup checks pass for that scope boundary.</p>
+<p><a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> still required for verified goal acceptance unless policy waives. Completion status in journal and STATUS.md reflects slice and goal levels distinctly so operators see partial vs achieved accurately.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/C5.1-src-tests-e2e-delivery.html">C5.1</a></span>
+  <span class="cap-title">src, tests, e2e, and delivery</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/C5.2-environment-setup-tasks-ordered-first.html">C5.2</a></span>
+  <span class="cap-title">environment, setup, tasks, ordered, and first</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/C5.3-definition-of-done-goal-slice-satisfied.html">C5.3</a></span>
+  <span class="cap-title">definition, of, done, goal, slice, and satisfied</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

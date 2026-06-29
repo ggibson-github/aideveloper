@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>D1.2 — L1 playbook docs/playbooks</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/D.html">Plane D</a> · <a href="../chapters/D-D1.html">D1</a> ·
+    D1.2
+  </nav>
+  <p class="page-id">D1.2 · Platform evolution plane</p>
+  <h1 class="page-title">L1 playbook docs/playbooks</h1>
+  <p class="page-subtitle">L1 playbook docs/playbooks</p>
+  
+  <div class="story-block"><p>L1 promotes distilled procedure into <code>docs/playbooks/&lt;slug&gt;.md</code>: step lists, constraints, and pointers that humans and agents can follow without re-reading full design monoliths. Playbook-keeper skill (<a href="../capabilities/D4.1-platform-work-playbook-keeper.html" class="spec-link">D4.1</a>) is the primary platform worker for L1 creation from divergence logs and task post-mortems.</p>
+<p>An L1 playbook is not a script—it encodes intent and ordering while leaving file-derived steps to future L2 extraction. INDEX rows and task-card references (<a href="../capabilities/D6.1-platform-done-catalog-index-row.html" class="spec-link">D6.1</a>, <a href="../capabilities/D6.3-platform-done-task-card-references.html" class="spec-link">D6.3</a>) prove the playbook is discoverable. Stale upstream design should bump dependents via Plane E staleness, not silent drift.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">Every <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> and worker session loads always-on context—<a href="../capabilities/E4.1-context-always-on-rules-agents-md.html" class="spec-link">E4.1</a> rules and <code>AGENTS.md</code>—as layer zero before hooks (<a href="../capabilities/E4.2-context-hooks-inject-continue-start.html" class="spec-link">E4.2</a>) or Librarian <code>allowed_reads</code> (<a href="../capabilities/E4.3-context-allowed-reads-cap-max-5.html" class="spec-link">E4.3</a>) narrow the turn.</span></li><li><span class="step-num">Step 2</span><span class="step-text"><code>AGENTS.md</code> encodes the baseline pursuit contract: <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> gates, <a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">H1/H2/H3</a> approval semantics, journal <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>, and pipeline phase order that the genius <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> enforces each wake.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Economy workers inherit applicable rule excerpts in spawn context; they do not re-read the full <code>AGENTS.md</code> monolith unless the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> bound it in <code>allowed_reads</code>.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Active template packs may extend always-on rules via pack fragments merged at role switch so company-specific policy layers atop repo defaults without replacing core <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> obligations.</span></li><li><span class="step-num">Step 5</span><span class="step-text">When <code>AGENTS.md</code> or always-on rules change, <a href="../capabilities/E5.2-staleness-extend-playbooks-scripts-pack-nodes.html" class="spec-link">E5.2</a> marks dependent playbooks and skills stale and pursuit pauses at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> until reconcile-stale or operator <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> confirms downstream artifacts are current.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids D1.2</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Platform queue depth 0 but product blocked on missing playbook — D3.3 priority cut skips platform drain.</li><li>Edge case D1.2 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;D1.2&quot;,
+  &quot;description&quot;: &quot;l1 playbook docs playbooks&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.16</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

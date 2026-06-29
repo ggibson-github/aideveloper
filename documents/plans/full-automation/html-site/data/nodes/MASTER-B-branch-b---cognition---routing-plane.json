@@ -1,0 +1,84 @@
+{
+  "id": "MASTER-B",
+  "slug": "MASTER-B-branch-b---cognition---routing-plane",
+  "title": "Branch B \u2014 Cognition & routing plane",
+  "branch": "meta",
+  "parent": "\u2014",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "MASTER-B defines branch b   cognition   routing plane for the agent-driven expert system. Top-level decomposition into ten planes.",
+  "scope": [
+    "Owns `MASTER-B` only; siblings under `\u2014` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a72 \u2014 Master hierarchy (top level)](../../full-automation-vision-and-hierarchy.md#2-master-hierarchy-top-level)."
+  ],
+  "behavior_steps": [
+    "On each pursuit wake, Plane B classifies the turn via [B1](B1-index.md) S0\u2013S4: [B1.1](B1.1-s0-deterministic-mandatory-first.md) scripts run before any LLM improvises when file-derived behavior exists under `scripts/`.",
+    "The genius-tier [B2.1](B2.1-conductor-genius-merge-route-platform-drain.md) conductor merges worker summaries, reads `route-tier.py` output, and chooses `next_action`\u2014spawning economy workers with bounded `allowed_reads` instead of implementing large task cards inline when `spawn_workers` is true.",
+    "[B3](B3-index.md) model policy binds conductor to genius tier and workers to economy tier per `docs/operator/model-policy.json`, with [B3.3](B3.3-escalation-loop-on-verify-fail.md) escalation when verification fails repeatedly.",
+    "[B4](B4-index.md) routing interleaves product pursuit (`next_action` task each turn) with [B4.2](B4.2-platform-promotion-queue-peek-drain.md) platform queue peek/drain on the Plane D schedule so self-improvement advances without displacing the active goal.",
+    "If a worker dual-writes journal/state, skips S0 preflight, or routes at the wrong tier, pursuit fails closed at H2 until the conductor reconciles routing policy\u2014Plane B owns who acts, not what product step runs."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"node\": \"MASTER-B\",\n  \"description\": \"branch b   cognition   routing plane\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `MASTER-B` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `MASTER-B` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `MASTER-B`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `MASTER-B` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_master-b.py when script exists.",
+    "Validate `MASTER-B` against SEC-15 release checklist and parent index links.",
+    "Document `MASTER-B` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `MASTER-B`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids MASTER-B`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a72",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[\u2014-index](\u2014-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids MASTER-B` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [\u2014-index](\u2014-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "MASTER-B defines branch b   cognition   routing plane for the agent-driven expert system. Top-level decomposition into ten planes. In practice, the system on each pursuit wake, plane b classifies the turn via [b1](b1-index.md) s0\u2013s4: [b1.1](b1.1-s0-deterministic-mandatory-first.md) scripts run before any llm improvises when file-derived behavior exists under `scripts/`, then the genius-tier [b2.1](b2.1-conductor-genius-merge-route-platform-drain.md) conductor merges worker summaries, reads `route-tier.py` output, and chooses `next_action`\u2014spawning economy workers with bounded `allowed_reads` instead of implementing large task cards inline when `spawn_workers` is true.",
+  "reader_narrative": "<!-- prose-source: agent meta 2026-06-28 -->\n\nPlane B is cognition and routing: who acts on each turn (S0 scripts through S4 governance), at what model tier, and with what interleaved product-and-self-improvement schedule. The genius-tier conductor orchestrates; economy workers implement bounded task cards.\n\nDeterministic-first is non-negotiable: if behavior exists under scripts/, S0 runs before improvisation. Plane B connects operator policy (model-policy.json) to everyday pursuit turns."
+}

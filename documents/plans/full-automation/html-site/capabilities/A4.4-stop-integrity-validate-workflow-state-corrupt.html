@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>A4.4 — stop integrity validate-workflow state corrupt</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/A.html">Plane A</a> · <a href="../chapters/A-A4.html">A4</a> ·
+    A4.4
+  </nav>
+  <p class="page-id">A4.4 · Pursuit &amp; control plane</p>
+  <h1 class="page-title">stop integrity validate-workflow state corrupt</h1>
+  <p class="page-subtitle">stop integrity validate-workflow state corrupt</p>
+  
+  <div class="story-block"><p>Integrity stops fire when the harness cannot trust its own state: <code>validate-workflow.py</code> fails, state.json is corrupt or schema-invalid, <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> mismatch between journal and state, or artifact graph references missing nodes. Pursuit must not continue on ambiguous memory.</p>
+<p>Recovery is deterministic-first: repair scripts, restore snapshot from Plane H, or escalate <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> with the validation log attached. Continuing pursuit on corrupt state duplicates work or attaches <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> to the wrong goal. This stop class is rare in production but critical for restart safety after manual edits or merge conflicts.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When preflight or post-step <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> runs <code>validate-workflow.py</code> against journal and state.json, any schema failure, conformance error, or <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> mismatch triggers an A4.4 integrity stop before another <a href="../capabilities/A2.2-if-ready-execute-one-pipeline-step.html" class="spec-link">A2.2</a> phase is scheduled.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Pursuit halts immediately—the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> does not spawn workers or advance next_action while harness memory is untrusted, so restart after manual edits or merge conflicts cannot duplicate or skip work on ambiguous state.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Recovery is deterministic-first: run repair scripts, restore a Plane H snapshot, or reconcile journal and state.json until validate-workflow passes and <a href="../capabilities/A2.3-post-step-route-tier-dual-write-increment.html" class="spec-link">A2.3</a> <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> restores a single source of truth.</span></li><li><span class="step-num">Step 4</span><span class="step-text">If automated repair cannot restore valid state, preflight escalates <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> with the validation log attached and goal.state stays blocked until an operator approves recovery—never continuing pursuit on corrupt memory.</span></li><li><span class="step-num">Step 5</span><span class="step-text">On the next wake after recovery, <a href="../capabilities/A2.1-preflight-check-pipeline-blocked-extended.html" class="spec-link">A2.1</a> re-runs integrity checks fail-closed so <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> paths and pursuit counters cannot attach to the wrong goal_id.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids A4.4</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>goal_verify passes but H3 rejected — goal.state returns to pursuing with rejection notes.</li><li>Edge case A4.4 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;A4.4&quot;,
+  &quot;description&quot;: &quot;stop integrity validate workflow state corrupt&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.14</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

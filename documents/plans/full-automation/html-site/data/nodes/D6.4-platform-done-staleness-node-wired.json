@@ -1,0 +1,89 @@
+{
+  "id": "D6.4",
+  "slug": "D6.4-platform-done-staleness-node-wired",
+  "title": "platform done staleness node wired",
+  "branch": "D",
+  "parent": "[D6-index](D6-index.md)",
+  "vision_section": "",
+  "release": "v2.16",
+  "purpose": "D6.4 defines platform done staleness node wired for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse.",
+  "scope": [
+    "Owns `D6.4` only; siblings under `D6` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a76 \u2014 Branch D \u2014 Platform evolution plane (parallel queue)](../../full-automation-vision-and-hierarchy.md#6-branch-d-platform-evolution-plane-parallel-queue)."
+  ],
+  "behavior_steps": [
+    "Before dequeue, platform done audit wires the promoted artifact as a staleness graph node in program or manifest JSON with upstream dependency edges and pack scope.",
+    "[D5.2](D5.2-extend-backwards-compatible-staleness-bump.md) extend promotions bump this graph so reconcile-stale and reconcile-artifact-graph mark downstream design and tasks when the artifact changes.",
+    "Together with [D6.1](D6.1-platform-done-catalog-index-row.md)\u2013[D6.3](D6.3-platform-done-task-card-references.md), D6.4 is the final audit gate per [D6-index](D6-index.md) before the queue item marks done.",
+    "Missing staleness node means silent consumer drift after platform edit\u2014audit re-enqueues the promotion until node id and edges land on disk.",
+    "If the conductor marks promotion done without staleness wiring, D6 audit fails closed at H2 and the head item stays on the platform queue."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"D6.4\",\n  \"description\": \"platform done staleness node wired\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Platform queue depth 0 but product blocked on missing playbook \u00e2\u20ac\u201d D3.3 priority cut skips platform drain.",
+    "Edge case `D6.4` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `D6.4`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `platform.promotion_queue[]` to state.json schema.",
+    "Scheduler in autopilot workflow: `(steps_total % K) == 0` \u00e2\u2020\u2019 platform turn.",
+    "playbook-keeper + script extraction skills dequeue promotion items.",
+    "Validate `D6.4` against SEC-15 release checklist and parent index links.",
+    "Document `D6.4` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `D6.4`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids D6.4`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/playbooks/`",
+    "`scripts/`",
+    "`.cursor/skills/playbook-keeper/`",
+    "`state.platform.promotion_queue`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a76",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[D6-index](D6-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids D6.4` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [D6-index](D6-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "D6.4 defines platform done staleness node wired for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse. In practice, the system before dequeue, platform done audit wires the promoted artifact as a staleness graph node in program or manifest json with upstream dependency edges and pack scope, then [d5.2](d5.2-extend-backwards-compatible-staleness-bump.md) extend promotions bump this graph so reconcile-stale and reconcile-artifact-graph mark downstream design and tasks when the artifact changes.",
+  "reader_narrative": "<!-- prose-source: agent plane-d 2026-06-28 -->\n\nStaleness graph wiring completes platform done: promoted artifact registers as a node in program or manifest staleness with upstream dependencies so reconcile-stale and reconcile-artifact-graph mark downstream design and tasks when the artifact changes ([D5.2](D5.2-extend-backwards-compatible-staleness-bump.md) extends bump this graph).\n\nMissing staleness node means silent consumer drift after platform edit. Wire node id, dependency edges, and pack scope in manifest JSON. Together with [D6.1](D6.1-platform-done-catalog-index-row.md)\u2013[D6.3](D6.3-platform-done-task-card-references.md), D6.4 is the audit gate before queue item done\u2014see [D6-index](D6-index.md)."
+}

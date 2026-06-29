@@ -1,0 +1,84 @@
+{
+  "id": "SEC-17-5",
+  "slug": "SEC-17-5-decision-pack-authority-legal-finance-h2-always",
+  "title": "Decision pack authority legal finance H2-always",
+  "branch": "meta",
+  "parent": "\u2014",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "SEC-17-5 defines decision pack authority legal finance h2 always for the agent-driven expert system. Roadmap, gap analysis, pursuit flow, decisions.",
+  "scope": [
+    "Owns `SEC-17-5` only; siblings under `\u2014` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a717 \u2014 Open design decisions](../../full-automation-vision-and-hierarchy.md#17-open-design-decisions)."
+  ],
+  "behavior_steps": [
+    "Pack roles in [F1.2](F1.2-pack-roles---yaml.md) may declare role_class (e.g., legal, finance) with automation_allowed\u2014until SEC-17-5 resolves whether authority-of-record roles may ever run without H2.",
+    "When active_role maps to a restricted class, [A2.1](A2.1-preflight-check-pipeline-blocked-extended.md) preflight treats autonomous implement turns as BLOCKED and forces hitl.pending=H2 before contract, filing, or spend actions proceed.",
+    "[B5.1](B5.1-active-role-from-template-pack.md) role switches into legal or finance lanes require manifest or journal-recorded operator approval even under [A3.3](A3.3-company-autopilot-multi-goal-role-workstreams.md) company autopilot.",
+    "Economy workers spawned for restricted roles inherit tool allowlists that exclude unsupervised external commits\u2014the conductor cannot waive H2 via Continue alone per [A5.2](A5.2-continue-not-approval-self-gate-h1-h3-only.md).",
+    "If pack schema omits automation_allowed for a role or contradicts operator policy, pursuit stops at H2 until pack config or Resolved Q&A records the SEC-17-5 decision\u2014never inferring full autonomy for authority-of-record work."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"node\": \"SEC-17-5\",\n  \"description\": \"decision pack authority legal finance h2 always\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `SEC-17-5` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `SEC-17-5` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `SEC-17-5`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `SEC-17-5` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_sec-17-5.py when script exists.",
+    "Validate `SEC-17-5` against SEC-15 release checklist and parent index links.",
+    "Document `SEC-17-5` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `SEC-17-5`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids SEC-17-5`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a717",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[\u2014-index](\u2014-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids SEC-17-5` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [\u2014-index](\u2014-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "SEC-17-5 defines decision pack authority legal finance h2 always for the agent-driven expert system. Roadmap, gap analysis, pursuit flow, decisions. In practice, the system pack roles in [f1.2](f1.2-pack-roles---yaml.md) may declare role_class (e.g., legal, finance) with automation_allowed\u2014until sec-17-5 resolves whether authority-of-record roles may ever run without h2, then when active_role maps to a restricted class, [a2.1](a2.1-preflight-check-pipeline-blocked-extended.md) preflight treats autonomous implement turns as blocked and forces hitl.pending=h2 before contract, filing, or spend actions proceed.",
+  "reader_narrative": "<!-- prose-source: agent meta 2026-06-28 -->\n\nOpen decision: can packs mark legal/finance roles as fully automated, or must they always escalate H2? Authority-of-record work may never belong in autonomous pursuit regardless of model capability.\n\nPack schema should encode role_class with automation_allowed flags once decided."
+}

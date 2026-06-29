@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>MASTER-A — Branch A — Pursuit &amp; control plane</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/meta.html">Plane meta</a> ·
+    MASTER-A
+  </nav>
+  <p class="page-id">MASTER-A · Front matter &amp; cross-cutting architecture</p>
+  <h1 class="page-title">Branch A — Pursuit &amp; control plane</h1>
+  <p class="page-subtitle">Branch A — Pursuit &amp; control plane</p>
+  
+  <div class="story-block"><p>Plane A is pursuit and control: the always-on loop that runs from approved intent until verification succeeds or a defined stop reason fires. It owns the goal model, preflight, one-step execution, post-step routing, goal-level verification handoff, and the semantics of Continue redefined for autonomy.</p>
+<p>Every other plane feeds or constrains this loop—B routes execution, C performs product steps, G proves outcomes—but A is where &quot;never stop until verified&quot; lives. When reading A1–A6 <a href="../glossary.html#capability" class="glossary-link" title="Capability">capabilities</a>, keep this chapter summary in mind as the architectural north star for that <a href="../glossary.html#branch" class="glossary-link" title="Branch">branch</a>.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart TD
+  trigger[Trigger condition] --&gt; pre[Preconditions S0]
+  pre --&gt; exec[Execute step logic]
+  exec --&gt; verify[Verify output]
+  verify --&gt;|pass| done[Mark queue item done]
+  verify --&gt;|fail| h2[H2 blocker]</pre>
+</div>
+  <h2 class="section-title">What this defines</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">After <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> approves intent, Plane A owns the always-on <a href="../glossary.html#pursuit-loop" class="glossary-link" title="Pursuit loop">pursuit loop</a> from <a href="../capabilities/A2.1-preflight-check-pipeline-blocked-extended.html" class="spec-link">A2.1</a> preflight through <a href="../capabilities/A2.2-if-ready-execute-one-pipeline-step.html" class="spec-link">A2.2</a> execution until <a href="../capabilities/A2.4-goal-scope-complete-run-goal-verify.html" class="spec-link">A2.4</a> <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> or an <a href="../chapters/A-A4.html" class="spec-link">A4</a> stop reason fires.</span></li><li><span class="step-num">Step 2</span><span class="step-text"><a href="../chapters/A-A1.html" class="spec-link">A1</a> supplies goal identity, machine-checkable success criteria, and budgets that every wake reads from state.json before routing—not cosmetic metadata for publication.</span></li><li><span class="step-num">Step 3</span><span class="step-text"><a href="../chapters/A-A3.html" class="spec-link">A3</a> <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> modes lift the per-session ceiling so <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">goal_autopilot</a> continues across daemon polls and IDE sessions until hard block or achievement without arbitrary chat limits.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Plane B routes cognition, Plane C executes product phases, and Plane G proves outcomes—but A is where never stop until verified lives; other planes feed or constrain this loop.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If pursuit violates Plane A contracts—skip preflight, advance on BLOCKED, or omit stop taxonomy—<a href="../capabilities/A4.4-stop-integrity-validate-workflow-state-corrupt.html" class="spec-link">A4.4</a> integrity or verify stops halt at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> fail-closed.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids MASTER-A</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case MASTER-A variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case MASTER-A variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;MASTER-A&quot;,
+  &quot;description&quot;: &quot;branch a   pursuit   control plane&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

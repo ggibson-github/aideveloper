@@ -1,0 +1,1998 @@
+{
+  "generated_at": "2026-06-28",
+  "topic_title": "Full automation expert system (A\u2013J planes)",
+  "node_count": 281,
+  "branches": {
+    "A": [
+      "A1.1",
+      "A1.2",
+      "A1.3",
+      "A1.4",
+      "A1.5",
+      "A2.1",
+      "A2.2",
+      "A2.3",
+      "A2.4",
+      "A2.5",
+      "A2.6",
+      "A2.7",
+      "A3.1",
+      "A3.2",
+      "A3.3",
+      "A3.4",
+      "A4.1",
+      "A4.2",
+      "A4.3",
+      "A4.4",
+      "A4.5",
+      "A5.1",
+      "A5.2",
+      "A5.3",
+      "A6.1",
+      "A6.2",
+      "A6.3"
+    ],
+    "meta": [
+      "APP-A-build",
+      "APP-A-design",
+      "APP-A-discover",
+      "APP-A-improve",
+      "APP-A-organize",
+      "APP-A-release",
+      "APP-A-verify",
+      "APP-B",
+      "INTRO-0",
+      "INTRO-1.1",
+      "INTRO-1.2",
+      "INTRO-1.3",
+      "INTRO-2",
+      "MASTER-A",
+      "MASTER-B",
+      "MASTER-C",
+      "MASTER-D",
+      "MASTER-E",
+      "MASTER-F",
+      "MASTER-G",
+      "MASTER-H",
+      "MASTER-I",
+      "MASTER-J",
+      "SEC-13",
+      "SEC-14",
+      "SEC-15-v2.14",
+      "SEC-15-v2.15",
+      "SEC-15-v2.16",
+      "SEC-15-v2.17",
+      "SEC-15-v2.18",
+      "SEC-15-v2.19",
+      "SEC-15-v2.20",
+      "SEC-15-v2.21",
+      "SEC-15-v2.22",
+      "SEC-15-v2.23",
+      "SEC-15-v2.24",
+      "SEC-15-v2.25",
+      "SEC-15-v2.26",
+      "SEC-15-v2.27",
+      "SEC-15-v2.28",
+      "SEC-17-1",
+      "SEC-17-10",
+      "SEC-17-2",
+      "SEC-17-3",
+      "SEC-17-4",
+      "SEC-17-5",
+      "SEC-17-6",
+      "SEC-17-7",
+      "SEC-17-8",
+      "SEC-17-9",
+      "SEC-18"
+    ],
+    "B": [
+      "B1.1",
+      "B1.2",
+      "B1.3",
+      "B1.4",
+      "B1.5",
+      "B2.1",
+      "B2.2",
+      "B2.3",
+      "B2.4",
+      "B2.5",
+      "B2.6",
+      "B3.1",
+      "B3.2",
+      "B3.3",
+      "B3.4",
+      "B4.1",
+      "B4.2",
+      "B4.3",
+      "B4.4",
+      "B5.1",
+      "B5.2",
+      "B5.3",
+      "B5.4",
+      "B6.1",
+      "B6.2",
+      "B6.3",
+      "B6.4"
+    ],
+    "C": [
+      "C1.1",
+      "C1.2",
+      "C1.3",
+      "C1.4",
+      "C2.1",
+      "C2.2",
+      "C2.3",
+      "C2.4",
+      "C2.5",
+      "C3.1",
+      "C3.2",
+      "C3.3",
+      "C3.4",
+      "C4.1",
+      "C4.2",
+      "C4.3",
+      "C4.4",
+      "C5.1",
+      "C5.2",
+      "C5.3",
+      "C6.1",
+      "C6.2",
+      "C6.3",
+      "C6.4",
+      "C6.5"
+    ],
+    "D": [
+      "D1.1",
+      "D1.2",
+      "D1.3",
+      "D1.4",
+      "D1.5",
+      "D1.6",
+      "D1.7",
+      "D2.1.1",
+      "D2.1.2",
+      "D2.1.3",
+      "D2.1.4",
+      "D2.1.5",
+      "D2.2",
+      "D2.3",
+      "D3.1",
+      "D3.2",
+      "D3.3",
+      "D3.4",
+      "D3.5",
+      "D4.1",
+      "D4.2",
+      "D4.3",
+      "D4.4",
+      "D4.5",
+      "D4.6",
+      "D4.7",
+      "D5.1",
+      "D5.2",
+      "D5.3",
+      "D6.1",
+      "D6.2",
+      "D6.3",
+      "D6.4",
+      "D6.5"
+    ],
+    "E": [
+      "E1.1",
+      "E1.5",
+      "E1.6",
+      "E1.7",
+      "E2.1",
+      "E2.2",
+      "E2.3",
+      "E2.4",
+      "E2.5",
+      "E3.1",
+      "E3.2",
+      "E3.3",
+      "E4.1",
+      "E4.2",
+      "E4.3",
+      "E5.1",
+      "E5.2",
+      "E5.3",
+      "E5.4",
+      "E6.1",
+      "E6.2",
+      "E6.3",
+      "E6.4",
+      "E6.5",
+      "E7.1",
+      "E7.2",
+      "E7.3",
+      "E7.4",
+      "E7.5"
+    ],
+    "F": [
+      "F1.1",
+      "F1.2",
+      "F1.3",
+      "F1.4",
+      "F1.5",
+      "F1.6",
+      "F1.7",
+      "F1.8",
+      "F1.9",
+      "F2.1",
+      "F2.2",
+      "F2.3",
+      "F2.4",
+      "F3.1",
+      "F3.2",
+      "F3.3",
+      "F3.4",
+      "F4.1",
+      "F4.2",
+      "F5.1",
+      "F5.2",
+      "F5.3",
+      "F5.4",
+      "F6.1",
+      "F6.2",
+      "F6.3",
+      "F6.4"
+    ],
+    "G": [
+      "G1.1",
+      "G1.2",
+      "G1.3",
+      "G2.1",
+      "G2.2",
+      "G2.3",
+      "G2.4",
+      "G2.5",
+      "G3.1",
+      "G3.2",
+      "G3.3",
+      "G4.1",
+      "G4.2",
+      "G4.3",
+      "G4.4",
+      "G5.1",
+      "G5.2",
+      "G5.3",
+      "G5.4",
+      "G5.5",
+      "G5.6",
+      "G5.7",
+      "G5.8",
+      "G6.1",
+      "G6.2",
+      "G6.3",
+      "G6.4"
+    ],
+    "H": [
+      "H1.1",
+      "H1.2",
+      "H1.3",
+      "H1.4",
+      "H1.5",
+      "H1.6",
+      "H1.7",
+      "H2",
+      "H3",
+      "H4",
+      "H5",
+      "H6"
+    ],
+    "I": [
+      "I1.1",
+      "I1.2",
+      "I1.3",
+      "I1.4",
+      "I2.1",
+      "I2.2",
+      "I2.3",
+      "I3.1",
+      "I3.2",
+      "I3.3",
+      "I4.1",
+      "I4.2",
+      "I4.3",
+      "I4.4",
+      "I5.1",
+      "I5.2"
+    ],
+    "J": [
+      "J1",
+      "J2",
+      "J3",
+      "J4",
+      "J5",
+      "J6"
+    ]
+  },
+  "nodes": [
+    {
+      "id": "A1.1",
+      "title": "goal_id parent_goal goal_type",
+      "branch": "A",
+      "html": "capabilities/A1.1-goal-id-parent-goal-goal-type.html"
+    },
+    {
+      "id": "A1.2",
+      "title": "success_criteria machine-checkable",
+      "branch": "A",
+      "html": "capabilities/A1.2-success-criteria-machine-checkable.html"
+    },
+    {
+      "id": "A1.3",
+      "title": "goal_verify_command meta-test",
+      "branch": "A",
+      "html": "capabilities/A1.3-goal-verify-command-meta-test.html"
+    },
+    {
+      "id": "A1.4",
+      "title": "deadline budget steps tokens wall clock",
+      "branch": "A",
+      "html": "capabilities/A1.4-deadline-budget-steps-tokens-wall-clock.html"
+    },
+    {
+      "id": "A1.5",
+      "title": "goal_state enum pursuing blocked verifying achieved rejected",
+      "branch": "A",
+      "html": "capabilities/A1.5-goal-state-enum-pursuing-blocked-verifying-achieved-rejected.html"
+    },
+    {
+      "id": "A2.1",
+      "title": "preflight check-pipeline-blocked extended",
+      "branch": "A",
+      "html": "capabilities/A2.1-preflight-check-pipeline-blocked-extended.html"
+    },
+    {
+      "id": "A2.2",
+      "title": "if READY execute one pipeline step",
+      "branch": "A",
+      "html": "capabilities/A2.2-if-ready-execute-one-pipeline-step.html"
+    },
+    {
+      "id": "A2.3",
+      "title": "post-step route-tier dual-write increment",
+      "branch": "A",
+      "html": "capabilities/A2.3-post-step-route-tier-dual-write-increment.html"
+    },
+    {
+      "id": "A2.4",
+      "title": "goal_scope_complete run goal_verify",
+      "branch": "A",
+      "html": "capabilities/A2.4-goal-scope-complete-run-goal-verify.html"
+    },
+    {
+      "id": "A2.5",
+      "title": "goal_verify pass transition H3 pending",
+      "branch": "A",
+      "html": "capabilities/A2.5-goal-verify-pass-transition-h3-pending.html"
+    },
+    {
+      "id": "A2.6",
+      "title": "loop until blocked budget achieved H3 reject",
+      "branch": "A",
+      "html": "capabilities/A2.6-loop-until-blocked-budget-achieved-h3-reject.html"
+    },
+    {
+      "id": "A2.7",
+      "title": "no intermediate wait for continue",
+      "branch": "A",
+      "html": "capabilities/A2.7-no-intermediate-wait-for-continue.html"
+    },
+    {
+      "id": "A3.1",
+      "title": "session_autopilot max_steps_per_session",
+      "branch": "A",
+      "html": "capabilities/A3.1-session-autopilot-max-steps-per-session.html"
+    },
+    {
+      "id": "A3.2",
+      "title": "goal_autopilot until goal_verify or hard block",
+      "branch": "A",
+      "html": "capabilities/A3.2-goal-autopilot-until-goal-verify-or-hard-block.html"
+    },
+    {
+      "id": "A3.3",
+      "title": "company_autopilot multi-goal role workstreams",
+      "branch": "A",
+      "html": "capabilities/A3.3-company-autopilot-multi-goal-role-workstreams.html"
+    },
+    {
+      "id": "A3.4",
+      "title": "sdk_daemon run-local-pipeline 24/7",
+      "branch": "A",
+      "html": "capabilities/A3.4-sdk-daemon-run-local-pipeline-24-7.html"
+    },
+    {
+      "id": "A4.1",
+      "title": "stop human H1 H2 H3",
+      "branch": "A",
+      "html": "capabilities/A4.1-stop-human-h1-h2-h3.html"
+    },
+    {
+      "id": "A4.2",
+      "title": "stop verify evidence goal_verify regression",
+      "branch": "A",
+      "html": "capabilities/A4.2-stop-verify-evidence-goal-verify-regression.html"
+    },
+    {
+      "id": "A4.3",
+      "title": "stop resource max_steps max_cost lease_expired",
+      "branch": "A",
+      "html": "capabilities/A4.3-stop-resource-max-steps-max-cost-lease-expired.html"
+    },
+    {
+      "id": "A4.4",
+      "title": "stop integrity validate-workflow state corrupt",
+      "branch": "A",
+      "html": "capabilities/A4.4-stop-integrity-validate-workflow-state-corrupt.html"
+    },
+    {
+      "id": "A4.5",
+      "title": "stop completion goal achieved program done",
+      "branch": "A",
+      "html": "capabilities/A4.5-stop-completion-goal-achieved-program-done.html"
+    },
+    {
+      "id": "A5.1",
+      "title": "continue resume pursuit if not blocked",
+      "branch": "A",
+      "html": "capabilities/A5.1-continue-resume-pursuit-if-not-blocked.html"
+    },
+    {
+      "id": "A5.2",
+      "title": "continue not approval self-gate H1 H3 only",
+      "branch": "A",
+      "html": "capabilities/A5.2-continue-not-approval-self-gate-h1-h3-only.html"
+    },
+    {
+      "id": "A5.3",
+      "title": "default after H1 auto-enter goal_autopilot",
+      "branch": "A",
+      "html": "capabilities/A5.3-default-after-h1-auto-enter-goal-autopilot.html"
+    },
+    {
+      "id": "A6.1",
+      "title": "notify dashboard STATUS webhook phase complete",
+      "branch": "A",
+      "html": "capabilities/A6.1-notify-dashboard-status-webhook-phase-complete.html"
+    },
+    {
+      "id": "A6.2",
+      "title": "notify digest on H2 blocker not every step",
+      "branch": "A",
+      "html": "capabilities/A6.2-notify-digest-on-h2-blocker-not-every-step.html"
+    },
+    {
+      "id": "A6.3",
+      "title": "operator observe without unblocking loop",
+      "branch": "A",
+      "html": "capabilities/A6.3-operator-observe-without-unblocking-loop.html"
+    },
+    {
+      "id": "APP-A-build",
+      "title": "build work taxonomy build",
+      "branch": "meta",
+      "html": "capabilities/APP-A-build-work-taxonomy-build.html"
+    },
+    {
+      "id": "APP-A-design",
+      "title": "design work taxonomy design",
+      "branch": "meta",
+      "html": "capabilities/APP-A-design-work-taxonomy-design.html"
+    },
+    {
+      "id": "APP-A-discover",
+      "title": "discover work taxonomy discover and plan",
+      "branch": "meta",
+      "html": "capabilities/APP-A-discover-work-taxonomy-discover-and-plan.html"
+    },
+    {
+      "id": "APP-A-improve",
+      "title": "improve work taxonomy improve platform",
+      "branch": "meta",
+      "html": "capabilities/APP-A-improve-work-taxonomy-improve-platform.html"
+    },
+    {
+      "id": "APP-A-organize",
+      "title": "organize work taxonomy organize company",
+      "branch": "meta",
+      "html": "capabilities/APP-A-organize-work-taxonomy-organize-company.html"
+    },
+    {
+      "id": "APP-A-release",
+      "title": "release work taxonomy release and operate",
+      "branch": "meta",
+      "html": "capabilities/APP-A-release-work-taxonomy-release-and-operate.html"
+    },
+    {
+      "id": "APP-A-verify",
+      "title": "verify work taxonomy verify",
+      "branch": "meta",
+      "html": "capabilities/APP-A-verify-work-taxonomy-verify.html"
+    },
+    {
+      "id": "APP-B",
+      "title": "state json sketch",
+      "branch": "meta",
+      "html": "capabilities/APP-B-state-json-sketch.html"
+    },
+    {
+      "id": "B1.1",
+      "title": "S0 deterministic mandatory first",
+      "branch": "B",
+      "html": "capabilities/B1.1-s0-deterministic-mandatory-first.html"
+    },
+    {
+      "id": "B1.2",
+      "title": "S1 mechanical economy workers catalog",
+      "branch": "B",
+      "html": "capabilities/B1.2-s1-mechanical-economy-workers-catalog.html"
+    },
+    {
+      "id": "B1.3",
+      "title": "S2 templated artifacts",
+      "branch": "B",
+      "html": "capabilities/B1.3-s2-templated-artifacts.html"
+    },
+    {
+      "id": "B1.4",
+      "title": "S3 architecture ambiguity",
+      "branch": "B",
+      "html": "capabilities/B1.4-s3-architecture-ambiguity.html"
+    },
+    {
+      "id": "B1.5",
+      "title": "S4 governance escalation H2 packaging",
+      "branch": "B",
+      "html": "capabilities/B1.5-s4-governance-escalation-h2-packaging.html"
+    },
+    {
+      "id": "B2.1",
+      "title": "Conductor genius merge route platform drain",
+      "branch": "B",
+      "html": "capabilities/B2.1-conductor-genius-merge-route-platform-drain.html"
+    },
+    {
+      "id": "B2.2",
+      "title": "Librarian allowed_reads catalog composition",
+      "branch": "B",
+      "html": "capabilities/B2.2-librarian-allowed-reads-catalog-composition.html"
+    },
+    {
+      "id": "B2.3",
+      "title": "Phase workers implement design explore",
+      "branch": "B",
+      "html": "capabilities/B2.3-phase-workers-implement-design-explore.html"
+    },
+    {
+      "id": "B2.4",
+      "title": "Verifier tool-operator evidence",
+      "branch": "B",
+      "html": "capabilities/B2.4-verifier-tool-operator-evidence.html"
+    },
+    {
+      "id": "B2.5",
+      "title": "Reviewer bugbot security risk triggers",
+      "branch": "B",
+      "html": "capabilities/B2.5-reviewer-bugbot-security-risk-triggers.html"
+    },
+    {
+      "id": "B2.6",
+      "title": "Platform worker promotion queue parallel slot",
+      "branch": "B",
+      "html": "capabilities/B2.6-platform-worker-promotion-queue-parallel-slot.html"
+    },
+    {
+      "id": "B3.1",
+      "title": "genius orchestration only thin turns",
+      "branch": "B",
+      "html": "capabilities/B3.1-genius-orchestration-only-thin-turns.html"
+    },
+    {
+      "id": "B3.2",
+      "title": "economy bulk code search shell",
+      "branch": "B",
+      "html": "capabilities/B3.2-economy-bulk-code-search-shell.html"
+    },
+    {
+      "id": "B3.3",
+      "title": "escalation loop on verify fail",
+      "branch": "B",
+      "html": "capabilities/B3.3-escalation-loop-on-verify-fail.html"
+    },
+    {
+      "id": "B3.4",
+      "title": "platform turns economy plus S0 scripts",
+      "branch": "B",
+      "html": "capabilities/B3.4-platform-turns-economy-plus-s0-scripts.html"
+    },
+    {
+      "id": "B4.1",
+      "title": "PRODUCT next_action task each turn",
+      "branch": "B",
+      "html": "capabilities/B4.1-product-next-action-task-each-turn.html"
+    },
+    {
+      "id": "B4.2",
+      "title": "PLATFORM promotion_queue peek drain",
+      "branch": "B",
+      "html": "capabilities/B4.2-platform-promotion-queue-peek-drain.html"
+    },
+    {
+      "id": "B4.3",
+      "title": "compose-first catalog before improvise",
+      "branch": "B",
+      "html": "capabilities/B4.3-compose-first-catalog-before-improvise.html"
+    },
+    {
+      "id": "B4.4",
+      "title": "divergence log when not composing",
+      "branch": "B",
+      "html": "capabilities/B4.4-divergence-log-when-not-composing.html"
+    },
+    {
+      "id": "B5.1",
+      "title": "active_role from template pack",
+      "branch": "B",
+      "html": "capabilities/B5.1-active-role-from-template-pack.html"
+    },
+    {
+      "id": "B5.2",
+      "title": "role to pipeline_id skills tool permissions",
+      "branch": "B",
+      "html": "capabilities/B5.2-role-to-pipeline-id-skills-tool-permissions.html"
+    },
+    {
+      "id": "B5.3",
+      "title": "handoff manifest artifact graph",
+      "branch": "B",
+      "html": "capabilities/B5.3-handoff-manifest-artifact-graph.html"
+    },
+    {
+      "id": "B5.4",
+      "title": "conductor stays workers swap role context",
+      "branch": "B",
+      "html": "capabilities/B5.4-conductor-stays-workers-swap-role-context.html"
+    },
+    {
+      "id": "B6.1",
+      "title": "workflow-composer skill S3 graph planning",
+      "branch": "B",
+      "html": "capabilities/B6.1-workflow-composer-skill-s3-graph-planning.html"
+    },
+    {
+      "id": "B6.2",
+      "title": "conductor approves generator workflow at H1",
+      "branch": "B",
+      "html": "capabilities/B6.2-conductor-approves-generator-workflow-at-h1.html"
+    },
+    {
+      "id": "B6.3",
+      "title": "one workflow node per product turn default",
+      "branch": "B",
+      "html": "capabilities/B6.3-one-workflow-node-per-product-turn-default.html"
+    },
+    {
+      "id": "B6.4",
+      "title": "gate transistor pass fail edge routing",
+      "branch": "B",
+      "html": "capabilities/B6.4-gate-transistor-pass-fail-edge-routing.html"
+    },
+    {
+      "id": "C1.1",
+      "title": "pipeline software-greenfield",
+      "branch": "C",
+      "html": "capabilities/C1.1-pipeline-software-greenfield.html"
+    },
+    {
+      "id": "C1.2",
+      "title": "pipeline iterative_feature",
+      "branch": "C",
+      "html": "capabilities/C1.2-pipeline-iterative-feature.html"
+    },
+    {
+      "id": "C1.3",
+      "title": "pipeline multi-domain-program",
+      "branch": "C",
+      "html": "capabilities/C1.3-pipeline-multi-domain-program.html"
+    },
+    {
+      "id": "C1.4",
+      "title": "pack-defined pipelines per company template",
+      "branch": "C",
+      "html": "capabilities/C1.4-pack-defined-pipelines-per-company-template.html"
+    },
+    {
+      "id": "C2.1",
+      "title": "phase spec-parser requirements",
+      "branch": "C",
+      "html": "capabilities/C2.1-phase-spec-parser-requirements.html"
+    },
+    {
+      "id": "C2.2",
+      "title": "phase hld dd diagrams",
+      "branch": "C",
+      "html": "capabilities/C2.2-phase-hld-dd-diagrams.html"
+    },
+    {
+      "id": "C2.3",
+      "title": "phase task-breakdown scaffold implement",
+      "branch": "C",
+      "html": "capabilities/C2.3-phase-task-breakdown-scaffold-implement.html"
+    },
+    {
+      "id": "C2.4",
+      "title": "phase test refactor git-workflow",
+      "branch": "C",
+      "html": "capabilities/C2.4-phase-test-refactor-git-workflow.html"
+    },
+    {
+      "id": "C2.5",
+      "title": "phase inputs outputs verify catalog refs",
+      "branch": "C",
+      "html": "capabilities/C2.5-phase-inputs-outputs-verify-catalog-refs.html"
+    },
+    {
+      "id": "C3.1",
+      "title": "task cards Components Promotion note",
+      "branch": "C",
+      "html": "capabilities/C3.1-task-cards-components-promotion-note.html"
+    },
+    {
+      "id": "C3.2",
+      "title": "work orders parallel lanes",
+      "branch": "C",
+      "html": "capabilities/C3.2-work-orders-parallel-lanes.html"
+    },
+    {
+      "id": "C3.3",
+      "title": "evidence per task",
+      "branch": "C",
+      "html": "capabilities/C3.3-evidence-per-task.html"
+    },
+    {
+      "id": "C3.4",
+      "title": "task to goal rollup percent goal_verify",
+      "branch": "C",
+      "html": "capabilities/C3.4-task-to-goal-rollup-percent-goal-verify.html"
+    },
+    {
+      "id": "C4.1",
+      "title": "workstreams lane.json leases",
+      "branch": "C",
+      "html": "capabilities/C4.1-workstreams-lane-json-leases.html"
+    },
+    {
+      "id": "C4.2",
+      "title": "orchestrate-program",
+      "branch": "C",
+      "html": "capabilities/C4.2-orchestrate-program.html"
+    },
+    {
+      "id": "C4.3",
+      "title": "integration manifest cross-stream contract",
+      "branch": "C",
+      "html": "capabilities/C4.3-integration-manifest-cross-stream-contract.html"
+    },
+    {
+      "id": "C4.4",
+      "title": "artifact-graph per program and pack",
+      "branch": "C",
+      "html": "capabilities/C4.4-artifact-graph-per-program-and-pack.html"
+    },
+    {
+      "id": "C5.1",
+      "title": "src tests e2e delivery",
+      "branch": "C",
+      "html": "capabilities/C5.1-src-tests-e2e-delivery.html"
+    },
+    {
+      "id": "C5.2",
+      "title": "environment setup tasks ordered first",
+      "branch": "C",
+      "html": "capabilities/C5.2-environment-setup-tasks-ordered-first.html"
+    },
+    {
+      "id": "C5.3",
+      "title": "definition of done goal slice satisfied",
+      "branch": "C",
+      "html": "capabilities/C5.3-definition-of-done-goal-slice-satisfied.html"
+    },
+    {
+      "id": "C6.1",
+      "title": "phase workflow-compose mandatory before implement",
+      "branch": "C",
+      "html": "capabilities/C6.1-phase-workflow-compose-mandatory-before-implement.html"
+    },
+    {
+      "id": "C6.2",
+      "title": "workflow DAG artifact schema JSON",
+      "branch": "C",
+      "html": "capabilities/C6.2-workflow-dag-artifact-schema-json.html"
+    },
+    {
+      "id": "C6.3",
+      "title": "task card binds workflow_node_id",
+      "branch": "C",
+      "html": "capabilities/C6.3-task-card-binds-workflow-node-id.html"
+    },
+    {
+      "id": "C6.4",
+      "title": "parallel workflow branches via work orders",
+      "branch": "C",
+      "html": "capabilities/C6.4-parallel-workflow-branches-via-work-orders.html"
+    },
+    {
+      "id": "C6.5",
+      "title": "workflow node rollup to goal_verify",
+      "branch": "C",
+      "html": "capabilities/C6.5-workflow-node-rollup-to-goal-verify.html"
+    },
+    {
+      "id": "D1.1",
+      "title": "L0 ephemeral one-off reasoning",
+      "branch": "D",
+      "html": "capabilities/D1.1-l0-ephemeral-one-off-reasoning.html"
+    },
+    {
+      "id": "D1.2",
+      "title": "L1 playbook docs/playbooks",
+      "branch": "D",
+      "html": "capabilities/D1.2-l1-playbook-docs-playbooks.html"
+    },
+    {
+      "id": "D1.3",
+      "title": "L2 script S0 scripts/",
+      "branch": "D",
+      "html": "capabilities/D1.3-l2-script-s0-scripts.html"
+    },
+    {
+      "id": "D1.4",
+      "title": "L3 skill command cursor skills",
+      "branch": "D",
+      "html": "capabilities/D1.4-l3-skill-command-cursor-skills.html"
+    },
+    {
+      "id": "D1.5",
+      "title": "L4 ambient hooks CI scheduled",
+      "branch": "D",
+      "html": "capabilities/D1.5-l4-ambient-hooks-ci-scheduled.html"
+    },
+    {
+      "id": "D1.6",
+      "title": "L5 template-pack fragment",
+      "branch": "D",
+      "html": "capabilities/D1.6-l5-template-pack-fragment.html"
+    },
+    {
+      "id": "D1.7",
+      "title": "L6 transistor registered composable block",
+      "branch": "D",
+      "html": "capabilities/D1.7-l6-transistor-registered-composable-block.html"
+    },
+    {
+      "id": "D2.1.1",
+      "title": "enqueue repeated manual command 2x",
+      "branch": "D",
+      "html": "capabilities/D2.1.1-enqueue-repeated-manual-command-2x.html"
+    },
+    {
+      "id": "D2.1.2",
+      "title": "enqueue worker flags repetition",
+      "branch": "D",
+      "html": "capabilities/D2.1.2-enqueue-worker-flags-repetition.html"
+    },
+    {
+      "id": "D2.1.3",
+      "title": "enqueue verify pattern N task cards",
+      "branch": "D",
+      "html": "capabilities/D2.1.3-enqueue-verify-pattern-n-task-cards.html"
+    },
+    {
+      "id": "D2.1.4",
+      "title": "enqueue conductor post-mortem escalation",
+      "branch": "D",
+      "html": "capabilities/D2.1.4-enqueue-conductor-post-mortem-escalation.html"
+    },
+    {
+      "id": "D2.1.5",
+      "title": "enqueue compose miss missing transistor",
+      "branch": "D",
+      "html": "capabilities/D2.1.5-enqueue-compose-miss-missing-transistor.html"
+    },
+    {
+      "id": "D2.2",
+      "title": "platform queue item schema",
+      "branch": "D",
+      "html": "capabilities/D2.2-platform-queue-item-schema.html"
+    },
+    {
+      "id": "D2.3",
+      "title": "dequeue platform turn not product",
+      "branch": "D",
+      "html": "capabilities/D2.3-dequeue-platform-turn-not-product.html"
+    },
+    {
+      "id": "D3.1",
+      "title": "platform turn per k product turns",
+      "branch": "D",
+      "html": "capabilities/D3.1-1-platform-turn-per-k-product-turns.html"
+    },
+    {
+      "id": "D3.2",
+      "title": "priority boost queue depth threshold",
+      "branch": "D",
+      "html": "capabilities/D3.2-priority-boost-queue-depth-threshold.html"
+    },
+    {
+      "id": "D3.3",
+      "title": "priority cut product blocked missing tool",
+      "branch": "D",
+      "html": "capabilities/D3.3-priority-cut-product-blocked-missing-tool.html"
+    },
+    {
+      "id": "D3.4",
+      "title": "idle drain product waits H2",
+      "branch": "D",
+      "html": "capabilities/D3.4-idle-drain-product-waits-h2.html"
+    },
+    {
+      "id": "D3.5",
+      "title": "max platform backlog age force drain",
+      "branch": "D",
+      "html": "capabilities/D3.5-max-platform-backlog-age-force-drain.html"
+    },
+    {
+      "id": "D4.1",
+      "title": "platform work playbook-keeper",
+      "branch": "D",
+      "html": "capabilities/D4.1-platform-work-playbook-keeper.html"
+    },
+    {
+      "id": "D4.2",
+      "title": "platform work script extraction",
+      "branch": "D",
+      "html": "capabilities/D4.2-platform-work-script-extraction.html"
+    },
+    {
+      "id": "D4.3",
+      "title": "platform work skill command wrapper",
+      "branch": "D",
+      "html": "capabilities/D4.3-platform-work-skill-command-wrapper.html"
+    },
+    {
+      "id": "D4.4",
+      "title": "platform work hook validate-workflow",
+      "branch": "D",
+      "html": "capabilities/D4.4-platform-work-hook-validate-workflow.html"
+    },
+    {
+      "id": "D4.5",
+      "title": "platform work catalog regeneration",
+      "branch": "D",
+      "html": "capabilities/D4.5-platform-work-catalog-regeneration.html"
+    },
+    {
+      "id": "D4.6",
+      "title": "platform work pack fragment export",
+      "branch": "D",
+      "html": "capabilities/D4.6-platform-work-pack-fragment-export.html"
+    },
+    {
+      "id": "D4.7",
+      "title": "platform work transistor extraction",
+      "branch": "D",
+      "html": "capabilities/D4.7-platform-work-transistor-extraction.html"
+    },
+    {
+      "id": "D5.1",
+      "title": "configure task-level params only",
+      "branch": "D",
+      "html": "capabilities/D5.1-configure-task-level-params-only.html"
+    },
+    {
+      "id": "D5.2",
+      "title": "extend backwards-compatible staleness bump",
+      "branch": "D",
+      "html": "capabilities/D5.2-extend-backwards-compatible-staleness-bump.html"
+    },
+    {
+      "id": "D5.3",
+      "title": "fork new catalog entry provenance",
+      "branch": "D",
+      "html": "capabilities/D5.3-fork-new-catalog-entry-provenance.html"
+    },
+    {
+      "id": "D6.1",
+      "title": "platform done catalog INDEX row",
+      "branch": "D",
+      "html": "capabilities/D6.1-platform-done-catalog-index-row.html"
+    },
+    {
+      "id": "D6.2",
+      "title": "platform done verify script L2+",
+      "branch": "D",
+      "html": "capabilities/D6.2-platform-done-verify-script-l2.html"
+    },
+    {
+      "id": "D6.3",
+      "title": "platform done task card references",
+      "branch": "D",
+      "html": "capabilities/D6.3-platform-done-task-card-references.html"
+    },
+    {
+      "id": "D6.4",
+      "title": "platform done staleness node wired",
+      "branch": "D",
+      "html": "capabilities/D6.4-platform-done-staleness-node-wired.html"
+    },
+    {
+      "id": "D6.5",
+      "title": "platform done transistor registry and graph",
+      "branch": "D",
+      "html": "capabilities/D6.5-platform-done-transistor-registry-and-graph.html"
+    },
+    {
+      "id": "E1.1",
+      "title": "catalog scripts manifest generated",
+      "branch": "E",
+      "html": "capabilities/E1.1-catalog-scripts-manifest-generated.html"
+    },
+    {
+      "id": "E1.5",
+      "title": "catalog pipelines manifest",
+      "branch": "E",
+      "html": "capabilities/E1.5-catalog-pipelines-manifest.html"
+    },
+    {
+      "id": "E1.6",
+      "title": "catalog template-packs README",
+      "branch": "E",
+      "html": "capabilities/E1.6-catalog-template-packs-readme.html"
+    },
+    {
+      "id": "E1.7",
+      "title": "catalog platform CATALOG.md umbrella",
+      "branch": "E",
+      "html": "capabilities/E1.7-catalog-platform-catalog-md-umbrella.html"
+    },
+    {
+      "id": "E2.1",
+      "title": "compose resolve capability needed",
+      "branch": "E",
+      "html": "capabilities/E2.1-compose-resolve-capability-needed.html"
+    },
+    {
+      "id": "E2.2",
+      "title": "compose query catalog list-components",
+      "branch": "E",
+      "html": "capabilities/E2.2-compose-query-catalog-list-components.html"
+    },
+    {
+      "id": "E2.3",
+      "title": "compose rank script playbook skill facts",
+      "branch": "E",
+      "html": "capabilities/E2.3-compose-rank-script-playbook-skill-facts.html"
+    },
+    {
+      "id": "E2.4",
+      "title": "compose plan task card Components",
+      "branch": "E",
+      "html": "capabilities/E2.4-compose-plan-task-card-components.html"
+    },
+    {
+      "id": "E2.5",
+      "title": "compose miss L0 enqueue promotion",
+      "branch": "E",
+      "html": "capabilities/E2.5-compose-miss-l0-enqueue-promotion.html"
+    },
+    {
+      "id": "E3.1",
+      "title": "facts docs/facts external truth",
+      "branch": "E",
+      "html": "capabilities/E3.1-facts-docs-facts-external-truth.html"
+    },
+    {
+      "id": "E3.2",
+      "title": "decisions docs/decisions ADR",
+      "branch": "E",
+      "html": "capabilities/E3.2-decisions-docs-decisions-adr.html"
+    },
+    {
+      "id": "E3.3",
+      "title": "remember skill INDEX no FTS global",
+      "branch": "E",
+      "html": "capabilities/E3.3-remember-skill-index-no-fts-global.html"
+    },
+    {
+      "id": "E4.1",
+      "title": "context always-on rules AGENTS.md",
+      "branch": "E",
+      "html": "capabilities/E4.1-context-always-on-rules-agents-md.html"
+    },
+    {
+      "id": "E4.2",
+      "title": "context hooks inject continue start",
+      "branch": "E",
+      "html": "capabilities/E4.2-context-hooks-inject-continue-start.html"
+    },
+    {
+      "id": "E4.3",
+      "title": "context allowed_reads cap max 5",
+      "branch": "E",
+      "html": "capabilities/E4.3-context-allowed-reads-cap-max-5.html"
+    },
+    {
+      "id": "E5.1",
+      "title": "staleness design graph staleness.json",
+      "branch": "E",
+      "html": "capabilities/E5.1-staleness-design-graph-staleness-json.html"
+    },
+    {
+      "id": "E5.2",
+      "title": "staleness extend playbooks scripts pack nodes",
+      "branch": "E",
+      "html": "capabilities/E5.2-staleness-extend-playbooks-scripts-pack-nodes.html"
+    },
+    {
+      "id": "E5.3",
+      "title": "staleness reconcile-stale artifact-graph skills",
+      "branch": "E",
+      "html": "capabilities/E5.3-staleness-reconcile-stale-artifact-graph-skills.html"
+    },
+    {
+      "id": "E5.4",
+      "title": "staleness workflow graph transistor nodes",
+      "branch": "E",
+      "html": "capabilities/E5.4-staleness-workflow-graph-transistor-nodes.html"
+    },
+    {
+      "id": "E6.1",
+      "title": "catalog transistors manifest registry",
+      "branch": "E",
+      "html": "capabilities/E6.1-catalog-transistors-manifest-registry.html"
+    },
+    {
+      "id": "E6.2",
+      "title": "transistor schema id version typed io",
+      "branch": "E",
+      "html": "capabilities/E6.2-transistor-schema-id-version-typed-io.html"
+    },
+    {
+      "id": "E6.3",
+      "title": "transistor classes hard soft gate",
+      "branch": "E",
+      "html": "capabilities/E6.3-transistor-classes-hard-soft-gate.html"
+    },
+    {
+      "id": "E6.4",
+      "title": "list-transistors query io compatibility",
+      "branch": "E",
+      "html": "capabilities/E6.4-list-transistors-query-io-compatibility.html"
+    },
+    {
+      "id": "E6.5",
+      "title": "compose rank hard transistor script soft",
+      "branch": "E",
+      "html": "capabilities/E6.5-compose-rank-hard-transistor-script-soft.html"
+    },
+    {
+      "id": "E7.1",
+      "title": "resolve deliverable type workflow template",
+      "branch": "E",
+      "html": "capabilities/E7.1-resolve-deliverable-type-workflow-template.html"
+    },
+    {
+      "id": "E7.2",
+      "title": "stitch transistors into generator DAG",
+      "branch": "E",
+      "html": "capabilities/E7.2-stitch-transistors-into-generator-dag.html"
+    },
+    {
+      "id": "E7.3",
+      "title": "validate wiring preconditions postconditions S0",
+      "branch": "E",
+      "html": "capabilities/E7.3-validate-wiring-preconditions-postconditions-s0.html"
+    },
+    {
+      "id": "E7.4",
+      "title": "workflow miss enqueue transistor promotion",
+      "branch": "E",
+      "html": "capabilities/E7.4-workflow-miss-enqueue-transistor-promotion.html"
+    },
+    {
+      "id": "E7.5",
+      "title": "pack generator workflow templates inherit",
+      "branch": "E",
+      "html": "capabilities/E7.5-pack-generator-workflow-templates-inherit.html"
+    },
+    {
+      "id": "F1.1",
+      "title": "pack company.yaml schema",
+      "branch": "F",
+      "html": "capabilities/F1.1-pack-company-yaml-schema.html"
+    },
+    {
+      "id": "F1.2",
+      "title": "pack roles/*.yaml",
+      "branch": "F",
+      "html": "capabilities/F1.2-pack-roles---yaml.html"
+    },
+    {
+      "id": "F1.3",
+      "title": "pack pipelines/*.yaml",
+      "branch": "F",
+      "html": "capabilities/F1.3-pack-pipelines---yaml.html"
+    },
+    {
+      "id": "F1.4",
+      "title": "pack manifest.md integration contracts",
+      "branch": "F",
+      "html": "capabilities/F1.4-pack-manifest-md-integration-contracts.html"
+    },
+    {
+      "id": "F1.5",
+      "title": "pack artifact-graph.json cross-role",
+      "branch": "F",
+      "html": "capabilities/F1.5-pack-artifact-graph-json-cross-role.html"
+    },
+    {
+      "id": "F1.6",
+      "title": "pack playbooks role-specific",
+      "branch": "F",
+      "html": "capabilities/F1.6-pack-playbooks-role-specific.html"
+    },
+    {
+      "id": "F1.7",
+      "title": "pack template tasks seed cards",
+      "branch": "F",
+      "html": "capabilities/F1.7-pack-template-tasks-seed-cards.html"
+    },
+    {
+      "id": "F1.8",
+      "title": "pack verify goal_verify suites",
+      "branch": "F",
+      "html": "capabilities/F1.8-pack-verify-goal-verify-suites.html"
+    },
+    {
+      "id": "F1.9",
+      "title": "pack transistors and generator workflows",
+      "branch": "F",
+      "html": "capabilities/F1.9-pack-transistors-and-generator-workflows.html"
+    },
+    {
+      "id": "F2.1",
+      "title": "company instantiate program-scoper pack select",
+      "branch": "F",
+      "html": "capabilities/F2.1-company-instantiate-program-scoper-pack-select.html"
+    },
+    {
+      "id": "F2.2",
+      "title": "company spawn workstream department role lane",
+      "branch": "F",
+      "html": "capabilities/F2.2-company-spawn-workstream-department-role-lane.html"
+    },
+    {
+      "id": "F2.3",
+      "title": "company active_role rotates ready work",
+      "branch": "F",
+      "html": "capabilities/F2.3-company-active-role-rotates-ready-work.html"
+    },
+    {
+      "id": "F2.4",
+      "title": "company conductor handoffs manifest graph",
+      "branch": "F",
+      "html": "capabilities/F2.4-company-conductor-handoffs-manifest-graph.html"
+    },
+    {
+      "id": "F3.1",
+      "title": "game studio roles designer TA animator programmer QA build release",
+      "branch": "F",
+      "html": "capabilities/F3.1-game-studio-roles-designer-ta-animator-programmer-qa-build-r.html"
+    },
+    {
+      "id": "F3.2",
+      "title": "game studio pipelines concept to build",
+      "branch": "F",
+      "html": "capabilities/F3.2-game-studio-pipelines-concept-to-build.html"
+    },
+    {
+      "id": "F3.3",
+      "title": "game studio external tools Blender UE Git CI",
+      "branch": "F",
+      "html": "capabilities/F3.3-game-studio-external-tools-blender-ue-git-ci.html"
+    },
+    {
+      "id": "F3.4",
+      "title": "game studio goal_verify asset engine tests perf",
+      "branch": "F",
+      "html": "capabilities/F3.4-game-studio-goal-verify-asset-engine-tests-perf.html"
+    },
+    {
+      "id": "F4.1",
+      "title": "data platform roles analyst engineer DBA SRE governance",
+      "branch": "F",
+      "html": "capabilities/F4.1-data-platform-roles-analyst-engineer-dba-sre-governance.html"
+    },
+    {
+      "id": "F4.2",
+      "title": "data platform pipelines ingest model deploy monitor",
+      "branch": "F",
+      "html": "capabilities/F4.2-data-platform-pipelines-ingest-model-deploy-monitor.html"
+    },
+    {
+      "id": "F5.1",
+      "title": "cross-pack imports micro-packs",
+      "branch": "F",
+      "html": "capabilities/F5.1-cross-pack-imports-micro-packs.html"
+    },
+    {
+      "id": "F5.2",
+      "title": "template-packs _shared library",
+      "branch": "F",
+      "html": "capabilities/F5.2-template-packs--shared-library.html"
+    },
+    {
+      "id": "F5.3",
+      "title": "no repo outside template-packs ceiling",
+      "branch": "F",
+      "html": "capabilities/F5.3-no-repo-outside-template-packs-ceiling.html"
+    },
+    {
+      "id": "F5.4",
+      "title": "shared transistors library template-packs _shared",
+      "branch": "F",
+      "html": "capabilities/F5.4-shared-transistors-library-template-packs--shared.html"
+    },
+    {
+      "id": "F6.1",
+      "title": "role mapping conductor context switch active_role",
+      "branch": "F",
+      "html": "capabilities/F6.1-role-mapping-conductor-context-switch-active-role.html"
+    },
+    {
+      "id": "F6.2",
+      "title": "role allowed_reads scoped playbooks lane tasks",
+      "branch": "F",
+      "html": "capabilities/F6.2-role-allowed-reads-scoped-playbooks-lane-tasks.html"
+    },
+    {
+      "id": "F6.3",
+      "title": "role tool permissions MCP CLI allowlist",
+      "branch": "F",
+      "html": "capabilities/F6.3-role-tool-permissions-mcp-cli-allowlist.html"
+    },
+    {
+      "id": "F6.4",
+      "title": "role evidence requirements per output type",
+      "branch": "F",
+      "html": "capabilities/F6.4-role-evidence-requirements-per-output-type.html"
+    },
+    {
+      "id": "G1.1",
+      "title": "task verify-router verifier",
+      "branch": "G",
+      "html": "capabilities/G1.1-task-verify-router-verifier.html"
+    },
+    {
+      "id": "G1.2",
+      "title": "evidence_required state",
+      "branch": "G",
+      "html": "capabilities/G1.2-evidence-required-state.html"
+    },
+    {
+      "id": "G1.3",
+      "title": "last_verify before advance",
+      "branch": "G",
+      "html": "capabilities/G1.3-last-verify-before-advance.html"
+    },
+    {
+      "id": "G2.1",
+      "title": "goal_verify_command state pack",
+      "branch": "G",
+      "html": "capabilities/G2.1-goal-verify-command-state-pack.html"
+    },
+    {
+      "id": "G2.2",
+      "title": "goal_verify aggregates unit integration e2e tool",
+      "branch": "G",
+      "html": "capabilities/G2.2-goal-verify-aggregates-unit-integration-e2e-tool.html"
+    },
+    {
+      "id": "G2.3",
+      "title": "goal_verify blocks H3 until pass",
+      "branch": "G",
+      "html": "capabilities/G2.3-goal-verify-blocks-h3-until-pass.html"
+    },
+    {
+      "id": "G2.4",
+      "title": "goal_verify regression every implement batch",
+      "branch": "G",
+      "html": "capabilities/G2.4-goal-verify-regression-every-implement-batch.html"
+    },
+    {
+      "id": "G2.5",
+      "title": "per-node evidence rollup goal_verify",
+      "branch": "G",
+      "html": "capabilities/G2.5-per-node-evidence-rollup-goal-verify.html"
+    },
+    {
+      "id": "G3.1",
+      "title": "conformance validate-workflow CI",
+      "branch": "G",
+      "html": "capabilities/G3.1-conformance-validate-workflow-ci.html"
+    },
+    {
+      "id": "G3.2",
+      "title": "conformance route-tier check",
+      "branch": "G",
+      "html": "capabilities/G3.2-conformance-route-tier-check.html"
+    },
+    {
+      "id": "G3.3",
+      "title": "conformance check-pipeline-blocked goal_autopilot",
+      "branch": "G",
+      "html": "capabilities/G3.3-conformance-check-pipeline-blocked-goal-autopilot.html"
+    },
+    {
+      "id": "G4.1",
+      "title": "review security-review touch paths deps",
+      "branch": "G",
+      "html": "capabilities/G4.1-review-security-review-touch-paths-deps.html"
+    },
+    {
+      "id": "G4.2",
+      "title": "review bugbot large diffs",
+      "branch": "G",
+      "html": "capabilities/G4.2-review-bugbot-large-diffs.html"
+    },
+    {
+      "id": "G4.3",
+      "title": "review escalation S4 repeated verify fail",
+      "branch": "G",
+      "html": "capabilities/G4.3-review-escalation-s4-repeated-verify-fail.html"
+    },
+    {
+      "id": "G4.4",
+      "title": "review staleness reconciliation before merge",
+      "branch": "G",
+      "html": "capabilities/G4.4-review-staleness-reconciliation-before-merge.html"
+    },
+    {
+      "id": "G5.1",
+      "title": "mistake hallucinated done evidence gate",
+      "branch": "G",
+      "html": "capabilities/G5.1-mistake-hallucinated-done-evidence-gate.html"
+    },
+    {
+      "id": "G5.2",
+      "title": "mistake scope creep allowed_reads task card",
+      "branch": "G",
+      "html": "capabilities/G5.2-mistake-scope-creep-allowed-reads-task-card.html"
+    },
+    {
+      "id": "G5.3",
+      "title": "mistake wrong architecture self-gate goal_verify",
+      "branch": "G",
+      "html": "capabilities/G5.3-mistake-wrong-architecture-self-gate-goal-verify.html"
+    },
+    {
+      "id": "G5.4",
+      "title": "mistake skipped tests verify-router mandatory",
+      "branch": "G",
+      "html": "capabilities/G5.4-mistake-skipped-tests-verify-router-mandatory.html"
+    },
+    {
+      "id": "G5.5",
+      "title": "mistake stale design staleness reconcile",
+      "branch": "G",
+      "html": "capabilities/G5.5-mistake-stale-design-staleness-reconcile.html"
+    },
+    {
+      "id": "G5.6",
+      "title": "mistake duplicate tooling platform queue catalog",
+      "branch": "G",
+      "html": "capabilities/G5.6-mistake-duplicate-tooling-platform-queue-catalog.html"
+    },
+    {
+      "id": "G5.7",
+      "title": "mistake unsafe command preToolUse allowlist",
+      "branch": "G",
+      "html": "capabilities/G5.7-mistake-unsafe-command-pretooluse-allowlist.html"
+    },
+    {
+      "id": "G5.8",
+      "title": "mistake fuzzy chain lost in prose workflow control",
+      "branch": "G",
+      "html": "capabilities/G5.8-mistake-fuzzy-chain-lost-in-prose-workflow-control.html"
+    },
+    {
+      "id": "G6.1",
+      "title": "rollback git branch per goal slice",
+      "branch": "G",
+      "html": "capabilities/G6.1-rollback-git-branch-per-goal-slice.html"
+    },
+    {
+      "id": "G6.2",
+      "title": "rollback journal last_failure structured H2",
+      "branch": "G",
+      "html": "capabilities/G6.2-rollback-journal-last-failure-structured-h2.html"
+    },
+    {
+      "id": "G6.3",
+      "title": "rollback autopilot resume preCompact snapshot",
+      "branch": "G",
+      "html": "capabilities/G6.3-rollback-autopilot-resume-precompact-snapshot.html"
+    },
+    {
+      "id": "G6.4",
+      "title": "workflow checkpoint replay from failed node",
+      "branch": "G",
+      "html": "capabilities/G6.4-workflow-checkpoint-replay-from-failed-node.html"
+    },
+    {
+      "id": "H1.1",
+      "title": "state existing next_action program autopilot evidence tier",
+      "branch": "H",
+      "html": "capabilities/H1.1-state-existing-next-action-program-autopilot-evidence-tier.html"
+    },
+    {
+      "id": "H1.2",
+      "title": "state goal block",
+      "branch": "H",
+      "html": "capabilities/H1.2-state-goal-block.html"
+    },
+    {
+      "id": "H1.3",
+      "title": "state platform block",
+      "branch": "H",
+      "html": "capabilities/H1.3-state-platform-block.html"
+    },
+    {
+      "id": "H1.4",
+      "title": "state pursuit block",
+      "branch": "H",
+      "html": "capabilities/H1.4-state-pursuit-block.html"
+    },
+    {
+      "id": "H1.5",
+      "title": "state hitl block",
+      "branch": "H",
+      "html": "capabilities/H1.5-state-hitl-block.html"
+    },
+    {
+      "id": "H1.6",
+      "title": "state company block",
+      "branch": "H",
+      "html": "capabilities/H1.6-state-company-block.html"
+    },
+    {
+      "id": "H1.7",
+      "title": "state active_workflow block",
+      "branch": "H",
+      "html": "capabilities/H1.7-state-active-workflow-block.html"
+    },
+    {
+      "id": "H2",
+      "title": "journal progress",
+      "branch": "H",
+      "html": "capabilities/H2-journal-progress.html"
+    },
+    {
+      "id": "H3",
+      "title": "artifact graphs",
+      "branch": "H",
+      "html": "capabilities/H3-artifact-graphs.html"
+    },
+    {
+      "id": "H4",
+      "title": "evidence",
+      "branch": "H",
+      "html": "capabilities/H4-evidence.html"
+    },
+    {
+      "id": "H5",
+      "title": "worker runs",
+      "branch": "H",
+      "html": "capabilities/H5-worker-runs.html"
+    },
+    {
+      "id": "H6",
+      "title": "snapshots",
+      "branch": "H",
+      "html": "capabilities/H6-snapshots.html"
+    },
+    {
+      "id": "I1.1",
+      "title": "runtime IDE genius conductor session",
+      "branch": "I",
+      "html": "capabilities/I1.1-runtime-ide-genius-conductor-session.html"
+    },
+    {
+      "id": "I1.2",
+      "title": "runtime IDE local subagents economy",
+      "branch": "I",
+      "html": "capabilities/I1.2-runtime-ide-local-subagents-economy.html"
+    },
+    {
+      "id": "I1.3",
+      "title": "runtime IDE slash commands autopilot continue lane verify",
+      "branch": "I",
+      "html": "capabilities/I1.3-runtime-ide-slash-commands-autopilot-continue-lane-verify.html"
+    },
+    {
+      "id": "I1.4",
+      "title": "runtime IDE hooks beforeSubmit subagentStart preToolUse preCompact",
+      "branch": "I",
+      "html": "capabilities/I1.4-runtime-ide-hooks-beforesubmit-subagentstart-pretooluse-prec.html"
+    },
+    {
+      "id": "I2.1",
+      "title": "runtime SDK run-local-pipeline goal_autopilot",
+      "branch": "I",
+      "html": "capabilities/I2.1-runtime-sdk-run-local-pipeline-goal-autopilot.html"
+    },
+    {
+      "id": "I2.2",
+      "title": "runtime SDK CURSOR_API_KEY AUTOPILOT_MODEL",
+      "branch": "I",
+      "html": "capabilities/I2.2-runtime-sdk-cursor-api-key-autopilot-model.html"
+    },
+    {
+      "id": "I2.3",
+      "title": "runtime SDK operator PC worker server",
+      "branch": "I",
+      "html": "capabilities/I2.3-runtime-sdk-operator-pc-worker-server.html"
+    },
+    {
+      "id": "I3.1",
+      "title": "runtime headless headless-verify",
+      "branch": "I",
+      "html": "capabilities/I3.1-runtime-headless-headless-verify.html"
+    },
+    {
+      "id": "I3.2",
+      "title": "runtime headless GitHub Actions validate verify",
+      "branch": "I",
+      "html": "capabilities/I3.2-runtime-headless-github-actions-validate-verify.html"
+    },
+    {
+      "id": "I3.3",
+      "title": "runtime headless pull-ready complete-work-order lanes",
+      "branch": "I",
+      "html": "capabilities/I3.3-runtime-headless-pull-ready-complete-work-order-lanes.html"
+    },
+    {
+      "id": "I4.1",
+      "title": "runtime external MCP browser DCC cloud",
+      "branch": "I",
+      "html": "capabilities/I4.1-runtime-external-mcp-browser-dcc-cloud.html"
+    },
+    {
+      "id": "I4.2",
+      "title": "runtime external tool-operator Tool command task cards",
+      "branch": "I",
+      "html": "capabilities/I4.2-runtime-external-tool-operator-tool-command-task-cards.html"
+    },
+    {
+      "id": "I4.3",
+      "title": "runtime external evidence-types non-pytest",
+      "branch": "I",
+      "html": "capabilities/I4.3-runtime-external-evidence-types-non-pytest.html"
+    },
+    {
+      "id": "I4.4",
+      "title": "transistor executors MCP tool script boundary",
+      "branch": "I",
+      "html": "capabilities/I4.4-transistor-executors-mcp-tool-script-boundary.html"
+    },
+    {
+      "id": "I5.1",
+      "title": "runtime notify STATUS dashboard generation",
+      "branch": "I",
+      "html": "capabilities/I5.1-runtime-notify-status-dashboard-generation.html"
+    },
+    {
+      "id": "I5.2",
+      "title": "runtime notify webhook email H2 H3 only",
+      "branch": "I",
+      "html": "capabilities/I5.2-runtime-notify-webhook-email-h2-h3-only.html"
+    },
+    {
+      "id": "INTRO-0",
+      "title": "Executive summary (\u00a70)",
+      "branch": "meta",
+      "html": "capabilities/INTRO-0-executive-summary---0.html"
+    },
+    {
+      "id": "INTRO-1.1",
+      "title": "automation scope in out",
+      "branch": "meta",
+      "html": "capabilities/INTRO-1.1-100--automation-scope-in-out.html"
+    },
+    {
+      "id": "INTRO-1.2",
+      "title": "Human touchpoint contract H1 H2 H3",
+      "branch": "meta",
+      "html": "capabilities/INTRO-1.2-human-touchpoint-contract-h1-h2-h3.html"
+    },
+    {
+      "id": "INTRO-1.3",
+      "title": "Goal completion criterion",
+      "branch": "meta",
+      "html": "capabilities/INTRO-1.3-goal-completion-criterion.html"
+    },
+    {
+      "id": "INTRO-2",
+      "title": "Transistor building blocks north star",
+      "branch": "meta",
+      "html": "capabilities/INTRO-2-transistor-building-blocks-north-star.html"
+    },
+    {
+      "id": "J1",
+      "title": "model policy",
+      "branch": "J",
+      "html": "capabilities/J1-model-policy.html"
+    },
+    {
+      "id": "J2",
+      "title": "automation waivers",
+      "branch": "J",
+      "html": "capabilities/J2-automation-waivers.html"
+    },
+    {
+      "id": "J3",
+      "title": "strict hitl",
+      "branch": "J",
+      "html": "capabilities/J3-strict-hitl.html"
+    },
+    {
+      "id": "J4",
+      "title": "audit",
+      "branch": "J",
+      "html": "capabilities/J4-audit.html"
+    },
+    {
+      "id": "J5",
+      "title": "export contract",
+      "branch": "J",
+      "html": "capabilities/J5-export-contract.html"
+    },
+    {
+      "id": "J6",
+      "title": "release queue",
+      "branch": "J",
+      "html": "capabilities/J6-release-queue.html"
+    },
+    {
+      "id": "MASTER-A",
+      "title": "Branch A \u2014 Pursuit & control plane",
+      "branch": "meta",
+      "html": "capabilities/MASTER-A-branch-a---pursuit---control-plane.html"
+    },
+    {
+      "id": "MASTER-B",
+      "title": "Branch B \u2014 Cognition & routing plane",
+      "branch": "meta",
+      "html": "capabilities/MASTER-B-branch-b---cognition---routing-plane.html"
+    },
+    {
+      "id": "MASTER-C",
+      "title": "Branch C \u2014 Product execution plane",
+      "branch": "meta",
+      "html": "capabilities/MASTER-C-branch-c---product-execution-plane.html"
+    },
+    {
+      "id": "MASTER-D",
+      "title": "Branch D \u2014 Platform evolution plane",
+      "branch": "meta",
+      "html": "capabilities/MASTER-D-branch-d---platform-evolution-plane.html"
+    },
+    {
+      "id": "MASTER-E",
+      "title": "Branch E \u2014 Knowledge & composition plane",
+      "branch": "meta",
+      "html": "capabilities/MASTER-E-branch-e---knowledge---composition-plane.html"
+    },
+    {
+      "id": "MASTER-F",
+      "title": "Branch F \u2014 Organization plane",
+      "branch": "meta",
+      "html": "capabilities/MASTER-F-branch-f---organization-plane.html"
+    },
+    {
+      "id": "MASTER-G",
+      "title": "Branch G \u2014 Verification & quality plane",
+      "branch": "meta",
+      "html": "capabilities/MASTER-G-branch-g---verification---quality-plane.html"
+    },
+    {
+      "id": "MASTER-H",
+      "title": "Branch H \u2014 Persistence & state plane",
+      "branch": "meta",
+      "html": "capabilities/MASTER-H-branch-h---persistence---state-plane.html"
+    },
+    {
+      "id": "MASTER-I",
+      "title": "Branch I \u2014 Runtime & integration plane",
+      "branch": "meta",
+      "html": "capabilities/MASTER-I-branch-i---runtime---integration-plane.html"
+    },
+    {
+      "id": "MASTER-J",
+      "title": "Branch J \u2014 Governance & operator plane",
+      "branch": "meta",
+      "html": "capabilities/MASTER-J-branch-j---governance---operator-plane.html"
+    },
+    {
+      "id": "SEC-13",
+      "title": "pursuit flow",
+      "branch": "meta",
+      "html": "capabilities/SEC-13-pursuit-flow.html"
+    },
+    {
+      "id": "SEC-14",
+      "title": "gap analysis",
+      "branch": "meta",
+      "html": "capabilities/SEC-14-gap-analysis.html"
+    },
+    {
+      "id": "SEC-15-v2.14",
+      "title": "v2.14 release v2 14 goal model goal verify",
+      "branch": "meta",
+      "html": "capabilities/SEC-15-v2.14-release-v2-14-goal-model-goal-verify.html"
+    },
+    {
+      "id": "SEC-15-v2.15",
+      "title": "v2.15 release v2 15 pursuit loop goal autopilot self gate",
+      "branch": "meta",
+      "html": "capabilities/SEC-15-v2.15-release-v2-15-pursuit-loop-goal-autopilot-self-gate.html"
+    },
+    {
+      "id": "SEC-15-v2.16",
+      "title": "v2.16 release v2 16 platform queue scheduler",
+      "branch": "meta",
+      "html": "capabilities/SEC-15-v2.16-release-v2-16-platform-queue-scheduler.html"
+    },
+    {
+      "id": "SEC-15-v2.17",
+      "title": "v2.17 release v2 17 catalog compose first list components",
+      "branch": "meta",
+      "html": "capabilities/SEC-15-v2.17-release-v2-17-catalog-compose-first-list-components.html"
+    },
+    {
+      "id": "SEC-15-v2.18",
+      "title": "v2.18 release v2 18 staleness graph platform nodes",
+      "branch": "meta",
+      "html": "capabilities/SEC-15-v2.18-release-v2-18-staleness-graph-platform-nodes.html"
+    },
+    {
+      "id": "SEC-15-v2.19",
+      "title": "v2.19 release v2 19 company pack schema active role",
+      "branch": "meta",
+      "html": "capabilities/SEC-15-v2.19-release-v2-19-company-pack-schema-active-role.html"
+    },
+    {
+      "id": "SEC-15-v2.20",
+      "title": "v2.20 release v2 20 game studio pack reference",
+      "branch": "meta",
+      "html": "capabilities/SEC-15-v2.20-release-v2-20-game-studio-pack-reference.html"
+    },
+    {
+      "id": "SEC-15-v2.21",
+      "title": "v2.21 release v2 21 data platform pack reference",
+      "branch": "meta",
+      "html": "capabilities/SEC-15-v2.21-release-v2-21-data-platform-pack-reference.html"
+    },
+    {
+      "id": "SEC-15-v2.22",
+      "title": "v2.22 release v2 22 cross pack  shared library",
+      "branch": "meta",
+      "html": "capabilities/SEC-15-v2.22-release-v2-22-cross-pack--shared-library.html"
+    },
+    {
+      "id": "SEC-15-v2.23",
+      "title": "v2.23 release v2 23 operator polish h2 audit dashboard",
+      "branch": "meta",
+      "html": "capabilities/SEC-15-v2.23-release-v2-23-operator-polish-h2-audit-dashboard.html"
+    },
+    {
+      "id": "SEC-15-v2.24",
+      "title": "Release v2.24 transistor schema registry list-transistors",
+      "branch": "meta",
+      "html": "capabilities/SEC-15-v2.24-release-v2-24-transistor-schema-registry-list-transistors.html"
+    },
+    {
+      "id": "SEC-15-v2.25",
+      "title": "Release v2.25 workflow DAG validate-workflow-dag",
+      "branch": "meta",
+      "html": "capabilities/SEC-15-v2.25-release-v2-25-workflow-dag-validate-workflow-dag.html"
+    },
+    {
+      "id": "SEC-15-v2.26",
+      "title": "Release v2.26 workflow-composer active_workflow execution",
+      "branch": "meta",
+      "html": "capabilities/SEC-15-v2.26-release-v2-26-workflow-composer-active-workflow-execution.html"
+    },
+    {
+      "id": "SEC-15-v2.27",
+      "title": "Release v2.27 pack workflow templates cross-domain",
+      "branch": "meta",
+      "html": "capabilities/SEC-15-v2.27-release-v2-27-pack-workflow-templates-cross-domain.html"
+    },
+    {
+      "id": "SEC-15-v2.28",
+      "title": "Release v2.28 transistor maturity dashboard metrics",
+      "branch": "meta",
+      "html": "capabilities/SEC-15-v2.28-release-v2-28-transistor-maturity-dashboard-metrics.html"
+    },
+    {
+      "id": "SEC-17-1",
+      "title": "Decision self-gate rigor checklist vs reviewer",
+      "branch": "meta",
+      "html": "capabilities/SEC-17-1-decision-self-gate-rigor-checklist-vs-reviewer.html"
+    },
+    {
+      "id": "SEC-17-10",
+      "title": "Decision global _shared transistors plus pack overlay",
+      "branch": "meta",
+      "html": "capabilities/SEC-17-10-decision-global--shared-transistors-plus-pack-overlay.html"
+    },
+    {
+      "id": "SEC-17-2",
+      "title": "Decision H3 scope task milestone release company",
+      "branch": "meta",
+      "html": "capabilities/SEC-17-2-decision-h3-scope-task-milestone-release-company.html"
+    },
+    {
+      "id": "SEC-17-3",
+      "title": "Decision platform K ratio fixed vs adaptive",
+      "branch": "meta",
+      "html": "capabilities/SEC-17-3-decision-platform-k-ratio-fixed-vs-adaptive.html"
+    },
+    {
+      "id": "SEC-17-4",
+      "title": "Decision budget caps unlimited vs checkpoint",
+      "branch": "meta",
+      "html": "capabilities/SEC-17-4-decision-budget-caps-unlimited-vs-checkpoint.html"
+    },
+    {
+      "id": "SEC-17-5",
+      "title": "Decision pack authority legal finance H2-always",
+      "branch": "meta",
+      "html": "capabilities/SEC-17-5-decision-pack-authority-legal-finance-h2-always.html"
+    },
+    {
+      "id": "SEC-17-6",
+      "title": "Decision multi-goal single stack vs company_autopilot",
+      "branch": "meta",
+      "html": "capabilities/SEC-17-6-decision-multi-goal-single-stack-vs-company-autopilot.html"
+    },
+    {
+      "id": "SEC-17-7",
+      "title": "Decision transistor granularity one verify boundary",
+      "branch": "meta",
+      "html": "capabilities/SEC-17-7-decision-transistor-granularity-one-verify-boundary.html"
+    },
+    {
+      "id": "SEC-17-8",
+      "title": "Decision composer S3 skill not conductor inline",
+      "branch": "meta",
+      "html": "capabilities/SEC-17-8-decision-composer-s3-skill-not-conductor-inline.html"
+    },
+    {
+      "id": "SEC-17-9",
+      "title": "Decision JSON DAG authoritative visual editor optional",
+      "branch": "meta",
+      "html": "capabilities/SEC-17-9-decision-json-dag-authoritative-visual-editor-optional.html"
+    },
+    {
+      "id": "SEC-18",
+      "title": "Transistor model \u2014 A to Z reference",
+      "branch": "meta",
+      "html": "capabilities/SEC-18-transistor-model-a-to-z-reference.html"
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "id": "D4.4",
+  "slug": "D4.4-platform-work-hook-validate-workflow",
+  "title": "platform work hook validate-workflow",
+  "branch": "D",
+  "parent": "[D4-index](D4-index.md)",
+  "vision_section": "",
+  "release": "v2.16",
+  "purpose": "D4.4 defines platform work hook validate workflow for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse.",
+  "scope": [
+    "Owns `D4.4` only; siblings under `D4` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a76 \u2014 Branch D \u2014 Platform evolution plane (parallel queue)](../../full-automation-vision-and-hierarchy.md#6-branch-d-platform-evolution-plane-parallel-queue)."
+  ],
+  "behavior_steps": [
+    "On L4 hook promotion items, a platform worker extends `.cursor/hooks.json` or CI steps so validate-workflow, check-pipeline-blocked, or staleness scripts fire on session events without a conductor turn.",
+    "Introduced hooks must pass `python scripts/validate-workflow.py` on the same PR; hook script errors fail closed into journal notes rather than silently continuing pursuit.",
+    "Successful promotion advances ambient enforcement on the [D1.5](D1.5-l4-ambient-hooks-ci-scheduled.md) ladder so S0 scripts run even when the conductor omits them.",
+    "Extend-only hook changes follow [D5.2](D5.2-extend-backwards-compatible-staleness-bump.md); hook edits that alter gate semantics require explicit pack review and may escalate H2.",
+    "If hooked scripts error or alter H1/H2/H3 semantics without approval, pursuit stops with an integrity stop per [A4.4](A4.4-stop-integrity-validate-workflow-state-corrupt.md) until hooks are repaired or reverted."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"D4.4\",\n  \"description\": \"platform work hook validate workflow\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Platform queue depth 0 but product blocked on missing playbook \u00e2\u20ac\u201d D3.3 priority cut skips platform drain.",
+    "Edge case `D4.4` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `D4.4`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `platform.promotion_queue[]` to state.json schema.",
+    "Scheduler in autopilot workflow: `(steps_total % K) == 0` \u00e2\u2020\u2019 platform turn.",
+    "playbook-keeper + script extraction skills dequeue promotion items.",
+    "Validate `D4.4` against SEC-15 release checklist and parent index links.",
+    "Document `D4.4` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `D4.4`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids D4.4`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/playbooks/`",
+    "`scripts/`",
+    "`.cursor/skills/playbook-keeper/`",
+    "`state.platform.promotion_queue`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a76",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[D4-index](D4-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids D4.4` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [D4-index](D4-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "D4.4 defines platform work hook validate workflow for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse. In practice, the system on l4 hook promotion items, a platform worker extends `.cursor/hooks.json` or ci steps so validate-workflow, check-pipeline-blocked, or staleness scripts fire on session events without a conductor turn, then introduced hooks must pass `python scripts/validate-workflow.py` on the same pr; hook script errors fail closed into journal notes rather than silently continuing pursuit.",
+  "reader_narrative": "<!-- prose-source: agent plane-d 2026-06-28 -->\n\nHook and validate-workflow extension is L4 platform work: extend `.cursor/hooks.json` or CI steps so validate-workflow, check-pipeline-blocked, or staleness scripts run on session events without conductor turns. Changes must pass `python scripts/validate-workflow.py` on the PR that introduces them.\n\nHooks are not pursuit loops\u2014they fail closed into journal notes when scripts error. Extend-only hook changes follow [D5.2](D5.2-extend-backwards-compatible-staleness-bump.md); hook behavior that alters gate semantics needs explicit pack review. Successful promotion moves ambient enforcement up the [D1.5](D1.5-l4-ambient-hooks-ci-scheduled.md) ladder so S0 scripts run even when the conductor forgets."
+}

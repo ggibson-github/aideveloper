@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>D1.3 — L2 script S0 scripts/</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/D.html">Plane D</a> · <a href="../chapters/D-D1.html">D1</a> ·
+    D1.3
+  </nav>
+  <p class="page-id">D1.3 · Platform evolution plane</p>
+  <h1 class="page-title">L2 script S0 scripts/</h1>
+  <p class="page-subtitle">L2 script S0 scripts/</p>
+  
+  <div class="story-block"><p>L2 moves repeatable behavior into <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> scripts under <code>scripts/</code>: deterministic, testable, and mandatory-first per <a href="../capabilities/B1.1-s0-deterministic-mandatory-first.html" class="spec-link">B1.1</a>. Script extraction (<a href="../capabilities/D4.2-platform-work-script-extraction.html" class="spec-link">D4.2</a>) promotes playbook steps that no longer need model judgment—routing, validation, queue peek, verify dispatch.</p>
+<p>Each L2 artifact needs a unit test path and, when it replaces manual verify, a verify-router hook (<a href="../capabilities/D6.2-platform-done-verify-script-l2.html" class="spec-link">D6.2</a>). The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> runs scripts before improvising; workers must not re-implement script logic in chat. Failed promotion leaves the queue item open with <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> packaging, not a false done mark.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">L2 promotion moves repeatable playbook steps into deterministic scripts under <code>scripts/</code>—routing, validation, queue peek, and verify dispatch. script extraction on <a href="../glossary.html#platform-turn" class="glossary-link" title="Platform turn">platform turns</a>.</span></li><li><span class="step-num">Step 2</span><span class="step-text">At pursuit wake, <a href="../capabilities/B1.1-s0-deterministic-mandatory-first.html" class="spec-link">B1.1</a> mandatory-first requires the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> to run applicable L2 scripts and use their output before any worker re-implements the same logic in chat.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Each promoted L2 script carries a unit test path under tests/unit/ and, when it replaces manual verify, registers with <a href="../capabilities/G1.1-task-verify-router-verifier.html" class="spec-link">G1.1</a> verify-router.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Platform workers complete L2 promotion only when the script exists, tests pass, and <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> or playbook references point to the script—<a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> promotion_queue completion to journal and state.json.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If script extraction marks done without a test, verify-router cannot dispatch the script, or workers duplicate script behavior inline, pursuit fails closed at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> with the promotion item reopened—never false-complete L2 packaging.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids D1.3</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Platform queue depth 0 but product blocked on missing playbook — D3.3 priority cut skips platform drain.</li><li>Edge case D1.3 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;D1.3&quot;,
+  &quot;description&quot;: &quot;l2 script s0 scripts&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.16</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

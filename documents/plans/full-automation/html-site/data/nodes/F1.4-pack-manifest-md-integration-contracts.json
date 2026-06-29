@@ -1,0 +1,88 @@
+{
+  "id": "F1.4",
+  "slug": "F1.4-pack-manifest-md-integration-contracts",
+  "title": "pack manifest.md integration contracts",
+  "branch": "F",
+  "parent": "[F1-index](F1-index.md)",
+  "vision_section": "",
+  "release": "v2.19",
+  "purpose": "F1.4 defines pack manifest md integration contracts for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling.",
+  "scope": [
+    "Owns `F1.4` only; siblings under `F1` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a78 \u2014 Branch F \u2014 Organization plane (template-packs = ceiling)](../../full-automation-vision-and-hierarchy.md#8-branch-f-organization-plane-template-packs-ceiling)."
+  ],
+  "behavior_steps": [
+    "When `next_action` targets release or operate phases, the conductor routes through git-workflow, release-queue, and dashboard skills only after verify commands and rollback paths are bound in the task card and active pack per [J6](J6-release-queue.md).",
+    "Pack authors map APP-A-release to pipeline phases, [F1.8](F1.8-pack-verify-goal-verify-suites.md) verify suites, and playbooks so deploy preparation produces machine-checkable evidence\u2014not subjective \"shipped\" chat.",
+    "Plane I runtime integrations ([I3.2](I3.2-runtime-headless-github-actions-validate-verify.md), [I5.1](I5.1-runtime-notify-status-dashboard-generation.md)) run validate-workflow and verify-router in headless or CI context before H3 release sign-off is requested.",
+    "Operator dashboards and digest notifications surface release-queue status and H2 blockers per [A6.1](A6.1-notify-dashboard-status-webhook-phase-complete.md) and [A6.2](A6.2-notify-digest-on-h2-blocker-not-every-step.md) without unblocking pursuit loops.",
+    "Irreversible production actions without defined verify and rollback paths fail closed at H2 under Plane G rollback policy\u2014never set goal.state to achieved on undeployable or unrollbackable changes."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"node\": \"F1.4\",\n  \"description\": \"pack manifest md integration contracts\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Pack role handoff while lane lease held \u00e2\u20ac\u201d complete-work-order releases lease before role switch.",
+    "Edge case `F1.4` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `F1.4`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `company.yaml` + `roles/*.yaml` to template-packs schema.",
+    "program-scoper selects pack; sets state.company.active_role.",
+    "Per-role allowed_reads in lane.json work orders.",
+    "Validate `F1.4` against SEC-15 release checklist and parent index links.",
+    "Document `F1.4` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `F1.4`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids F1.4`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`template-packs/`",
+    "`program/integration/manifest.md`",
+    "`.cursor/skills/program-scoper/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a78",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[F1-index](F1-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids F1.4` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [F1-index](F1-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "F1.4 defines pack manifest md integration contracts for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling. In practice, the system when `next_action` targets release or operate phases, the conductor routes through git-workflow, release-queue, and dashboard skills only after verify commands and rollback paths are bound in the task card and active pack per [j6](j6-release-queue.md), then pack authors map app-a-release to pipeline phases, [f1.8](f1.8-pack-verify-goal-verify-suites.md) verify suites, and playbooks so deploy preparation produces machine-checkable evidence\u2014not subjective \"shipped\" chat.",
+  "reader_narrative": "<!-- prose-source: agent plane-f 2026-06-28 -->\n\n`manifest.md` in the pack defines integration contracts\u2014internal handoffs between roles and external boundaries (APIs, repos, third-party tools). This is the pack-authored precursor to `program/integration/manifest.md` that program-scoper materializes at instantiation ([F2.4](F2.4-company-conductor-handoffs-manifest-graph.md)).\n\nHuman gate clears parallel lanes only after manifest approval ([B5.3](B5.3-handoff-manifest-artifact-graph.md)). Contracts must name artifact types, verify commands, and blocking dependencies\u2014not vague \"coordinate with team.\" Cross-pack imports ([F5.1](F5.1-cross-pack-imports-micro-packs.md)) extend manifest rows when micro-packs add roles."
+}

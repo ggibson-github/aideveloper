@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>D6 — Platform definition of done</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/D.html">Plane D</a> ·
+    D6
+  </nav>
+  <p class="page-id">D6 · Platform evolution plane</p>
+  <h1 class="page-title">Platform definition of done</h1>
+  <div class="story-block"><p>D6: Platform definition of done. Open each capability below for diagrams, verification, and contracts.</p>
+<p>Platform promotion is not done until a <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> entry exists and INDEX row points to it—playbook slug, script path, skill name, or pack fragment id discoverable from <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">compose-first</a> search. INDEX regeneration (<a href="../capabilities/D4.5-platform-work-catalog-regeneration.html" class="spec-link">D4.5</a>) is often the completing step of another work type.</p>
+<p>Missing INDEX row fails audit-hierarchy-depth strict checks and leaves queue item reopenable. Row includes maturity level, verify command reference, and optional promotion id trace. Consumer goals should never hunt ad hoc paths omitted from INDEX; Librarian allowed_reads assume INDEX is authoritative for playbook discovery.</p>
+<p>For L2 and above promotions, definition of done requires a verify path—unit test, verify-router command, or validate-workflow hook—that proves the script or tool behaves as specified. L1 playbooks may cite manual verify until scripted; L2+ without automated verify fails platform done.</p>
+<p><a href="../glossary.html#evidence" class="glossary-link" title="Evidence">Evidence</a> discipline mirrors product tasks but writes platform-appropriate logs under <code>evidence/</code> or unit test output. Script promotion pairs extraction (<a href="../capabilities/D4.2-platform-work-script-extraction.html" class="spec-link">D4.2</a>) with test file in <code>tests/unit/</code>. False done without verify triggers audit re-enqueue and blocks <a href="../capabilities/D2.3-dequeue-platform-turn-not-product.html" class="spec-link">D2.3</a> head advance.</p>
+<p>At least one task card—or playbook procedure consumed by task cards—must reference the promoted artifact so future implement turns exercise it under <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> gates. Orphan scripts unused by pursuit are platform debt, not maturity.</p>
+<p>Reference can be Components field, Test command, or explicit allowed_reads entry on a template task card. Playbook-keeper should add reference guidance when capturing patterns from a source task. D6.3 closes the loop from product repetition to reusable tooling back to product—without reference, promotion did not enter the delivery loop and <a href="../capabilities/C3.1-task-cards-components-promotion-note.html" class="spec-link">C3.1</a> promotion_note intent is unfulfilled.</p>
+<p>Staleness graph wiring completes platform done: promoted artifact registers as a node in program or manifest staleness with upstream dependencies so reconcile-stale and reconcile-artifact-graph mark downstream design and tasks when the artifact changes (<a href="../capabilities/D5.2-extend-backwards-compatible-staleness-bump.html" class="spec-link">D5.2</a> extends bump this graph).</p>
+<p>Missing staleness node means silent consumer drift after platform edit. Wire node id, dependency edges, and pack scope in manifest JSON. Together with <a href="../capabilities/D6.1-platform-done-catalog-index-row.html" class="spec-link">D6.1</a>–<a href="../capabilities/D6.3-platform-done-task-card-references.html" class="spec-link">D6.3</a>, D6.4 is the audit gate before queue item done—see <a href="../chapters/D-D6.html" class="spec-link">D6-index</a>.</p>
+<p>Platform promotion to L6 completes only when the transistor is registered, referenced by at least one workflow or task card, verify-tested, and wired in staleness graph (E5.4).</p>
+<p>See <a href="../branches/D.html" class="spec-link">Vision §6 — Branch D — Platform evolution plane (parallel queue)</a> and SEC-18-transistor-model-a-to-z.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/D6.1-platform-done-catalog-index-row.html">D6.1</a></span>
+  <span class="cap-title">platform done catalog INDEX row</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/D6.2-platform-done-verify-script-l2.html">D6.2</a></span>
+  <span class="cap-title">platform done verify script L2+</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/D6.3-platform-done-task-card-references.html">D6.3</a></span>
+  <span class="cap-title">platform, done, task, card, and references</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/D6.4-platform-done-staleness-node-wired.html">D6.4</a></span>
+  <span class="cap-title">platform, done, staleness, node, and wired</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/D6.5-platform-done-transistor-registry-and-graph.html">D6.5</a></span>
+  <span class="cap-title">platform, done, transistor, registry, and, and graph</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

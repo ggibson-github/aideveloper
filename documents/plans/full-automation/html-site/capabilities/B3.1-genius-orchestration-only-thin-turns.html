@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>B3.1 — genius, orchestration, only, thin, and turns</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/B.html">Plane B</a> · <a href="../chapters/B-B3.html">B3</a> ·
+    B3.1
+  </nav>
+  <p class="page-id">B3.1 · Cognition &amp; routing plane</p>
+  <h1 class="page-title">genius, orchestration, only, thin, and turns</h1>
+  <p class="page-subtitle">genius orchestration only thin turns</p>
+  
+  <div class="story-block"><p>Genius-tier models are for orchestration turns only: routing, merge, gate decisions, and spawn planning—not for writing hundreds of lines of feature code. <code>model-policy.json</code> maps tiers; route-tier.py applies capability_class <a href="../glossary.html#s-tiers" class="glossary-link" title="Capability tiers S0 through S4">S0–S4</a> to pick worker vs parent model.</p>
+<p>Thin genius turns keep cost predictable and preserve worker parallelism. If the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> implements large task cards inline while spawn_workers is true, that violates this capability and collapses tier economics.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text"><a href="../capabilities/B1.1-s0-deterministic-mandatory-first.html" class="spec-link">B1.1</a> route-tier and <code>model-policy.json</code> assign genius tier only for S3/<a href="../glossary.html#s4" class="glossary-link" title="S4 — governance escalation">S4</a> orchestration turns; implement-heavy work routes to economy workers when <code>spawn_workers</code> is true.</span></li><li><span class="step-num">Step 2</span><span class="step-text">The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> keeps each genius turn thin—spawn planning, merge, routing, and gate decisions—without implementing large task cards inline while <code>spawn_workers</code> remains true.</span></li><li><span class="step-num">Step 3</span><span class="step-text">After <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> preflight, <a href="../capabilities/B2.1-conductor-genius-merge-route-platform-drain.html" class="spec-link">B2.1</a> reads <code>model_tier</code> from state.json and spawns workers rather than absorbing implement scope into the parent session.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Parallel spawn under orchestrate-subagents preserves worker budgets; the genius parent merges summaries via <a href="../capabilities/A2.3-post-step-route-tier-dual-write-increment.html" class="spec-link">A2.3</a> <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> instead of re-implementing worker output.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> implements bulk code inline while <code>spawn_workers</code> is true, validate-workflow flags a tier violation and pursuit halts at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> until routing resets to thin orchestration.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids B3.1</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case B3.1 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case B3.1 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;B3.1&quot;,
+  &quot;description&quot;: &quot;genius orchestration only thin turns&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

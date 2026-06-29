@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>B5.4 — conductor, stays, workers, swap, role, and context</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/B.html">Plane B</a> · <a href="../chapters/B-B5.html">B5</a> ·
+    B5.4
+  </nav>
+  <p class="page-id">B5.4 · Cognition &amp; routing plane</p>
+  <h1 class="page-title">conductor, stays, workers, swap, role, and context</h1>
+  <p class="page-subtitle">conductor stays workers swap role context</p>
+  
+  <div class="story-block"><p>The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> identity persists across role switches; workers swap with fresh allowed_reads and role context per spawn. The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> does not “become” the implement worker—it merges worker output and maintains single-writer journal/state discipline.</p>
+<p>This separation prevents role context bleed (platform worker editing consumer tasks) and keeps <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> packaging centralized in S4. Multi-role company pursuit depends on stable <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> identity with ephemeral worker personas.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When <a href="../capabilities/B5.1-active-role-from-template-pack.html" class="spec-link">B5.1</a> rotates <code>active_role</code>, the genius-tier <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> retains orchestration identity—merge authority, routing, and sole journal/state <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>—while each spawn gets a fresh worker persona with role-scoped <code>allowed_reads</code> and tool permissions.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Workers execute one phase contract (implement, explore, verifier) and return summaries plus <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> paths; they must not assume <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> persistence across turns or mutate journal/state.json even when the active role name changes mid-pursuit.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Role switches update state.json <code>active_role</code> and pack-derived skill/tool bindings. before the next spawn so a platform worker cannot inherit consumer task scope from the prior persona.</span></li><li><span class="step-num">Step 4</span><span class="step-text"><a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> blocker packaging stays with the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> at <a href="../capabilities/B1.5-s4-governance-escalation-h2-packaging.html" class="spec-link">B1.5</a>—workers surface blockers in summaries but do not re-prompt the operator directly, preserving centralized <a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">HITL</a> discipline across role rotations.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If a worker <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s journal/state, edits outside role <code>allowed_reads</code>, or the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> implements large task cards inline when <code>spawn_workers</code> is true, pursuit fails closed at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> until role context is reset and <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> authority is restored to the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> only.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids B5.4</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case B5.4 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case B5.4 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;B5.4&quot;,
+  &quot;description&quot;: &quot;conductor stays workers swap role context&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,89 @@
+{
+  "id": "C4.3",
+  "slug": "C4.3-integration-manifest-cross-stream-contract",
+  "title": "integration manifest cross-stream contract",
+  "branch": "C",
+  "parent": "[C4-index](C4-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "C4.3 defines integration manifest cross stream contract for the agent-driven expert system. Product execution \u2014 pipelines, tasks, program, delivery.",
+  "scope": [
+    "Owns `C4.3` only; siblings under `C4` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a75 \u2014 Branch C \u2014 Product execution plane](../../full-automation-vision-and-hierarchy.md#5-branch-c-product-execution-plane)."
+  ],
+  "behavior_steps": [
+    "When program-scoper decomposes a mega-spec, integration-manifest-keeper drafts `docs/program/integration/manifest.md` with API surfaces, shared schemas, test harness boundaries, and per-stream completion criteria\u2014the cross-stream contract before parallel lanes execute.",
+    "Parallel implement via [C4.2](C4.2-orchestrate-program.md) and [C4.1](C4.1-workstreams-lane-json-leases.md) stays BLOCKED at [A2.1](A2.1-preflight-check-pipeline-blocked-extended.md) until manifest approval clears H1 (or pack self-gate with verify suite when pack policy allows).",
+    "Each lane worker receives only its manifest slice through Librarian `allowed_reads`; lane scope must not drift beyond declared integration boundaries in the contract.",
+    "Manifest edits mark artifact graph nodes stale via reconcile-artifact-graph; dependent lanes pause at preflight until reconcile-stale completes and journal records reconciliation.",
+    "If manifest gaps leave stream boundaries ambiguous or lanes implement against an unapproved contract, program goal_verify fails closed at H2 until manifest-keeper updates the contract and operators re-approve."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"C4.3\",\n  \"description\": \"integration manifest cross stream contract\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `C4.3` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `C4.3` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `C4.3`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `C4.3` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_c4_3.py when script exists.",
+    "Validate `C4.3` against SEC-15 release checklist and parent index links.",
+    "Document `C4.3` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `C4.3`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids C4.3`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/tasks/`",
+    "`docs/manifest/pipelines/`",
+    "`.cursor/skills/implement-feature/`",
+    "`program/workstreams/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a75",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[C4-index](C4-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids C4.3` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [C4-index](C4-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "C4.3 defines integration manifest cross stream contract for the agent-driven expert system. Product execution \u2014 pipelines, tasks, program, delivery. In practice, the system when program-scoper decomposes a mega-spec, integration-manifest-keeper drafts `docs/program/integration/manifest.md` with api surfaces, shared schemas, test harness boundaries, and per-stream completion criteria\u2014the cross-stream contract before parallel lanes execute, then parallel implement via [c4.2](c4.2-orchestrate-program.md) and [c4.1](c4.1-workstreams-lane-json-leases.md) stays blocked at [a2.1](a2.1-preflight-check-pipeline-blocked-extended.md) until manifest approval clears h1 (or pack self-gate with verify suite when pack policy allows).",
+  "reader_narrative": "<!-- prose-source: agent plane-c 2026-06-28 -->\n\nIntegration manifest is the cross-stream contract: API surfaces, shared schemas, test harness boundaries, and completion criteria per stream. Human gate before parallel implement unless pack policy self-gates with verify suite.\n\nManifest changes mark artifact graph nodes stale; dependent lanes pause at preflight until reconcile completes. This document is the program-level analog of feature design approval."
+}

@@ -1,0 +1,84 @@
+{
+  "id": "SEC-17-3",
+  "slug": "SEC-17-3-decision-platform-k-ratio-fixed-vs-adaptive",
+  "title": "Decision platform K ratio fixed vs adaptive",
+  "branch": "meta",
+  "parent": "\u2014",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "SEC-17-3 defines decision platform k ratio fixed vs adaptive for the agent-driven expert system. Roadmap, gap analysis, pursuit flow, decisions.",
+  "scope": [
+    "Owns `SEC-17-3` only; siblings under `\u2014` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a717 \u2014 Open design decisions](../../full-automation-vision-and-hierarchy.md#17-open-design-decisions)."
+  ],
+  "behavior_steps": [
+    "During pursuit, [D3.1](D3.1-1-platform-turn-per-k-product-turns.md) decides whether each product turn drains a fixed one-in-K platform slot or uses adaptive scheduling based on promotion backlog depth\u2014a pending SEC-17 decision not yet hard-coded in autopilot.",
+    "Fixed K ratios make platform-vs-product interleave predictable for operators and cost models; adaptive ratios shift toward Plane D when platform queue depth crosses thresholds per [D3.2](D3.2-priority-boost-queue-depth-threshold.md).",
+    "Until SEC-17-3 resolves, conductor and S0 schedulers should log queue depth samples so simulation can inform the policy choice before unattended company_autopilot locks a ratio.",
+    "[B3.4](B3.4-platform-turns-economy-plus-s0-scripts.md) still requires economy platform turns plus S0 scripts regardless of ratio\u2014the decision only affects when platform dequeue competes with product next_action.",
+    "If adaptive scheduling starves product work or fixed K buries promotion backlog, pursuit surfaces H2 with queue metrics so operators record a Resolved Q&A decision and update pack policy."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"node\": \"SEC-17-3\",\n  \"description\": \"decision platform k ratio fixed vs adaptive\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `SEC-17-3` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `SEC-17-3` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `SEC-17-3`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `SEC-17-3` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_sec-17-3.py when script exists.",
+    "Validate `SEC-17-3` against SEC-15 release checklist and parent index links.",
+    "Document `SEC-17-3` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `SEC-17-3`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids SEC-17-3`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a717",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[\u2014-index](\u2014-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids SEC-17-3` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [\u2014-index](\u2014-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "SEC-17-3 defines decision platform k ratio fixed vs adaptive for the agent-driven expert system. Roadmap, gap analysis, pursuit flow, decisions. In practice, the system during pursuit, [d3.1](d3.1-1-platform-turn-per-k-product-turns.md) decides whether each product turn drains a fixed one-in-k platform slot or uses adaptive scheduling based on promotion backlog depth\u2014a pending sec-17 decision not yet hard-coded in autopilot, then fixed k ratios make platform-vs-product interleave predictable for operators and cost models; adaptive ratios shift toward plane d when platform queue depth crosses thresholds per [d3.2](d3.2-priority-boost-queue-depth-threshold.md).",
+  "reader_narrative": "<!-- prose-source: agent meta 2026-06-28 -->\n\nOpen decision: platform scheduling ratio\u2014fixed one platform step per K product steps versus adaptive scheduling by queue depth. Fixed ratios are predictable; adaptive ratios respond to promotion backlog pressure.\n\nSimulation on real queue depths should inform the choice before hard-coding K in autopilot."
+}

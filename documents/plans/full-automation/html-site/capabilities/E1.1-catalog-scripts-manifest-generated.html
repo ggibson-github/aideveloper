@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>E1.1 — catalog, scripts, manifest, and generated</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/E.html">Plane E</a> · <a href="../chapters/E-E1.html">E1</a> ·
+    E1.1
+  </nav>
+  <p class="page-id">E1.1 · Knowledge &amp; composition plane</p>
+  <h1 class="page-title">catalog, scripts, manifest, and generated</h1>
+  <p class="page-subtitle">catalog scripts manifest generated</p>
+  
+  <div class="story-block"><p>The scripts <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> is a generated manifest under <code>scripts/</code> that lists every S0-capable entry point—route-tier, validate-workflow, verify-router, hierarchy automation—so conductors and compose queries discover deterministic behavior without grep-ing the tree.</p>
+<p>Regeneration runs via <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> when scripts change; the manifest feeds <a href="../capabilities/E2.2-compose-query-catalog-list-components.html" class="spec-link">E2.2</a> list-components and the umbrella <a href="../capabilities/E1.7-catalog-platform-catalog-md-umbrella.html" class="spec-link">E1.7</a>. Stale manifest rows trigger <a href="../capabilities/E5.2-staleness-extend-playbooks-scripts-pack-nodes.html" class="spec-link">E5.2</a> graph updates. See <a href="../branches/E.html" class="spec-link">Vision §7 — Branch E — Knowledge &amp; composition plane</a>.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">The scripts <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> is a generated manifest under scripts/ that lists every S0-capable entry point—route-tier, validate-workflow, verify-router, hierarchy automation—so conductors and compose queries discover deterministic behavior without grep-ing the tree</span></li><li><span class="step-num">Step 2</span><span class="step-text">Regeneration runs via <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> when scripts change; the manifest feeds E2.2 list-components and the umbrella E1.7</span></li><li><span class="step-num">Step 3</span><span class="step-text">During pursuit, enforce the <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a>, scripts, manifest, and generated contract within <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">Catalog</a> (single discovery surface) (Plane E).</span></li><li><span class="step-num">Step 4</span><span class="step-text">Run <a href="../capabilities/B1.1-s0-deterministic-mandatory-first.html" class="spec-link">S0</a> scripts before improvising when file-derived behavior exists.</span></li><li><span class="step-num">Step 5</span><span class="step-text"><a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">Dual-write</a> journal and state.json after the step; attach <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> when verification applies.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids E1.1</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case E1.1 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case E1.1 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;E1.1&quot;,
+  &quot;description&quot;: &quot;catalog scripts manifest generated&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.17</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

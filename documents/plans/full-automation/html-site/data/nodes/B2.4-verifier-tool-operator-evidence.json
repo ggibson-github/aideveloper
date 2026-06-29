@@ -1,0 +1,89 @@
+{
+  "id": "B2.4",
+  "slug": "B2.4-verifier-tool-operator-evidence",
+  "title": "Verifier tool-operator evidence",
+  "branch": "B",
+  "parent": "[B2-index](B2-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "B2.4 defines verifier tool operator evidence for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack.",
+  "scope": [
+    "Owns `B2.4` only; siblings under `B2` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a74 \u2014 Branch B \u2014 Cognition & routing plane](../../full-automation-vision-and-hierarchy.md#4-branch-b-cognition-routing-plane)."
+  ],
+  "behavior_steps": [
+    "When a task card declares a Test command or Tool command, the conductor spawns Verifier or tool-operator shell workers to run the literal CLI block and capture output under `evidence/`.",
+    "verify-router.py dispatches pytest and records `last_verify` in state.json; non-pytest evidence follows `docs/operator/evidence-types.md` paths declared on the card.",
+    "Verifier and tool-operator workers do not edit product source except through declared tool output paths; they return bounded logs to the conductor for merge.",
+    "`last_verify=passed` is required before the conductor marks an evidence-required implement task complete or advances past implement-feature.",
+    "Verifier failure blocks task completion and may invoke [B3.3](B3.3-escalation-loop-on-verify-fail.md); workers cannot self-clear evidence gates without conductor re-run."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"B2.4\",\n  \"description\": \"verifier tool operator evidence\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `B2.4` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `B2.4` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `B2.4`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `B2.4` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_b2_4.py when script exists.",
+    "Validate `B2.4` against SEC-15 release checklist and parent index links.",
+    "Document `B2.4` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `B2.4`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids B2.4`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/operator/model-policy.json`",
+    "`scripts/route-tier.py`",
+    "`.cursor/skills/librarian/`",
+    "`.cursor/rules/genius-conductor.mdc`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a74",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[B2-index](B2-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids B2.4` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [B2-index](B2-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "B2.4 defines verifier tool operator evidence for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack. In practice, the system when a task card declares a test command or tool command, the conductor spawns verifier or tool-operator shell workers to run the literal cli block and capture output under `evidence/`, then verify-router.py dispatches pytest and records `last_verify` in state.json; non-pytest evidence follows `docs/operator/evidence-types.md` paths declared on the card.",
+  "reader_narrative": "<!-- prose-source: agent plane-b 2026-06-28 -->\n\nVerifier and tool-operator are shell-class workers for bounded CLI runs: pytest via verify-router, Blender/Unreal export commands, checksum tools\u2014anything with a literal command block on the task card. They write evidence logs under `evidence/` and set `last_verify` in state.\n\nNon-pytest evidence types follow `docs/operator/evidence-types.md`. Verifier failure blocks task completion and may trigger [B3.3](B3.3-escalation-loop-on-verify-fail.md) escalation without clearing gates. Tool-operator never edits product source except via declared tool output paths."
+}

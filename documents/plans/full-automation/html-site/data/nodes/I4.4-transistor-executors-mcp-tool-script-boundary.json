@@ -1,0 +1,100 @@
+{
+  "id": "I4.4",
+  "slug": "I4.4-transistor-executors-mcp-tool-script-boundary",
+  "title": "transistor executors MCP tool script boundary",
+  "branch": "I",
+  "parent": "[I4-index](I4-index.md)",
+  "vision_section": "",
+  "release": "v2.26",
+  "purpose": "I4.4 defines transistor executors mcp tool script boundary for the agent-driven expert system. Transistor & generator workflow model (\u00a719).",
+  "scope": [
+    "Owns `I4.4` only; siblings under `I4` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a711 \u2014 Branch I \u2014 Runtime & integration plane](../../full-automation-vision-and-hierarchy.md#11-branch-i-runtime-integration-plane)."
+  ],
+  "behavior_steps": [
+    "executor.kind tool resolves to pack MCP allowlist entry; evidence via I4.3 types.",
+    "Blender/UE/browser transistors in game studio pack use same boundary as I4.1.",
+    "Script executors run in verifier/tool-operator shell subagents\u2014not parent context.",
+    "Cross-executor workflows must declare artifact handoff paths in transistor I/O\u2014not chat memory.",
+    "Unsafe command G5.7 applies per executor invocation."
+  ],
+  "mermaid": "flowchart TD\n  compose[Compose workflow] --> validate[validate-workflow-dag S0]\n  validate -->|pass| exec[Execute one node]\n  exec --> nodeVerify[Transistor verify]\n  nodeVerify -->|pass| next[Advance active_workflow]\n  nodeVerify -->|fail| h2[H2 or retry gate]\n  next --> goalVerify[goal_verify rollup]",
+  "json_example": "{\n  \"node\": \"I4.4\",\n  \"description\": \"transistor executors mcp tool script boundary\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\", \"active_workflow\": \"H1.7\" },\n  \"implemented_in_release\": \"v2.26+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u2014 state.json must resume from last good dual-write including active_workflow.",
+    "Transistor version bump mid-pursuit \u2014 E5.4 marks workflow stale; re-validate before next node.",
+    "L0 waiver node without promotion progress \u2014 D3.3 priority boost then H2 if threshold exceeded.",
+    "Pack overlay id collision \u2014 F5.4 semver fork per D5.3, not silent overwrite.",
+    "Parallel branch join missing typed input \u2014 validate-workflow-dag fails at compose time."
+  ],
+  "failure_modes": [
+    "**Fuzzy chain:** Implement without workflow_node_id when C6.1 applies \u2192 G5.8 blocks at preflight.",
+    "**False complete:** Node marked done without transistor verify evidence \u2192 G2.5 goal_verify fails closed.",
+    "**Stale workflow:** active_workflow.validation_hash mismatch \u2192 E5.4 reconcile before advance.",
+    "**Duplicate transistor:** G5.6 list-transistors --check-duplicates rejects promotion.",
+    "**Scope bleed:** Worker runs transistors outside bound node \u2192 C6.3 conformance failure."
+  ],
+  "implementation": [
+    "Map `I4.4` to release row in [SEC-15-index](SEC-15-index.md) (v2.26).",
+    "Implement behavior per [SEC-18](SEC-18-transistor-model-a-to-z.md) acceptance checklist.",
+    "Add or extend S0 script when behavior is file-derived.",
+    "Add unit test under `tests/unit/` when script exists.",
+    "Link from [I4-index](I4-index.md).",
+    "Run `python scripts/validate-workflow.py` after implement."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids I4.4`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "DAG validity",
+      "Command": "`python scripts/automation/validate-workflow-dag.py` when workflow exists"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/platform/transistors/`",
+    "`docs/platform/schemas/transistor.v1.json`",
+    "`docs/platform/schemas/workflow-dag.v1.json`",
+    "`docs/workflows/`",
+    "`scripts/automation/list-transistors.py`",
+    "`scripts/automation/validate-workflow-dag.py`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[SEC-18-transistor-model-a-to-z](SEC-18-transistor-model-a-to-z.md)",
+      "Why": "A\u2013Z authority"
+    },
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a719",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[I4-index](I4-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids I4.4` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [I4-index](I4-index.md)",
+    "[ ] Aligned with SEC-18 transistor model",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "I4.4 defines transistor executors mcp tool script boundary for the agent-driven expert system. Transistor & generator workflow model (\u00a719). In practice, the system executor.kind tool resolves to pack mcp allowlist entry; evidence via i4.3 types, then blender/ue/browser transistors in game studio pack use same boundary as i4.1.",
+  "reader_narrative": "<!-- prose-source: agent transistor-expansion 2026-06-28 -->\n\nRuntime policy for transistor executors: scripts via S0, tools via tool-operator/MCP with role allowlist (F6.3), soft via bounded workers\u2014never bypass preToolUse hooks.\n\nSee [Vision \u00a711 \u2014 Branch I \u2014 Runtime & integration plane](../../full-automation-vision-and-hierarchy.md#branch-i--runtime--integration-plane) and [SEC-18-transistor-model-a-to-z](SEC-18-transistor-model-a-to-z.md)."
+}

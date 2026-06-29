@@ -1,0 +1,89 @@
+{
+  "id": "B4.3",
+  "slug": "B4.3-compose-first-catalog-before-improvise",
+  "title": "compose-first catalog before improvise",
+  "branch": "B",
+  "parent": "[B4-index](B4-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "B4.3 defines compose first catalog before improvise for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack.",
+  "scope": [
+    "Owns `B4.3` only; siblings under `B4` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a74 \u2014 Branch B \u2014 Cognition & routing plane](../../full-automation-vision-and-hierarchy.md#4-branch-b-cognition-routing-plane)."
+  ],
+  "behavior_steps": [
+    "Before inventing new patterns, the conductor or S2 phase skills run compose-first catalog search\u2014INDEX.md, playbooks, pack components, and facts files\u2014and bind hits in the task or design record.",
+    "[B2.2](B2.2-librarian-allowed-reads-catalog-composition.md) Librarian briefings narrow reads; Plane E compose resolves capability_needed before improvisation.",
+    "Improvisation without catalog search is logged as divergence per [B4.4](B4.4-divergence-log-when-not-composing.md) and may enqueue platform promotion instead of silent one-off chat logic.",
+    "This implements the reuse ladder\u2014ephemeral reasoning shrinks as S0 scripts and pack fragments absorb repeated patterns per [MASTER-E](MASTER-E-branch-e---knowledge---composition-plane.md).",
+    "If catalog refs in the task card disagree with files on disk, pursuit blocks at H2 until staleness reconcile or S3 updates the binding."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"node\": \"B4.3\",\n  \"description\": \"compose first catalog before improvise\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `B4.3` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `B4.3` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `B4.3`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `B4.3` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_b4_3.py when script exists.",
+    "Validate `B4.3` against SEC-15 release checklist and parent index links.",
+    "Document `B4.3` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `B4.3`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids B4.3`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/operator/model-policy.json`",
+    "`scripts/route-tier.py`",
+    "`.cursor/skills/librarian/`",
+    "`.cursor/rules/genius-conductor.mdc`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a74",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[B4-index](B4-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids B4.3` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [B4-index](B4-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "B4.3 defines compose first catalog before improvise for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack. In practice, the system before inventing new patterns, the conductor or s2 phase skills run compose-first catalog search\u2014index.md, playbooks, pack components, and facts files\u2014and bind hits in the task or design record, then [b2.2](b2.2-librarian-allowed-reads-catalog-composition.md) librarian briefings narrow reads; plane e compose resolves capability_needed before improvisation.",
+  "reader_narrative": "<!-- prose-source: agent plane-b 2026-06-28 -->\n\nCompose-first requires catalog search before inventing new patterns: INDEX.md, playbooks, existing pack components, and facts files must be consulted and bound in the task or design record. Improvisation without catalog search is a divergence logged in Plane E.\n\nThis capability implements the expert-system reuse ladder\u2014ephemeral reasoning should shrink over time as S0 scripts and pack fragments absorb repeated patterns. See [MASTER-E](../full-automation/MASTER-E-branch-e---knowledge---composition-plane.md)."
+}

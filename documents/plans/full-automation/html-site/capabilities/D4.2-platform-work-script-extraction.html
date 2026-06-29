@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>D4.2 — platform, work, script, and extraction</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/D.html">Plane D</a> · <a href="../chapters/D-D4.html">D4</a> ·
+    D4.2
+  </nav>
+  <p class="page-id">D4.2 · Platform evolution plane</p>
+  <h1 class="page-title">platform, work, script, and extraction</h1>
+  <p class="page-subtitle">platform work script extraction</p>
+  
+  <div class="story-block"><p>Script extraction promotes L1 playbook steps—or verified manual commands—into <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> Python under <code>scripts/</code> with tests. Extraction is platform work: changes tooling for all future goals, not the current consumer feature <a href="../glossary.html#branch" class="glossary-link" title="Branch">branch</a> unless explicitly shared.</p>
+<p>Extracted scripts must be idempotent, CLI-invokable, and referenced from playbook diff. Wire verify-router when script replaces task-card Test command. Backwards-compatible extensions use <a href="../capabilities/D5.2-extend-backwards-compatible-staleness-bump.html" class="spec-link">D5.2</a>; behavior breaks require <a href="../capabilities/D5.3-fork-new-catalog-entry-provenance.html" class="spec-link">D5.3</a> fork with new <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> id. <a href="../capabilities/B1.1-s0-deterministic-mandatory-first.html" class="spec-link">B1.1</a> mandates <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> runs script before model re-derivation.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">On platform drain for script-extraction items, an economy worker promotes stable L1 playbook steps or verified manual commands into idempotent <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> Python under <code>scripts/</code> with tests.</span></li><li><span class="step-num">Step 2</span><span class="step-text">The worker wires verify-router when the extracted script replaces a task-card Test command so future implement turns invoke <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> instead of ad-hoc shell.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Playbook diff references the new script path; the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> enforces <a href="../capabilities/B1.1-s0-deterministic-mandatory-first.html" class="spec-link">B1.1</a>—run the script before the model re-derives the same behavior.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Backwards-compatible behavior changes follow <a href="../capabilities/D5.2-extend-backwards-compatible-staleness-bump.html" class="spec-link">D5.2</a>; breaking changes require <a href="../capabilities/D5.3-fork-new-catalog-entry-provenance.html" class="spec-link">D5.3</a> fork with new <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> id and provenance.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If extraction lacks tests, a CLI entry point, or playbook linkage, the queue item stays open and pursuit blocks false L2 promotion at H2.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids D4.2</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Platform queue depth 0 but product blocked on missing playbook — D3.3 priority cut skips platform drain.</li><li>Edge case D4.2 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;D4.2&quot;,
+  &quot;description&quot;: &quot;platform work script extraction&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.16</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

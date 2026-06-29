@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>J3 — strict and hitl</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/J.html">Plane J</a> · <a href="../chapters/J-J3.html">J3</a> ·
+    J3
+  </nav>
+  <p class="page-id">J3 · Governance &amp; operator plane</p>
+  <h1 class="page-title">strict and hitl</h1>
+  <p class="page-subtitle">strict hitl</p>
+  
+  <div class="story-block"><p><code>strict_hitl</code> mode in state.json hitl block forces explicit human clearance for gates that default self-gate would auto-pass with <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>. Enable for regulated environments, external-audit programs, or operator preference during early pack rollout.</p>
+<p>When strict_hitl is true, continue and <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> stop at every pending <a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">H1/H2/H3</a> until journal records explicit approval phrases—observation alone does not unblock (<a href="../capabilities/A6.3-operator-observe-without-unblocking-loop.html" class="spec-link">A6.3</a>). Pack defaults may set strict_hitl per role (<a href="../capabilities/H1.5-state-hitl-block.html" class="spec-link">H1.5</a>).</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">strict_hitl mode in state.json hitl block forces explicit human clearance for gates that default self-gate would auto-pass with <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a></span></li><li><span class="step-num">Step 2</span><span class="step-text">When strict_hitl is true, continue and <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> stop at every pending <a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">H1/H2/H3</a> until journal records explicit approval phrases—observation alone does not unblock (A6.3)</span></li><li><span class="step-num">Step 3</span><span class="step-text">During pursuit, enforce the strict and hitl contract within J3 (Plane J).</span></li><li><span class="step-num">Step 4</span><span class="step-text">Run <a href="../capabilities/B1.1-s0-deterministic-mandatory-first.html" class="spec-link">S0</a> scripts before improvising when file-derived behavior exists.</span></li><li><span class="step-num">Step 5</span><span class="step-text"><a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">Dual-write</a> journal and state.json after the step; attach <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> when verification applies.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids J3</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case J3 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case J3 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;J3&quot;,
+  &quot;description&quot;: &quot;strict hitl&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

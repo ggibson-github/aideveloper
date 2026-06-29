@@ -1,0 +1,89 @@
+{
+  "id": "A1.2",
+  "slug": "A1.2-success-criteria-machine-checkable",
+  "title": "success_criteria machine-checkable",
+  "branch": "A",
+  "parent": "[A1-index](A1-index.md)",
+  "vision_section": "",
+  "release": "v2.14",
+  "purpose": "A1.2 defines success criteria machine checkable for the agent-driven expert system. Pursuit & control plane \u2014 autonomous loops until goal verified.",
+  "scope": [
+    "Owns `A1.2` only; siblings under `A1` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a73 \u2014 Branch A \u2014 Pursuit & control plane](../../full-automation-vision-and-hierarchy.md#3-branch-a-pursuit-control-plane)."
+  ],
+  "behavior_steps": [
+    "At H1 plan approval, the conductor records `success_criteria[]` in `state.goal` as machine-checkable predicates\u2014exit codes, artifact paths, or metric thresholds\u2014that [A1.3](A1.3-goal-verify-command-meta-test.md) and the verifier can run without human judgment.",
+    "On each pursuit wake, [A2.1](A2.1-preflight-check-pipeline-blocked-extended.md) rejects criteria that cannot map to a script, test, or artifact check; subjective language forces an H2 blocker before any implement step proceeds.",
+    "The conductor binds each criterion to a concrete verify command or evidence path in task cards so workers know which checks must pass before `goal.state` may advance past pursuing.",
+    "If operators amend success_criteria mid-pursuit, the conductor dual-writes journal and state.json, then re-runs preflight so downstream steps do not pursue an obsolete definition of done.",
+    "When verification cannot reconcile criteria against collected evidence, pursuit fails closed at H2 rather than transitioning to achieved or H3 pending."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"goal\": {\n    \"id\": \"goal-001\",\n    \"parent_goal\": null,\n    \"type\": \"program\",\n    \"success_criteria\": [\"manifest approved\", \"goal_verify exit 0\"],\n    \"verify_command\": \"python scripts/goal-verify.py\",\n    \"state\": \"pursuing\"\n  }\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "goal_verify passes but H3 rejected \u00e2\u20ac\u201d goal.state returns to pursuing with rejection notes.",
+    "Edge case `A1.2` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `A1.2`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `goal` block to state template and journal-keeper dual-write (v2.14).",
+    "Extend `check-pipeline-blocked.py` with goal_autopilot stop reasons.",
+    "Implement `scripts/goal-verify.py` stub aggregating task evidence paths.",
+    "Add `.cursor/skills/goal-keeper/SKILL.md` for conductor H1\u00e2\u2020\u2019pursuit transition.",
+    "Document `A1.2` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `A1.2`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids A1.2`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`journal/state.json `goal`, `pursuit`, `hitl``",
+    "`scripts/automation/check-pipeline-blocked.py`",
+    "`scripts/automation/run-local-pipeline.py`",
+    "`.cursor/skills/autopilot/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a73",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[A1-index](A1-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids A1.2` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [A1-index](A1-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "A1.2 defines success criteria machine checkable for the agent-driven expert system. Pursuit & control plane \u2014 autonomous loops until goal verified. In practice, the system at h1 plan approval, the conductor records `success_criteria[]` in `state.goal` as machine-checkable predicates\u2014exit codes, artifact paths, or metric thresholds\u2014that [a1.3](a1.3-goal-verify-command-meta-test.md) and the verifier can run without human judgment, then on each pursuit wake, [a2.1](a2.1-preflight-check-pipeline-blocked-extended.md) rejects criteria that cannot map to a script, test, or artifact check; subjective language forces an h2 blocker before any implement step proceeds.",
+  "reader_narrative": "<!-- prose-source: agent pilot 2026-06-28 -->\n\nA goal that cannot be checked mechanically is not a goal the system can pursue autonomously. This capability requires success_criteria that scripts or tests can evaluate\u2014clear predicates, exit codes, or artifact checks\u2014not subjective \u201clooks good\u201d language.\n\nSuccess criteria are the bridge between intent (approved at H1) and [goal verification](A1.3-goal-verify-command-meta-test.md). Each criterion should map to a command, file presence, or metric the verifier can run without asking a human. Vague criteria force H2 blockers and stall the always-on loop.\n\nWhen criteria change mid-pursuit, the conductor must dual-write the update and re-run preflight so downstream steps do not assume an obsolete definition of done. Poor criteria are a common root cause of false \u201cachieved\u201d states; this spec exists to prevent that class of failure."
+}

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>G1.1 — task verify-router verifier</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/G.html">Plane G</a> · <a href="../chapters/G-G1.html">G1</a> ·
+    G1.1
+  </nav>
+  <p class="page-id">G1.1 · Verification &amp; quality plane</p>
+  <h1 class="page-title">task verify-router verifier</h1>
+  <p class="page-subtitle">task verify-router verifier</p>
+  
+  <div class="story-block"><p>Task-level verification runs through <code>scripts/verify-router.py</code> and the verifier skill: the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> or shell worker executes the literal Test or Tool command from the task card, writes <code>evidence/task-NNN-test.log</code>, and sets <code>last_verify</code> in state.json before any implement task advances.</p>
+<p>This is the bottom <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> gate—no narrative “tests pass” substitutes for a log file. Non-pytest <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> types follow <code>docs/operator/evidence-types.md</code>. Pair with <a href="../capabilities/G1.2-evidence-required-state.html" class="spec-link">G1.2</a> and <a href="../capabilities/B2.4-verifier-tool-operator-evidence.html" class="spec-link">B2.4</a>. See <a href="../branches/G.html" class="spec-link">Vision §9 — Branch G — Verification &amp; quality plane (anti-mistake)</a>.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart TD
+  trigger[Trigger condition] --&gt; pre[Preconditions S0]
+  pre --&gt; exec[Execute step logic]
+  exec --&gt; verify[Verify output]
+  verify --&gt;|pass| done[Mark queue item done]
+  verify --&gt;|fail| h2[H2 blocker]</pre>
+</div>
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When an implement task has <code>evidence_required: true</code>, the verifier skill or <code>verify-router.py</code> runs the task card Test/Tool command and writes an immutable log under <code>evidence/</code> before the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> sets <code>last_verify</code> to passed.</span></li><li><span class="step-num">Step 2</span><span class="step-text">The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> records each <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> path in journal <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">Evidence</a> files and <code>state.json</code> <code>evidence_files</code> so audits and <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> can aggregate proof across tasks (<a href="../capabilities/G1.1-task-verify-router-verifier.html" class="spec-link">G1.1</a>, <a href="../capabilities/C3.3-evidence-per-task.html" class="spec-link">C3.3</a>).</span></li><li><span class="step-num">Step 3</span><span class="step-text">Non-pytest <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> types—tool logs, checksums, screenshots—follow <code>docs/operator/evidence-types.md</code>.).</span></li><li><span class="step-num">Step 4</span><span class="step-text">Pursuit does not advance past the current implement task while <code>evidence_required</code> is true and required logs are missing from disk—<code>check-pipeline-blocked</code> returns a hard stop.</span></li><li><span class="step-num">Step 5</span><span class="step-text">git-workflow and push require <code>last_verify: passed</code> or a documented journal exception; if <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> paths drift between disk, journal, and state.json, pursuit fail-closes at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> until reconciliation.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids G1.1</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Flaky test — escalation S4 once, then H2 with evidence log; no silent retry loop.</li><li>Edge case G1.1 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;goal&quot;: {
+    &quot;verify_command&quot;: &quot;python scripts/goal-verify.py&quot;,
+    &quot;state&quot;: &quot;verifying&quot;
+  },
+  &quot;last_verify&quot;: &quot;passed&quot;,
+  &quot;evidence_required&quot;: true
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

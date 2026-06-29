@@ -1,0 +1,88 @@
+{
+  "id": "F4.2",
+  "slug": "F4.2-data-platform-pipelines-ingest-model-deploy-monitor",
+  "title": "data platform pipelines ingest model deploy monitor",
+  "branch": "F",
+  "parent": "[F4-index](F4-index.md)",
+  "vision_section": "",
+  "release": "v2.19",
+  "purpose": "F4.2 defines data platform pipelines ingest model deploy monitor for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling.",
+  "scope": [
+    "Owns `F4.2` only; siblings under `F4` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a78 \u2014 Branch F \u2014 Organization plane (template-packs = ceiling)](../../full-automation-vision-and-hierarchy.md#8-branch-f-organization-plane-template-packs-ceiling)."
+  ],
+  "behavior_steps": [
+    "When a data-platform pack goal activates, [F2.2](F2.2-company-spawn-workstream-department-role-lane.md) maps ingest, model/transform, deploy, and monitor phases to engineer, DBA, and SRE lanes with governance checkpoints before parallel work starts.",
+    "Before deploy lanes dequeue, [F1.4](F1.4-pack-manifest-md-integration-contracts.md) manifest approval and [F1.5](F1.5-pack-artifact-graph-json-cross-role.md) artifact-graph edges must show schema sign-off\u2014S0 validates pipeline YAML against pack schema so bad graphs never land in state.json.",
+    "Deploy-phase pursue steps require evidence bundles per pack policy; the conductor blocks deploy outside approved maintenance windows until H1 waives or the window opens.",
+    "Monitor-phase outputs feed [F1.8](F1.8-pack-verify-goal-verify-suites.md) metrics checks so goal_verify aggregates pipeline health without subjective review.",
+    "If schema validation fails, manifest edges are missing, or deploy evidence is incomplete, pursuit fails closed at H2\u2014lanes do not advance to deploy or monitor until proof is attached."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"F4.2\",\n  \"description\": \"data platform pipelines ingest model deploy monitor\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Pack role handoff while lane lease held \u00e2\u20ac\u201d complete-work-order releases lease before role switch.",
+    "Edge case `F4.2` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `F4.2`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `company.yaml` + `roles/*.yaml` to template-packs schema.",
+    "program-scoper selects pack; sets state.company.active_role.",
+    "Per-role allowed_reads in lane.json work orders.",
+    "Validate `F4.2` against SEC-15 release checklist and parent index links.",
+    "Document `F4.2` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `F4.2`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids F4.2`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`template-packs/`",
+    "`program/integration/manifest.md`",
+    "`.cursor/skills/program-scoper/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a78",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[F4-index](F4-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids F4.2` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [F4-index](F4-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "F4.2 defines data platform pipelines ingest model deploy monitor for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling. In practice, the system when a data-platform pack goal activates, [f2.2](f2.2-company-spawn-workstream-department-role-lane.md) maps ingest, model/transform, deploy, and monitor phases to engineer, dba, and sre lanes with governance checkpoints before parallel work starts, then before deploy lanes dequeue, [f1.4](f1.4-pack-manifest-md-integration-contracts.md) manifest approval and [f1.5](f1.5-pack-artifact-graph-json-cross-role.md) artifact-graph edges must show schema sign-off\u2014s0 validates pipeline yaml against pack schema so bad graphs never land in state.json.",
+  "reader_narrative": "<!-- prose-source: agent plane-f 2026-06-28 -->\n\nData platform pipelines follow ingest \u2192 model/transform \u2192 deploy \u2192 monitor/alert\u2014phases mapped to engineer, DBA, and SRE roles with governance checkpoints. Deploy phases require evidence bundles and may block outside maintenance windows per pack policy.\n\nManifest and artifact graph ([F1.4](F1.4-pack-manifest-md-integration-contracts.md), [F1.5](F1.5-pack-artifact-graph-json-cross-role.md)) wire schema approval before deploy lanes start. Monitor phase feeds goal_verify metrics checks in [F1.8](F1.8-pack-verify-goal-verify-suites.md). S0 scripts should validate pipeline YAML against pack schema before instantiation saves bad graphs to state."
+}

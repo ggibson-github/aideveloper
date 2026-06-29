@@ -1,0 +1,89 @@
+{
+  "id": "D4.3",
+  "slug": "D4.3-platform-work-skill-command-wrapper",
+  "title": "platform work skill command wrapper",
+  "branch": "D",
+  "parent": "[D4-index](D4-index.md)",
+  "vision_section": "",
+  "release": "v2.16",
+  "purpose": "D4.3 defines platform work skill command wrapper for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse.",
+  "scope": [
+    "Owns `D4.3` only; siblings under `D4` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a76 \u2014 Branch D \u2014 Platform evolution plane (parallel queue)](../../full-automation-vision-and-hierarchy.md#6-branch-d-platform-evolution-plane-parallel-queue)."
+  ],
+  "behavior_steps": [
+    "When the promotion queue targets skill or command wrapper work, an economy worker packages promoted L2 scripts plus journal-keeper hooks into `.cursor/skills/` or command entry points the conductor invokes by name.",
+    "Wrapper surfaces call S0 scripts by path, cite playbook locations, and encode allowed_reads, evidence requirements, and forbidden paths consistent with [B5.1](B5.1-active-role-from-template-pack.md)\u2014never duplicating script logic inside SKILL.md.",
+    "User-facing commands register in operator dashboard docs when pack policy requires operator discoverability.",
+    "The verifier runs the promotion verify pattern; on pass the conductor dequeues the item and product turns may compose the new surface via [B4.3](B4.3-compose-first-catalog-before-improvise.md).",
+    "Failed wrapper verify, a partial SKILL without command, or pack binding mismatch leaves the item open\u2014re-enqueue until both surfaces exist or pack policy declares skill-only."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"D4.3\",\n  \"description\": \"platform work skill command wrapper\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Platform queue depth 0 but product blocked on missing playbook \u00e2\u20ac\u201d D3.3 priority cut skips platform drain.",
+    "Edge case `D4.3` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `D4.3`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `platform.promotion_queue[]` to state.json schema.",
+    "Scheduler in autopilot workflow: `(steps_total % K) == 0` \u00e2\u2020\u2019 platform turn.",
+    "playbook-keeper + script extraction skills dequeue promotion items.",
+    "Validate `D4.3` against SEC-15 release checklist and parent index links.",
+    "Document `D4.3` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `D4.3`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids D4.3`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/playbooks/`",
+    "`scripts/`",
+    "`.cursor/skills/playbook-keeper/`",
+    "`state.platform.promotion_queue`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a76",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[D4-index](D4-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids D4.3` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [D4-index](D4-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "D4.3 defines platform work skill command wrapper for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse. In practice, the system when the promotion queue targets skill or command wrapper work, an economy worker packages promoted l2 scripts plus journal-keeper hooks into `.cursor/skills/` or command entry points the conductor invokes by name, then wrapper surfaces call s0 scripts by path, cite playbook locations, and encode allowed_reads, evidence requirements, and forbidden paths consistent with [b5.1](b5.1-active-role-from-template-pack.md)\u2014never duplicating script logic inside skill.md.",
+  "reader_narrative": "<!-- prose-source: agent plane-d 2026-06-28 -->\n\nSkill and command wrapper work packages L2 scripts plus journal-keeper hooks into L3 `.cursor/skills/` or `/commands` entry points\u2014thin orchestration surfaces the conductor invokes by name. Wrappers encode allowed_reads, evidence requirements, and forbidden paths consistent with active role ([B5.1](B5.1-active-role-from-template-pack.md)).\n\nWrapper promotion does not duplicate script logic inside SKILL.md; it calls S0 scripts and cites playbook paths. New commands register in operator dashboard docs when user-facing. Failed wrapper verify leaves queue item open; partial SKILL without command or vice versa re-enqueues until both surfaces exist or pack policy declares skill-only."
+}

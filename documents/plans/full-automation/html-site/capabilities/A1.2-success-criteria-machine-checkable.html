@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>A1.2 — success criteria machine-checkable</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/A.html">Plane A</a> · <a href="../chapters/A-A1.html">A1</a> ·
+    A1.2
+  </nav>
+  <p class="page-id">A1.2 · Pursuit &amp; control plane</p>
+  <h1 class="page-title">success criteria machine-checkable</h1>
+  <p class="page-subtitle">success_criteria machine-checkable</p>
+  
+  <div class="story-block"><p>A goal that cannot be checked mechanically is not a goal the system can pursue autonomously. This capability requires success_criteria that scripts or tests can evaluate—clear predicates, exit codes, or artifact checks—not subjective “looks good” language.</p>
+<p>Success criteria are the bridge between intent (approved at <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a>) and <a href="../capabilities/A1.3-goal-verify-command-meta-test.html" class="spec-link">goal verification</a>. Each criterion should map to a command, file presence, or metric the verifier can run without asking a human. Vague criteria force <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> blockers and stall the always-on loop.</p>
+<p>When criteria change mid-pursuit, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> must <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> the update and re-run preflight so downstream steps do not assume an obsolete definition of done. Poor criteria are a common root cause of false “achieved” states; this spec exists to prevent that class of failure.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">At <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> plan approval, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> records <code>success_criteria[]</code> in <code>state.goal</code> as machine-checkable predicates—exit codes, artifact paths, or metric thresholds—that <a href="../capabilities/A1.3-goal-verify-command-meta-test.html" class="spec-link">A1.3</a> and the verifier can run without human judgment.</span></li><li><span class="step-num">Step 2</span><span class="step-text">On each pursuit wake, <a href="../capabilities/A2.1-preflight-check-pipeline-blocked-extended.html" class="spec-link">A2.1</a> rejects criteria that cannot map to a script, test, or artifact check; subjective language forces an <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> blocker before any implement step proceeds.</span></li><li><span class="step-num">Step 3</span><span class="step-text">The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> binds each criterion to a concrete verify command or <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> path in task cards so workers know which checks must pass before <code>goal.state</code> may advance past pursuing.</span></li><li><span class="step-num">Step 4</span><span class="step-text">If operators amend success_criteria mid-pursuit, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s journal and state.json, then re-runs preflight so downstream steps do not pursue an obsolete definition of done.</span></li><li><span class="step-num">Step 5</span><span class="step-text">When verification cannot reconcile criteria against collected <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>, pursuit fails closed at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> rather than transitioning to achieved or <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> pending.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids A1.2</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>goal_verify passes but H3 rejected — goal.state returns to pursuing with rejection notes.</li><li>Edge case A1.2 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;goal&quot;: {
+    &quot;id&quot;: &quot;goal-001&quot;,
+    &quot;parent_goal&quot;: null,
+    &quot;type&quot;: &quot;program&quot;,
+    &quot;success_criteria&quot;: [&quot;manifest approved&quot;, &quot;goal_verify exit 0&quot;],
+    &quot;verify_command&quot;: &quot;python scripts/goal-verify.py&quot;,
+    &quot;state&quot;: &quot;pursuing&quot;
+  }
+}</pre></div>
+  <p class="release-note">Target release: v2.14</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

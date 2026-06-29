@@ -1,0 +1,89 @@
+{
+  "id": "G3.2",
+  "slug": "G3.2-conformance-route-tier-check",
+  "title": "conformance route-tier check",
+  "branch": "G",
+  "parent": "[G3-index](G3-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "G3.2 defines conformance route tier check for the agent-driven expert system. Verification & quality \u2014 evidence, goal_verify, anti-mistake.",
+  "scope": [
+    "Owns `G3.2` only; siblings under `G3` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a79 \u2014 Branch G \u2014 Verification & quality plane (anti-mistake)](../../full-automation-vision-and-hierarchy.md#9-branch-g-verification-quality-plane-anti-mistake)."
+  ],
+  "behavior_steps": [
+    "After H1 approves the plan, pursuit owns SDLC execution\u2014implement, test, refactor, integrate, and deploy preparation\u2014without requiring a human turn for each phase transition.",
+    "In-scope work runs through [A3.2](A3.2-goal-autopilot-until-goal-verify-or-hard-block.md): multi-role company workflows via template-packs, structured H2 blocker escalation, and platform-queue harness self-improvement alongside the active product goal.",
+    "Out-of-scope work\u2014irreversible production without verify and rollback, silent waiver of safety gates, subjective aesthetic approval unless encoded in acceptance tests\u2014must not enter autonomous pursuit; pack authors classify workflows against this boundary before H1.",
+    "When a step needs authority, judgment of record, or external access the system cannot obtain, preflight raises H2 per [INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md) instead of improvising past the three touchpoints.",
+    "If scope ambiguity would let agents advance past verify or waive gates silently, `check-pipeline-blocked.py` stops pursuit fail-closed until operators clarify boundaries via journal and state.json dual-write."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"G3.2\",\n  \"description\": \"conformance route tier check\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Flaky test \u00e2\u20ac\u201d escalation S4 once, then H2 with evidence log; no silent retry loop.",
+    "Edge case `G3.2` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `G3.2`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Extend verify-router for goal-level suite invocation.",
+    "Wire CI: validate-workflow checks goal block when pursuit.mode=goal_autopilot.",
+    "Document evidence type in docs/operator/evidence-types.md.",
+    "Validate `G3.2` against SEC-15 release checklist and parent index links.",
+    "Document `G3.2` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `G3.2`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids G3.2`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`scripts/verify-router.py`",
+    "`scripts/validate-workflow.py`",
+    "`evidence/`",
+    "`.cursor/skills/verifier/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a79",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[G3-index](G3-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids G3.2` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [G3-index](G3-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "G3.2 defines conformance route tier check for the agent-driven expert system. Verification & quality \u2014 evidence, goal_verify, anti-mistake. In practice, the system after h1 approves the plan, pursuit owns sdlc execution\u2014implement, test, refactor, integrate, and deploy preparation\u2014without requiring a human turn for each phase transition, then in-scope work runs through [a3.2](a3.2-goal-autopilot-until-goal-verify-or-hard-block.md): multi-role company workflows via template-packs, structured h2 blocker escalation, and platform-queue harness self-improvement alongside the active product goal.",
+  "reader_narrative": "<!-- prose-source: agent plane-g 2026-06-28 -->\n\nroute-tier conformance ensures `next_action`, `capability_class`, `spawn_workers`, and model tier align whenever the conductor changes pursuit direction. `python scripts/route-tier.py --apply` is the canonical apply path; validate-workflow cross-checks tier output against state.json.\n\nMis-routed genius implement or missing spawn_workers when task cards expect workers is a conformance failure, not a soft warning. Pack role bindings ([B5.2](B5.2-role-to-pipeline-id-skills-tool-permissions.md)) feed expected tier patterns for validation."
+}

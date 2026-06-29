@@ -304,3 +304,5 @@ Stops on gates, blocking questions, evidence wait, or `max_steps_per_session`. D
 ---
 
 *Last updated: 2026-06-26 — v2.4–v2.13 implemented.*
+
+**Target evolution:** [full-automation-vision-and-hierarchy.md](full-automation-vision-and-hierarchy.md) — goal_autopilot, platform queue, template-pack-as-company.

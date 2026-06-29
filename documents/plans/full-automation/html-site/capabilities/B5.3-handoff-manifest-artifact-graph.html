@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>B5.3 — handoff, manifest, artifact, and graph</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/B.html">Plane B</a> · <a href="../chapters/B-B5.html">B5</a> ·
+    B5.3
+  </nav>
+  <p class="page-id">B5.3 · Cognition &amp; routing plane</p>
+  <h1 class="page-title">handoff, manifest, artifact, and graph</h1>
+  <p class="page-subtitle">handoff manifest artifact graph</p>
+  
+  <div class="story-block"><p>Handoff manifest and artifact graph declare cross-workstream dependencies: which design nodes must exist before implement lanes start, which integration tests gate program completion. Program orchestration reads the manifest before parallel spawn (<a href="../capabilities/C4.2-orchestrate-program.html" class="spec-link">orchestrate-program skill</a>).</p>
+<p>Stale nodes in the graph trigger reconcile-artifact-graph before workers proceed. Handoff is the human-approved integration contract for multi-stream company goals.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">After <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> approves a program milestone, program-scoper and integration-manifest-keeper produce the handoff manifest and artifact_graph listing which design nodes must exist before each implement lane may start and which integration tests gate program completion.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Before <a href="../capabilities/C4.2-orchestrate-program.html" class="spec-link">orchestrate-program</a> spawns parallel lanes, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> reads the manifest and refuses spawn for any lane whose upstream artifact_graph nodes are absent, unverified, or still marked stale.</span></li><li><span class="step-num">Step 3</span><span class="step-text">When upstream design or implementation changes a dependency, reconcile-artifact-graph marks affected nodes stale and pauses only the blocked lanes until reconciliation completes and state.json reflects cleared stale flags.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Each workstream records satisfied artifact_graph nodes and integration <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> in state under its lane lease (<a href="../capabilities/C4.1-workstreams-lane-json-leases.html" class="spec-link">C4.1</a>) so company-level <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> can roll up completion against manifest gates.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If the manifest human gate was never cleared, dependency edges cycle, or a lane starts without satisfied upstream nodes, pursuit stops at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a>—never running uncoordinated parallel implement across streams.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids B5.3</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case B5.3 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case B5.3 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;B5.3&quot;,
+  &quot;description&quot;: &quot;handoff manifest artifact graph&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

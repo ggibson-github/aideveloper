@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>E1.6 — catalog template-packs README</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/E.html">Plane E</a> · <a href="../chapters/E-E1.html">E1</a> ·
+    E1.6
+  </nav>
+  <p class="page-id">E1.6 · Knowledge &amp; composition plane</p>
+  <h1 class="page-title">catalog template-packs README</h1>
+  <p class="page-subtitle">catalog template-packs README</p>
+  
+  <div class="story-block"><p>Each template-pack publishes a README cataloging pack fragments: roles, pipeline overrides, verify suites, and governance defaults. README files under <code>template-packs/*/</code> are discoverable <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> nodes for compose and pack instantiation.</p>
+<p>Pack READMEs complement the generated platform umbrella (<a href="../capabilities/E1.7-catalog-platform-catalog-md-umbrella.html" class="spec-link">E1.7</a>) with consumer-specific bindings (<a href="../capabilities/B5.2-role-to-pipeline-id-skills-tool-permissions.html" class="spec-link">B5.2</a>). Promotion from L0 reasoning should target pack fragments listed here. Staleness extends to pack nodes when vision or parent pack schema changes (<a href="../capabilities/E5.2-staleness-extend-playbooks-scripts-pack-nodes.html" class="spec-link">E5.2</a>).</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">Each template-pack publishes a README cataloging pack fragments: roles, pipeline overrides, verify suites, and governance defaults</span></li><li><span class="step-num">Step 2</span><span class="step-text">Staleness extends to pack nodes when vision or parent pack schema changes (E5.2)</span></li><li><span class="step-num">Step 3</span><span class="step-text">During pursuit, enforce the <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> template-packs README contract within <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">Catalog</a> (single discovery surface) (Plane E).</span></li><li><span class="step-num">Step 4</span><span class="step-text">Run <a href="../capabilities/B1.1-s0-deterministic-mandatory-first.html" class="spec-link">S0</a> scripts before improvising when file-derived behavior exists.</span></li><li><span class="step-num">Step 5</span><span class="step-text"><a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">Dual-write</a> journal and state.json after the step; attach <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> when verification applies.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids E1.6</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case E1.6 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case E1.6 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;E1.6&quot;,
+  &quot;description&quot;: &quot;catalog template packs readme&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.17</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>A4.1 — stop human H1 H2 H3</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/A.html">Plane A</a> · <a href="../chapters/A-A4.html">A4</a> ·
+    A4.1
+  </nav>
+  <p class="page-id">A4.1 · Pursuit &amp; control plane</p>
+  <h1 class="page-title">stop human H1 H2 H3</h1>
+  <p class="page-subtitle">stop human H1 H2 H3</p>
+  
+  <div class="story-block"><p>Human stop reasons are intentional, policy-driven pauses—not failures. <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> stops pursuit until an approved plan exists; <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> stops until a blocker is resolved (credentials, external access, ambiguous requirement); <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> stops after <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> passes until the operator accepts or rejects verified outcomes.</p>
+<p>Each stop <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s to journal and <code>hitl</code> fields in state.json with a typed reason so dashboards and daemons do not guess why the loop exited. Pursuit must never auto-clear <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> or treat silence as approval. This capability is the exhaustive taxonomy entry for touchpoint-class stops—see <a href="../capabilities/INTRO-1.2-human-touchpoint-contract-h1-h2-h3.html" class="spec-link">INTRO-1.2</a> for the contract operators see.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">Pursuit halts at <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> until an approved plan exists—preflight sets hitl.pending=<a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> and stops <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> until the operator approves or waives the design gate.</span></li><li><span class="step-num">Step 2</span><span class="step-text">At <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a>, blockers (credentials, external access, ambiguous requirements) <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> to journal Blockers and state.json hitl fields with a typed stop class so dashboards and daemons know why the loop exited.</span></li><li><span class="step-num">Step 3</span><span class="step-text">After <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> passes, <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> stops pursuit for final sign-off—goal.state reflects verifying or awaiting <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> and pursuit must not auto-clear <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> or treat operator silence as acceptance.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Each human stop records stop class human:<a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a>|<a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a>|<a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> in the pursuit stop taxonomy. preflight returns BLOCKED until the touchpoint clears.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If a <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> turn ends without typed <a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">HITL</a> fields while a human gate is open, preflight fails closed at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> until journal-keeper reconciles state.json and journal.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids A4.1</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>goal_verify passes but H3 rejected — goal.state returns to pursuing with rejection notes.</li><li>Edge case A4.1 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;A4.1&quot;,
+  &quot;description&quot;: &quot;stop human h1 h2 h3&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.14</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

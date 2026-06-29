@@ -1,0 +1,88 @@
+{
+  "id": "J6",
+  "slug": "J6-release-queue",
+  "title": "release queue",
+  "branch": "J",
+  "parent": "\u2014",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "J6 defines release queue for the agent-driven expert system. Governance \u2014 policy, waivers, audit, export contract.",
+  "scope": [
+    "Owns `J6` only; siblings under `\u2014` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a712 \u2014 Branch J \u2014 Governance & operator plane](../../full-automation-vision-and-hierarchy.md#12-branch-j-governance-operator-plane)."
+  ],
+  "behavior_steps": [
+    "When the operator types `/continue` or a daemon poll fires with autopilot inactive, the conductor runs [A2.1](A2.1-preflight-check-pipeline-blocked-extended.md) via `check-pipeline-blocked.py`\u2014advancing only when status is READY.",
+    "If preflight reports BLOCKED from [A4](A4-index.md), Continue re-prompts for the specific human action instead of advancing `next_action` or treating the word as implicit approval.",
+    "On READY, exactly one [A2.2](A2.2-if-ready-execute-one-pipeline-step.md) skill phase executes followed by [A2.3](A2.3-post-step-route-tier-dual-write-increment.md) dual-write\u2014matching [A2.7](A2.7-no-intermediate-wait-for-continue.md) one-step semantics.",
+    "[A3.4](A3.4-sdk-daemon-run-local-pipeline-24-7.md) SDK daemon invokes the same contract on poll when goal autopilot is off\u2014IDE and headless runners share identical semantics.",
+    "If the operator intended to approve a design gate or answer a blocker, pursuit stays blocked until an explicit approval phrase per [A5.2](A5.2-continue-not-approval-self-gate-h1-h3-only.md)\u2014Continue alone never clears self-gates."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"J6\",\n  \"description\": \"release queue\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `J6` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `J6` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `J6`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `J6` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_j6.py when script exists.",
+    "Validate `J6` against SEC-15 release checklist and parent index links.",
+    "Document `J6` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `J6`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids J6`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/operator/model-policy.json`",
+    "`docs/decisions/automation-waivers.md`",
+    "`docs/automation/release-queue.json`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a712",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[\u2014-index](\u2014-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids J6` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [\u2014-index](\u2014-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "J6 defines release queue for the agent-driven expert system. Governance \u2014 policy, waivers, audit, export contract. In practice, the system when the operator types `/continue` or a daemon poll fires with autopilot inactive, the conductor runs [a2.1](a2.1-preflight-check-pipeline-blocked-extended.md) via `check-pipeline-blocked.py`\u2014advancing only when status is ready, then if preflight reports blocked from [a4](a4-index.md), continue re-prompts for the specific human action instead of advancing `next_action` or treating the word as implicit approval.",
+  "reader_narrative": "<!-- prose-source: agent plane-j 2026-06-28 -->\n\n`docs/automation/release-queue.json` tracks harness evolution rows\u2014v2.14 through v2.23 SEC-15 capabilities\u2014with implement status, verify commands, and waiver links. It is the operator-facing backlog for platform maturity separate from consumer product goals.\n\nRelease queue drain promotes S0 scripts, skills, and pack fragments when rows ship; stale rows re-enqueue via hierarchy-expander audit. Pair with platform promotion_queue in state ([H1.3](H1.3-state-platform-block.md)) and SEC-15-index release checklist. Completed rows update dashboard maturity indicators ([I5.1](I5.1-runtime-notify-status-dashboard-generation.md))."
+}

@@ -1,0 +1,89 @@
+{
+  "id": "G5.1",
+  "slug": "G5.1-mistake-hallucinated-done-evidence-gate",
+  "title": "mistake hallucinated done evidence gate",
+  "branch": "G",
+  "parent": "[G5-index](G5-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "G5.1 defines mistake hallucinated done evidence gate for the agent-driven expert system. Verification & quality \u2014 evidence, goal_verify, anti-mistake.",
+  "scope": [
+    "Owns `G5.1` only; siblings under `G5` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a79 \u2014 Branch G \u2014 Verification & quality plane (anti-mistake)](../../full-automation-vision-and-hierarchy.md#9-branch-g-verification-quality-plane-anti-mistake)."
+  ],
+  "behavior_steps": [
+    "**A leaf ID** (e.g. `G4.3`, `G5.2`, `F5.1`), or",
+    "The **full prompt** from the queue (includes reader narrative and output rules)",
+    "After each verify-router run on a task card, S0 increments retry_count in state and compares it to the escalation threshold from the active pack.",
+    "On the first repeated failure for the same task, the conductor spawns a bounded rework turn with the prior evidence log paths in allowed_reads\u2014no silent autopilot retry loop.",
+    "When retry_count crosses the S4 threshold, pursuit pauses at H2 with a structured escalation package: evidence paths, failure class, retry count, and suggested operator action per [B3.3](B3.3-escalation-loop-on-verify-fail.md)."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"G5.1\",\n  \"description\": \"mistake hallucinated done evidence gate\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Flaky test \u00e2\u20ac\u201d escalation S4 once, then H2 with evidence log; no silent retry loop.",
+    "Edge case `G5.1` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `G5.1`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Extend verify-router for goal-level suite invocation.",
+    "Wire CI: validate-workflow checks goal block when pursuit.mode=goal_autopilot.",
+    "Document evidence type in docs/operator/evidence-types.md.",
+    "Validate `G5.1` against SEC-15 release checklist and parent index links.",
+    "Document `G5.1` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `G5.1`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids G5.1`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`scripts/verify-router.py`",
+    "`scripts/validate-workflow.py`",
+    "`evidence/`",
+    "`.cursor/skills/verifier/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a79",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[G5-index](G5-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids G5.1` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [G5-index](G5-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "G5.1 defines mistake hallucinated done evidence gate for the agent-driven expert system. Verification & quality \u2014 evidence, goal_verify, anti-mistake. In practice, the system **a leaf id** (e.g. `g4.3`, `g5.2`, `f5.1`), or, then the **full prompt** from the queue (includes reader narrative and output rules).",
+  "reader_narrative": "<!-- prose-source: agent plane-g 2026-06-28 -->\n\nHallucinated done is declaring a task or goal complete without evidence files and passed verify\u2014a common agent failure mode. Controls: `evidence_required`, mandatory verify-router runs, validate-workflow checks on `last_verify`, and conductor discipline never marking TODOS complete in prose alone.\n\nAudit and hierarchy quality scripts re-enqueue deepen when queue items close without artifacts. This mistake class is the philosophical core of Plane G: success is demonstrated, not assumed."
+}

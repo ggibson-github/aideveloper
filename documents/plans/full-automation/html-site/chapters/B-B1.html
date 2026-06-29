@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>B1 — Capability classes (S0–S4)</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/B.html">Plane B</a> ·
+    B1
+  </nav>
+  <p class="page-id">B1 · Cognition &amp; routing plane</p>
+  <h1 class="page-title">Capability classes (S0–S4)</h1>
+  <div class="story-block"><p>B1: <a href="../glossary.html#capability" class="glossary-link" title="Capability">Capability</a> classes (<a href="../glossary.html#s-tiers" class="glossary-link" title="Capability tiers S0 through S4">S0–S4</a>). Open each capability below for diagrams, verification, and contracts.</p>
+<p><a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> is the capability class for behavior that already exists as a script under <code>scripts/</code>. Before any model improvises routing, validation, dashboard generation, or verify, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> must run the deterministic path and use its output.</p>
+<p>This rule—mandatory first—prevents expensive re-derivation of state the repo already encodes. <code>route-tier.py</code>, <code>check-pipeline-blocked.py</code>, and <code>validate-workflow.py</code> are canonical <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> examples referenced throughout Plane A pursuit. When a new behavior stabilizes, promote it from <a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a> worker output to <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> script; do not leave file-derived logic in chat-only form. See <a href="../branches/B.html" class="spec-link">Vision §4 — Branch B — Cognition &amp; routing plane</a>.</p>
+<p><a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a> covers mechanical work that still needs a model but not genius-tier judgment: bounded code edits from task cards, <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> lookups, shell verification, and bulk search. Economy workers from <code>model-policy.json</code> execute <a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a> under <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> contracts with <code>allowed_reads</code> caps.</p>
+<p><a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a> is the default implement tier when <code>spawn_workers</code> is true. Workers must not expand scope, <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> journal/state, or skip <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>. The <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> in Plane E tells the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> which worker role fits which task pattern. Mis-routing <a href="../glossary.html#s3" class="glossary-link" title="S3 — architecture / ambiguity">S3</a> architecture questions to <a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a> causes rework; mis-routing <a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a> mechanical tasks to genius tier wastes cost.</p>
+<p><a href="../glossary.html#s2" class="glossary-link" title="S2 — templated artifacts">S2</a> is templated artifact generation: HLD sections, task cards, diagram stubs, and release rows that follow repo templates and skills rather than free-form invention. Skills like hld-writer, dd-writer, and task-breakdown are <a href="../glossary.html#s2" class="glossary-link" title="S2 — templated artifacts">S2</a> surfaces—the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> invokes them when the phase matches, then runs <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> validation on output.</p>
+<p>Quality comes from template conformance plus critic passes, not from one-shot prose. <a href="../glossary.html#s2" class="glossary-link" title="S2 — templated artifacts">S2</a> outputs feed staleness graphs in Plane E and <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> paths in Plane G. Pack authors extend templates in template-packs; consumer goals should not fork templates ad hoc.</p>
+<p><a href="../glossary.html#s3" class="glossary-link" title="S3 — architecture / ambiguity">S3</a> is reserved for architecture ambiguity: trade-offs without a single script answer, merge decisions after parallel workers return, gate interpretation when policy is silent, and reconciliation when design artifacts conflict. The genius-tier <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> owns <a href="../glossary.html#s3" class="glossary-link" title="S3 — architecture / ambiguity">S3</a>—thin orchestration, not bulk implementation.</p>
+<p>When ambiguity is resolvable by reading one fact file or running one script, that is <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> or <a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a>, not S3. <a href="../glossary.html#s3" class="glossary-link" title="S3 — architecture / ambiguity">S3</a> turns should end in a recorded decision (journal Q&amp;A or ADR) and updated routing, not open-ended exploration. Escalation to <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> belongs in <a href="../glossary.html#s4" class="glossary-link" title="S4 — governance escalation">S4</a> when external authority is required.</p>
+<p><a href="../glossary.html#s4" class="glossary-link" title="S4 — governance escalation">S4</a> packages governance escalation: structured <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> blockers, waiver requests, legal/finance pack authority, and multi-goal conflict resolution that cannot be self-gated. The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> formats blockers with goal id, missing artifact, and suggested operator action—never a vague “need help.”</p>
+<p><a href="../glossary.html#s4" class="glossary-link" title="S4 — governance escalation">S4</a> does not mean “use the biggest model for everything.” It means human touchpoint class <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> or policy-mandated review is imminent and the loop must stop cleanly. Pair with <a href="../capabilities/A4.1-stop-human-h1-h2-h3.html" class="spec-link">A4.1</a> stop taxonomy and <a href="../capabilities/A6.2-notify-digest-on-h2-blocker-not-every-step.html" class="spec-link">A6.2</a> notification digest.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/B1.1-s0-deterministic-mandatory-first.html">B1.1</a></span>
+  <span class="cap-title">S0 deterministic mandatory first</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/B1.2-s1-mechanical-economy-workers-catalog.html">B1.2</a></span>
+  <span class="cap-title">S1 mechanical economy workers catalog</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/B1.3-s2-templated-artifacts.html">B1.3</a></span>
+  <span class="cap-title">S2 templated artifacts</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/B1.4-s3-architecture-ambiguity.html">B1.4</a></span>
+  <span class="cap-title">S3 architecture ambiguity</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/B1.5-s4-governance-escalation-h2-packaging.html">B1.5</a></span>
+  <span class="cap-title">S4 governance escalation H2 packaging</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

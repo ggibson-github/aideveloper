@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>F2.4 — company, conductor, handoffs, manifest, and graph</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/F.html">Plane F</a> · <a href="../chapters/F-F2.html">F2</a> ·
+    F2.4
+  </nav>
+  <p class="page-id">F2.4 · Organization plane</p>
+  <h1 class="page-title">company, conductor, handoffs, manifest, and graph</h1>
+  <p class="page-subtitle">company conductor handoffs manifest graph</p>
+  
+  <div class="story-block"><p>The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> orchestrates cross-role handoffs using instantiated manifest.md plus artifact-graph.json—checking prerequisite nodes, updating handoff manifest sections, and spawning the next role lane when contracts satisfy. This implements pack integration contracts (<a href="../capabilities/F1.4-pack-manifest-md-integration-contracts.html" class="spec-link">F1.4</a>) at runtime.</p>
+<p>Handoffs are <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a>-owned <a href="../glossary.html#s3" class="glossary-link" title="S3 — architecture / ambiguity">S3</a> merges when ambiguity exists; mechanical prerequisite checks are <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> via reconcile-artifact-graph. Failed handoff surfaces structured <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> with missing artifact id and suggested owner role. Pair with <a href="../capabilities/B5.3-handoff-manifest-artifact-graph.html" class="spec-link">B5.3</a> and <a href="../capabilities/B5.4-conductor-stays-workers-swap-role-context.html" class="spec-link">B5.4</a> for worker vs parent separation.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">At <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> or company-goal instantiation, <a href="../capabilities/F2.1-company-instantiate-program-scoper-pack-select.html" class="spec-link">F2.1</a> loads <code>company.yaml</code> and <code>roles/*.yaml</code> from the active template-pack, dual-writing <code>company.pack_id</code>, <code>company.active_role</code>, and program workstreams into state.json without forking a separate harness per employee.</span></li><li><span class="step-num">Step 2</span><span class="step-text">The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> selects <code>active_role</code> from the pack. so each department turn runs under the correct org-chart context.</span></li><li><span class="step-num">Step 3</span><span class="step-text">When parallel lanes are ready, <a href="../capabilities/F2.2-company-spawn-workstream-department-role-lane.html" class="spec-link">F2.2</a> spawns workstreams with lane leases while <a href="../capabilities/F2.3-company-active-role-rotates-ready-work.html" class="spec-link">F2.3</a> rotates <code>active_role</code> across departments that have ready queue items—coordinating cross-team handoffs through the integration manifest, not ad-hoc journal edits.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Under <a href="../capabilities/A3.3-company-autopilot-multi-goal-role-workstreams.html" class="spec-link">A3.3</a> company <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a>, pursuit continues across role and workstream switches until each nested goal reaches <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> or a hard block fires; roll-up status stays on parent goals in state.json.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If pack instantiation fails, role bindings conflict, or lane leases collide, pursuit stops with a structured <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> blocker rather than silently running product work under the wrong role context.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids F2.4</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Pack role handoff while lane lease held — complete-work-order releases lease before role switch.</li><li>Edge case F2.4 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;F2.4&quot;,
+  &quot;description&quot;: &quot;company conductor handoffs manifest graph&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.19</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

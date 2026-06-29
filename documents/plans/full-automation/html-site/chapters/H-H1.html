@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>H1 — journal/state.json (v2 additive fields)</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/H.html">Plane H</a> ·
+    H1
+  </nav>
+  <p class="page-id">H1 · Persistence &amp; state plane</p>
+  <h1 class="page-title">journal/state.json (v2 additive fields)</h1>
+  <div class="story-block"><p><a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a>: journal/state.json (v2 additive fields). Open each capability below for diagrams, verification, and contracts.</p>
+<p>The v2 machine router in <code>journal/state.json</code> carries legacy pursuit fields—<code>next_action</code>, <code>program</code>, <code>autopilot</code>, <code>evidence_required</code>, <code>model_tier</code>, <code>spawn_workers</code>—that route-tier.py and validate-workflow.py read every turn. These top-level keys remain the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a>&#x27;s first <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> lookup before any LLM interprets progress.</p>
+<p>Additive v2 blocks (goal, platform, pursuit, hitl, company) extend without breaking existing consumers; sync-state.py and journal-keeper <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> both files atomically where possible. Corrupt or partial state triggers <a href="../capabilities/A4.4-stop-integrity-validate-workflow-state-corrupt.html" class="spec-link">A4.4</a> stop. See <a href="../capabilities/APP-B-state-json-sketch.html" class="spec-link">APP-B-state-json-sketch</a> and <a href="../branches/H.html" class="spec-link">Vision §10 — Branch H — Persistence &amp; state plane</a>.</p>
+<p>The goal block records goal id, parent goal, goal type, success criteria, verify command, budget counters, and state enum (pursuing, blocked, verifying, achieved, rejected). Goal-verify is the terminal gate—<a href="../glossary.html#pursuit-loop" class="glossary-link" title="Pursuit loop">pursuit loop</a>s until <code>goal_verify</code> passes or <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> rejects per <a href="../capabilities/A2.4-goal-scope-complete-run-goal-verify.html" class="spec-link">A2.4</a>.</p>
+<p>Machine-checkable success criteria bind to <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> paths in Plane G; subjective criteria remain H3. Company <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> schedules multiple goal blocks without merging their scopes (<a href="../capabilities/A3.3-company-autopilot-multi-goal-role-workstreams.html" class="spec-link">A3.3</a>). Only the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> writes goal transitions after verify <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>.</p>
+<p>The platform block tracks promotion_queue head, drain counters, maturity ladders, and platform-turn scheduling separate from consumer product pursuit. Platform workers read this block; product workers must not mutate it except via <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a>-orchestrated drain (<a href="../capabilities/B4.2-platform-promotion-queue-peek-drain.html" class="spec-link">B4.2</a>).</p>
+<p>Queue JSON lives under docs/automation/ with <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> peek/drain scripts; stale platform items defer with journal notes rather than silent drop. Platform idle drain when product waits on external <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> is D3.4. <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">Dual-write</a> updates platform counters alongside journal Platform section.</p>
+<p>The pursuit block captures mode (continue, <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">goal_autopilot</a>, company_autopilot), step counters, capability_class, last_verify, evidence_files, and gates_pending. <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">Autopilot</a> loops increment steps_total until check-pipeline-blocked stops (<a href="../capabilities/A3.1-session-autopilot-max-steps-per-session.html" class="spec-link">A3.1</a>, <a href="../capabilities/A3.2-goal-autopilot-until-goal-verify-or-hard-block.html" class="spec-link">A3.2</a>).</p>
+<p><code>last_verify: passed</code> is mandatory before advancing past implement tasks when evidence_required is true (G4). gates_pending holds HLD/DD/feature design waits—continue does not clear them (<a href="../capabilities/A5.2-continue-not-approval-self-gate-h1-h3-only.html" class="spec-link">A5.2</a>). route-tier.py applies tier changes when next_action shifts.</p>
+<p>The hitl block records pending human touchpoint class: <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> plan approval, <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> blocker, <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> sign-off—or null when pursuit is unblocked. Payload carries structured reason, goal id, missing artifact, and suggested operator action per <a href="../capabilities/INTRO-1.2-human-touchpoint-contract-h1-h2-h3.html" class="spec-link">INTRO-1.2</a>.</p>
+<p>Strict mode (<a href="../capabilities/J3-strict-hitl.html" class="spec-link">J3</a>) forces explicit clearance; default self-gate allows automatable middle gates with <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>. Observation without unblock is <a href="../capabilities/A6.3-operator-observe-without-unblocking-loop.html" class="spec-link">A6.3</a>. Notifications on H2/<a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> only pair with <a href="../capabilities/I5.2-runtime-notify-webhook-email-h2-h3-only.html" class="spec-link">I5.2</a>—not every pursuit step.</p>
+<p>(7 <a href="../glossary.html#capability" class="glossary-link" title="Capability">capabilities</a> in this chapter.)</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/H1.1-state-existing-next-action-program-autopilot-evidence-tier.html">H1.1</a></span>
+  <span class="cap-title">State existing next action program autopilot evidence tier</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/H1.2-state-goal-block.html">H1.2</a></span>
+  <span class="cap-title">state, goal, and block</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/H1.3-state-platform-block.html">H1.3</a></span>
+  <span class="cap-title">state, platform, and block</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/H1.4-state-pursuit-block.html">H1.4</a></span>
+  <span class="cap-title">state, pursuit, and block</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/H1.5-state-hitl-block.html">H1.5</a></span>
+  <span class="cap-title">state, hitl, and block</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/H1.6-state-company-block.html">H1.6</a></span>
+  <span class="cap-title">state, company, and block</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/H1.7-state-active-workflow-block.html">H1.7</a></span>
+  <span class="cap-title">state, active workflow, and block</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

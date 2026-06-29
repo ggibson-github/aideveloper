@@ -1,0 +1,84 @@
+{
+  "id": "MASTER-A",
+  "slug": "MASTER-A-branch-a---pursuit---control-plane",
+  "title": "Branch A \u2014 Pursuit & control plane",
+  "branch": "meta",
+  "parent": "\u2014",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "MASTER-A defines branch a   pursuit   control plane for the agent-driven expert system. Top-level decomposition into ten planes.",
+  "scope": [
+    "Owns `MASTER-A` only; siblings under `\u2014` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a72 \u2014 Master hierarchy (top level)](../../full-automation-vision-and-hierarchy.md#2-master-hierarchy-top-level)."
+  ],
+  "behavior_steps": [
+    "After H1 approves intent, Plane A owns the always-on pursuit loop from [A2.1](A2.1-preflight-check-pipeline-blocked-extended.md) preflight through [A2.2](A2.2-if-ready-execute-one-pipeline-step.md) execution until [A2.4](A2.4-goal-scope-complete-run-goal-verify.md) goal_verify or an [A4](A4-index.md) stop reason fires.",
+    "[A1](A1-index.md) supplies goal identity, machine-checkable success criteria, and budgets that every wake reads from state.json before routing\u2014not cosmetic metadata for publication.",
+    "[A3](A3-index.md) autopilot modes lift the per-session ceiling so goal_autopilot continues across daemon polls and IDE sessions until hard block or achievement without arbitrary chat limits.",
+    "Plane B routes cognition, Plane C executes product phases, and Plane G proves outcomes\u2014but A is where never stop until verified lives; other planes feed or constrain this loop.",
+    "If pursuit violates Plane A contracts\u2014skip preflight, advance on BLOCKED, or omit stop taxonomy\u2014[A4.4](A4.4-stop-integrity-validate-workflow-state-corrupt.md) integrity or verify stops halt at H2 fail-closed."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"node\": \"MASTER-A\",\n  \"description\": \"branch a   pursuit   control plane\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `MASTER-A` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `MASTER-A` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `MASTER-A`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `MASTER-A` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_master-a.py when script exists.",
+    "Validate `MASTER-A` against SEC-15 release checklist and parent index links.",
+    "Document `MASTER-A` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `MASTER-A`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids MASTER-A`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a72",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[\u2014-index](\u2014-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids MASTER-A` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [\u2014-index](\u2014-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "MASTER-A defines branch a   pursuit   control plane for the agent-driven expert system. Top-level decomposition into ten planes. In practice, the system after h1 approves intent, plane a owns the always-on pursuit loop from [a2.1](a2.1-preflight-check-pipeline-blocked-extended.md) preflight through [a2.2](a2.2-if-ready-execute-one-pipeline-step.md) execution until [a2.4](a2.4-goal-scope-complete-run-goal-verify.md) goal_verify or an [a4](a4-index.md) stop reason fires, then [a1](a1-index.md) supplies goal identity, machine-checkable success criteria, and budgets that every wake reads from state.json before routing\u2014not cosmetic metadata for publication.",
+  "reader_narrative": "<!-- prose-source: agent meta 2026-06-28 -->\n\nPlane A is pursuit and control: the always-on loop that runs from approved intent until verification succeeds or a defined stop reason fires. It owns the goal model, preflight, one-step execution, post-step routing, goal-level verification handoff, and the semantics of Continue redefined for autonomy.\n\nEvery other plane feeds or constrains this loop\u2014B routes execution, C performs product steps, G proves outcomes\u2014but A is where \"never stop until verified\" lives. When reading A1\u2013A6 capabilities, keep this chapter summary in mind as the architectural north star for that branch."
+}

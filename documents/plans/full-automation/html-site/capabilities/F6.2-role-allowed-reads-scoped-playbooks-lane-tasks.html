@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>F6.2 — role, allowed reads, scoped, playbooks, lane, and tasks</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/F.html">Plane F</a> · <a href="../chapters/F-F6.html">F6</a> ·
+    F6.2
+  </nav>
+  <p class="page-id">F6.2 · Organization plane</p>
+  <h1 class="page-title">role, allowed reads, scoped, playbooks, lane, and tasks</h1>
+  <p class="page-subtitle">role allowed_reads scoped playbooks lane tasks</p>
+  
+  <div class="story-block"><p>Per-role <code>allowed_reads</code> scopes workers to role playbooks, lane task cards, facts entries, and design slices declared in pack YAML—not the full vision monolith or unrelated department lanes. Librarian returns paths within this cap (max five) before implement spawn (<a href="../capabilities/B2.2-librarian-allowed-reads-catalog-composition.html" class="spec-link">B2.2</a>).</p>
+<p>Scope bleed (QA worker reading finance playbooks) violates pack intent and risks cross-department edits. allowed_reads updates on active_role rotation (<a href="../capabilities/F6.1-role-mapping-conductor-context-switch-active-role.html" class="spec-link">F6.1</a>). Lane.json work orders may further narrow reads for parallel slots. Forbidden paths are explicit deny list alongside allowed_reads.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When staleness.json or a program artifact graph flags stale nodes on paths in the next implement scope, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> invokes reconcile-stale or reconcile-artifact-graph before spawning workers—not after partial edits land.</span></li><li><span class="step-num">Step 2</span><span class="step-text"><a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> scripts maintain stale flags file-derived; the reconcile skills decide whether to rerun the affected design phase, waive with <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> operator approval, or enqueue hierarchy deepen items for impacted ids.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Workers on affected paths pause while reconciliation runs; pursuit resumes only after flags clear or an explicit <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> waiver is dual-written to journal and state.json.</span></li><li><span class="step-num">Step 4</span><span class="step-text">In program mode, reconcile-artifact-graph consults <a href="../capabilities/C4.4-artifact-graph-per-program-and-pack.html" class="spec-link">C4.4</a> cross-stream contracts alongside <a href="../capabilities/E5.1-staleness-design-graph-staleness-json.html" class="spec-link">E5.1</a> as the design-graph source of truth.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If implement spawn would proceed against stale design without reconciliation or waiver, pursuit halts at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a>—silent implement violates Plane E contract and invalidates <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids F6.2</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Pack role handoff while lane lease held — complete-work-order releases lease before role switch.</li><li>Edge case F6.2 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;F6.2&quot;,
+  &quot;description&quot;: &quot;role allowed reads scoped playbooks lane tasks&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.19</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

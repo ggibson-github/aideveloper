@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>A1 — Goal model</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/A.html">Plane A</a> ·
+    A1
+  </nav>
+  <p class="page-id">A1 · Pursuit &amp; control plane</p>
+  <h1 class="page-title">Goal model</h1>
+  <div class="story-block"><p>A1: Goal model. Open each capability below for diagrams, verification, and contracts.</p>
+<p>Every pursuit in the <a href="../glossary.html#expert-system" class="glossary-link" title="Expert system">expert system</a> begins with a goal record that can be found again after restarts, nested under the right parent, and classified by type. This capability defines the three identity fields that make that possible: a unique goal_id, an optional parent_goal for tree structure, and goal_type (app, feature, milestone, or company_ops).</p>
+<p>The type enum is not cosmetic. It tells preflight, routing, and verification which contracts apply—a milestone goal may require manifest approval while a feature goal binds to task cards and <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> paths. Nesting via parent_goal lets a program decompose into parallel streams without losing roll-up status at H3.</p>
+<p>Operators set these fields at <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> when approving a plan; afterward the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> and <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> scripts maintain them through <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> to journal and state.json. If identity drifts (duplicate ids, wrong parent), pursuit turns attach <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> to the wrong scope and <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> cannot succeed. See <a href="../branches/A.html" class="spec-link">Vision §3 — Branch A — Pursuit &amp; control plane</a> for how the goal model anchors Plane A.</p>
+<p>A goal that cannot be checked mechanically is not a goal the system can pursue autonomously. This capability requires success_criteria that scripts or tests can evaluate—clear predicates, exit codes, or artifact checks—not subjective “looks good” language.</p>
+<p>Success criteria are the bridge between intent (approved at <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a>) and <a href="../capabilities/A1.3-goal-verify-command-meta-test.html" class="spec-link">goal verification</a>. Each criterion should map to a command, file presence, or metric the verifier can run without asking a human. Vague criteria force <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> blockers and stall the always-on loop.</p>
+<p>When criteria change mid-pursuit, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> must <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> the update and re-run preflight so downstream steps do not assume an obsolete definition of done. Poor criteria are a common root cause of false “achieved” states; this spec exists to prevent that class of failure.</p>
+<p>Task-level tests prove a step ran; goal-level verification proves the entire pursuit succeeded. This capability defines goal_verify_command—the meta-test that runs when scope is complete and must pass before the system requests <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> sign-off.</p>
+<p>The command is typically a wrapper (for example <code>python scripts/goal-verify.py</code>) that aggregates checks across criteria, <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> logs, and conformance scripts. It is stricter than a single pytest file: failing <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> blocks transition to <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> pending even if individual tasks passed.</p>
+<p>Designers should treat <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> as the contract between Plane A (pursuit) and Plane G (verification). Without it, operators would manually reconcile journals—a violation of the 100% automation scope except at <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a>, <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a>, and H3.</p>
+<p>Autonomous pursuit without bounds can consume unbounded tokens, steps, and wall-clock time. This capability defines deadline and budget fields—steps, tokens, wall clock—so the loop can stop cleanly with a recorded reason instead of running indefinitely.</p>
+<p>Budgets are enforced at preflight and after each turn. When a budget is exhausted, pursuit stops, <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s a structured stop reason, and surfaces <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> only if human intervention can extend the budget. Deadlines align with operator expectations for time-sensitive milestones.</p>
+<p>These fields turn “always-on” into “always-on until provably done or bounded.” They also inform Plane D scheduling so self-improvement work stays bounded and does not displace the current project goal. Incorrect budget configuration is an operational edge case: too tight causes false stops; too loose wastes resources.</p>
+<p>Operators and dashboards need a single, honest lifecycle state for each goal. This capability defines the goal state enum: pursuing, blocked, verifying, achieved, and rejected—transitions driven by preflight, step execution, <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a>, and <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> outcomes.</p>
+<p>The enum prevents ambiguous records such as “done” without verification or “in progress” while <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> is pending. Blocked correlates with <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> assistance; verifying means scope is complete and <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> is running; rejected captures <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> denial with notes so pursuit can resume with corrected criteria.</p>
+<p>State must stay synchronized across journal/progress.md and state.json. Resume after laptop sleep or daemon restart relies on this enum being authoritative. See the A2 <a href="../glossary.html#pursuit-loop" class="glossary-link" title="Pursuit loop">pursuit loop</a> for when each transition fires in sequence.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/A1.1-goal-id-parent-goal-goal-type.html">A1.1</a></span>
+  <span class="cap-title">goal id, parent goal, and goal type</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A1.2-success-criteria-machine-checkable.html">A1.2</a></span>
+  <span class="cap-title">success criteria machine-checkable</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A1.3-goal-verify-command-meta-test.html">A1.3</a></span>
+  <span class="cap-title">goal verify command meta-test</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A1.4-deadline-budget-steps-tokens-wall-clock.html">A1.4</a></span>
+  <span class="cap-title">deadline, budget, steps, tokens, wall, and clock</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A1.5-goal-state-enum-pursuing-blocked-verifying-achieved-rejected.html">A1.5</a></span>
+  <span class="cap-title">Goal state enum pursuing blocked verifying achieved rejected</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

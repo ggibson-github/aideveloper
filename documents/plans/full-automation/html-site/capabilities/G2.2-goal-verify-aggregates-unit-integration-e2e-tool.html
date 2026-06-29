@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>G2.2 — goal verify, aggregates, unit, integration, e2e, and tool</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/G.html">Plane G</a> · <a href="../chapters/G-G2.html">G2</a> ·
+    G2.2
+  </nav>
+  <p class="page-id">G2.2 · Verification &amp; quality plane</p>
+  <h1 class="page-title">goal verify, aggregates, unit, integration, e2e, and tool</h1>
+  <p class="page-subtitle">goal_verify aggregates unit integration e2e tool</p>
+  
+  <div class="story-block"><p>Goal verify aggregates <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> from every task tier: unit tests under <code>tests/unit/</code>, integration under <code>tests/integration/</code>, e2e/UI under <code>tests/e2e/</code> when the app has a UI, plus tool-command logs referenced on task cards. verify-router task passes must all be <code>passed</code> before <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal verify</a> runs.</p>
+<p>Fail closed if any required <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> path is absent from state—even when the latest task alone passed. This prevents partial batches from reaching <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> while earlier tasks lack logs. Regression scope follows pack policy and <a href="../capabilities/C5.1-src-tests-e2e-delivery.html" class="spec-link">C5.1</a> delivery layout.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart TD
+  trigger[Trigger condition] --&gt; pre[Preconditions S0]
+  pre --&gt; exec[Execute step logic]
+  exec --&gt; verify[Verify output]
+  verify --&gt;|pass| done[Mark queue item done]
+  verify --&gt;|fail| h2[H2 blocker]</pre>
+</div>
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When goal scope completes.</span></li><li><span class="step-num">Step 2</span><span class="step-text">The resolved <code>goal.verify_command</code> from <a href="../capabilities/G2.1-goal-verify-command-state-pack.html" class="spec-link">G2.1</a> aggregates required <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> files—unit under <code>tests/unit/</code>, integration under <code>tests/integration/</code>, e2e/UI under <code>tests/e2e/</code> when the app has a UI, plus tool-command logs referenced on task cards.</span></li><li><span class="step-num">Step 3</span><span class="step-text">If any required <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> path is absent from state or <code>last_verify</code> is not <code>passed</code>—even when the latest implement task alone succeeded—<a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> exits non-zero and pursuit halts at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> rather than advancing toward H3.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Regression scope follows active pack policy and delivery layout so partial implement batches cannot reach <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> while earlier tasks lack logs.</span></li><li><span class="step-num">Step 5</span><span class="step-text">On pass, <code>goal.state</code> transitions through verifying toward <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> pending.; on aggregation failure pursuit stays fail-closed until <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> is reconciled.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids G2.2</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Flaky test — escalation S4 once, then H2 with evidence log; no silent retry loop.</li><li>Edge case G2.2 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;goal&quot;: {
+    &quot;verify_command&quot;: &quot;python scripts/goal-verify.py&quot;,
+    &quot;state&quot;: &quot;verifying&quot;
+  },
+  &quot;last_verify&quot;: &quot;passed&quot;,
+  &quot;evidence_required&quot;: true
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

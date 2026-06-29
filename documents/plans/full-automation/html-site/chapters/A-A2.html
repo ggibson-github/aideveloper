@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>A2 — Pursuit loop (always-on)</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/A.html">Plane A</a> ·
+    A2
+  </nav>
+  <p class="page-id">A2 · Pursuit &amp; control plane</p>
+  <h1 class="page-title">Pursuit loop (always-on)</h1>
+  <div class="story-block"><p>A2: <a href="../glossary.html#pursuit-loop" class="glossary-link" title="Pursuit loop">Pursuit loop</a> (always-on). The <a href="../glossary.html#capability" class="glossary-link" title="Capability">capabilities</a> below follow a sequential flow—read them in order.</p>
+<p>Every pursuit turn starts with a question: is it safe to act? This capability extends preflight via <code>check-pipeline-blocked.py</code> so the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> never executes a pipeline step while gates, blockers, budgets, or missing <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> would make that step invalid.</p>
+<p>Exit code semantics are strict: READY (0) means exactly one skill phase may run; BLOCKED (1) means stop, <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> a structured <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> or stop reason, and do not advance next_action. Preflight is <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a>—deterministic, cheap, and mandatory before any model-heavy work (<a href="../capabilities/B1.1-s0-deterministic-mandatory-first.html" class="spec-link">B1.1 S0 rule</a>).</p>
+<p>Skipping preflight is how autonomous systems waste tokens on work that cannot commit. This step is the first node in the A2 <a href="../glossary.html#pursuit-loop" class="glossary-link" title="Pursuit loop">pursuit loop</a> and re-runs after every completed turn.</p>
+<p>When preflight reports READY, the system executes exactly one pipeline skill phase—never a batch of design, implement, and verify in a single turn. This capability encodes that discipline so <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>, routing, and journal entries stay aligned with a single next_action.</p>
+<p>One step per turn preserves auditability: each wake cycle produces one ledger entry, one <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> slot, and one <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>. It also prevents partial state where implement ran but verify did not. The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> reads next_action from state.json, invokes the matching skill, and stops.</p>
+<p>This is the operational heart of “continue means one step,” redefined in Plane A. Violating one-step semantics breaks <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> loops and makes <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> recovery ambiguous.</p>
+<p>After a step completes, the system must re-route capability tier, persist results, and advance counters before the next preflight. This capability covers post-step housekeeping: route-tier.py, <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> to journal and state, and increment pursuit counters (steps, tokens, wall clock).</p>
+<p>Post-step work is still <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> where scripts exist. It ensures the next wake sees updated next_action, model_tier, and budget fields. Missing <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> here is a critical failure mode—resume after crash would repeat or skip work.</p>
+<p>This step closes the turn opened by A2.2 and prepares A2.1 to run again on fresh state.</p>
+<p>When all in-scope work for the goal is complete, pursuit shifts from step execution to goal-level proof. This capability defines the handoff: detect scope completion, then run goal_verify_command rather than another implement task.</p>
+<p>Scope completion is machine-checkable—queue empty, task cards done, <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> present—not a <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> guess. Running <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> too early produces false failures; running it never leaves goals stuck in pursuing forever.</p>
+<p>This node connects Plane A to Plane G. It is the pivot from “doing work” to “proving the goal.” Operators should expect a visible state transition to verifying before <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> is requested.</p>
+<p>Passing <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> is necessary but not sufficient for closure. This capability defines transition to <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> pending: verification succeeded, human final sign-off is required, and the goal state reflects verifying → awaiting H3.</p>
+<p>The system notifies the operator; it does not block the world indefinitely unless strict <a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">HITL</a> mode demands it. <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> is the third human touchpoint—accept or reject verified outcomes. Rejection returns the goal to pursuing with structured notes.</p>
+<p>Automating everything except <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> is the INTRO contract; this step enforces that boundary in the <a href="../glossary.html#pursuit-loop" class="glossary-link" title="Pursuit loop">pursuit loop</a>.</p>
+<p>(7 <a href="../glossary.html#capability" class="glossary-link" title="Capability">capabilities</a> in this chapter.)</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart LR
+  A2_1[&quot;A2.1&lt;br/&gt;preflight check-pipeline-blocked extende&quot;]
+  A2_2[&quot;A2.2&lt;br/&gt;if READY execute one pipeline step&quot;]
+  A2_3[&quot;A2.3&lt;br/&gt;post-step route-tier dual-write incremen&quot;]
+  A2_4[&quot;A2.4&lt;br/&gt;goal scope complete, run, and goal verif&quot;]
+  A2_5[&quot;A2.5&lt;br/&gt;goal verify pass transition H3 pending&quot;]
+  A2_6[&quot;A2.6&lt;br/&gt;loop until blocked budget achieved H3 re&quot;]
+  A2_7[&quot;A2.7&lt;br/&gt;no, intermediate, wait, for, and continu&quot;]
+  A2_1 --&gt; A2_2
+  A2_2 --&gt; A2_3
+  A2_3 --&gt; A2_4
+  A2_4 --&gt; A2_5
+  A2_5 --&gt; A2_6
+  A2_6 --&gt; A2_7</pre>
+</div>
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/A2.1-preflight-check-pipeline-blocked-extended.html">A2.1</a></span>
+  <span class="cap-title">preflight check-pipeline-blocked extended</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A2.2-if-ready-execute-one-pipeline-step.html">A2.2</a></span>
+  <span class="cap-title">if READY execute one pipeline step</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A2.3-post-step-route-tier-dual-write-increment.html">A2.3</a></span>
+  <span class="cap-title">post-step route-tier dual-write increment</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A2.4-goal-scope-complete-run-goal-verify.html">A2.4</a></span>
+  <span class="cap-title">goal scope complete, run, and goal verify</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A2.5-goal-verify-pass-transition-h3-pending.html">A2.5</a></span>
+  <span class="cap-title">goal verify pass transition H3 pending</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A2.6-loop-until-blocked-budget-achieved-h3-reject.html">A2.6</a></span>
+  <span class="cap-title">loop until blocked budget achieved H3 reject</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A2.7-no-intermediate-wait-for-continue.html">A2.7</a></span>
+  <span class="cap-title">no, intermediate, wait, for, and continue</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

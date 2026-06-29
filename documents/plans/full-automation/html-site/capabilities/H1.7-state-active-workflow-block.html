@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>H1.7 — state, active workflow, and block</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/H.html">Plane H</a> · <a href="../chapters/H-H1.html">H1</a> ·
+    H1.7
+  </nav>
+  <p class="page-id">H1.7 · Persistence &amp; state plane</p>
+  <h1 class="page-title">state, active workflow, and block</h1>
+  <p class="page-subtitle">state active_workflow block</p>
+  
+  <div class="story-block"><p>The <code>state.pursuit.active_workflow</code> block is how the harness remembers where it is in a generator DAG across <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> turns, laptop closes, and preCompact snapshots. Additive fields include <code>workflow_id</code>, path to <code>docs/workflows/&lt;goal-id&gt;.json</code>, <code>current_node_id</code>, <code>completed_nodes[]</code> (each with <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> paths and transistor version), <code>failed_node_id</code>, per-node <code>retry_counts</code>, optional <code>branches[]</code> for parallel lanes (<a href="../capabilities/C6.4-parallel-workflow-branches-via-work-orders.html" class="spec-link">C6.4</a>), <code>validation_hash</code> from the last <code>validate-workflow-dag.py</code> pass, and <code>terminal_nodes[]</code> for rollup checks (<a href="../capabilities/C6.5-workflow-node-rollup-to-goal-verify.html" class="spec-link">C6.5</a>).</p>
+<p>Product workers read this block; only the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s advances after node verify. <code>validate-workflow.py</code> schema-validates the shape on load. <code>sync-state.py</code> repairs partial writes from the journal Workflow section after crash. Null <code>active_workflow</code> is allowed only before <a href="../capabilities/C6.1-phase-workflow-compose-mandatory-before-implement.html" class="spec-link">C6.1</a> binds a graph or for taxonomy-exempt goals. Headless SDK consumers read the same block per <a href="../capabilities/J5-export-contract.html" class="spec-link">J5</a> export contract.</p>
+<p>See <a href="../../../../full-automation-vision-and-hierarchy.md#19-transistor-generator-workflow-model" class="spec-link">Vision §19 — Transistor &amp; generator workflow model</a> and <a href="../capabilities/APP-B-state-json-sketch.html" class="spec-link">APP-B-state-json-sketch</a> for the full additive state map.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart TD
+  compose[Compose workflow] --&gt; validate[validate-workflow-dag S0]
+  validate --&gt;|pass| exec[Execute one node]
+  exec --&gt; nodeVerify[Transistor verify]
+  nodeVerify --&gt;|pass| next[Advance active_workflow]
+  nodeVerify --&gt;|fail| h2[H2 or retry gate]
+  next --&gt; goalVerify[goal_verify rollup]</pre>
+</div>
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">validate-workflow.py schema-validates active_workflow when present.</span></li><li><span class="step-num">Step 2</span><span class="step-text"><a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">Dual-write</a> on every node completion; product workers read-only except <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> merge.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Null active_workflow allowed only before C6.1 or for taxonomy-exempt goals.</span></li><li><span class="step-num">Step 4</span><span class="step-text">sync-state.py repairs partial writes from journal Workflow section.</span></li><li><span class="step-num">Step 5</span><span class="step-text">Export contract I5/J5 documents active_workflow for headless SDK consumers.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids H1.7</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>DAG validity</td><td>`python scripts/automation/validate-workflow-dag.py` when workflow exists</td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write including active_workflow.</li><li>Transistor version bump mid-pursuit — E5.4 marks workflow stale; re-validate before next node.</li><li>L0 waiver node without promotion progress — D3.3 priority boost then H2 if threshold exceeded.</li><li>Pack overlay id collision — F5.4 semver fork per D5.3, not silent overwrite.</li><li>Parallel branch join missing typed input — validate-workflow-dag fails at compose time.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;H1.7&quot;,
+  &quot;description&quot;: &quot;state active_workflow block&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot;, &quot;active_workflow&quot;: &quot;H1.7&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.26+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.26</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

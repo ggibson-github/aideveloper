@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>C3 — Task system</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/C.html">Plane C</a> ·
+    C3
+  </nav>
+  <p class="page-id">C3 · Product execution plane</p>
+  <h1 class="page-title">Task system</h1>
+  <div class="story-block"><p>C3: Task system. Open each capability below for diagrams, verification, and contracts.</p>
+<p>Task cards are the atomic implement unit: scope, allowed_reads, files to touch, test command, <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> path, optional tool command. Components field links <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> entries; promotion_note captures platform queue candidates discovered during implement.</p>
+<p>new-task-card.py generates consistent cards from templates. Cards must not duplicate full design docs—reference paths instead. <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">Conductor</a> assigns one card per implement turn when evidence_required is true.</p>
+<p>Work orders group task cards for parallel lanes under program mode: lane json, leases, and manifest dependencies prevent two workers editing the same journal writer or conflicting branches.</p>
+<p>Orchestrate-program spawns only when manifest gate cleared and spawn_policy allows. Single-stream greenfield uses sequential cards without work orders unless user enables program features.</p>
+<p><a href="../glossary.html#evidence" class="glossary-link" title="Evidence">Evidence</a> per task is mandatory when evidence_required: verify-router or tool-operator writes logs under <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>/, state records evidence_files and last_verify. Implement tasks do not complete on agent assertion alone.</p>
+<p><a href="../glossary.html#evidence" class="glossary-link" title="Evidence">Evidence</a> types include pytest logs, tool output, checksums—see docs/operator/<a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>-types.md. Missing <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> blocks goal rollup in C3.4 and <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> in Plane A/G.</p>
+<p>Task completion rolls up to goal percent complete and <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> prerequisites: queue empty, all required <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> passed, conformance green. Rollup is <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> where scripts aggregate task state from state.json and journal mirror.</p>
+<p>False rollup—marking goal ready while tasks lack <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>—is a Plane G failure class. Dashboard may show percent for operators; pursuit uses machine checks only.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/C3.1-task-cards-components-promotion-note.html">C3.1</a></span>
+  <span class="cap-title">task cards Components Promotion note</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/C3.2-work-orders-parallel-lanes.html">C3.2</a></span>
+  <span class="cap-title">work, orders, parallel, and lanes</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/C3.3-evidence-per-task.html">C3.3</a></span>
+  <span class="cap-title">evidence, per, and task</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/C3.4-task-to-goal-rollup-percent-goal-verify.html">C3.4</a></span>
+  <span class="cap-title">task, to, goal, rollup, percent, and goal verify</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

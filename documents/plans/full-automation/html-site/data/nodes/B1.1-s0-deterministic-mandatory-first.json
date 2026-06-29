@@ -1,0 +1,89 @@
+{
+  "id": "B1.1",
+  "slug": "B1.1-s0-deterministic-mandatory-first",
+  "title": "S0 deterministic mandatory first",
+  "branch": "B",
+  "parent": "[B1-index](B1-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "B1.1 defines s0 deterministic mandatory first for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack.",
+  "scope": [
+    "Owns `B1.1` only; siblings under `B1` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a74 \u2014 Branch B \u2014 Cognition & routing plane](../../full-automation-vision-and-hierarchy.md#4-branch-b-cognition-routing-plane)."
+  ],
+  "behavior_steps": [
+    "Before spawning workers or advancing `next_action`, the conductor runs applicable S0 scripts\u2014`route-tier.py`, `check-pipeline-blocked.py`, and `validate-workflow.py`\u2014and treats their stdout and exit codes as authoritative routing input.",
+    "Workers must not re-derive file-backed state in chat when an S0 script exists; the conductor passes script output into spawn contracts and journal dual-write per mandatory-first policy.",
+    "When implement work stabilizes repeatable file-derived behavior, promotion targets Plane D to extract an L2 script rather than leaving logic conductor-only in session memory.",
+    "S0 output that reports BLOCKED or conformance failure stops the turn before any S1\u2013S4 worker runs, with journal and state.json recording the deterministic reason.",
+    "If script output and journal disagree, or a script is bypassed for convenience, pursuit halts at H2 until the conductor re-runs S0 preflight and reconciles dual-write."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"B1.1\",\n  \"description\": \"s0 deterministic mandatory first\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `B1.1` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `B1.1` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `B1.1`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `B1.1` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_b1_1.py when script exists.",
+    "Validate `B1.1` against SEC-15 release checklist and parent index links.",
+    "Document `B1.1` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `B1.1`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids B1.1`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/operator/model-policy.json`",
+    "`scripts/route-tier.py`",
+    "`.cursor/skills/librarian/`",
+    "`.cursor/rules/genius-conductor.mdc`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a74",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[B1-index](B1-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids B1.1` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [B1-index](B1-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "B1.1 defines s0 deterministic mandatory first for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack. In practice, the system before spawning workers or advancing `next_action`, the conductor runs applicable s0 scripts\u2014`route-tier.py`, `check-pipeline-blocked.py`, and `validate-workflow.py`\u2014and treats their stdout and exit codes as authoritative routing input, then workers must not re-derive file-backed state in chat when an s0 script exists; the conductor passes script output into spawn contracts and journal dual-write per mandatory-first policy.",
+  "reader_narrative": "<!-- prose-source: agent plane-b 2026-06-28 -->\n\nS0 is the capability class for behavior that already exists as a script under `scripts/`. Before any model improvises routing, validation, dashboard generation, or verify, the conductor must run the deterministic path and use its output.\n\nThis rule\u2014mandatory first\u2014prevents expensive re-derivation of state the repo already encodes. `route-tier.py`, `check-pipeline-blocked.py`, and `validate-workflow.py` are canonical S0 examples referenced throughout Plane A pursuit. When a new behavior stabilizes, promote it from S1 worker output to S0 script; do not leave file-derived logic in chat-only form. See [Vision \u00a74 \u2014 Branch B](../../full-automation-vision-and-hierarchy.md#4-branch-b-cognition-routing-plane)."
+}

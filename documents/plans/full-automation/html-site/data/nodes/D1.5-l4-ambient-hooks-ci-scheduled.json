@@ -1,0 +1,89 @@
+{
+  "id": "D1.5",
+  "slug": "D1.5-l4-ambient-hooks-ci-scheduled",
+  "title": "L4 ambient hooks CI scheduled",
+  "branch": "D",
+  "parent": "[D1-index](D1-index.md)",
+  "vision_section": "",
+  "release": "v2.16",
+  "purpose": "D1.5 defines l4 ambient hooks ci scheduled for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse.",
+  "scope": [
+    "Owns `D1.5` only; siblings under `D1` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a76 \u2014 Branch D \u2014 Platform evolution plane (parallel queue)](../../full-automation-vision-and-hierarchy.md#6-branch-d-platform-evolution-plane-parallel-queue)."
+  ],
+  "behavior_steps": [
+    "When a goal activates or switches company role, the conductor reads `template-packs/*/README.md` catalog nodes per [B4.3](B4.3-compose-first-catalog-before-improvise.md) compose-first\u2014not pack internals by ad hoc path guess.",
+    "Pack READMEs list roles, pipeline overrides, verify suites, and governance defaults as discoverable fragments that feed [B5.2](B5.2-role-to-pipeline-id-skills-tool-permissions.md) role binding and the [E1.7](E1.7-catalog-platform-catalog-md-umbrella.md) platform umbrella.",
+    "Librarian compose briefings rank pack README matches via [E2.3](E2.3-compose-rank-script-playbook-skill-facts.md) and set allowed_reads to the README plus bound fragment paths only for the pursuit turn.",
+    "When vision or parent pack schema changes, [E5.2](E5.2-staleness-extend-playbooks-scripts-pack-nodes.md) marks pack catalog nodes stale; reconcile-stale blocks instantiate or role-switch until README rows match current pack contents.",
+    "If README lookup fails, `active_role` references a missing pack, or compose proceeds without catalog search, pursuit stops at H2 with structured dual-write\u2014never bind improvised pack defaults."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"D1.5\",\n  \"description\": \"l4 ambient hooks ci scheduled\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Platform queue depth 0 but product blocked on missing playbook \u00e2\u20ac\u201d D3.3 priority cut skips platform drain.",
+    "Edge case `D1.5` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `D1.5`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `platform.promotion_queue[]` to state.json schema.",
+    "Scheduler in autopilot workflow: `(steps_total % K) == 0` \u00e2\u2020\u2019 platform turn.",
+    "playbook-keeper + script extraction skills dequeue promotion items.",
+    "Validate `D1.5` against SEC-15 release checklist and parent index links.",
+    "Document `D1.5` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `D1.5`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids D1.5`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/playbooks/`",
+    "`scripts/`",
+    "`.cursor/skills/playbook-keeper/`",
+    "`state.platform.promotion_queue`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a76",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[D1-index](D1-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids D1.5` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [D1-index](D1-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "D1.5 defines l4 ambient hooks ci scheduled for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse. In practice, the system when a goal activates or switches company role, the conductor reads `template-packs/*/readme.md` catalog nodes per [b4.3](b4.3-compose-first-catalog-before-improvise.md) compose-first\u2014not pack internals by ad hoc path guess, then pack readmes list roles, pipeline overrides, verify suites, and governance defaults as discoverable fragments that feed [b5.2](b5.2-role-to-pipeline-id-skills-tool-permissions.md) role binding and the [e1.7](e1.7-catalog-platform-catalog-md-umbrella.md) platform umbrella.",
+  "reader_narrative": "<!-- prose-source: agent plane-d 2026-06-28 -->\n\nL4 is ambient automation: hooks in `.cursor/hooks.json`, CI workflows, and scheduled jobs that run without a conductor turn\u2014staleness checks, dashboard regeneration, queue EMPTY gates, and validate-workflow on push. Ambient layers enforce invariants the pursuit loop might skip under token pressure.\n\nHook and CI extensions are platform work ([D4.4](D4.4-platform-work-hook-validate-workflow.md)) and must stay backwards-compatible or follow [D5.2](D5.2-extend-backwards-compatible-staleness-bump.md) staleness rules. L4 does not dequeue product next_action; it guards repo health while [D3.1](D3.1-1-platform-turn-per-k-product-turns.md) interleaves explicit platform turns. See [Vision \u00a76](../../full-automation-vision-and-hierarchy.md#6-branch-d-platform-evolution-plane-parallel-queue) for maturity ordering L0\u2192L5."
+}

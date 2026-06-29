@@ -1,0 +1,88 @@
+{
+  "id": "F1.6",
+  "slug": "F1.6-pack-playbooks-role-specific",
+  "title": "pack playbooks role-specific",
+  "branch": "F",
+  "parent": "[F1-index](F1-index.md)",
+  "vision_section": "",
+  "release": "v2.19",
+  "purpose": "F1.6 defines pack playbooks role specific for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling.",
+  "scope": [
+    "Owns `F1.6` only; siblings under `F1` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a78 \u2014 Branch F \u2014 Organization plane (template-packs = ceiling)](../../full-automation-vision-and-hierarchy.md#8-branch-f-organization-plane-template-packs-ceiling)."
+  ],
+  "behavior_steps": [
+    "When `next_action` enters design phases (`run hld-writer`, `run dd-writer`, `diagram-generator`), the conductor classifies work under the APP-A design taxonomy\u2014UX/UI, API and data models, integration boundaries, and security/compliance\u2014and routes each slice through the matching S2 skill instead of prose-only decisions.",
+    "Each design turn must emit machine-checkable artifacts\u2014diagram files, schemas, structured review triggers\u2014in `docs/design/` and `docs/diagrams/` so [A1.2](A1.2-success-criteria-machine-checkable.md) criteria and verifiers can judge completion without subjective review.",
+    "After every design write, the conductor links artifacts forward to forthcoming task cards and backward to catalog components via [B4.3](B4.3-compose-first-catalog-before-improvise.md), then dual-writes journal and state.json before advancing `next_action`.",
+    "HLD and DD gates per [INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md) block implement until H1 approval or explicit waiver\u2014[A5.2](A5.2-continue-not-approval-self-gate-h1-h3-only.md) prevents Continue from clearing design approval on its own.",
+    "If diagrams, schemas, catalog backlinks, or staleness registration are missing, pursuit stops at H2 until the design skill re-runs and reconcile-stale clears dependent nodes."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"node\": \"F1.6\",\n  \"description\": \"pack playbooks role specific\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Pack role handoff while lane lease held \u00e2\u20ac\u201d complete-work-order releases lease before role switch.",
+    "Edge case `F1.6` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `F1.6`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `company.yaml` + `roles/*.yaml` to template-packs schema.",
+    "program-scoper selects pack; sets state.company.active_role.",
+    "Per-role allowed_reads in lane.json work orders.",
+    "Validate `F1.6` against SEC-15 release checklist and parent index links.",
+    "Document `F1.6` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `F1.6`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids F1.6`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`template-packs/`",
+    "`program/integration/manifest.md`",
+    "`.cursor/skills/program-scoper/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a78",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[F1-index](F1-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids F1.6` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [F1-index](F1-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "F1.6 defines pack playbooks role specific for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling. In practice, the system when `next_action` enters design phases (`run hld-writer`, `run dd-writer`, `diagram-generator`), the conductor classifies work under the app-a design taxonomy\u2014ux/ui, api and data models, integration boundaries, and security/compliance\u2014and routes each slice through the matching s2 skill instead of prose-only decisions, then each design turn must emit machine-checkable artifacts\u2014diagram files, schemas, structured review triggers\u2014in `docs/design/` and `docs/diagrams/` so [a1.2](a1.2-success-criteria-machine-checkable.md) criteria and verifiers can judge completion without subjective review.",
+  "reader_narrative": "<!-- prose-source: agent plane-f 2026-06-28 -->\n\nPack `playbooks/` hold role-specific procedures distilled for that industry template\u2014game QA asset checks, data platform deploy runbooks, onboarding flows. They complement repo `docs/playbooks/` after instantiation copies or references pack fragments into the consumer catalog ([E1.2](E1.2-catalog-playbooks-index.md)).\n\nCompose-first ([B4.3](B4.3-compose-first-catalog-before-improvise.md)) searches pack playbooks via role-scoped allowed_reads ([F6.2](F6.2-role-allowed-reads-scoped-playbooks-lane-tasks.md)). Playbook-keeper promotes repeated patterns from product pursuit back into pack fragments via Plane D promotion queue\u2014not ad hoc edits in consumer repos ([F5.3](F5.3-no-repo-outside-template-packs-ceiling.md))."
+}

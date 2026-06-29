@@ -1,0 +1,89 @@
+{
+  "id": "E4.1",
+  "slug": "E4.1-context-always-on-rules-agents-md",
+  "title": "context always-on rules AGENTS.md",
+  "branch": "E",
+  "parent": "[E4-index](E4-index.md)",
+  "vision_section": "",
+  "release": "v2.17",
+  "purpose": "E4.1 defines context always on rules agents md for the agent-driven expert system. Knowledge & composition \u2014 catalog, compose-first, staleness.",
+  "scope": [
+    "Owns `E4.1` only; siblings under `E4` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a77 \u2014 Branch E \u2014 Knowledge & composition plane](../../full-automation-vision-and-hierarchy.md#7-branch-e-knowledge-composition-plane)."
+  ],
+  "behavior_steps": [
+    "At company instantiation, program-scoper binds `state.company.pack_id` and resolves roles, pipelines, governance, and verify suites only from declared paths under `template-packs/`\u2014consumer repos instantiate packs rather than silently forking company.yaml or role YAML into undocumented repo locations.",
+    "On every wake, compose-first routing ([B4.3](B4.3-compose-first-catalog-before-improvise.md)) and import resolution ([F5.1](F5.1-cross-pack-imports-micro-packs.md)) reject organizational authority referenced outside the template-packs namespace before the conductor assigns workers or advances `next_action`.",
+    "When operators need an urgent organizational change, pursuit records a pack version bump, cross-pack import, or explicit policy override in the journal\u2014not a permanent shadow copy that bypasses catalog and SEC-14 auditability.",
+    "Mature patterns promoted from product pursuit must land as pack fragments via Plane D export ([D4.6](D4.6-platform-work-pack-fragment-export.md)); consumer-only role or pipeline edits cannot satisfy maturity claims or goal_verify suites tied to the pack ceiling.",
+    "If S0 or validate-workflow detects pack-defined authority living outside `template-packs/`, pursuit stops at H2 with the offending path recorded in journal and state.json until operators restore ceiling compliance or approve a pack update at H1."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"E4.1\",\n  \"description\": \"context always on rules agents md\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `E4.1` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `E4.1` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `E4.1`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `E4.1` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_e4_1.py when script exists.",
+    "Validate `E4.1` against SEC-15 release checklist and parent index links.",
+    "Document `E4.1` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `E4.1`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids E4.1`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/facts/INDEX.md`",
+    "`docs/playbooks/INDEX.md`",
+    "`docs/manifest/staleness.json`",
+    "`allowed_reads`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a77",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[E4-index](E4-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids E4.1` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [E4-index](E4-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "E4.1 defines context always on rules agents md for the agent-driven expert system. Knowledge & composition \u2014 catalog, compose-first, staleness. In practice, the system at company instantiation, program-scoper binds `state.company.pack_id` and resolves roles, pipelines, governance, and verify suites only from declared paths under `template-packs/`\u2014consumer repos instantiate packs rather than silently forking company.yaml or role yaml into undocumented repo locations, then on every wake, compose-first routing ([b4.3](b4.3-compose-first-catalog-before-improvise.md)) and import resolution ([f5.1](f5.1-cross-pack-imports-micro-packs.md)) reject organizational authority referenced outside the template-packs namespace before the conductor assigns workers or advances `next_action`.",
+  "reader_narrative": "<!-- prose-source: agent plane-e 2026-06-28 -->\n\nAlways-on context layers inject project rules and `AGENTS.md` every session\u2014the baseline conductor contract, evidence rules, approval gates, and pipeline semantics. Workers inherit applicable rules via spawn context; they do not re-read the full AGENTS monolith unless allowed.\n\nThis is layer zero of context retrieval\u2014below hooks ([E4.2](E4.2-context-hooks-inject-continue-start.md)) and Librarian allowed_reads ([E4.3](E4.3-context-allowed-reads-cap-max-5.md)). Pack authors may extend always-on rules through template-pack fragments. Changes to AGENTS.md mark dependent playbooks and skills stale in [E5.2](E5.2-staleness-extend-playbooks-scripts-pack-nodes.md)."
+}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>F6.4 — role, evidence, requirements, per, output, and type</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/F.html">Plane F</a> · <a href="../chapters/F-F6.html">F6</a> ·
+    F6.4
+  </nav>
+  <p class="page-id">F6.4 · Organization plane</p>
+  <h1 class="page-title">role, evidence, requirements, per, output, and type</h1>
+  <p class="page-subtitle">role evidence requirements per output type</p>
+  
+  <div class="story-block"><p><a href="../glossary.html#evidence" class="glossary-link" title="Evidence">Evidence</a> requirements per role output type define what verify must prove for each deliverable—code diff + pytest for programmer tasks, export checksum + render for TA tasks, schema migration log for DBA tasks. Requirements extend generic evidence_required in state with pack-specific output_type rows.</p>
+<p>Task cards reference output_type; verify-router and tool-operator write matching <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> paths (<a href="../capabilities/C3.3-evidence-per-task.html" class="spec-link">G-plane task evidence</a>). <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> (<a href="../capabilities/F1.8-pack-verify-goal-verify-suites.html" class="spec-link">F1.8</a>) aggregates role <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> at scope complete. Missing output_type <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> blocks task completion even when generic last_verify passed—fail closed per role contract.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">Before context compaction or session handoff, the preCompact hook from <a href="../capabilities/I1.4-runtime-ide-hooks-beforesubmit-subagentstart-pretooluse-prec.html" class="spec-link">I1.4</a> runs <code>sync-state.py</code> to write timestamped snapshot files alongside live <code>journal/state.json</code> and <code>journal/progress.md</code>.</span></li><li><span class="step-num">Step 2</span><span class="step-text">On Continue or <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> wake, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> treats journal/state.json as the primary router and consults snapshots only when <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> is ambiguous or the operator closed mid-loop.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Full prompt from the queue (includes <code>Write 3–5 numbered steps for capability X.Y: …</code> and the reader narrative), or</span></li><li><span class="step-num">Step 4</span><span class="step-text">A leaf id (e.g. <code>INTRO-1.1</code>, <code>MASTER-C</code>, <code>SEC-15-v2.16</code>)</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids F6.4</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Pack role handoff while lane lease held — complete-work-order releases lease before role switch.</li><li>Edge case F6.4 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;F6.4&quot;,
+  &quot;description&quot;: &quot;role evidence requirements per output type&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.19</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

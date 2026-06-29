@@ -1,0 +1,88 @@
+{
+  "id": "F1.7",
+  "slug": "F1.7-pack-template-tasks-seed-cards",
+  "title": "pack template tasks seed cards",
+  "branch": "F",
+  "parent": "[F1-index](F1-index.md)",
+  "vision_section": "",
+  "release": "v2.19",
+  "purpose": "F1.7 defines pack template tasks seed cards for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling.",
+  "scope": [
+    "Owns `F1.7` only; siblings under `F1` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a78 \u2014 Branch F \u2014 Organization plane (template-packs = ceiling)](../../full-automation-vision-and-hierarchy.md#8-branch-f-organization-plane-template-packs-ceiling)."
+  ],
+  "behavior_steps": [
+    "During pursuit, `state.pursuit` records mode (continue, goal_autopilot, company_autopilot), steps_total, capability_class, last_verify, evidence_files, and gates_pending\u2014the live control surface S0 preflight reads before each turn.",
+    "Autopilot modes increment steps_total each iteration until check-pipeline-blocked, budget exhaustion, or a hard stop from Plane A fires per [A3.1](A3.1-session-autopilot-max-steps-per-session.md) and [A3.2](A3.2-goal-autopilot-until-goal-verify-or-hard-block.md).",
+    "When evidence_required is true, the conductor must hold `last_verify: passed` and list evidence paths before advancing past implement tasks\u2014workers cannot clear verification state themselves.",
+    "gates_pending retains HLD, DD, and feature-design waits; [A5.2](A5.2-continue-not-approval-self-gate-h1-h3-only.md) ensures Continue does not waive them without explicit H1 approval or waiver text in the journal.",
+    "After dual-write, route-tier.py applies model tier and spawn_workers when next_action shifts; pursuit counters that drift from the journal mirror trigger an integrity stop at H2."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"node\": \"F1.7\",\n  \"description\": \"pack template tasks seed cards\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Pack role handoff while lane lease held \u00e2\u20ac\u201d complete-work-order releases lease before role switch.",
+    "Edge case `F1.7` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `F1.7`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `company.yaml` + `roles/*.yaml` to template-packs schema.",
+    "program-scoper selects pack; sets state.company.active_role.",
+    "Per-role allowed_reads in lane.json work orders.",
+    "Validate `F1.7` against SEC-15 release checklist and parent index links.",
+    "Document `F1.7` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `F1.7`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids F1.7`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`template-packs/`",
+    "`program/integration/manifest.md`",
+    "`.cursor/skills/program-scoper/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a78",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[F1-index](F1-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids F1.7` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [F1-index](F1-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "F1.7 defines pack template tasks seed cards for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling. In practice, the system during pursuit, `state.pursuit` records mode (continue, goal_autopilot, company_autopilot), steps_total, capability_class, last_verify, evidence_files, and gates_pending\u2014the live control surface s0 preflight reads before each turn, then autopilot modes increment steps_total each iteration until check-pipeline-blocked, budget exhaustion, or a hard stop from plane a fires per [a3.1](a3.1-session-autopilot-max-steps-per-session.md) and [a3.2](a3.2-goal-autopilot-until-goal-verify-or-hard-block.md).",
+  "reader_narrative": "<!-- prose-source: agent plane-f 2026-06-28 -->\n\n`template tasks/` seeds task cards per role\u2014pre-written Components, Test commands, evidence types, and promotion_note stubs so instantiation does not start from empty TODOS. program-scoper or task-breakdown copies seeds into `docs/features/` or program lanes with pack_id provenance.\n\nSeed cards bind pack verify suites ([F1.8](F1.8-pack-verify-goal-verify-suites.md)) and role evidence rules ([F6.4](F6.4-role-evidence-requirements-per-output-type.md)) at first implement turn. Seeds are templates, not completed work\u2014evidence gates still apply. Platform promotion ([D6.3](D6.3-platform-done-task-card-references.md)) requires task cards reference promoted artifacts after they have been promoted from the improvement queue into lasting catalog entries."
+}

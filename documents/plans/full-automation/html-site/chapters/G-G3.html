@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>G3 — Conformance &amp; workflow</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/G.html">Plane G</a> ·
+    G3
+  </nav>
+  <p class="page-id">G3 · Verification &amp; quality plane</p>
+  <h1 class="page-title">Conformance &amp; workflow</h1>
+  <div class="story-block"><p>G3: Conformance &amp; workflow. Open each capability below for diagrams, verification, and contracts.</p>
+<p><code>scripts/validate-workflow.py</code> is the conformance gate for journal/state shape, required fields, and pursuit invariants. CI and optional pre-push hooks run it so corrupt <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s fail before merge, not mid-<a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a>.</p>
+<p>validate-workflow complements verify-router: the former checks workflow schema and routing consistency; the latter runs product tests. Both are S0-first (<a href="../capabilities/B1.1-s0-deterministic-mandatory-first.html" class="spec-link">B1.1</a>). Failures block continue/<a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> until the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> repairs state or records an operator exception.</p>
+<p>route-tier conformance ensures <code>next_action</code>, <code>capability_class</code>, <code>spawn_workers</code>, and model tier align whenever the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> changes pursuit direction. <code>python scripts/route-tier.py --apply</code> is the canonical apply path; validate-workflow cross-checks tier output against state.json.</p>
+<p>Mis-routed genius implement or missing spawn_workers when task cards expect workers is a conformance failure, not a soft warning. Pack role bindings (<a href="../capabilities/B5.2-role-to-pipeline-id-skills-tool-permissions.html" class="spec-link">B5.2</a>) feed expected tier patterns for validation.</p>
+<p><code>check-pipeline-blocked.py</code> with <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">goal_autopilot</a> semantics defines when pursuit must stop: human gates (<a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">H1/H2/H3</a>), budget exhaustion, corrupt state, and verify regressions. <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">Autopilot</a> and run-local-pipeline consult this script each iteration instead of inferring stop conditions in chat.</p>
+<p>Conformance means <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> cannot override a would-stop result—gates_pending and blocking_questions remain until explicit operator action. Pair with <a href="../capabilities/A2.6-loop-until-blocked-budget-achieved-h3-reject.html" class="spec-link">A2.6</a> and <a href="../chapters/A-A4.html" class="spec-link">A4</a> stop taxonomy.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/G3.1-conformance-validate-workflow-ci.html">G3.1</a></span>
+  <span class="cap-title">conformance validate-workflow CI</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/G3.2-conformance-route-tier-check.html">G3.2</a></span>
+  <span class="cap-title">conformance route-tier check</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/G3.3-conformance-check-pipeline-blocked-goal-autopilot.html">G3.3</a></span>
+  <span class="cap-title">conformance check-pipeline-blocked goal autopilot</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

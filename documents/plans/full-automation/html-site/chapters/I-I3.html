@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>I3 — Headless / scheduled</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/I.html">Plane I</a> ·
+    I3
+  </nav>
+  <p class="page-id">I3 · Runtime &amp; integration plane</p>
+  <h1 class="page-title">Headless / scheduled</h1>
+  <div class="story-block"><p>I3: Headless / scheduled. Open each capability below for diagrams, verification, and contracts.</p>
+<p><code>scripts/headless-verify.py</code> runs verify-router and validate-workflow without an IDE session—used locally and as the pattern for CI verify steps. Headless mode reads state.json and task cards from disk; it does not spawn <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> LLM turns unless explicitly configured.</p>
+<p>Output writes to <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>/ with the same immutability contract as IDE verifier (<a href="../capabilities/H4-evidence.html" class="spec-link">H4</a>). Failures set last_verify failed in state for <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> resume on next IDE session.</p>
+<p>GitHub Actions (or equivalent CI) runs validate-workflow.py and headless-verify on pull requests—deterministic gates before merge without human babysitting each test. CI does not clear <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> sign-off or design gates in state.json; it validates repo conformance and task <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> where configured.</p>
+<p>Workflow definitions should mirror local verify commands from task cards and pack verify suites (F1.8). CI failure comments link to <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> logs; passing CI is necessary but not sufficient for <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a>.</p>
+<p>Headless lane workers pull ready work orders from lane JSON when leases expire or slots open—complete-work-order scripts mark lane progress without IDE <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> presence (<a href="../capabilities/C3.2-work-orders-parallel-lanes.html" class="spec-link">C3.2</a>).</p>
+<p>Pull-ready semantics require integration manifest approval and unblocked dependencies in artifact graph (<a href="../capabilities/H3-artifact-graphs.html" class="spec-link">H3</a>). Headless lanes <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> outcomes to journal/state via <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> scripts only; LLM workers return artifacts to queue for <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> merge.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/I3.1-runtime-headless-headless-verify.html">I3.1</a></span>
+  <span class="cap-title">runtime headless headless-verify</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/I3.2-runtime-headless-github-actions-validate-verify.html">I3.2</a></span>
+  <span class="cap-title">runtime headless GitHub Actions validate verify</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/I3.3-runtime-headless-pull-ready-complete-work-order-lanes.html">I3.3</a></span>
+  <span class="cap-title">runtime headless pull-ready complete-work-order lanes</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>B2.3 — Phase workers implement design explore</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/B.html">Plane B</a> · <a href="../chapters/B-B2.html">B2</a> ·
+    B2.3
+  </nav>
+  <p class="page-id">B2.3 · Cognition &amp; routing plane</p>
+  <h1 class="page-title">Phase workers implement design explore</h1>
+  <p class="page-subtitle">Phase workers implement design explore</p>
+  
+  <div class="story-block"><p>Phase workers implement one skill phase under contract: implement-feature, dd-writer, explore, refactor—each with task card paths, <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> requirements, and no journal writes. The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> selects the worker type from <code>next_action</code> and route-tier output.</p>
+<p>Parallel phase workers are allowed only when the integration manifest declares independent lanes; otherwise one worker per turn preserves auditability. Workers return summaries; the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> merges and verifies before marking progress.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">From <code>next_action</code>, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> spawns one phase worker type per turn—implement-feature, dd-writer, librarian explore, refactor—each under a task card or skill contract with <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> requirements and no journal writes.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Parallel phase workers run only when the integration manifest declares independent lanes; otherwise one worker per turn preserves auditability and avoids conflicting <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Workers execute the scoped phase, return summaries and <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> paths, and must not choose the next pipeline step or update <code>journal/state.json</code> themselves.</span></li><li><span class="step-num">Step 4</span><span class="step-text">The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> verifies worker output against task card acceptance criteria before marking phase progress or spawning <a href="../capabilities/B2.4-verifier-tool-operator-evidence.html" class="spec-link">B2.4</a> for command proof.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If a worker expands beyond <code>allowed_reads</code>, omits required <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>, or attempts journal writes, pursuit blocks at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> until the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> rescopes or respawns under a corrected contract.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids B2.3</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case B2.3 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case B2.3 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;B2.3&quot;,
+  &quot;description&quot;: &quot;phase workers implement design explore&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

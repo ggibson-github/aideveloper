@@ -1,0 +1,88 @@
+{
+  "id": "F2.4",
+  "slug": "F2.4-company-conductor-handoffs-manifest-graph",
+  "title": "company conductor handoffs manifest graph",
+  "branch": "F",
+  "parent": "[F2-index](F2-index.md)",
+  "vision_section": "",
+  "release": "v2.19",
+  "purpose": "F2.4 defines company conductor handoffs manifest graph for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling.",
+  "scope": [
+    "Owns `F2.4` only; siblings under `F2` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a78 \u2014 Branch F \u2014 Organization plane (template-packs = ceiling)](../../full-automation-vision-and-hierarchy.md#8-branch-f-organization-plane-template-packs-ceiling)."
+  ],
+  "behavior_steps": [
+    "At H1 or company-goal instantiation, [F2.1](F2.1-company-instantiate-program-scoper-pack-select.md) loads `company.yaml` and `roles/*.yaml` from the active template-pack, dual-writing `company.pack_id`, `company.active_role`, and program workstreams into state.json without forking a separate harness per employee.",
+    "The conductor selects `active_role` from the pack per [B5.1](B5.1-active-role-from-template-pack.md), binding pipeline id, skills, and tool permissions via [B5.2](B5.2-role-to-pipeline-id-skills-tool-permissions.md) so each department turn runs under the correct org-chart context.",
+    "When parallel lanes are ready, [F2.2](F2.2-company-spawn-workstream-department-role-lane.md) spawns workstreams with lane leases while [F2.3](F2.3-company-active-role-rotates-ready-work.md) rotates `active_role` across departments that have ready queue items\u2014coordinating cross-team handoffs through the integration manifest, not ad-hoc journal edits.",
+    "Under [A3.3](A3.3-company-autopilot-multi-goal-role-workstreams.md) company autopilot, pursuit continues across role and workstream switches until each nested goal reaches goal_verify or a hard block fires; roll-up status stays on parent goals in state.json.",
+    "If pack instantiation fails, role bindings conflict, or lane leases collide, pursuit stops with a structured H2 blocker rather than silently running product work under the wrong role context."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"F2.4\",\n  \"description\": \"company conductor handoffs manifest graph\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Pack role handoff while lane lease held \u00e2\u20ac\u201d complete-work-order releases lease before role switch.",
+    "Edge case `F2.4` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `F2.4`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `company.yaml` + `roles/*.yaml` to template-packs schema.",
+    "program-scoper selects pack; sets state.company.active_role.",
+    "Per-role allowed_reads in lane.json work orders.",
+    "Validate `F2.4` against SEC-15 release checklist and parent index links.",
+    "Document `F2.4` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `F2.4`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids F2.4`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`template-packs/`",
+    "`program/integration/manifest.md`",
+    "`.cursor/skills/program-scoper/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a78",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[F2-index](F2-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids F2.4` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [F2-index](F2-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "F2.4 defines company conductor handoffs manifest graph for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling. In practice, the system at h1 or company-goal instantiation, [f2.1](f2.1-company-instantiate-program-scoper-pack-select.md) loads `company.yaml` and `roles/*.yaml` from the active template-pack, dual-writing `company.pack_id`, `company.active_role`, and program workstreams into state.json without forking a separate harness per employee, then the conductor selects `active_role` from the pack per [b5.1](b5.1-active-role-from-template-pack.md), binding pipeline id, skills, and tool permissions via [b5.2](b5.2-role-to-pipeline-id-skills-tool-permissions.md) so each department turn runs under the correct org-chart context.",
+  "reader_narrative": "<!-- prose-source: agent plane-f 2026-06-28 -->\n\nThe conductor orchestrates cross-role handoffs using instantiated manifest.md plus artifact-graph.json\u2014checking prerequisite nodes, updating handoff manifest sections, and spawning the next role lane when contracts satisfy. This implements pack integration contracts ([F1.4](F1.4-pack-manifest-md-integration-contracts.md)) at runtime.\n\nHandoffs are conductor-owned S3 merges when ambiguity exists; mechanical prerequisite checks are S0 via reconcile-artifact-graph. Failed handoff surfaces structured H2 with missing artifact id and suggested owner role. Pair with [B5.3](B5.3-handoff-manifest-artifact-graph.md) and [B5.4](B5.4-conductor-stays-workers-swap-role-context.md) for worker vs parent separation."
+}

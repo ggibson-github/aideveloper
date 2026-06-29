@@ -1,0 +1,89 @@
+{
+  "id": "A4.3",
+  "slug": "A4.3-stop-resource-max-steps-max-cost-lease-expired",
+  "title": "stop resource max_steps max_cost lease_expired",
+  "branch": "A",
+  "parent": "[A4-index](A4-index.md)",
+  "vision_section": "",
+  "release": "v2.14",
+  "purpose": "A4.3 defines stop resource max steps max cost lease expired for the agent-driven expert system. Pursuit & control plane \u2014 autonomous loops until goal verified.",
+  "scope": [
+    "Owns `A4.3` only; siblings under `A4` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a73 \u2014 Branch A \u2014 Pursuit & control plane](../../full-automation-vision-and-hierarchy.md#3-branch-a-pursuit-control-plane)."
+  ],
+  "behavior_steps": [
+    "Each pursuit wake increments budget counters from [A1.4](A1.4-deadline-budget-steps-tokens-wall-clock.md)\u2014session steps, goal steps, token spend, cost accrual, and runner lease timestamps\u2014before [A2.2](A2.2-if-ready-execute-one-pipeline-step.md) schedules another phase.",
+    "When any configured ceiling is reached, [A2.1](A2.1-preflight-check-pipeline-blocked-extended.md) emits stop class `resource:max_steps`, `resource:max_cost`, or `resource:lease_expired` and exits [A2.6](A2.6-loop-until-blocked-budget-achieved-h3-reject.md) without advancing `next_action`.",
+    "Journal-keeper dual-writes the exhausted budget dimension, current counter values, and stop reason to journal and state.json so operators and Plane D schedulers can audit why pursuit halted\u2014not a silent session end.",
+    "Operators may extend budgets at H2 when policy allows; [D3.2](D3.2-priority-boost-queue-depth-threshold.md) may reprioritize sibling work when a shared runner lease expires, but the stop record remains until explicitly cleared.",
+    "If budget fields are missing or counters disagree with ledger evidence, preflight fails closed at H2 rather than allowing unbounded always-on pursuit."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"A4.3\",\n  \"description\": \"stop resource max steps max cost lease expired\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "goal_verify passes but H3 rejected \u00e2\u20ac\u201d goal.state returns to pursuing with rejection notes.",
+    "Edge case `A4.3` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `A4.3`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `goal` block to state template and journal-keeper dual-write (v2.14).",
+    "Extend `check-pipeline-blocked.py` with goal_autopilot stop reasons.",
+    "Implement `scripts/goal-verify.py` stub aggregating task evidence paths.",
+    "Add `.cursor/skills/goal-keeper/SKILL.md` for conductor H1\u00e2\u2020\u2019pursuit transition.",
+    "Document `A4.3` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `A4.3`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids A4.3`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`journal/state.json `goal`, `pursuit`, `hitl``",
+    "`scripts/automation/check-pipeline-blocked.py`",
+    "`scripts/automation/run-local-pipeline.py`",
+    "`.cursor/skills/autopilot/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a73",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[A4-index](A4-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids A4.3` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [A4-index](A4-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "A4.3 defines stop resource max steps max cost lease expired for the agent-driven expert system. Pursuit & control plane \u2014 autonomous loops until goal verified. In practice, the system each pursuit wake increments budget counters from [a1.4](a1.4-deadline-budget-steps-tokens-wall-clock.md)\u2014session steps, goal steps, token spend, cost accrual, and runner lease timestamps\u2014before [a2.2](a2.2-if-ready-execute-one-pipeline-step.md) schedules another phase, then when any configured ceiling is reached, [a2.1](a2.1-preflight-check-pipeline-blocked-extended.md) emits stop class `resource:max_steps`, `resource:max_cost`, or `resource:lease_expired` and exits [a2.6](a2.6-loop-until-blocked-budget-achieved-h3-reject.md) without advancing `next_action`.",
+  "reader_narrative": "<!-- prose-source: agent plane-a 2026-06-28 -->\n\nResource stops bound autonomous pursuit in measurable units: max steps per session or goal, token budgets, cost caps, and lease expiry on shared runners. When a budget is exhausted, pursuit halts with a stop reason that operators can extend at H2 if policy allows.\n\nThese limits implement [A1.4](A1.4-deadline-budget-steps-tokens-wall-clock.md) in the stop taxonomy so \u201calways-on\u201d never means \u201cunbounded.\u201d Scheduling in Plane D may reprioritize work when leases expire, but the stop record must remain auditable. Too-tight budgets cause false stops; too-loose budgets waste spend\u2014pack authors set defaults per goal_type."
+}

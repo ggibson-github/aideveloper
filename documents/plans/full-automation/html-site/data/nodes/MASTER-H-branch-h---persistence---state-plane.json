@@ -1,0 +1,84 @@
+{
+  "id": "MASTER-H",
+  "slug": "MASTER-H-branch-h---persistence---state-plane",
+  "title": "Branch H \u2014 Persistence & state plane",
+  "branch": "meta",
+  "parent": "\u2014",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "MASTER-H defines branch h   persistence   state plane for the agent-driven expert system. Top-level decomposition into ten planes.",
+  "scope": [
+    "Owns `MASTER-H` only; siblings under `\u2014` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a72 \u2014 Master hierarchy (top level)](../../full-automation-vision-and-hierarchy.md#2-master-hierarchy-top-level)."
+  ],
+  "behavior_steps": [
+    "With pursuit mode `company_autopilot`, the conductor maintains a multi-goal queue in state.json scoped by the active template-pack from Plane F\u2014selecting the next ready goal by dependencies, role bindings, and platform slots rather than a single perpetual goal.",
+    "Each wake runs [A2.1](A2.1-preflight-check-pipeline-blocked-extended.md) preflight against the active goal slice; H2 on one stream dual-writes a blocker for that goal only while other ready goals may still advance if preflight allows.",
+    "[B5.2](B5.2-role-to-pipeline-id-skills-tool-permissions.md) `active_role` rotates so the conductor context-switches `pipeline_id`, skills, and `allowed_reads` per selected goal\u2014workers never dual-write journal or state.",
+    "When one goal reaches H3 pending after [A2.5](A2.5-goal-verify-pass-transition-h3-pending.md), sibling goals in the company queue may continue pursuit if their streams are unblocked\u2014organizational throughput without abandoning strict HITL on verified closures.",
+    "If the scheduler picks a goal with unresolved dependencies or corrupt queue state, preflight fails closed at H2 until journal-keeper reconciles the multi-goal manifest per [SEC-17-6](SEC-17-6-decision-multi-goal-single-stack-vs-company-autopilot.md)."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"node\": \"MASTER-H\",\n  \"description\": \"branch h   persistence   state plane\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `MASTER-H` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `MASTER-H` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `MASTER-H`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `MASTER-H` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_master-h.py when script exists.",
+    "Validate `MASTER-H` against SEC-15 release checklist and parent index links.",
+    "Document `MASTER-H` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `MASTER-H`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids MASTER-H`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a72",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[\u2014-index](\u2014-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids MASTER-H` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [\u2014-index](\u2014-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "MASTER-H defines branch h   persistence   state plane for the agent-driven expert system. Top-level decomposition into ten planes. In practice, the system with pursuit mode `company_autopilot`, the conductor maintains a multi-goal queue in state.json scoped by the active template-pack from plane f\u2014selecting the next ready goal by dependencies, role bindings, and platform slots rather than a single perpetual goal, then each wake runs [a2.1](a2.1-preflight-check-pipeline-blocked-extended.md) preflight against the active goal slice; h2 on one stream dual-writes a blocker for that goal only while other ready goals may still advance if preflight allows.",
+  "reader_narrative": "<!-- prose-source: agent meta 2026-06-28 -->\n\nPlane H persists state\u2014journal and machine state dual-write, artifact graphs, immutable evidence logs, worker audit trails, and snapshots for resume after compaction or crash.\n\nIf Plane A is the heartbeat, Plane H is the memory that makes restart safe."
+}

@@ -1,0 +1,100 @@
+{
+  "id": "G2.5",
+  "slug": "G2.5-per-node-evidence-rollup-goal-verify",
+  "title": "per-node evidence rollup goal_verify",
+  "branch": "G",
+  "parent": "[G2-index](G2-index.md)",
+  "vision_section": "",
+  "release": "v2.26",
+  "purpose": "G2.5 defines per-node evidence rollup goal_verify for the agent-driven expert system. Transistor & generator workflow model (\u00a719).",
+  "scope": [
+    "Owns `G2.5` only; siblings under `G2` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a79 \u2014 Branch G \u2014 Verification & quality plane (anti-mistake)](../../full-automation-vision-and-hierarchy.md#9-branch-g-verification-quality-plane-anti-mistake)."
+  ],
+  "behavior_steps": [
+    "goal-verify.py accepts --workflow-evidence manifest from active_workflow.completed_nodes.",
+    "Missing node evidence fails rollup even if legacy task cards marked done.",
+    "Tool/MCP evidence types per I4.3 included in manifest when transistors use tool executors.",
+    "Regression batch G2.4 runs transistor verify suite subset on implement batches.",
+    "Evidence immutability H4 applies per node path."
+  ],
+  "mermaid": "flowchart TD\n  compose[Compose workflow] --> validate[validate-workflow-dag S0]\n  validate -->|pass| exec[Execute one node]\n  exec --> nodeVerify[Transistor verify]\n  nodeVerify -->|pass| next[Advance active_workflow]\n  nodeVerify -->|fail| h2[H2 or retry gate]\n  next --> goalVerify[goal_verify rollup]",
+  "json_example": "{\n  \"node\": \"G2.5\",\n  \"description\": \"per-node evidence rollup goal_verify\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\", \"active_workflow\": \"H1.7\" },\n  \"implemented_in_release\": \"v2.26+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u2014 state.json must resume from last good dual-write including active_workflow.",
+    "Transistor version bump mid-pursuit \u2014 E5.4 marks workflow stale; re-validate before next node.",
+    "L0 waiver node without promotion progress \u2014 D3.3 priority boost then H2 if threshold exceeded.",
+    "Pack overlay id collision \u2014 F5.4 semver fork per D5.3, not silent overwrite.",
+    "Parallel branch join missing typed input \u2014 validate-workflow-dag fails at compose time."
+  ],
+  "failure_modes": [
+    "**Fuzzy chain:** Implement without workflow_node_id when C6.1 applies \u2192 G5.8 blocks at preflight.",
+    "**False complete:** Node marked done without transistor verify evidence \u2192 G2.5 goal_verify fails closed.",
+    "**Stale workflow:** active_workflow.validation_hash mismatch \u2192 E5.4 reconcile before advance.",
+    "**Duplicate transistor:** G5.6 list-transistors --check-duplicates rejects promotion.",
+    "**Scope bleed:** Worker runs transistors outside bound node \u2192 C6.3 conformance failure."
+  ],
+  "implementation": [
+    "Map `G2.5` to release row in [SEC-15-index](SEC-15-index.md) (v2.26).",
+    "Implement behavior per [SEC-18](SEC-18-transistor-model-a-to-z.md) acceptance checklist.",
+    "Add or extend S0 script when behavior is file-derived.",
+    "Add unit test under `tests/unit/` when script exists.",
+    "Link from [G2-index](G2-index.md).",
+    "Run `python scripts/validate-workflow.py` after implement."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids G2.5`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "DAG validity",
+      "Command": "`python scripts/automation/validate-workflow-dag.py` when workflow exists"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/platform/transistors/`",
+    "`docs/platform/schemas/transistor.v1.json`",
+    "`docs/platform/schemas/workflow-dag.v1.json`",
+    "`docs/workflows/`",
+    "`scripts/automation/list-transistors.py`",
+    "`scripts/automation/validate-workflow-dag.py`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[SEC-18-transistor-model-a-to-z](SEC-18-transistor-model-a-to-z.md)",
+      "Why": "A\u2013Z authority"
+    },
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a719",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[G2-index](G2-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids G2.5` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [G2-index](G2-index.md)",
+    "[ ] Aligned with SEC-18 transistor model",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "G2.5 defines per-node evidence rollup goal_verify for the agent-driven expert system. Transistor & generator workflow model (\u00a719). In practice, the system goal-verify.py accepts --workflow-evidence manifest from active_workflow.completed_nodes, then missing node evidence fails rollup even if legacy task cards marked done.",
+  "reader_narrative": "<!-- prose-source: agent transistor-expansion 2026-06-28 -->\n\nGoal-level verification must reflect **workflow execution**, not only legacy task-card checkboxes. This capability extends [G2.2](G2.2-goal-verify-aggregates-unit-integration-e2e-tool.md): when `state.pursuit.active_workflow` is bound, `goal-verify.py` accepts a manifest of evidence paths collected from each entry in `completed_nodes[]`\u2014each path produced by that node's transistor `verify` command or `evidence_path_template`. Missing node evidence fails rollup even if an implement task was marked done in chat, closing the [G5.1](G5.1-mistake-hallucinated-done-evidence-gate.md) hallucinated-done class at workflow granularity.\n\nTool and MCP outputs use evidence types from [I4.3](I4.3-runtime-external-evidence-types-non-pytest.md) when transistors invoke external executors ([I4.4](I4.4-transistor-executors-mcp-tool-script-boundary.md)). [G2.4](G2.4-goal-verify-regression-every-implement-batch.md) regression batches may run a subset of transistor verify suites after each implement batch. Rollup success is prerequisite for [G2.3](G2.3-goal-verify-blocks-h3-until-pass.md) H3 transition per [INTRO-1.3](INTRO-1.3-goal-completion-criterion.md). Immutable logs remain under [H4](H4-evidence.md).\n\nSee [Vision \u00a719 \u2014 Transistor & generator workflow model](../../full-automation-vision-and-hierarchy.md#19-transistor--generator-workflow-model) and [C6.5](C6.5-workflow-node-rollup-to-goal-verify.md) for terminal-node completion rules."
+}

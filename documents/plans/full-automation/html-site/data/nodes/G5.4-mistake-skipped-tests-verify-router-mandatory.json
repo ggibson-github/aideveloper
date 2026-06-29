@@ -1,0 +1,89 @@
+{
+  "id": "G5.4",
+  "slug": "G5.4-mistake-skipped-tests-verify-router-mandatory",
+  "title": "mistake skipped tests verify-router mandatory",
+  "branch": "G",
+  "parent": "[G5-index](G5-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "G5.4 defines mistake skipped tests verify router mandatory for the agent-driven expert system. Verification & quality \u2014 evidence, goal_verify, anti-mistake.",
+  "scope": [
+    "Owns `G5.4` only; siblings under `G5` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a79 \u2014 Branch G \u2014 Verification & quality plane (anti-mistake)](../../full-automation-vision-and-hierarchy.md#9-branch-g-verification-quality-plane-anti-mistake)."
+  ],
+  "behavior_steps": [
+    "Skipped tests is bypassing verify-router or marking tasks done without running the task card Test command\u2014often under token pressure or \u201ctests are slow.\u201d Controls: mandatory verify-router dispatch, evidence path requirements, and git-workflow blocked when last_verify is not passed",
+    "Headless and CI paths use the same commands via verify-router/headless-verify.py\u2014no alternate \u201ctrust me\u201d path",
+    "Run verify-router for task-level commands; persist log under `evidence/`.",
+    "Set `last_verify=passed|failed` in state before advancing implement tasks.",
+    "Block git-workflow push when evidence_required and verify not passed."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"node\": \"G5.4\",\n  \"description\": \"mistake skipped tests verify router mandatory\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Flaky test \u00e2\u20ac\u201d escalation S4 once, then H2 with evidence log; no silent retry loop.",
+    "Edge case `G5.4` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `G5.4`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Extend verify-router for goal-level suite invocation.",
+    "Wire CI: validate-workflow checks goal block when pursuit.mode=goal_autopilot.",
+    "Document evidence type in docs/operator/evidence-types.md.",
+    "Validate `G5.4` against SEC-15 release checklist and parent index links.",
+    "Document `G5.4` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `G5.4`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids G5.4`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`scripts/verify-router.py`",
+    "`scripts/validate-workflow.py`",
+    "`evidence/`",
+    "`.cursor/skills/verifier/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a79",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[G5-index](G5-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids G5.4` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [G5-index](G5-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "G5.4 defines mistake skipped tests verify router mandatory for the agent-driven expert system. Verification & quality \u2014 evidence, goal_verify, anti-mistake. In practice, the system skipped tests is bypassing verify-router or marking tasks done without running the task card test command\u2014often under token pressure or \u201ctests are slow.\u201d controls: mandatory verify-router dispatch, evidence path requirements, and git-workflow blocked when last_verify is not passed, then headless and ci paths use the same commands via verify-router/headless-verify.py\u2014no alternate \u201ctrust me\u201d path.",
+  "reader_narrative": "<!-- prose-source: agent plane-g 2026-06-28 -->\n\nSkipped tests is bypassing verify-router or marking tasks done without running the task card Test command\u2014often under token pressure or \u201ctests are slow.\u201d Controls: mandatory verify-router dispatch, evidence path requirements, and git-workflow blocked when `last_verify` is not passed.\n\nHeadless and CI paths use the same commands via verify-router/headless-verify.py\u2014no alternate \u201ctrust me\u201d path. Skipping is indistinguishable from hallucinated done for audit purposes."
+}

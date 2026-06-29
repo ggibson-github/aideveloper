@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>A2.3 — post-step route-tier dual-write increment</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/A.html">Plane A</a> · <a href="../chapters/A-A2.html">A2</a> ·
+    A2.3
+  </nav>
+  <p class="page-id">A2.3 · Pursuit &amp; control plane</p>
+  <h1 class="page-title">post-step route-tier dual-write increment</h1>
+  <p class="page-subtitle">post-step route-tier dual-write increment</p>
+  
+  <div class="story-block"><p>After a step completes, the system must re-route capability tier, persist results, and advance counters before the next preflight. This capability covers post-step housekeeping: route-tier.py, <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> to journal and state, and increment pursuit counters (steps, tokens, wall clock).</p>
+<p>Post-step work is still <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> where scripts exist. It ensures the next wake sees updated next_action, model_tier, and budget fields. Missing <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> here is a critical failure mode—resume after crash would repeat or skip work.</p>
+<p>This step closes the turn opened by A2.2 and prepares A2.1 to run again on fresh state.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When <a href="../capabilities/A2.2-if-ready-execute-one-pipeline-step.html" class="spec-link">A2.2</a> completes a skill phase, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> immediately runs <code>python scripts/route-tier.py --apply</code> (<a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a>) to refresh capability_class, model_tier, and spawn_workers from the new next_action before ending the turn.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Journal-keeper <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s last_completed, next_action, evidence_files, and gates to journal/progress.md and state.json in the same update so both stores reflect the finished phase.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Pursuit counters for steps taken, tokens consumed, and elapsed wall-clock bump in state.json. preflight judges fresh budget fields.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Tier recompute and counter bumps use <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> scripts only—the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> does not spawn economy workers for housekeeping.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If route-tier or <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> fails, or journal and state.json disagree after laptop resume, pursuit fails closed at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> until journal-keeper reconciles both stores—otherwise the next wake would repeat or skip work.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids A2.3</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>goal_verify passes but H3 rejected — goal.state returns to pursuing with rejection notes.</li><li>Edge case A2.3 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;A2.3&quot;,
+  &quot;description&quot;: &quot;post step route tier dual write increment&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.14</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

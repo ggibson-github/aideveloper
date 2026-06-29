@@ -1,0 +1,84 @@
+{
+  "id": "SEC-17-1",
+  "slug": "SEC-17-1-decision-self-gate-rigor-checklist-vs-reviewer",
+  "title": "Decision self-gate rigor checklist vs reviewer",
+  "branch": "meta",
+  "parent": "\u2014",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "SEC-17-1 defines decision self gate rigor checklist vs reviewer for the agent-driven expert system. Roadmap, gap analysis, pursuit flow, decisions.",
+  "scope": [
+    "Owns `SEC-17-1` only; siblings under `\u2014` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a717 \u2014 Open design decisions](../../full-automation-vision-and-hierarchy.md#17-open-design-decisions)."
+  ],
+  "behavior_steps": [
+    "When [B5.1](B5.1-active-role-from-template-pack.md) sets `active_role`, S0 resolves role bindings from pack `roles.yaml`\u2014pipeline_id, enabled skills, MCP servers, and forbidden paths\u2014and merges operator overrides from `model-policy.json` into pursuit state.",
+    "Before [A2.2](A2.2-if-ready-execute-one-pipeline-step.md), route-tier reads `pipeline_id` from the active role so implement work cannot route into design-only phases; a platform role may invoke promotion-queue skills while a product role cannot waive governance gates.",
+    "Worker spawn contracts under [B2.3](B2.3-phase-workers-implement-design-explore.md) inherit only the active role's skill allowlist and MCP/CLI permissions per [F6.3](F6.3-role-tool-permissions-mcp-cli-allowlist.md)\u2014forbidden paths block reads even when workers are economy tier.",
+    "At pack instantiation ([F2.1](F2.1-company-instantiate-program-scoper-pack-select.md)), conformance scripts validate that each role's pipeline_id exists in the [C1](C1-index.md) registry and that skill bindings stay within tool permissions before the pack publishes.",
+    "If role bindings drift after manual policy edits or reference an unknown pipeline_id, [A2.1](A2.1-preflight-check-pipeline-blocked-extended.md) halts at H2 until operators reconcile pack schema and state.json\u2014never advancing implement with ambiguous routing."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"node\": \"SEC-17-1\",\n  \"description\": \"decision self gate rigor checklist vs reviewer\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `SEC-17-1` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `SEC-17-1` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `SEC-17-1`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `SEC-17-1` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_sec-17-1.py when script exists.",
+    "Validate `SEC-17-1` against SEC-15 release checklist and parent index links.",
+    "Document `SEC-17-1` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `SEC-17-1`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids SEC-17-1`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a717",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[\u2014-index](\u2014-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids SEC-17-1` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [\u2014-index](\u2014-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "SEC-17-1 defines decision self gate rigor checklist vs reviewer for the agent-driven expert system. Roadmap, gap analysis, pursuit flow, decisions. In practice, the system when [b5.1](b5.1-active-role-from-template-pack.md) sets `active_role`, s0 resolves role bindings from pack `roles.yaml`\u2014pipeline_id, enabled skills, mcp servers, and forbidden paths\u2014and merges operator overrides from `model-policy.json` into pursuit state, then before [a2.2](a2.2-if-ready-execute-one-pipeline-step.md), route-tier reads `pipeline_id` from the active role so implement work cannot route into design-only phases; a platform role may invoke promotion-queue skills while a product role cannot waive governance gates.",
+  "reader_narrative": "<!-- prose-source: agent meta 2026-06-28 -->\n\nOpen decision: how rigorous should middle design gates be when strict_hitl is off? Options span checklist-only self-gate, automated LLM reviewer, or second economy reviewer. The choice affects cost, latency, and mistake rates for HLD/DD/manifest phases.\n\nRecord the decision as an ADR when made; until then, implementers should default to checklist + evidence paths that goal_verify can audit."
+}

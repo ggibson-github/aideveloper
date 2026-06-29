@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>D1.5 — L4 ambient hooks CI scheduled</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/D.html">Plane D</a> · <a href="../chapters/D-D1.html">D1</a> ·
+    D1.5
+  </nav>
+  <p class="page-id">D1.5 · Platform evolution plane</p>
+  <h1 class="page-title">L4 ambient hooks CI scheduled</h1>
+  <p class="page-subtitle">L4 ambient hooks CI scheduled</p>
+  
+  <div class="story-block"><p>L4 is ambient automation: hooks in <code>.cursor/hooks.json</code>, CI workflows, and scheduled jobs that run without a <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> turn—staleness checks, dashboard regeneration, queue EMPTY gates, and validate-workflow on push. Ambient layers enforce invariants the <a href="../glossary.html#pursuit-loop" class="glossary-link" title="Pursuit loop">pursuit loop</a> might skip under token pressure.</p>
+<p>Hook and CI extensions are platform work (<a href="../capabilities/D4.4-platform-work-hook-validate-workflow.html" class="spec-link">D4.4</a>) and must stay backwards-compatible or follow <a href="../capabilities/D5.2-extend-backwards-compatible-staleness-bump.html" class="spec-link">D5.2</a> staleness rules. L4 does not dequeue product next_action; it guards repo health while <a href="../capabilities/D3.1-1-platform-turn-per-k-product-turns.html" class="spec-link">D3.1</a> interleaves explicit <a href="../glossary.html#platform-turn" class="glossary-link" title="Platform turn">platform turns</a>. See <a href="../branches/D.html" class="spec-link">Vision §6 — Branch D — Platform evolution plane (parallel queue)</a> for maturity ordering L0→L5.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When a goal activates or switches company role, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> reads <code>template-packs/*/README.md</code> <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> nodes. <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">compose-first</a>—not pack internals by ad hoc path guess.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Pack READMEs list roles, pipeline overrides, verify suites, and governance defaults as discoverable fragments that feed <a href="../capabilities/B5.2-role-to-pipeline-id-skills-tool-permissions.html" class="spec-link">B5.2</a> role binding and the <a href="../capabilities/E1.7-catalog-platform-catalog-md-umbrella.html" class="spec-link">E1.7</a> platform umbrella.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Librarian compose briefings rank pack README matches via <a href="../capabilities/E2.3-compose-rank-script-playbook-skill-facts.html" class="spec-link">E2.3</a> and set allowed_reads to the README plus bound fragment paths only for the pursuit turn.</span></li><li><span class="step-num">Step 4</span><span class="step-text">When vision or parent pack schema changes, <a href="../capabilities/E5.2-staleness-extend-playbooks-scripts-pack-nodes.html" class="spec-link">E5.2</a> marks pack <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> nodes stale; reconcile-stale blocks instantiate or role-switch until README rows match current pack contents.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If README lookup fails, <code>active_role</code> references a missing pack, or compose proceeds without <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> search, pursuit stops at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> with structured <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>—never bind improvised pack defaults.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids D1.5</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Platform queue depth 0 but product blocked on missing playbook — D3.3 priority cut skips platform drain.</li><li>Edge case D1.5 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;D1.5&quot;,
+  &quot;description&quot;: &quot;l4 ambient hooks ci scheduled&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.16</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

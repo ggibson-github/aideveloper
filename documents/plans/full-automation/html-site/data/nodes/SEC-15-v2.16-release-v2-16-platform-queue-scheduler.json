@@ -1,0 +1,84 @@
+{
+  "id": "SEC-15-v2.16",
+  "slug": "SEC-15-v2.16-release-v2-16-platform-queue-scheduler",
+  "title": "v2.16 release v2 16 platform queue scheduler",
+  "branch": "meta",
+  "parent": "\u2014",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "SEC-15-v2.16 defines release v2 16 platform queue scheduler for the agent-driven expert system. Roadmap, gap analysis, pursuit flow, decisions.",
+  "scope": [
+    "Owns `SEC-15-v2.16` only; siblings under `SEC-15-v2` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a715 \u2014 Implementation roadmap (additive v2 releases)](../../full-automation-vision-and-hierarchy.md#15-implementation-roadmap-additive-v2-releases)."
+  ],
+  "behavior_steps": [
+    "`run-local-pipeline.py` polls `state.json` on an operator-configured interval; each wake runs [A2.1](A2.1-preflight-check-pipeline-blocked-extended.md) via S0 before invoking the Cursor SDK agent with genius-tier model from [J1](J1-model-policy.md).",
+    "On READY, the daemon executes exactly one [A2.2](A2.2-if-ready-execute-one-pipeline-step.md) pursuit phase identical to in-IDE autopilot\u2014no chat memory, only committed journal/state from Plane H.",
+    "On BLOCKED (H2, budget, integrity), the daemon sleeps until the next poll or operator unblocks; it does not retry the same phase without a fresh preflight pass.",
+    "Goal autopilot semantics apply without [A3.1](A3.1-session-autopilot-max-steps-per-session.md) session caps\u201424/7 unattended pursuit on the operator PC requires `cursor-sdk` and `CURSOR_API_KEY` per [I2.1](I2.1-runtime-sdk-run-local-pipeline-goal-autopilot.md).",
+    "After laptop sleep or crash, the daemon resumes from the last dual-write snapshot\u2014not SDK chat history\u2014and pairs with [A6.2](A6.2-notify-digest-on-h2-blocker-not-every-step.md) for H2 digests; if auth fails, pursuit halts at H2 with a typed integration stop."
+  ],
+  "mermaid": "flowchart LR\n  prod[Product turn] --> k{step mod K == 0?}\n  k -->|yes| plat[Platform turn dequeue]\n  k -->|no| prod\n  plat --> promote[promotion_queue drain]\n  promote --> prod",
+  "json_example": "{\n  \"node\": \"SEC-15-v2.16\",\n  \"description\": \"release v2 16 platform queue scheduler\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `SEC-15-v2.16` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `SEC-15-v2.16` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `SEC-15-v2.16`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `SEC-15-v2.16` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_sec-15-v2_16.py when script exists.",
+    "Validate `SEC-15-v2.16` against SEC-15 release checklist and parent index links.",
+    "Document `SEC-15-v2.16` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `SEC-15-v2.16`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids SEC-15-v2.16`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a715",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[SEC-15-v2-index](SEC-15-v2-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids SEC-15-v2.16` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [SEC-15-v2-index](SEC-15-v2-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "SEC-15-v2.16 defines release v2 16 platform queue scheduler for the agent-driven expert system. Roadmap, gap analysis, pursuit flow, decisions. In practice, the system `run-local-pipeline.py` polls `state.json` on an operator-configured interval; each wake runs [a2.1](a2.1-preflight-check-pipeline-blocked-extended.md) via s0 before invoking the cursor sdk agent with genius-tier model from [j1](j1-model-policy.md), then on ready, the daemon executes exactly one [a2.2](a2.2-if-ready-execute-one-pipeline-step.md) pursuit phase identical to in-ide autopilot\u2014no chat memory, only committed journal/state from plane h.",
+  "reader_narrative": "<!-- prose-source: agent meta 2026-06-28 -->\n\nRelease v2.16 introduces the platform promotion queue in state and a scheduler that processes one improvement item every K project steps. Delivery and self-improvement run on an interleaved schedule so the current goal keeps moving while the improvement backlog still makes steady progress\u2014this release encodes that bargain in data structures and autopilot scheduling.\n\nTask cards gain Components/Promotion notes so workers know when they must compose from catalog or enqueue promotion work."
+}

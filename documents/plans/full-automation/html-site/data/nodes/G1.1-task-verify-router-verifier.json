@@ -1,0 +1,89 @@
+{
+  "id": "G1.1",
+  "slug": "G1.1-task-verify-router-verifier",
+  "title": "task verify-router verifier",
+  "branch": "G",
+  "parent": "[G1-index](G1-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "G1.1 defines task verify router verifier for the agent-driven expert system. Verification & quality \u2014 evidence, goal_verify, anti-mistake.",
+  "scope": [
+    "Owns `G1.1` only; siblings under `G1` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a79 \u2014 Branch G \u2014 Verification & quality plane (anti-mistake)](../../full-automation-vision-and-hierarchy.md#9-branch-g-verification-quality-plane-anti-mistake)."
+  ],
+  "behavior_steps": [
+    "When an implement task has `evidence_required: true`, the verifier skill or `verify-router.py` runs the task card Test/Tool command and writes an immutable log under `evidence/` before the conductor sets `last_verify` to passed.",
+    "The conductor records each evidence path in journal **Evidence files** and `state.json` `evidence_files` so audits and goal_verify can aggregate proof across tasks ([G1.1](G1.1-task-verify-router-verifier.md), [C3.3](C3.3-evidence-per-task.md)).",
+    "Non-pytest evidence types\u2014tool logs, checksums, screenshots\u2014follow `docs/operator/evidence-types.md` per [I4.3](I4.3-runtime-external-evidence-types-non-pytest.md); failed verify runs retain logs for escalation instead of silent discard ([B3.3](B3.3-escalation-loop-on-verify-fail.md)).",
+    "Pursuit does not advance past the current implement task while `evidence_required` is true and required logs are missing from disk\u2014`check-pipeline-blocked` returns a hard stop.",
+    "git-workflow and push require `last_verify: passed` or a documented journal exception; if evidence paths drift between disk, journal, and state.json, pursuit fail-closes at H2 until reconciliation."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"goal\": {\n    \"verify_command\": \"python scripts/goal-verify.py\",\n    \"state\": \"verifying\"\n  },\n  \"last_verify\": \"passed\",\n  \"evidence_required\": true\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Flaky test \u00e2\u20ac\u201d escalation S4 once, then H2 with evidence log; no silent retry loop.",
+    "Edge case `G1.1` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `G1.1`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Extend verify-router for goal-level suite invocation.",
+    "Wire CI: validate-workflow checks goal block when pursuit.mode=goal_autopilot.",
+    "Document evidence type in docs/operator/evidence-types.md.",
+    "Validate `G1.1` against SEC-15 release checklist and parent index links.",
+    "Document `G1.1` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `G1.1`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids G1.1`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`scripts/verify-router.py`",
+    "`scripts/validate-workflow.py`",
+    "`evidence/`",
+    "`.cursor/skills/verifier/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a79",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[G1-index](G1-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids G1.1` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [G1-index](G1-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "G1.1 defines task verify router verifier for the agent-driven expert system. Verification & quality \u2014 evidence, goal_verify, anti-mistake. In practice, the system when an implement task has `evidence_required: true`, the verifier skill or `verify-router.py` runs the task card test/tool command and writes an immutable log under `evidence/` before the conductor sets `last_verify` to passed, then the conductor records each evidence path in journal **evidence files** and `state.json` `evidence_files` so audits and goal_verify can aggregate proof across tasks ([g1.1](g1.1-task-verify-router-verifier.md), [c3.3](c3.3-evidence-per-task.md)).",
+  "reader_narrative": "<!-- prose-source: agent plane-g 2026-06-28 -->\n\nTask-level verification runs through `scripts/verify-router.py` and the verifier skill: the conductor or shell worker executes the literal Test or Tool command from the task card, writes `evidence/task-NNN-test.log`, and sets `last_verify` in state.json before any implement task advances.\n\nThis is the bottom evidence gate\u2014no narrative \u201ctests pass\u201d substitutes for a log file. Non-pytest evidence types follow `docs/operator/evidence-types.md`. Pair with [G1.2](G1.2-evidence-required-state.md) and [B2.4](B2.4-verifier-tool-operator-evidence.md). See [Vision \u00a79 \u2014 Branch G](../../full-automation-vision-and-hierarchy.md#9-branch-g-verification-quality-plane-anti-mistake)."
+}

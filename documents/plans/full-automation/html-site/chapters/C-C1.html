@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>C1 — Pipeline registry</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/C.html">Plane C</a> ·
+    C1
+  </nav>
+  <p class="page-id">C1 · Product execution plane</p>
+  <h1 class="page-title">Pipeline registry</h1>
+  <div class="story-block"><p>C1: Pipeline registry. Open each capability below for diagrams, verification, and contracts.</p>
+<p>Greenfield pipeline is the initial build path: parse spec, HLD, DD, diagrams, task breakdown, scaffold, implement loop, done. Phases run in order unless the journal records prior completion; gates default to self-gate plus <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> after <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> except where strict <a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">HITL</a> overrides.</p>
+<p>This pipeline_id is the default for new repos without an existing delivery baseline. Pursuit attaches consumer goals to greenfield phases via state.json <code>next_action</code> and task cards. See AGENTS.md pipeline section for phase skill mapping.</p>
+<p>Iterative feature pipeline continues development after initial delivery: gather requirements, research, feature design, approval (or self-gate), <a href="../glossary.html#branch" class="glossary-link" title="Branch">branch</a>, implement, test, commit/PR/push. It avoids re-running full greenfield when the repo and harness already exist.</p>
+<p>Feature design approval can self-gate when encoded in pack policy; otherwise H1-class approval applies once per feature charter. <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">Evidence</a> and verify-router discipline match greenfield implement phases. Use iterative-feature skill as the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> entry point.</p>
+<p>Multi-domain program pipeline decomposes mega-specs into milestones, workstreams, integration manifest, and parallel lanes—program-scoper first, manifest human gate, then orchestrate-program when lanes are unblocked.</p>
+<p>Each stream runs its own phase progression under manifest dependencies; company-level <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> rolls up stream completion. This pipeline_id activates when spec size or cross-team coupling exceeds single-stream greenfield assumptions.</p>
+<p>Template-packs define alternate pipeline_ids per company type: game studio, data platform, ops-only—each with phase lists, default skills, and verify suites (<a href="../capabilities/MASTER-F-branch-f---organization-plane.html" class="spec-link">F1.8 pack verify</a>). Instantiation sets active pack and pipeline_id in state.</p>
+<p>Consumer goals inherit pack pipelines; platform evolution uses release-queue separately. Pack authors document pipeline differences in pack schema rather than forking <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> code.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/C1.1-pipeline-software-greenfield.html">C1.1</a></span>
+  <span class="cap-title">pipeline software-greenfield</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/C1.2-pipeline-iterative-feature.html">C1.2</a></span>
+  <span class="cap-title">pipeline and iterative feature</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/C1.3-pipeline-multi-domain-program.html">C1.3</a></span>
+  <span class="cap-title">pipeline multi-domain-program</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/C1.4-pack-defined-pipelines-per-company-template.html">C1.4</a></span>
+  <span class="cap-title">pack-defined pipelines per company template</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

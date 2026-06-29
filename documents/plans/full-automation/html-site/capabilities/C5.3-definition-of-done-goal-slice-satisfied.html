@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>C5.3 — definition, of, done, goal, slice, and satisfied</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/C.html">Plane C</a> · <a href="../chapters/C-C5.html">C5</a> ·
+    C5.3
+  </nav>
+  <p class="page-id">C5.3 · Product execution plane</p>
+  <h1 class="page-title">definition, of, done, goal, slice, and satisfied</h1>
+  <p class="page-subtitle">definition of done goal slice satisfied</p>
+  
+  <div class="story-block"><p>Definition of done for a goal slice: tasks complete, tests pass (or documented exceptions), <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> on disk, <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> ready, no unresolved blocking questions. Differs from task done and phase done—slice satisfied means rollup checks pass for that scope boundary.</p>
+<p><a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> still required for verified goal acceptance unless policy waives. Completion status in journal and STATUS.md reflects slice and goal levels distinctly so operators see partial vs achieved accurately.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">After <a href="../glossary.html#s3" class="glossary-link" title="S3 — architecture / ambiguity">S3</a> architecture merge or <a href="../glossary.html#s4" class="glossary-link" title="S4 — governance escalation">S4</a> <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> escalation resolves, the genius-tier <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> runs a short post-mortem before the next <a href="../glossary.html#product-turn" class="glossary-link" title="Product turn">product turn</a>—cataloging what repeated, what was improvised, and which playbook, script, or skill was missing at escalation root cause.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Concrete improvement candidates from the post-mortem become <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a>-only <code>platform.promotion_queue</code> items with <code>source: post-mortem</code>, suggested <code>target_level</code>, and priority override when the active goal is blocked on the missing artifact—workers never enqueue from post-mortem.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Items may target L1 playbook first even when L2 script is the eventual goal, capturing institutional learning from failure rather than happy-path optimization on the <a href="../chapters/D-D1.html" class="spec-link">D1</a> promotion ladder.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Scheduling still follows <a href="../glossary.html#platform-turn" class="glossary-link" title="Platform turn">platform turns</a> per K product steps (<a href="../capabilities/D3.1-1-platform-turn-per-k-product-turns.html" class="spec-link">D3.1</a>); <a href="../capabilities/D3.3-priority-cut-product-blocked-missing-tool.html" class="spec-link">D3.3</a> can raise priority when product pursuit waits on the missing <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> entry without skipping open <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> resolution or human sign-off.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If post-mortem finds no repeatable gap or <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> remains unresolved, enqueue is deferred and pursuit fails closed—promotion items are not created from speculation while the escalation is still active.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids C5.3</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case C5.3 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case C5.3 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;C5.3&quot;,
+  &quot;description&quot;: &quot;definition of done goal slice satisfied&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

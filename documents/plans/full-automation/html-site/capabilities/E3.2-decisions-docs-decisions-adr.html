@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>E3.2 — decisions docs/decisions ADR</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/E.html">Plane E</a> · <a href="../chapters/E-E3.html">E3</a> ·
+    E3.2
+  </nav>
+  <p class="page-id">E3.2 · Knowledge &amp; composition plane</p>
+  <h1 class="page-title">decisions docs/decisions ADR</h1>
+  <p class="page-subtitle">decisions docs/decisions ADR</p>
+  
+  <div class="story-block"><p><code>docs/decisions/</code> stores ADRs and recorded trade-offs when <a href="../glossary.html#s3" class="glossary-link" title="S3 — architecture / ambiguity">S3</a> ambiguity resolves: architecture choices, gate waivers with rationale, program manifest conflicts. Journal Q&amp;A captures session decisions; ADRs persist cross-session authoritative rationale.</p>
+<p><a href="../glossary.html#s3" class="glossary-link" title="S3 — architecture / ambiguity">S3</a> turns in Plane B should end in journal entry or ADR (<a href="../capabilities/B1.4-s3-architecture-ambiguity.html" class="spec-link">B1.4</a>). ADRs link from design artifacts and task cards when implement depends on a settled choice. Unlike facts, decisions are repo-authored judgment—not external truth. Staleness may mark downstream design nodes when ADRs supersede prior assumptions (<a href="../capabilities/E5.1-staleness-design-graph-staleness-json.html" class="spec-link">E5.1</a>).</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">Before git-workflow merge or program integration, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> runs <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> staleness scripts (<code>update-staleness.py</code>, reconcile-stale) and reads <code>docs/manifest/staleness.json</code> to confirm design artifacts match current pursuit scope.</span></li><li><span class="step-num">Step 2</span><span class="step-text">In program mode, reconcile-artifact-graph marks dependent manifest nodes stale when upstream HLD, DD, or integration manifest changed since last approved design.</span></li><li><span class="step-num">Step 3</span><span class="step-text">git-workflow blocks push and merge when the staleness graph lists unresolved stale nodes upstream of the implement diff—implement against outdated specs is the mistake class in <a href="../capabilities/G5.5-mistake-stale-design-staleness-reconcile.html" class="spec-link">G5.5</a>.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Economy workers may not waive merge on stale graph nodes; only the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> may proceed after operator <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> approval or a completed reconcile-stale pass updates journal <code>next_action</code>.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If staleness reconciliation is incomplete or scripts fail, pursuit fails closed at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> rather than merging—preflight re-runs staleness checks on every wake after <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> resume.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids E3.2</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case E3.2 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case E3.2 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;E3.2&quot;,
+  &quot;description&quot;: &quot;decisions docs decisions adr&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.17</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

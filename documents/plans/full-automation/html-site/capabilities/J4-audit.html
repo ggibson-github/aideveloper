@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>J4 — audit</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/J.html">Plane J</a> · <a href="../chapters/J-J4.html">J4</a> ·
+    J4
+  </nav>
+  <p class="page-id">J4 · Governance &amp; operator plane</p>
+  <h1 class="page-title">audit</h1>
+  <p class="page-subtitle">audit</p>
+  
+  <div class="story-block"><p>Audit trail governance spans worker-runs.jsonl (<a href="../capabilities/H5-worker-runs.html" class="spec-link">H5</a>), <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>/ immutability (<a href="../capabilities/H4-evidence.html" class="spec-link">H4</a>), journal Resolved Q&amp;A, waiver registry (<a href="../capabilities/J2-automation-waivers.html" class="spec-link">J2</a>), and export-contract snapshots for external review.</p>
+<p>Operators query audit paths to reconstruct who spawned which worker, what verify ran, and which gates cleared. Tamper-evident logs support post-incident review; conductors must not truncate audit history without documented retention policy. CI and headless runs append to the same trails (<a href="../chapters/I-I3.html" class="spec-link">I3</a>).</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When pursuit scope is complete against machine-checkable <a href="../capabilities/A1.2-success-criteria-machine-checkable.html" class="spec-link">success criteria</a>, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> sets <code>goal.state</code> to <code>verifying</code> and invokes <code>goal_verify_command</code> from state.json before surfacing <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> sign-off.</span></li><li><span class="step-num">Step 2</span><span class="step-text">The meta-test aggregates success_criteria predicates, <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> logs, and conformance scripts into one exit code—stricter than any single task-level verify pass.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Preflight and check-pipeline-blocked refuse <code>H3_pending</code> while <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> fails, even when individual implement tasks report <code>last_verify: passed</code>.</span></li><li><span class="step-num">Step 4</span><span class="step-text">On exit 0, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s the result to journal and state.json and requests <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> operator sign-off per the <a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">H1/H2/H3</a> contract in <a href="../capabilities/INTRO-1.2-human-touchpoint-contract-h1-h2-h3.html" class="spec-link">INTRO-1.2</a>.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> fails or <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> is incomplete, pursuit halts at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> with structured notes; the system must not mark the goal achieved or request <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> until the meta-test passes.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids J4</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case J4 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case J4 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;J4&quot;,
+  &quot;description&quot;: &quot;audit&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

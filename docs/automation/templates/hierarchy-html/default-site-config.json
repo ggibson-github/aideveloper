@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "brand_title": "Architecture Blueprint",
+  "brand_subtitle": "Strategic design portfolio",
+  "footer_label": "Architecture blueprint",
+  "hero_eyebrow": "Architecture portfolio",
+  "hero_lead": "Capabilities, behaviors, and verification contracts for the subject system.",
+  "story_at_a_glance": "Each branch groups related capabilities with defined behavior, verification criteria, and failure handling.",
+  "story_sub": "Design with clarity — behavior, evidence, and edge cases documented for every capability.",
+  "branch_group_label": "Branch",
+  "branch_group_label_plural": "Branches",
+  "capability_label": "capabilities",
+  "capability_label_singular": "Capability",
+  "explore_branches_heading": "Explore the branches",
+  "explore_branches_sub": "Each branch owns a coherent slice of the architecture — select one to read its capabilities.",
+  "glossary_intro": "Definitions for specialized terms, acronyms, and metrics used in this architecture.",
+  "json_details_summary": "Implementation contract",
+  "charts": [
+    {
+      "id": "capability-density",
+      "title": "Capability density by branch",
+      "caption": "Count of specified capabilities in each branch.",
+      "type": "bar"
+    },
+    {
+      "id": "architectural-scope",
+      "title": "Architectural scope by branch",
+      "caption": "Share of total capabilities owned by each branch.",
+      "type": "doughnut"
+    }
+  ],
+  "index_stats": [
+    {"kind": "node_count", "label": "Specified capabilities"},
+    {"kind": "branch_count", "label": "Branches"}
+  ],
+  "hitl_callout_node_ids": []
+}

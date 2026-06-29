@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>D5 — Extend vs fork vs configure</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/D.html">Plane D</a> ·
+    D5
+  </nav>
+  <p class="page-id">D5 · Platform evolution plane</p>
+  <h1 class="page-title">Extend vs fork vs configure</h1>
+  <div class="story-block"><p>D5: Extend vs fork vs configure. Open each capability below for diagrams, verification, and contracts.</p>
+<p>Configure is the lightest platform change class: adjust task-level or drain_policy parameters—K, N, thresholds, role flags—without new <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> entries or code forks. Configuration lives in state.json, pack YAML, or task-card params explicit in journal decisions.</p>
+<p>Configure promotions do not bump staleness graph nodes because behavior artifacts are unchanged—only their invocation parameters. Misapplied configure (wrong K) is reversible via journal Q&amp;A. When parameter change implies new tool behavior, escalate to <a href="../capabilities/D5.2-extend-backwards-compatible-staleness-bump.html" class="spec-link">D5.2</a> or <a href="../capabilities/D5.3-fork-new-catalog-entry-provenance.html" class="spec-link">D5.3</a> instead of configure. Pack authors document tunables in template-pack schema comments.</p>
+<p>Extend means backwards-compatible improvement to an existing <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> artifact—add optional flag to script, append playbook section, extend skill without breaking callers. Extension triggers staleness bump on dependent design nodes and task cards per Plane E reconcile rules.</p>
+<p>Platform queue items targeting extend must cite parent <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> id and compatibility proof—tests green, validate-workflow passes. Extend is preferred over fork when <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">compose-first</a> can absorb the change (<a href="../capabilities/B4.3-compose-first-catalog-before-improvise.html" class="spec-link">B4.3</a>). Non-compatible behavior change is fork, not extend, even if filename stays the same—semver and provenance matter.</p>
+<p>Fork creates a new <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> entry with provenance link to the source promotion or parent artifact—used when behavior diverges, pack boundary requires isolation, or extend would break consumers. Fork records why <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">compose-first</a> failed (<a href="../capabilities/B4.4-divergence-log-when-not-composing.html" class="spec-link">B4.4</a>) and what was invented.</p>
+<p>New id, new INDEX row, new staleness node (<a href="../capabilities/D6.4-platform-done-staleness-node-wired.html" class="spec-link">D6.4</a>) are mandatory. Fork without provenance blocks SEC-14 gap analysis trust. Downstream task cards migrate explicitly; silent alias is forbidden. Pack fragments (<a href="../capabilities/D4.6-platform-work-pack-fragment-export.html" class="spec-link">D4.6</a>) may fork upward into template-pack namespace.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/D5.1-configure-task-level-params-only.html">D5.1</a></span>
+  <span class="cap-title">configure task-level params only</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/D5.2-extend-backwards-compatible-staleness-bump.html">D5.2</a></span>
+  <span class="cap-title">extend backwards-compatible staleness bump</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/D5.3-fork-new-catalog-entry-provenance.html">D5.3</a></span>
+  <span class="cap-title">fork, new, catalog, entry, and provenance</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

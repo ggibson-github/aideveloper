@@ -1,0 +1,88 @@
+{
+  "id": "F6.1",
+  "slug": "F6.1-role-mapping-conductor-context-switch-active-role",
+  "title": "role mapping conductor context switch active_role",
+  "branch": "F",
+  "parent": "[F6-index](F6-index.md)",
+  "vision_section": "",
+  "release": "v2.19",
+  "purpose": "F6.1 defines role mapping conductor context switch active role for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling.",
+  "scope": [
+    "Owns `F6.1` only; siblings under `F6` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a78 \u2014 Branch F \u2014 Organization plane (template-packs = ceiling)](../../full-automation-vision-and-hierarchy.md#8-branch-f-organization-plane-template-packs-ceiling)."
+  ],
+  "behavior_steps": [
+    "Workers swap personas per spawn; conductor merges summaries and dual-writes journal/state",
+    "Same conductor identity enables centralized S4 H2 packaging (B5.4)",
+    "During pursuit, enforce the role, mapping, conductor, context, switch, and active role contract within Role \u2192 agent mapping (Plane F).",
+    "Run [S0](B1.1-s0-deterministic-mandatory-first.md) scripts before improvising when file-derived behavior exists.",
+    "Dual-write journal and state.json after the step; attach evidence when verification applies."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"F6.1\",\n  \"description\": \"role mapping conductor context switch active role\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Pack role handoff while lane lease held \u00e2\u20ac\u201d complete-work-order releases lease before role switch.",
+    "Edge case `F6.1` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `F6.1`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `company.yaml` + `roles/*.yaml` to template-packs schema.",
+    "program-scoper selects pack; sets state.company.active_role.",
+    "Per-role allowed_reads in lane.json work orders.",
+    "Validate `F6.1` against SEC-15 release checklist and parent index links.",
+    "Document `F6.1` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `F6.1`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids F6.1`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`template-packs/`",
+    "`program/integration/manifest.md`",
+    "`.cursor/skills/program-scoper/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a78",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[F6-index](F6-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids F6.1` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [F6-index](F6-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "F6.1 defines role mapping conductor context switch active role for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling. In practice, the system workers swap personas per spawn; conductor merges summaries and dual-writes journal/state, then same conductor identity enables centralized s4 h2 packaging (b5.4).",
+  "reader_narrative": "<!-- prose-source: agent plane-f 2026-06-28 -->\n\nRole mapping keeps one genius-tier conductor while `state.company.active_role` switches context\u2014pipeline_id, spawn policy, and HITL strictness follow the active role from pack bindings ([B5.1](B5.1-active-role-from-template-pack.md)). Workers swap personas per spawn; conductor merges summaries and dual-writes journal/state.\n\nContext switch is not a new chat session\u2014state.json carries active_role across turns. Switching mid-lease requires lane release ([F2.3](F2.3-company-active-role-rotates-ready-work.md)). Mis-mapping (platform permissions on product role) is conformance failure. Same conductor identity enables centralized S4 H2 packaging ([B5.4](B5.4-conductor-stays-workers-swap-role-context.md))."
+}

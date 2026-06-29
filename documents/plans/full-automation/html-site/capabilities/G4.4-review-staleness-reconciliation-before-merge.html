@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>G4.4 — review, staleness, reconciliation, before, and merge</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/G.html">Plane G</a> · <a href="../chapters/G-G4.html">G4</a> ·
+    G4.4
+  </nav>
+  <p class="page-id">G4.4 · Verification &amp; quality plane</p>
+  <h1 class="page-title">review, staleness, reconciliation, before, and merge</h1>
+  <p class="page-subtitle">review staleness reconciliation before merge</p>
+  
+  <div class="story-block"><p>Before merge or program integration, staleness reconciliation must show design artifacts current: <code>docs/manifest/staleness.json</code> and reconcile-stale/reconcile-artifact-graph outputs gate git-workflow when upstream HLD, DD, or manifest nodes changed.</p>
+<p>Review at merge time catches implement against stale specs—a mistake class mapped in <a href="../capabilities/G5.5-mistake-stale-design-staleness-reconcile.html" class="spec-link">G5.5</a>. <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">Conductor</a> runs <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> staleness scripts; workers do not waive merge on stale graph nodes without operator approval.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">On each pursuit wake, <code>route-tier.py</code> reads <code>capability_class</code> (<a href="../glossary.html#s-tiers" class="glossary-link" title="Capability tiers S0 through S4">S0–S4</a>) from <code>state.json</code> and assigns genius <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> versus economy worker roles per B1 before any implement turn runs.</span></li><li><span class="step-num">Step 2</span><span class="step-text">The genius-tier parent orchestrates thin turns only—spawning economy workers for bounded task cards per B2.1 and B3.1 when <code>spawn_workers</code> is true.</span></li><li><span class="step-num">Step 3</span><span class="step-text">B1.1 runs mandatory <code>scripts/</code> output before improvisation whenever file-derived behavior exists; Plane B enforces this ahead of LLM routing on every wake.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Model tier selection from <code>docs/operator/model-policy.json</code> maps <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> and worker models to pursuit cost and risk class per B3, while B4 interleaves product <code>next_action</code> steps with platform <a href="../glossary.html#promotion-queue" class="glossary-link" title="Promotion queue">promotion queue</a> peeks.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If routing would assign <a href="../glossary.html#s4" class="glossary-link" title="S4 — governance escalation">S4</a> governance work to economy workers or skip <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> when a script exists, pursuit stops at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> with a capability-class violation until the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> realigns with model policy.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids G4.4</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Flaky test — escalation S4 once, then H2 with evidence log; no silent retry loop.</li><li>Edge case G4.4 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;G4.4&quot;,
+  &quot;description&quot;: &quot;review staleness reconciliation before merge&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

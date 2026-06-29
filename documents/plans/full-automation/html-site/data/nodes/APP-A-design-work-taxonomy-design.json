@@ -1,0 +1,84 @@
+{
+  "id": "APP-A-design",
+  "slug": "APP-A-design-work-taxonomy-design",
+  "title": "design work taxonomy design",
+  "branch": "meta",
+  "parent": "\u2014",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "APP-A-design defines work taxonomy design for the agent-driven expert system. Human job taxonomy \u2192 pack workflows.",
+  "scope": [
+    "Owns `APP-A-design` only; siblings under `\u2014` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a73 \u2014 Branch A \u2014 Pursuit & control plane](../../full-automation-vision-and-hierarchy.md#3-branch-a-pursuit-control-plane)."
+  ],
+  "behavior_steps": [
+    "When `next_action` enters design phases (`run hld-writer`, `run dd-writer`, `diagram-generator`), the conductor classifies work under the APP-A design taxonomy\u2014UX/UI, API and data models, integration boundaries, and security/compliance\u2014and routes each slice through the matching S2 skill instead of prose-only decisions.",
+    "Each design turn must emit machine-checkable artifacts\u2014diagram files, schemas, structured review triggers\u2014in `docs/design/` and `docs/diagrams/` so [A1.2](A1.2-success-criteria-machine-checkable.md) criteria and verifiers can judge completion without subjective review.",
+    "After every design write, the conductor links artifacts forward to forthcoming task cards and backward to catalog components via [B4.3](B4.3-compose-first-catalog-before-improvise.md), then dual-writes journal and state.json before advancing `next_action`.",
+    "HLD and DD gates per [INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md) block implement until H1 approval or explicit waiver\u2014[A5.2](A5.2-continue-not-approval-self-gate-h1-h3-only.md) prevents Continue from clearing design approval on its own.",
+    "If diagrams, schemas, catalog backlinks, or staleness registration are missing, pursuit stops at H2 until the design skill re-runs and reconcile-stale clears dependent nodes."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"node\": \"APP-A-design\",\n  \"description\": \"work taxonomy design\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `APP-A-design` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `APP-A-design` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `APP-A-design`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `APP-A-design` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_app-a-design.py when script exists.",
+    "Validate `APP-A-design` against SEC-15 release checklist and parent index links.",
+    "Document `APP-A-design` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `APP-A-design`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids APP-A-design`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a73",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[\u2014-index](\u2014-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids APP-A-design` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [\u2014-index](\u2014-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "APP-A-design defines work taxonomy design for the agent-driven expert system. Human job taxonomy \u2192 pack workflows. In practice, the system when `next_action` enters design phases (`run hld-writer`, `run dd-writer`, `diagram-generator`), the conductor classifies work under the app-a design taxonomy\u2014ux/ui, api and data models, integration boundaries, and security/compliance\u2014and routes each slice through the matching s2 skill instead of prose-only decisions, then each design turn must emit machine-checkable artifacts\u2014diagram files, schemas, structured review triggers\u2014in `docs/design/` and `docs/diagrams/` so [a1.2](a1.2-success-criteria-machine-checkable.md) criteria and verifiers can judge completion without subjective review.",
+  "reader_narrative": "<!-- prose-source: agent meta 2026-06-28 -->\n\nDesign work spans UX/UI, API and data models, integration design, and security/compliance design. Autonomous execution still requires machine-checkable outputs: diagrams, schemas, and review triggers\u2014not prose-only decisions.\n\nEvery design artifact should link forward to task cards and backward to catalog components where reuse applies."
+}

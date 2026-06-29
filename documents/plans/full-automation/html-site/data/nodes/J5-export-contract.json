@@ -1,0 +1,88 @@
+{
+  "id": "J5",
+  "slug": "J5-export-contract",
+  "title": "export contract",
+  "branch": "J",
+  "parent": "\u2014",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "J5 defines export contract for the agent-driven expert system. Governance \u2014 policy, waivers, audit, export contract.",
+  "scope": [
+    "Owns `J5` only; siblings under `\u2014` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a712 \u2014 Branch J \u2014 Governance & operator plane](../../full-automation-vision-and-hierarchy.md#12-branch-j-governance-operator-plane)."
+  ],
+  "behavior_steps": [
+    "Before pursuit state, evidence bundles, or dashboard artifacts cross the repo boundary, export scripts resolve the active profile from `docs/operator/export-contract.md` and the company template-pack\u2014redacting fields, enforcing required formats, and checking H3 approval when external sharing demands it.",
+    "H3 sign-off packages may aggregate goal_verify evidence per [C3.4](C3.4-task-to-goal-rollup-percent-goal-verify.md); the conductor includes only contract-approved paths and never ad-hoc copy/paste of `state.json`.",
+    "Pack authors extend export profiles per template-pack; pursuit inherits the profile for the active company goal so external orchestrators receive consistent, policy-bound bundles.",
+    "Pre-export validation runs as S0 where scripted ([B1.1](B1.1-s0-deterministic-mandatory-first.md)); contract violations surface H2 before data leaves controlled storage.",
+    "If the export profile is missing, ambiguous, or would leak blocked fields, pursuit halts at H2 until operators reconcile the contract or explicitly resolve the gap at H3."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"J5\",\n  \"description\": \"export contract\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `J5` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `J5` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `J5`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `J5` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_j5.py when script exists.",
+    "Validate `J5` against SEC-15 release checklist and parent index links.",
+    "Document `J5` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `J5`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids J5`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/operator/model-policy.json`",
+    "`docs/decisions/automation-waivers.md`",
+    "`docs/automation/release-queue.json`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a712",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[\u2014-index](\u2014-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids J5` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [\u2014-index](\u2014-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "J5 defines export contract for the agent-driven expert system. Governance \u2014 policy, waivers, audit, export contract. In practice, the system before pursuit state, evidence bundles, or dashboard artifacts cross the repo boundary, export scripts resolve the active profile from `docs/operator/export-contract.md` and the company template-pack\u2014redacting fields, enforcing required formats, and checking h3 approval when external sharing demands it, then h3 sign-off packages may aggregate goal_verify evidence per [c3.4](c3.4-task-to-goal-rollup-percent-goal-verify.md); the conductor includes only contract-approved paths and never ad-hoc copy/paste of `state.json`.",
+  "reader_narrative": "<!-- prose-source: agent plane-j 2026-06-28 -->\n\n`docs/operator/export-contract.md` defines what pursuit state, evidence bundles, and dashboard artifacts may leave the repo boundary\u2014fields redacted, formats required, and approval needed for external sharing. Export scripts follow the contract; ad-hoc copy/paste of state.json is discouraged.\n\nPack authors extend export profiles per company template. Export for H3 sign-off packages may include goal_verify evidence rollup ([C3.4](C3.4-task-to-goal-rollup-percent-goal-verify.md)). Contract violations surface H2 before data leaves controlled storage."
+}

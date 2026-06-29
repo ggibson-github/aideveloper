@@ -1,0 +1,88 @@
+{
+  "id": "F1.5",
+  "slug": "F1.5-pack-artifact-graph-json-cross-role",
+  "title": "pack artifact-graph.json cross-role",
+  "branch": "F",
+  "parent": "[F1-index](F1-index.md)",
+  "vision_section": "",
+  "release": "v2.19",
+  "purpose": "F1.5 defines pack artifact graph json cross role for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling.",
+  "scope": [
+    "Owns `F1.5` only; siblings under `F1` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a78 \u2014 Branch F \u2014 Organization plane (template-packs = ceiling)](../../full-automation-vision-and-hierarchy.md#8-branch-f-organization-plane-template-packs-ceiling)."
+  ],
+  "behavior_steps": [
+    "When program-scoper binds a template-pack, it loads `artifact-graph.json` from the pack and dual-writes cross-role dependency nodes\u2014design artifacts, task templates, and verify suites\u2014into state so downstream roles reference a single machine-readable graph.",
+    "Before orchestrate-program may spawn parallel lanes, the conductor runs S0 reconcile-artifact-graph against the pack graph to confirm prerequisite nodes exist, are current, and match the integration manifest from [F1.4](F1.4-pack-manifest-md-integration-contracts.md).",
+    "During program mode, lane work orders and [C4.4](C4.4-artifact-graph-per-program-and-pack.md) consult graph edges to block downstream role turns until upstream artifacts pass verification\u2014not merely until manifest prose is approved.",
+    "When pack authors change pipelines, roles, or verify suites, reconcile-stale marks affected graph nodes stale so pursuit cannot advance parallel workstreams on obsolete dependency bindings.",
+    "If graph edges are missing, prerequisite nodes are unresolved, or reconcile finds stale upstream artifacts, pursuit stops at H2 until the pack graph is reloaded and dual-written\u2014never spawn parallel lanes before prerequisites exist."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"node\": \"F1.5\",\n  \"description\": \"pack artifact graph json cross role\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Pack role handoff while lane lease held \u00e2\u20ac\u201d complete-work-order releases lease before role switch.",
+    "Edge case `F1.5` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `F1.5`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `company.yaml` + `roles/*.yaml` to template-packs schema.",
+    "program-scoper selects pack; sets state.company.active_role.",
+    "Per-role allowed_reads in lane.json work orders.",
+    "Validate `F1.5` against SEC-15 release checklist and parent index links.",
+    "Document `F1.5` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `F1.5`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids F1.5`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`template-packs/`",
+    "`program/integration/manifest.md`",
+    "`.cursor/skills/program-scoper/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a78",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[F1-index](F1-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids F1.5` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [F1-index](F1-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "F1.5 defines pack artifact graph json cross role for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling. In practice, the system when program-scoper binds a template-pack, it loads `artifact-graph.json` from the pack and dual-writes cross-role dependency nodes\u2014design artifacts, task templates, and verify suites\u2014into state so downstream roles reference a single machine-readable graph, then before orchestrate-program may spawn parallel lanes, the conductor runs s0 reconcile-artifact-graph against the pack graph to confirm prerequisite nodes exist, are current, and match the integration manifest from [f1.4](f1.4-pack-manifest-md-integration-contracts.md).",
+  "reader_narrative": "<!-- prose-source: agent plane-f 2026-06-28 -->\n\n`artifact-graph.json` registers cross-role dependencies inside the pack: which design nodes, task templates, and verify suites must exist before downstream roles proceed. reconcile-artifact-graph marks stale nodes when upstream pack fragments change.\n\nThe graph pairs with integration manifest ([F1.4](F1.4-pack-manifest-md-integration-contracts.md)) for program mode\u2014manifest is human-readable contract, graph is machine reconciliation input. Missing graph edges cause silent parallel spawn before prerequisites exist. Pack authors wire nodes at publish; conductors run S0 reconcile before orchestrate-program."
+}

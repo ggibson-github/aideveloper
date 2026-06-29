@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>H2 — H2</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/H.html">Plane H</a> ·
+    H2
+  </nav>
+  <p class="page-id">H2 · Persistence &amp; state plane</p>
+  <h1 class="page-title">H2</h1>
+  <div class="story-block"><p><code>journal/progress.md</code> is the human-readable mirror of machine state—not a second router. It records phase completions, Resolved Q&amp;A, Open questions, Blockers, <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">Evidence</a> files, Context files, Session summary, and Next action in prose operators can skim without parsing JSON.</p>
+<p>Only the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s after each pipeline step via journal-keeper; workers return summaries but never edit the journal. Hooks inject journal summary on continue/start (<a href="../capabilities/I1.4-runtime-ide-hooks-beforesubmit-subagentstart-pretooluse-prec.html" class="spec-link">I1.4</a>) but agents must still read the full file. STATUS.md and dashboard.md are generated views (<a href="../capabilities/I5.1-runtime-notify-status-dashboard-generation.html" class="spec-link">I5.1</a>), not authoritative pursuit state.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/H2-journal-progress.html">H2</a></span>
+  <span class="cap-title">journal and progress</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

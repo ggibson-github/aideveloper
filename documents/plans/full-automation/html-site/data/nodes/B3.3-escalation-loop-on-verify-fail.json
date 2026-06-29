@@ -1,0 +1,89 @@
+{
+  "id": "B3.3",
+  "slug": "B3.3-escalation-loop-on-verify-fail",
+  "title": "escalation loop on verify fail",
+  "branch": "B",
+  "parent": "[B3-index](B3-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "B3.3 defines escalation loop on verify fail for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack.",
+  "scope": [
+    "Owns `B3.3` only; siblings under `B3` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a74 \u2014 Branch B \u2014 Cognition & routing plane](../../full-automation-vision-and-hierarchy.md#4-branch-b-cognition-routing-plane)."
+  ],
+  "behavior_steps": [
+    "When [B2.4](B2.4-verifier-tool-operator-evidence.md) returns `last_verify=failed`, the conductor owns an escalation loop\u2014capture the evidence log, classify failure as test, tool, environment, or design, and decide retry versus refactor task versus H2.",
+    "Workers do not self-clear evidence gates; only the conductor may re-spawn a Verifier after a bounded fix or record an H2 blocker with attached evidence paths.",
+    "The implement task stays incomplete and `next_action` does not advance past the failing task while `evidence_required` is true and verification has not passed.",
+    "Repeated verify failure on the same task card triggers S4 packaging per [B1.5](B1.5-s4-governance-escalation-h2-packaging.md) with evidence paths and journal notes so pursuit cannot churn implement\u2192fail\u2192implement silently.",
+    "If classification is ambiguous or recovery exceeds retry policy, pursuit halts at H2 with structured failure context rather than marking the task done or requesting H3 sign-off."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"B3.3\",\n  \"description\": \"escalation loop on verify fail\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `B3.3` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `B3.3` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `B3.3`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `B3.3` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_b3_3.py when script exists.",
+    "Validate `B3.3` against SEC-15 release checklist and parent index links.",
+    "Document `B3.3` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `B3.3`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids B3.3`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/operator/model-policy.json`",
+    "`scripts/route-tier.py`",
+    "`.cursor/skills/librarian/`",
+    "`.cursor/rules/genius-conductor.mdc`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a74",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[B3-index](B3-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids B3.3` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [B3-index](B3-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "B3.3 defines escalation loop on verify fail for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack. In practice, the system when [b2.4](b2.4-verifier-tool-operator-evidence.md) returns `last_verify=failed`, the conductor owns an escalation loop\u2014capture the evidence log, classify failure as test, tool, environment, or design, and decide retry versus refactor task versus h2, then workers do not self-clear evidence gates; only the conductor may re-spawn a verifier after a bounded fix or record an h2 blocker with attached evidence paths.",
+  "reader_narrative": "<!-- prose-source: agent plane-b 2026-06-28 -->\n\nWhen verify fails, an escalation loop runs: capture log, classify failure (test, tool, environment, design), decide retry vs H2 vs refactor task\u2014without silently marking the implement task complete. The conductor owns the loop; workers do not self-clear evidence gates.\n\nRepeated verify failure on the same task card triggers S4 packaging for H2 with evidence paths attached. This prevents infinite implement\u2192fail\u2192implement churn without journal record."
+}

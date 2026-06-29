@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>F1.5 — pack artifact-graph.json cross-role</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/F.html">Plane F</a> · <a href="../chapters/F-F1.html">F1</a> ·
+    F1.5
+  </nav>
+  <p class="page-id">F1.5 · Organization plane</p>
+  <h1 class="page-title">pack artifact-graph.json cross-role</h1>
+  <p class="page-subtitle">pack artifact-graph.json cross-role</p>
+  
+  <div class="story-block"><p><code>artifact-graph.json</code> registers cross-role dependencies inside the pack: which design nodes, task templates, and verify suites must exist before downstream roles proceed. reconcile-artifact-graph marks stale nodes when upstream pack fragments change.</p>
+<p>The graph pairs with integration manifest (<a href="../capabilities/F1.4-pack-manifest-md-integration-contracts.html" class="spec-link">F1.4</a>) for program mode—manifest is human-readable contract, graph is machine reconciliation input. Missing graph edges cause silent parallel spawn before prerequisites exist. Pack authors wire nodes at publish; conductors run <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> reconcile before orchestrate-program.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart TD
+  trigger[Trigger condition] --&gt; pre[Preconditions S0]
+  pre --&gt; exec[Execute step logic]
+  exec --&gt; verify[Verify output]
+  verify --&gt;|pass| done[Mark queue item done]
+  verify --&gt;|fail| h2[H2 blocker]</pre>
+</div>
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When program-scoper binds a template-pack, it loads <code>artifact-graph.json</code> from the pack and <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s cross-role dependency nodes—design artifacts, task templates, and verify suites—into state so downstream roles reference a single machine-readable graph.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Before orchestrate-program may spawn parallel lanes, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> runs <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> reconcile-artifact-graph against the pack graph to confirm prerequisite nodes exist, are current, and match the integration manifest from <a href="../capabilities/F1.4-pack-manifest-md-integration-contracts.html" class="spec-link">F1.4</a>.</span></li><li><span class="step-num">Step 3</span><span class="step-text">During program mode, lane work orders and <a href="../capabilities/C4.4-artifact-graph-per-program-and-pack.html" class="spec-link">C4.4</a> consult graph edges to block downstream role turns until upstream artifacts pass verification—not merely until manifest prose is approved.</span></li><li><span class="step-num">Step 4</span><span class="step-text">When pack authors change pipelines, roles, or verify suites, reconcile-stale marks affected graph nodes stale so pursuit cannot advance parallel workstreams on obsolete dependency bindings.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If graph edges are missing, prerequisite nodes are unresolved, or reconcile finds stale upstream artifacts, pursuit stops at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> until the pack graph is reloaded and dual-written—never spawn parallel lanes before prerequisites exist.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids F1.5</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Pack role handoff while lane lease held — complete-work-order releases lease before role switch.</li><li>Edge case F1.5 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;F1.5&quot;,
+  &quot;description&quot;: &quot;pack artifact graph json cross role&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.19</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

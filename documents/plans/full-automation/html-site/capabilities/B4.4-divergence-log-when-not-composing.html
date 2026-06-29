@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>B4.4 — divergence, log, when, not, and composing</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/B.html">Plane B</a> · <a href="../chapters/B-B4.html">B4</a> ·
+    B4.4
+  </nav>
+  <p class="page-id">B4.4 · Cognition &amp; routing plane</p>
+  <h1 class="page-title">divergence, log, when, not, and composing</h1>
+  <p class="page-subtitle">divergence log when not composing</p>
+  
+  <div class="story-block"><p>When <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">compose-first</a> cannot find a suitable component, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> records a divergence log entry: what was searched, why composition failed, what was invented instead, and promotion candidate id for the platform queue.</p>
+<p>Divergence is not failure—it is an audit trail for what was invented instead of reused, feeding future self-improvement work. Silent invention without log blocks pack maturity claims and makes SEC-14 gap analysis untrustworthy. Reviewers may sample divergence logs for duplicate patterns to prioritize promotion.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When <a href="../capabilities/B4.3-compose-first-catalog-before-improvise.html" class="spec-link">B4.3</a> <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">compose-first</a> cannot find a suitable component, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> records a divergence log entry: what was searched, why composition failed, what was invented instead, and a promotion candidate id for the platform queue.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Divergence is an audit trail for invention—not failure—feeding <a href="../capabilities/D2.1.1-enqueue-repeated-manual-command-2x.html" class="spec-link">D2.1.1</a> self-improvement enqueue when patterns repeat.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Silent invention without a log blocks pack maturity claims and makes <a href="../capabilities/SEC-14-gap-analysis.html" class="spec-link">SEC-14</a> gap analysis untrustworthy.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Reviewers may sample divergence logs for duplicate patterns to prioritize promotion; conductors must not mark phase complete when required divergence metadata is missing.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If divergence logs reference nonexistent promotion ids or omit search scope, preflight fails closed until journal-keeper reconciles the Plane E record.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids B4.4</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case B4.4 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case B4.4 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;B4.4&quot;,
+  &quot;description&quot;: &quot;divergence log when not composing&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

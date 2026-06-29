@@ -1,0 +1,89 @@
+{
+  "id": "H3",
+  "slug": "H3-artifact-graphs",
+  "title": "artifact graphs",
+  "branch": "H",
+  "parent": "\u2014",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "H3 defines artifact graphs for the agent-driven expert system. Persistence \u2014 journal, state.json, graphs, evidence.",
+  "scope": [
+    "Owns `H3` only; siblings under `\u2014` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a710 \u2014 Branch H \u2014 Persistence & state plane](../../full-automation-vision-and-hierarchy.md#10-branch-h-persistence-state-plane)."
+  ],
+  "behavior_steps": [
+    "Before orchestrate-program spawns parallel lanes, the conductor loads the artifact graph from state.json and the integration manifest so each downstream node declares dependencies on upstream design, task-card, and pack artifacts ([B5.3](B5.3-handoff-manifest-artifact-graph.md), [C4.4](C4.4-artifact-graph-per-program-and-pack.md)).",
+    "When an upstream spec or design file changes, reconcile-artifact-graph marks affected graph nodes stale in docs/manifest/staleness.json and the state.json program block so pursuit cannot treat dependents as current ([E5.1](E5.1-staleness-design-graph-staleness-json.md)).",
+    "If reconcile-stale finds stale manifest nodes, the conductor halts ready lane spawn until it plans the prescribed re-run or records an operator-approved waiver\u2014workers fail closed on stale graph entries.",
+    "Graph edges tie design nodes, task cards, pack fragments, and manifest rows together so handoff and integration checks can verify cross-stream contracts before parallel execution proceeds.",
+    "On missing dependency metadata, unresolved stale nodes, or graph drift between staleness.json and state.json, pursuit stops at H2 until reconcile completes and preflight passes again."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"H3\",\n  \"description\": \"artifact graphs\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `H3` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `H3` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `H3`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `H3` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_h3.py when script exists.",
+    "Validate `H3` against SEC-15 release checklist and parent index links.",
+    "Document `H3` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `H3`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids H3`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`journal/state.json`",
+    "`journal/progress.md`",
+    "`evidence/`",
+    "`docs/manifest/staleness.json`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a710",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[\u2014-index](\u2014-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids H3` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [\u2014-index](\u2014-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "H3 defines artifact graphs for the agent-driven expert system. Persistence \u2014 journal, state.json, graphs, evidence. In practice, the system before orchestrate-program spawns parallel lanes, the conductor loads the artifact graph from state.json and the integration manifest so each downstream node declares dependencies on upstream design, task-card, and pack artifacts ([b5.3](b5.3-handoff-manifest-artifact-graph.md), [c4.4](c4.4-artifact-graph-per-program-and-pack.md)), then when an upstream spec or design file changes, reconcile-artifact-graph marks affected graph nodes stale in docs/manifest/staleness.json and the state.json program block so pursuit cannot treat dependents as current ([e5.1](e5.1-staleness-design-graph-staleness-json.md)).",
+  "reader_narrative": "<!-- prose-source: agent plane-h 2026-06-28 -->\n\nArtifact graphs declare dependency edges between design nodes, task cards, pack fragments, and integration manifest entries\u2014program mode reads the graph before parallel spawn ([B5.3](B5.3-handoff-manifest-artifact-graph.md), [C4.4](C4.4-artifact-graph-per-program-and-pack.md)).\n\nreconcile-artifact-graph marks nodes stale when upstream changes; reconcile-stale plans re-runs ([E5.1](E5.1-staleness-design-graph-staleness-json.md)). Graph state persists in state.json program block and docs/manifest/staleness.json. Workers must not proceed on stale manifest nodes without conductor reconcile approval."
+}

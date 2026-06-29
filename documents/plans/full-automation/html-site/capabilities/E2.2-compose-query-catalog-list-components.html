@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>E2.2 — compose query catalog list-components</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/E.html">Plane E</a> · <a href="../chapters/E-E2.html">E2</a> ·
+    E2.2
+  </nav>
+  <p class="page-id">E2.2 · Knowledge &amp; composition plane</p>
+  <h1 class="page-title">compose query catalog list-components</h1>
+  <p class="page-subtitle">compose query catalog list-components</p>
+  
+  <div class="story-block"><p><a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">Catalog</a> query runs through <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> <code>list-components.py</code> (or successor) against the umbrella and child INDEX manifests—returning candidate paths, maturity tier, and component type. Queries are deterministic; conductors use output rather than re-deriving hits in chat.</p>
+<p>Input is the resolved capability from <a href="../capabilities/E2.1-compose-resolve-capability-needed.html" class="spec-link">E2.1</a>; output feeds <a href="../capabilities/E2.3-compose-rank-script-playbook-skill-facts.html" class="spec-link">E2.3</a> ranking and task card Components (<a href="../capabilities/E2.4-compose-plan-task-card-components.html" class="spec-link">E2.4</a>). Empty results trigger <a href="../capabilities/E2.5-compose-miss-l0-enqueue-promotion.html" class="spec-link">E2.5</a> L0 proceed plus promotion enqueue—not silent invention.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart TD
+  trigger[Trigger condition] --&gt; pre[Preconditions S0]
+  pre --&gt; exec[Execute step logic]
+  exec --&gt; verify[Verify output]
+  verify --&gt;|pass| done[Mark queue item done]
+  verify --&gt;|fail| h2[H2 blocker]</pre>
+</div>
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">At the start of each continue, <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a>, and run-local-pipeline iteration, <a href="../capabilities/A2.1-preflight-check-pipeline-blocked-extended.html" class="spec-link">A2.1</a> runs <code>scripts/automation/check-pipeline-blocked.py</code> with <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">goal_autopilot</a> semantics instead of inferring stop conditions in chat.</span></li><li><span class="step-num">Step 2</span><span class="step-text">The script encodes hard stops from <a href="../chapters/A-A4.html" class="spec-link">A4</a>: human gates (<a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">H1/H2/H3</a>), budget exhaustion from <a href="../capabilities/A1.4-deadline-budget-steps-tokens-wall-clock.html" class="spec-link">A1.4</a>, corrupt state., and verify regressions.</span></li><li><span class="step-num">Step 3</span><span class="step-text"><a href="../capabilities/A3.2-goal-autopilot-until-goal-verify-or-hard-block.html" class="spec-link">A3.2</a> goal <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> consults check-pipeline-blocked each wake.—conformance means <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> cannot override a would-stop result.</span></li><li><span class="step-num">Step 4</span><span class="step-text">While <code>gates_pending</code>, blocking_questions, or hard-block stops remain, state preserves those fields until explicit operator approval or waiver—<a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> does not clear them by continuing turns.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If check-pipeline-blocked would stop but pursuit advances anyway, preflight fails closed at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> with the script output attached rather than stacking another pipeline step.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids E2.2</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case E2.2 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case E2.2 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;E2.2&quot;,
+  &quot;description&quot;: &quot;compose query catalog list components&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.17</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

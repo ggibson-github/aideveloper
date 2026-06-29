@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>B3.4 — platform turns economy plus S0 scripts</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/B.html">Plane B</a> · <a href="../chapters/B-B3.html">B3</a> ·
+    B3.4
+  </nav>
+  <p class="page-id">B3.4 · Cognition &amp; routing plane</p>
+  <h1 class="page-title">platform turns economy plus S0 scripts</h1>
+  <p class="page-subtitle">platform turns economy plus S0 scripts</p>
+  
+  <div class="story-block"><p><a href="../glossary.html#platform-turn" class="glossary-link" title="Platform turn">Platform turn</a>s combine economy workers with <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> scripts: queue peek, promotion apply, staleness reconcile, and manifest validation run deterministically before any model interprets platform debt.</p>
+<p><a href="../glossary.html#product-turn" class="glossary-link" title="Product turn">Product turn</a>s remain primary; <a href="../glossary.html#platform-turn" class="glossary-link" title="Platform turn">platform turns</a> interleave on schedule (<a href="../capabilities/SEC-13-pursuit-flow.html" class="spec-link">SEC-13 pursuit flow</a>). Platform workers use the same <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> discipline as product workers but write to platform queue state and pack fragments, not consumer feature branches.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">On scheduled <a href="../glossary.html#platform-turn" class="glossary-link" title="Platform turn">platform turns</a>. interleaving, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> runs <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> scripts first—queue peek, promotion apply, staleness reconcile, manifest validation—before any economy worker interprets platform debt.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Economy platform workers from <code>model-policy.json</code> execute <a href="../capabilities/B2.6-platform-worker-promotion-queue-parallel-slot.html" class="spec-link">B2.6</a> promotion items under bounded contracts; clerical queue mutations stay on <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> or the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a>.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Platform workers use the same <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> discipline as product workers—<a href="../capabilities/B2.4-verifier-tool-operator-evidence.html" class="spec-link">B2.4</a> verify where required—but write outcomes to platform queue state and pack fragments, not consumer feature branches.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Product <code>next_action</code> remains primary; <a href="../glossary.html#platform-turn" class="glossary-link" title="Platform turn">platform turns</a> dequeue only when <a href="../capabilities/D3.1-1-platform-turn-per-k-product-turns.html" class="spec-link">D3.1</a> schedule and <a href="../capabilities/B4.2-platform-promotion-queue-peek-drain.html" class="spec-link">B4.2</a> peek/drain policy allow, so self-improvement does not starve the active goal.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> platform scripts fail or a worker touches consumer goal scope, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> halts the <a href="../glossary.html#platform-turn" class="glossary-link" title="Platform turn">platform turn</a> and routes to <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a>—never marking promotion items done without verification <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids B3.4</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case B3.4 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case B3.4 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;B3.4&quot;,
+  &quot;description&quot;: &quot;platform turns economy plus s0 scripts&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

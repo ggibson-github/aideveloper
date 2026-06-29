@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>B2.6 — Platform worker promotion queue parallel slot</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/B.html">Plane B</a> · <a href="../chapters/B-B2.html">B2</a> ·
+    B2.6
+  </nav>
+  <p class="page-id">B2.6 · Cognition &amp; routing plane</p>
+  <h1 class="page-title">Platform worker promotion queue parallel slot</h1>
+  <p class="page-subtitle">Platform worker promotion queue parallel slot</p>
+  
+  <div class="story-block"><p>Platform workers drain the <a href="../glossary.html#promotion-queue" class="glossary-link" title="Promotion queue">promotion queue</a> in parallel slots scheduled by Plane D policy—turning repeated one-off reasoning into scripts, playbooks, and pack fragments while product pursuit continues on the main stack.</p>
+<p>The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> assigns economy-tier platform workers with queue item ids; they must not mutate consumer goal scope. Completion updates platform maturity ladders and reconciles staleness for downstream <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> nodes. See <a href="../capabilities/B4.2-platform-promotion-queue-peek-drain.html" class="spec-link">B4.2</a> for peek/drain semantics each K product steps.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">On scheduled <a href="../glossary.html#platform-turn" class="glossary-link" title="Platform turn">platform turns</a>, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> assigns economy-tier platform workers a single <a href="../glossary.html#promotion-queue" class="glossary-link" title="Promotion queue">promotion queue</a> item id from Plane D without mutating the active consumer goal scope.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Platform workers drain the assigned item—script extraction, playbook distillation, or pack fragment work—on a parallel slot while product pursuit continues on the main stack.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Completion updates platform maturity ladders, <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> rows, and staleness nodes so downstream <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">compose-first</a> search sees the promoted artifact.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Platform workers return bounded summaries; only the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s queue completion, journal notes, and state.json promotion fields.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If a platform worker edits product goal artifacts, completes without verify proof, or blocks a product-blocked missing tool, pursuit halts at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> and the queue item reopens rather than false-completing promotion.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids B2.6</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case B2.6 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case B2.6 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;B2.6&quot;,
+  &quot;description&quot;: &quot;platform worker promotion queue parallel slot&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

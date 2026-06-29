@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>A6.2 — notify digest on H2 blocker not every step</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/A.html">Plane A</a> · <a href="../chapters/A-A6.html">A6</a> ·
+    A6.2
+  </nav>
+  <p class="page-id">A6.2 · Pursuit &amp; control plane</p>
+  <h1 class="page-title">notify digest on H2 blocker not every step</h1>
+  <p class="page-subtitle">notify digest on H2 blocker not every step</p>
+  
+  <div class="story-block"><p><a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> blockers deserve prompt, consolidated notification; routine pursuit steps do not. This capability defines digest-style alerts on blocker detection—structured reason, goal id, suggested operator action—rather than per-step pings that train operators to ignore the channel.</p>
+<p>The <a href="../glossary.html#pursuit-loop" class="glossary-link" title="Pursuit loop">pursuit loop</a> continues to <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> blockers to journal/state; notification is an Plane I integration layer. Pair with session and daemon modes (A3) so unattended runs surface only actionable interruptions. Every-step notifications violate the minimal-<a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">HITL</a> contract and recreate babysitting by another name.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When pursuit <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s an <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> blocker to journal and state.json, Plane I integrations emit a digest notification with goal_id, structured stop reason, and suggested operator action—not a per-step ping.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Routine <a href="../capabilities/A2.2-if-ready-execute-one-pipeline-step.html" class="spec-link">A2.2</a> completions and counter bumps do not trigger notification channels; only actionable interruptions surface to operators.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Digest alerts pair with session and daemon modes (<a href="../chapters/A-A3.html" class="spec-link">A3</a>) so unattended runs remain observable without alert fatigue that recreates babysitting.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Notification runs asynchronously after <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>; pursuit does not block the loop waiting for webhook delivery.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If notification dispatch fails, pursuit logs the gap in journal but continues unless operator policy requires delivery proof—observability failure becomes <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> only when configured as a hard gate.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids A6.2</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>goal_verify passes but H3 rejected — goal.state returns to pursuing with rejection notes.</li><li>Edge case A6.2 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;A6.2&quot;,
+  &quot;description&quot;: &quot;notify digest on h2 blocker not every step&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.14</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

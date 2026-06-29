@@ -468,3 +468,9 @@ Full design: [genius-conductor-tiered-routing.md](genius-conductor-tiered-routin
 
 Software greenfield pipeline remains default when `mode` is not `program`.
 
+---
+
+## 11. Full automation vision (target)
+
+North star, gap analysis, and implementation hierarchy for autonomous pursuit loops, platform queue, and template-pack-as-company: [full-automation-vision-and-hierarchy.md](full-automation-vision-and-hierarchy.md).
+

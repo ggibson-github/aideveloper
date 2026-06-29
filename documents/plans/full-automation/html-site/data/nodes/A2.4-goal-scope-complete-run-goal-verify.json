@@ -1,0 +1,89 @@
+{
+  "id": "A2.4",
+  "slug": "A2.4-goal-scope-complete-run-goal-verify",
+  "title": "goal_scope_complete run goal_verify",
+  "branch": "A",
+  "parent": "[A2-index](A2-index.md)",
+  "vision_section": "",
+  "release": "v2.14",
+  "purpose": "A2.4 defines goal scope complete run goal verify for the agent-driven expert system. Pursuit & control plane \u2014 autonomous loops until goal verified.",
+  "scope": [
+    "Owns `A2.4` only; siblings under `A2` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a73 \u2014 Branch A \u2014 Pursuit & control plane](../../full-automation-vision-and-hierarchy.md#3-branch-a-pursuit-control-plane)."
+  ],
+  "behavior_steps": [
+    "When machine-checkable scope completion is true\u2014task queue empty, task cards marked done, required evidence paths present\u2014the conductor stops scheduling implement phases and pivots pursuit toward goal-level verification.",
+    "Preflight consults goal_scope_complete predicates derived from state.json and task rollups; the conductor does not invoke goal_verify on a guess or mid-stream partial completion.",
+    "On scope-complete signal, pursuit sets goal.state to verifying and runs goal_verify_command from [A1.3](A1.3-goal-verify-command-meta-test.md) instead of advancing next_action to another implement task.",
+    "Early goal_verify invocations while scope remains incomplete produce structured failures that keep goal.state in pursuing; deferred scope completion leaves the goal pursuing until predicates pass.",
+    "If scope signals conflict\u2014queue shows empty but evidence is missing or H2 blockers remain\u2014pursuit halts at H2 rather than entering verifying or claiming achievement without proof."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"A2.4\",\n  \"description\": \"goal scope complete run goal verify\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "goal_verify passes but H3 rejected \u00e2\u20ac\u201d goal.state returns to pursuing with rejection notes.",
+    "Edge case `A2.4` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `A2.4`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `goal` block to state template and journal-keeper dual-write (v2.14).",
+    "Extend `check-pipeline-blocked.py` with goal_autopilot stop reasons.",
+    "Implement `scripts/goal-verify.py` stub aggregating task evidence paths.",
+    "Add `.cursor/skills/goal-keeper/SKILL.md` for conductor H1\u00e2\u2020\u2019pursuit transition.",
+    "Document `A2.4` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `A2.4`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids A2.4`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`journal/state.json `goal`, `pursuit`, `hitl``",
+    "`scripts/automation/check-pipeline-blocked.py`",
+    "`scripts/automation/run-local-pipeline.py`",
+    "`.cursor/skills/autopilot/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a73",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[A2-index](A2-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids A2.4` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [A2-index](A2-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "A2.4 defines goal scope complete run goal verify for the agent-driven expert system. Pursuit & control plane \u2014 autonomous loops until goal verified. In practice, the system when machine-checkable scope completion is true\u2014task queue empty, task cards marked done, required evidence paths present\u2014the conductor stops scheduling implement phases and pivots pursuit toward goal-level verification, then preflight consults goal_scope_complete predicates derived from state.json and task rollups; the conductor does not invoke goal_verify on a guess or mid-stream partial completion.",
+  "reader_narrative": "<!-- prose-source: agent pilot 2026-06-28 -->\n\nWhen all in-scope work for the goal is complete, pursuit shifts from step execution to goal-level proof. This capability defines the handoff: detect scope completion, then run goal_verify_command rather than another implement task.\n\nScope completion is machine-checkable\u2014queue empty, task cards done, evidence present\u2014not a conductor guess. Running goal_verify too early produces false failures; running it never leaves goals stuck in pursuing forever.\n\nThis node connects Plane A to Plane G. It is the pivot from \u201cdoing work\u201d to \u201cproving the goal.\u201d Operators should expect a visible state transition to verifying before H3 is requested."
+}

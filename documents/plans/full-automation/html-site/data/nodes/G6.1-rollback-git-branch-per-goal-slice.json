@@ -1,0 +1,89 @@
+{
+  "id": "G6.1",
+  "slug": "G6.1-rollback-git-branch-per-goal-slice",
+  "title": "rollback git branch per goal slice",
+  "branch": "G",
+  "parent": "[G6-index](G6-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "G6.1 defines rollback git branch per goal slice for the agent-driven expert system. Verification & quality \u2014 evidence, goal_verify, anti-mistake.",
+  "scope": [
+    "Owns `G6.1` only; siblings under `G6` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a79 \u2014 Branch G \u2014 Verification & quality plane (anti-mistake)](../../full-automation-vision-and-hierarchy.md#9-branch-g-verification-quality-plane-anti-mistake)."
+  ],
+  "behavior_steps": [
+    "At H1, when the operator supplies a spec or charter, the conductor anchors pursuit in `state.json` with north star, scope, and the minimal HITL contract ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md): H1 plan, H2 blocker, H3 sign-off).",
+    "After H1 approval, [goal autopilot](A3.2-goal-autopilot-until-goal-verify-or-hard-block.md) drives pursuit until `goal_verify` passes or a hard stop from [A4](A4.1-stop-human-h1-h2-h3.md) fires\u2014not when a chat session or token burst ends.",
+    "On each wake, [B1.1](B1.1-s0-deterministic-mandatory-first.md) runs before improvisation while the conductor executes one product pipeline step and peeks the platform promotion queue so scripts, playbooks, and checks discovered during delivery enqueue without pausing the active goal.",
+    "When template-packs compose a company slice, roles, pipelines, and verification inherit catalog composition and the three structural shifts from this summary instead of reinventing setup per project.",
+    "When scope or stop behavior is ambiguous, agents resolve conflicts using this executive summary before inventing new policy; unresolved contradictions escalate to H2 and fail closed."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"G6.1\",\n  \"description\": \"rollback git branch per goal slice\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Flaky test \u00e2\u20ac\u201d escalation S4 once, then H2 with evidence log; no silent retry loop.",
+    "Edge case `G6.1` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `G6.1`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Extend verify-router for goal-level suite invocation.",
+    "Wire CI: validate-workflow checks goal block when pursuit.mode=goal_autopilot.",
+    "Document evidence type in docs/operator/evidence-types.md.",
+    "Validate `G6.1` against SEC-15 release checklist and parent index links.",
+    "Document `G6.1` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `G6.1`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids G6.1`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`scripts/verify-router.py`",
+    "`scripts/validate-workflow.py`",
+    "`evidence/`",
+    "`.cursor/skills/verifier/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a79",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[G6-index](G6-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids G6.1` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [G6-index](G6-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "G6.1 defines rollback git branch per goal slice for the agent-driven expert system. Verification & quality \u2014 evidence, goal_verify, anti-mistake. In practice, the system at h1, when the operator supplies a spec or charter, the conductor anchors pursuit in `state.json` with north star, scope, and the minimal hitl contract ([intro-1.2](intro-1.2-human-touchpoint-contract-h1-h2-h3.md): h1 plan, h2 blocker, h3 sign-off), then after h1 approval, [goal autopilot](a3.2-goal-autopilot-until-goal-verify-or-hard-block.md) drives pursuit until `goal_verify` passes or a hard stop from [a4](a4.1-stop-human-h1-h2-h3.md) fires\u2014not when a chat session or token burst ends.",
+  "reader_narrative": "<!-- prose-source: agent plane-g 2026-06-28 -->\n\nRollback at the git layer uses a branch per goal slice so failed pursue paths can revert without contaminating main or sibling goals. Git-workflow creates and tracks feature branches; goal completion merges only after goal verify and gates clear.\n\nOperator-initiated rollback checks out the last known-good branch tip for that slice; conductor records branch name in journal handoff. Multi-goal company autopilot ([A3.3](A3.3-company-autopilot-multi-goal-role-workstreams.md)) isolates slices to limit blast radius."
+}

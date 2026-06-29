@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>SEC-15-v2.14 — Release v2.14 goal model goal verify</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/meta.html">Plane meta</a> ·
+    SEC-15-v2.14
+  </nav>
+  <p class="page-id">SEC-15-v2.14 · Front matter &amp; cross-cutting architecture</p>
+  <h1 class="page-title">Release v2.14 goal model goal verify</h1>
+  <p class="page-subtitle">v2.14 release v2 14 goal model goal verify</p>
+  
+  <div class="story-block"><p>Release v2.14 establishes the goal model in state.json and introduces <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> as a first-class field alongside extended check-pipeline-blocked semantics. Without this release, pursuit cannot attach verification to nested goals or distinguish task done from goal achieved.</p>
+<p>Deliverables include goal-keeper behavior, additive state.goal schema, and tests that fail if <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> is bypassed.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart TD
+  trigger[Trigger condition] --&gt; pre[Preconditions S0]
+  pre --&gt; exec[Execute step logic]
+  exec --&gt; verify[Verify output]
+  verify --&gt;|pass| done[Mark queue item done]
+  verify --&gt;|fail| h2[H2 blocker]</pre>
+</div>
+  <h2 class="section-title">What this defines</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When v2.14 ships, goal-keeper populates state.goal with goal_id, parent_goal, goal_type, success_criteria, and goal_verify_command. in the same <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> that clears plan approval.</span></li><li><span class="step-num">Step 2</span><span class="step-text">check-pipeline-blocked.py gains extended semantics: <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">goal_autopilot</a> reads goal fields, evaluates scope completion, and routes to <a href="../capabilities/A2.4-goal-scope-complete-run-goal-verify.html" class="spec-link">A2.4</a> instead of treating implement complete as goal achieved.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Tasks still require task-level <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> via <a href="../capabilities/G1.1-task-verify-router-verifier.html" class="spec-link">G1.1</a>; v2.14 adds the distinction that passing task verify is necessary while <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> is sufficient for <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> transition.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Meta-tests fail if <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> is bypassed—pursuit cannot set goal.state=achieved without running goal_verify_command and recording exit code in state.</span></li><li><span class="step-num">Step 5</span><span class="step-text">Until the v2.14 goal block exists, preflight treats missing goal fields as <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> blockers rather than improvising pursuit scope on legacy state.json.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids SEC-15-v2.14</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case SEC-15-v2.14 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case SEC-15-v2.14 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;SEC-15-v2.14&quot;,
+  &quot;description&quot;: &quot;release v2 14 goal model goal verify&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

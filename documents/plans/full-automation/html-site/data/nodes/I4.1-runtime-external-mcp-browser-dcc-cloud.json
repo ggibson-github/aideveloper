@@ -1,0 +1,88 @@
+{
+  "id": "I4.1",
+  "slug": "I4.1-runtime-external-mcp-browser-dcc-cloud",
+  "title": "runtime external MCP browser DCC cloud",
+  "branch": "I",
+  "parent": "[I4-index](I4-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "I4.1 defines runtime external mcp browser dcc cloud for the agent-driven expert system. Runtime & integration \u2014 IDE, SDK, headless, MCP tools.",
+  "scope": [
+    "Owns `I4.1` only; siblings under `I4` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a711 \u2014 Branch I \u2014 Runtime & integration plane](../../full-automation-vision-and-hierarchy.md#11-branch-i-runtime-integration-plane)."
+  ],
+  "behavior_steps": [
+    "When spawning workers for implement or tool-operator tasks, the conductor loads the active MCP server list from template-pack role permissions ([B5.2](B5.2-role-to-pipeline-id-skills-tool-permissions.md)) and injects only approved browser, DCC, or cloud API tools into the spawn contract.",
+    "MCP tool calls execute inside the worker session as integration runtime\u2014tool results return to the worker, but pursuit state transitions (`next_action`, `goal.state`, `evidence_files`) remain conductor-owned dual-writes to journal and state.json.",
+    "Browser MCP sessions follow lock/navigate/unlock discipline: the worker acquires browser lock before navigation, completes the scoped action from the task card, then releases\u2014preventing parallel rabbit-hole automation across pursuit turns.",
+    "Auth failures, rate limits, or disallowed tool invocations abort the worker turn immediately; the conductor records structured H2 with credential pointers from docs/facts/INDEX rather than retrying with elevated permissions.",
+    "DCC and cloud MCP outputs land only on task-card-declared paths; the verifier attaches logs to evidence/ per [B2.4](B2.4-verifier-tool-operator-evidence.md) before pursuit marks the implement step complete."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"I4.1\",\n  \"description\": \"runtime external mcp browser dcc cloud\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `I4.1` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `I4.1` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `I4.1`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `I4.1` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_i4_1.py when script exists.",
+    "Validate `I4.1` against SEC-15 release checklist and parent index links.",
+    "Document `I4.1` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `I4.1`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids I4.1`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/automation/`",
+    "`.cursor/hooks/`",
+    "`docs/operator/export-contract.md`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a711",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[I4-index](I4-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids I4.1` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [I4-index](I4-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "I4.1 defines runtime external mcp browser dcc cloud for the agent-driven expert system. Runtime & integration \u2014 IDE, SDK, headless, MCP tools. In practice, the system when spawning workers for implement or tool-operator tasks, the conductor loads the active mcp server list from template-pack role permissions ([b5.2](b5.2-role-to-pipeline-id-skills-tool-permissions.md)) and injects only approved browser, dcc, or cloud api tools into the spawn contract, then mcp tool calls execute inside the worker session as integration runtime\u2014tool results return to the worker, but pursuit state transitions (`next_action`, `goal.state`, `evidence_files`) remain conductor-owned dual-writes to journal and state.json.",
+  "reader_narrative": "<!-- prose-source: agent plane-i 2026-06-28 -->\n\nExternal MCP servers\u2014browser automation, DCC tools, cloud APIs\u2014extend worker capability per pack configuration. MCP tools appear in worker spawn contracts with explicit permission boundaries; the conductor approves which servers are active for active_role ([B5.2](B5.2-role-to-pipeline-id-skills-tool-permissions.md)).\n\nAuth failures and rate limits surface H2 with credential pointers in facts INDEX. MCP is integration runtime, not pursuit router\u2014state transitions remain conductor-owned. Browser MCP follows lock/navigate/unlock discipline to avoid rabbit-hole automation."
+}

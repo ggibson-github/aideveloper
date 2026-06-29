@@ -1,0 +1,88 @@
+{
+  "id": "F6.2",
+  "slug": "F6.2-role-allowed-reads-scoped-playbooks-lane-tasks",
+  "title": "role allowed_reads scoped playbooks lane tasks",
+  "branch": "F",
+  "parent": "[F6-index](F6-index.md)",
+  "vision_section": "",
+  "release": "v2.19",
+  "purpose": "F6.2 defines role allowed reads scoped playbooks lane tasks for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling.",
+  "scope": [
+    "Owns `F6.2` only; siblings under `F6` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a78 \u2014 Branch F \u2014 Organization plane (template-packs = ceiling)](../../full-automation-vision-and-hierarchy.md#8-branch-f-organization-plane-template-packs-ceiling)."
+  ],
+  "behavior_steps": [
+    "When staleness.json or a program artifact graph flags stale nodes on paths in the next implement scope, the conductor invokes reconcile-stale or reconcile-artifact-graph before spawning workers\u2014not after partial edits land.",
+    "S0 scripts maintain stale flags file-derived; the reconcile skills decide whether to rerun the affected design phase, waive with H2 operator approval, or enqueue hierarchy deepen items for impacted ids.",
+    "Workers on affected paths pause while reconciliation runs; pursuit resumes only after flags clear or an explicit H2 waiver is dual-written to journal and state.json.",
+    "In program mode, reconcile-artifact-graph consults [C4.4](C4.4-artifact-graph-per-program-and-pack.md) cross-stream contracts alongside [E5.1](E5.1-staleness-design-graph-staleness-json.md) as the design-graph source of truth.",
+    "If implement spawn would proceed against stale design without reconciliation or waiver, pursuit halts at H2\u2014silent implement violates Plane E contract and invalidates goal_verify evidence."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"F6.2\",\n  \"description\": \"role allowed reads scoped playbooks lane tasks\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Pack role handoff while lane lease held \u00e2\u20ac\u201d complete-work-order releases lease before role switch.",
+    "Edge case `F6.2` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `F6.2`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `company.yaml` + `roles/*.yaml` to template-packs schema.",
+    "program-scoper selects pack; sets state.company.active_role.",
+    "Per-role allowed_reads in lane.json work orders.",
+    "Validate `F6.2` against SEC-15 release checklist and parent index links.",
+    "Document `F6.2` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `F6.2`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids F6.2`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`template-packs/`",
+    "`program/integration/manifest.md`",
+    "`.cursor/skills/program-scoper/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a78",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[F6-index](F6-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids F6.2` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [F6-index](F6-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "F6.2 defines role allowed reads scoped playbooks lane tasks for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling. In practice, the system when staleness.json or a program artifact graph flags stale nodes on paths in the next implement scope, the conductor invokes reconcile-stale or reconcile-artifact-graph before spawning workers\u2014not after partial edits land, then s0 scripts maintain stale flags file-derived; the reconcile skills decide whether to rerun the affected design phase, waive with h2 operator approval, or enqueue hierarchy deepen items for impacted ids.",
+  "reader_narrative": "<!-- prose-source: agent plane-f 2026-06-28 -->\n\nPer-role `allowed_reads` scopes workers to role playbooks, lane task cards, facts entries, and design slices declared in pack YAML\u2014not the full vision monolith or unrelated department lanes. Librarian returns paths within this cap (max five) before implement spawn ([B2.2](B2.2-librarian-allowed-reads-catalog-composition.md)).\n\nScope bleed (QA worker reading finance playbooks) violates pack intent and risks cross-department edits. allowed_reads updates on active_role rotation ([F6.1](F6.1-role-mapping-conductor-context-switch-active-role.md)). Lane.json work orders may further narrow reads for parallel slots. Forbidden paths are explicit deny list alongside allowed_reads."
+}

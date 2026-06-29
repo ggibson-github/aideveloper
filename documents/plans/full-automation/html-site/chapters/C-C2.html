@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>C2 — Phase chain (composable)</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/C.html">Plane C</a> ·
+    C2
+  </nav>
+  <p class="page-id">C2 · Product execution plane</p>
+  <h1 class="page-title">Phase chain (composable)</h1>
+  <div class="story-block"><p>C2: Phase chain (composable). The <a href="../glossary.html#capability" class="glossary-link" title="Capability">capabilities</a> below follow a sequential flow—read them in order.</p>
+<p>Spec-parser phase extracts requirements, validates assumptions, lists open questions, and creates or refreshes journal/state via journal-keeper. Blocking questions stop downstream design until answered or deferred with rationale recorded.</p>
+<p>Outputs feed hld-writer and program-scoper when mega-spec detected. <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> scripts validate spec structure where templates exist. This phase is the <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> input artifact generator—pursuit should not skip to implement without parsed requirements unless journal says spec phase complete.</p>
+<p>Design phase produces HLD, DD (split api/data/ops), and diagrams from approved requirements. Default path uses self-gate plus <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>; strict <a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">HITL</a> retains human HLD/DD approval gates from v2.13.</p>
+<p>Diagram-generator runs after DD; staleness marks downstream task cards when design changes. Design artifacts live under docs/design/ and docs/diagrams/ per AGENTS.md paths. <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">Conductor</a> spawns dd-writer and diagram workers under <a href="../glossary.html#s2" class="glossary-link" title="S2 — templated artifacts">S2</a> templates.</p>
+<p>Task-breakdown and scaffold follow approved design: phased TODOS, task cards, environment-setup tasks ordered before package installs, then scaffold-project creates repo layout and CI skeleton. Missing setup tasks violate AGENTS.md rule 17—implement must not start without runnable environment.</p>
+<p>Task cards carry verify commands and <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> paths for Plane G. Scaffold outputs are inputs to implement-feature loop; <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> marks phase complete in journal/state.</p>
+<p>Test and git-workflow phase covers test-writer, full suite runs before push, refactor when debt blocks features, and PR/commit when user requests. test-before-push rule applies: unit, integration, e2e when UI exists.</p>
+<p>git-workflow runs only when last_verify passed or exceptions documented. This phase connects Plane C delivery to operator git policy without bypassing <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> gates.</p>
+<p>Each phase declares inputs, outputs, verify commands, and <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> refs so <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> and reviewers can audit completeness. Phase contracts live in skills and playbooks; pack schema may extend with pack-specific verify.</p>
+<p>Missing <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> refs on phase outputs trigger <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">compose-first</a> divergence logging (<a href="../capabilities/B4.4-divergence-log-when-not-composing.html" class="spec-link">B4.4</a>). Phase verify is not <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a>—it proves phase artifacts exist before next_action advances.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart LR
+  C2_1[&quot;C2.1&lt;br/&gt;phase spec-parser requirements&quot;]
+  C2_2[&quot;C2.2&lt;br/&gt;phase, hld, dd, and diagrams&quot;]
+  C2_3[&quot;C2.3&lt;br/&gt;phase task-breakdown scaffold implement&quot;]
+  C2_4[&quot;C2.4&lt;br/&gt;phase test refactor git-workflow&quot;]
+  C2_5[&quot;C2.5&lt;br/&gt;phase, inputs, outputs, verify, catalog,&quot;]
+  C2_1 --&gt; C2_2
+  C2_2 --&gt; C2_3
+  C2_3 --&gt; C2_4
+  C2_4 --&gt; C2_5</pre>
+</div>
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/C2.1-phase-spec-parser-requirements.html">C2.1</a></span>
+  <span class="cap-title">phase spec-parser requirements</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/C2.2-phase-hld-dd-diagrams.html">C2.2</a></span>
+  <span class="cap-title">phase, hld, dd, and diagrams</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/C2.3-phase-task-breakdown-scaffold-implement.html">C2.3</a></span>
+  <span class="cap-title">phase task-breakdown scaffold implement</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/C2.4-phase-test-refactor-git-workflow.html">C2.4</a></span>
+  <span class="cap-title">phase test refactor git-workflow</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/C2.5-phase-inputs-outputs-verify-catalog-refs.html">C2.5</a></span>
+  <span class="cap-title">phase, inputs, outputs, verify, catalog, and refs</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>APP-A-build — Work taxonomy build</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/meta.html">Plane meta</a> ·
+    APP-A-build
+  </nav>
+  <p class="page-id">APP-A-build · Front matter &amp; cross-cutting architecture</p>
+  <h1 class="page-title">Work taxonomy build</h1>
+  <p class="page-subtitle">build work taxonomy build</p>
+  
+  <div class="story-block"><p>Build work is implement, integrate, and refactor—the core product execution surface Plane C owns. Tasks must carry <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> commands; pursuit continues only when verify passes or structured <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> fires.</p>
+<p>Build roles in packs should default to S0/S1-heavy routing with <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> merge at <a href="../glossary.html#s3" class="glossary-link" title="S3 — architecture / ambiguity">S3</a> boundaries.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart TD
+  trigger[Trigger condition] --&gt; pre[Preconditions S0]
+  pre --&gt; exec[Execute step logic]
+  exec --&gt; verify[Verify output]
+  verify --&gt;|pass| done[Mark queue item done]
+  verify --&gt;|fail| h2[H2 blocker]</pre>
+</div>
+  <h2 class="section-title">What this defines</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When the active goal&#x27;s work taxonomy class is Build, <a href="../capabilities/B2.1-conductor-genius-merge-route-platform-drain.html" class="spec-link">B2.1</a> routes implement and integrate phases to <a href="../capabilities/C2.3-phase-task-breakdown-scaffold-implement.html" class="spec-link">C2.3</a> task cards with mandatory <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> commands.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Build turns default to S0/S1-heavy execution—<a href="../capabilities/B1.1-s0-deterministic-mandatory-first.html" class="spec-link">B1.1</a> scripts and economy implement workers—reserving genius-tier <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> merge for <a href="../glossary.html#s3" class="glossary-link" title="S3 — architecture / ambiguity">S3</a> architecture boundaries only.</span></li><li><span class="step-num">Step 3</span><span class="step-text">After each implement batch, <a href="../capabilities/G1.1-task-verify-router-verifier.html" class="spec-link">G1.1</a> runs verify-router or verifier workers; pursuit advances only when <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> passes or records structured H2.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Refactor work under the Build taxonomy follows <a href="../capabilities/C2.4-phase-test-refactor-git-workflow.html" class="spec-link">C2.4</a> phase ordering—tests green before routing marks the slice complete toward <a href="../capabilities/C3.4-task-to-goal-rollup-percent-goal-verify.html" class="spec-link">C3.4</a> goal rollup.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If build tasks lack <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> commands or verify fails without <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> packaging, <a href="../capabilities/A2.1-preflight-check-pipeline-blocked-extended.html" class="spec-link">A2.1</a> blocks further implement turns until task cards and state.json reconcile.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids APP-A-build</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case APP-A-build variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case APP-A-build variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;APP-A-build&quot;,
+  &quot;description&quot;: &quot;work taxonomy build&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

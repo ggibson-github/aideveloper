@@ -1,0 +1,84 @@
+{
+  "id": "SEC-17-6",
+  "slug": "SEC-17-6-decision-multi-goal-single-stack-vs-company-autopilot",
+  "title": "Decision multi-goal single stack vs company_autopilot",
+  "branch": "meta",
+  "parent": "\u2014",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "SEC-17-6 defines decision multi goal single stack vs company autopilot for the agent-driven expert system. Roadmap, gap analysis, pursuit flow, decisions.",
+  "scope": [
+    "Owns `SEC-17-6` only; siblings under `\u2014` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a717 \u2014 Open design decisions](../../full-automation-vision-and-hierarchy.md#17-open-design-decisions)."
+  ],
+  "behavior_steps": [
+    "After H1 approves a program milestone, program-scoper and integration-manifest-keeper produce the handoff manifest and artifact_graph with cross-stream dependencies and integration gates.",
+    "Before orchestrate-program spawns parallel lanes, the conductor reads the manifest and blocks lanes with missing, unverified, or stale upstream artifact_graph nodes.",
+    "When dependencies change, reconcile-artifact-graph marks nodes stale and pauses only blocked lanes until state.json shows cleared flags.",
+    "Each workstream records satisfied nodes and integration evidence under its lane lease ([C4.1](C4.1-workstreams-lane-json-leases.md)) for company-level goal_verify rollup.",
+    "If the manifest gate was never cleared, edges cycle, or a lane starts without satisfied upstream nodes, pursuit stops at H2."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"node\": \"SEC-17-6\",\n  \"description\": \"decision multi goal single stack vs company autopilot\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `SEC-17-6` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `SEC-17-6` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `SEC-17-6`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `SEC-17-6` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_sec-17-6.py when script exists.",
+    "Validate `SEC-17-6` against SEC-15 release checklist and parent index links.",
+    "Document `SEC-17-6` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `SEC-17-6`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids SEC-17-6`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a717",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[\u2014-index](\u2014-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids SEC-17-6` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [\u2014-index](\u2014-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "SEC-17-6 defines decision multi goal single stack vs company autopilot for the agent-driven expert system. Roadmap, gap analysis, pursuit flow, decisions. In practice, the system after h1 approves a program milestone, program-scoper and integration-manifest-keeper produce the handoff manifest and artifact_graph with cross-stream dependencies and integration gates, then before orchestrate-program spawns parallel lanes, the conductor reads the manifest and blocks lanes with missing, unverified, or stale upstream artifact_graph nodes.",
+  "reader_narrative": "<!-- prose-source: agent meta 2026-06-28 -->\n\nOpen decision: single pursuit stack versus company_autopilot with prioritized multi-goal queue. Single stack simplifies state; multi-goal matches real companies running parallel initiatives.\n\nstate.goal nesting and parent_goal interact with whichever model is chosen. An ADR should specify preemption rules when two goals contend for the same active role."
+}

@@ -1,0 +1,84 @@
+{
+  "id": "APP-A-verify",
+  "slug": "APP-A-verify-work-taxonomy-verify",
+  "title": "verify work taxonomy verify",
+  "branch": "meta",
+  "parent": "\u2014",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "APP-A-verify defines work taxonomy verify for the agent-driven expert system. Human job taxonomy \u2192 pack workflows.",
+  "scope": [
+    "Owns `APP-A-verify` only; siblings under `\u2014` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a73 \u2014 Branch A \u2014 Pursuit & control plane](../../full-automation-vision-and-hierarchy.md#3-branch-a-pursuit-control-plane)."
+  ],
+  "behavior_steps": [
+    "Pack workflows bind each verify slice to explicit unit, integration, E2E, tool-operator, or conformance commands so [G2.1](G2.1-goal-verify-command-state-pack.md) goal_verify can aggregate them mechanically\u2014never subjective \"looks good\" gates.",
+    "When `evidence_required` is true, the conductor spawns Verifier or tool-operator workers via [G1.1](G1.1-task-verify-router-verifier.md) and verify-router.py with the task card's literal Test or Tool command block rather than improvising checks.",
+    "Shell workers write logs under `evidence/` per docs/operator/evidence-types.md and return paths; the conductor dual-writes `evidence_files` and sets `last_verify` to passed before advancing `next_action` or marking implement tasks complete.",
+    "Conformance scripts ([G3.1](G3.1-conformance-validate-workflow-ci.md), route-tier checks) run at pursuit boundaries so goal.state cannot move from pursuing to achieved without aggregated proof across named commands.",
+    "On verify failure, missing evidence, or goal_verify aggregation gaps, pursuit fails closed at H2\u2014[G1.3](G1.3-last-verify-before-advance.md) blocks advance and [B3.3](B3.3-escalation-loop-on-verify-fail.md) may escalate without clearing gates."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"node\": \"APP-A-verify\",\n  \"description\": \"work taxonomy verify\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `APP-A-verify` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `APP-A-verify` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `APP-A-verify`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `APP-A-verify` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_app-a-verify.py when script exists.",
+    "Validate `APP-A-verify` against SEC-15 release checklist and parent index links.",
+    "Document `APP-A-verify` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `APP-A-verify`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids APP-A-verify`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a73",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[\u2014-index](\u2014-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids APP-A-verify` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [\u2014-index](\u2014-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "APP-A-verify defines work taxonomy verify for the agent-driven expert system. Human job taxonomy \u2192 pack workflows. In practice, the system pack workflows bind each verify slice to explicit unit, integration, e2e, tool-operator, or conformance commands so [g2.1](g2.1-goal-verify-command-state-pack.md) goal_verify can aggregate them mechanically\u2014never subjective \"looks good\" gates, then when `evidence_required` is true, the conductor spawns verifier or tool-operator workers via [g1.1](g1.1-task-verify-router-verifier.md) and verify-router.py with the task card's literal test or tool command block rather than improvising checks.",
+  "reader_narrative": "<!-- prose-source: agent meta 2026-06-28 -->\n\nVerify work spans unit, integration, E2E, tool outputs, goal_verify, and conformance scripts. Verification is not a phase humans optionally trigger\u2014it is the gate that separates pursuing from achieved.\n\nPack workflows must name verify commands explicitly so goal_verify can aggregate them."
+}

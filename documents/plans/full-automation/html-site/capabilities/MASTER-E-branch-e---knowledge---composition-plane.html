@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>MASTER-E — Branch E — Knowledge &amp; composition plane</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/meta.html">Plane meta</a> ·
+    MASTER-E
+  </nav>
+  <p class="page-id">MASTER-E · Front matter &amp; cross-cutting architecture</p>
+  <h1 class="page-title">Branch E — Knowledge &amp; composition plane</h1>
+  <p class="page-subtitle">Branch E — Knowledge &amp; composition plane</p>
+  
+  <div class="story-block"><p>Plane E is knowledge and composition: one <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> surface, mandatory compose-before-invent, facts and decisions, context retrieval layers, and staleness when upstream designs change.</p>
+<p>Before any <a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a>+ worker invents a new pattern, Plane E requires searching the <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> and binding existing components.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart TD
+  trigger[Trigger condition] --&gt; pre[Preconditions S0]
+  pre --&gt; exec[Execute step logic]
+  exec --&gt; verify[Verify output]
+  verify --&gt;|pass| done[Mark queue item done]
+  verify --&gt;|fail| h2[H2 blocker]</pre>
+</div>
+  <h2 class="section-title">What this defines</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">Understand that this plane knowledge and composition: one <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> surface, mandatory compose-before-invent, facts and decisions, context retrieval layers, and staleness when upstream designs change</span></li><li><span class="step-num">Step 2</span><span class="step-text">Before any <a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a>+ worker invents a new pattern, Plane E requires searching the <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> and binding existing components</span></li><li><span class="step-num">Step 3</span><span class="step-text">Plane meta groups related <a href="../glossary.html#capability" class="glossary-link" title="Capability">capabilities</a>; this master summary orients readers before opening meta1–meta6 detail pages.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Each child capability under Plane meta must stay consistent with this plane’s role in pursuit, routing, or verification.</span></li><li><span class="step-num">Step 5</span><span class="step-text">Operators use master pages as reading order hints—not as separate runtime state.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids MASTER-E</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case MASTER-E variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case MASTER-E variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;MASTER-E&quot;,
+  &quot;description&quot;: &quot;branch e   knowledge   composition plane&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

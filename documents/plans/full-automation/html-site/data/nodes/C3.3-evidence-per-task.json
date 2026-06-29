@@ -1,0 +1,89 @@
+{
+  "id": "C3.3",
+  "slug": "C3.3-evidence-per-task",
+  "title": "evidence per task",
+  "branch": "C",
+  "parent": "[C3-index](C3-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "C3.3 defines evidence per task for the agent-driven expert system. Product execution \u2014 pipelines, tasks, program, delivery.",
+  "scope": [
+    "Owns `C3.3` only; siblings under `C3` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a75 \u2014 Branch C \u2014 Product execution plane](../../full-automation-vision-and-hierarchy.md#5-branch-c-product-execution-plane)."
+  ],
+  "behavior_steps": [
+    "During implement or verify turns, economy workers detect repeated file patterns, test fixes, or catalog misses across pursuit iterations and emit a promotion flag in their return contract\u2014the conductor receives the signal; workers never mutate `platform.promotion_queue` directly.",
+    "The genius-tier conductor merges worker flags after each pursuit step, deduplicates by content fingerprint, and enqueues one `promotion_queue` item per confirmed pattern at the appropriate `target_level` from the [D1](D1-index.md) promotion ladder.",
+    "Structural rework invisible to shell history\u2014duplicate scaffolding, recurring verify failures on the same fixture, or compose-first misses\u2014routes here; pair flags with [B4.4](B4.4-divergence-log-when-not-composing.md) divergence logs when catalog composition failed before invention.",
+    "A single worker flag defers enqueue until a second independent flag or the [D2.1.1](D2.1.1-enqueue-repeated-manual-command-2x.md) manual 2\u00d7 command trigger confirms the pattern, avoiding false-positive platform work.",
+    "If workers write queue JSON directly, deduplication fails and duplicate promotion items stall the parallel queue, pursuit fails closed at H2 until the conductor reconciles flags and dual-writes a single enqueue record per pattern."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"C3.3\",\n  \"description\": \"evidence per task\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `C3.3` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `C3.3` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `C3.3`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `C3.3` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_c3_3.py when script exists.",
+    "Validate `C3.3` against SEC-15 release checklist and parent index links.",
+    "Document `C3.3` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `C3.3`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids C3.3`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/tasks/`",
+    "`docs/manifest/pipelines/`",
+    "`.cursor/skills/implement-feature/`",
+    "`program/workstreams/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a75",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[C3-index](C3-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids C3.3` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [C3-index](C3-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "C3.3 defines evidence per task for the agent-driven expert system. Product execution \u2014 pipelines, tasks, program, delivery. In practice, the system during implement or verify turns, economy workers detect repeated file patterns, test fixes, or catalog misses across pursuit iterations and emit a promotion flag in their return contract\u2014the conductor receives the signal; workers never mutate `platform.promotion_queue` directly, then the genius-tier conductor merges worker flags after each pursuit step, deduplicates by content fingerprint, and enqueues one `promotion_queue` item per confirmed pattern at the appropriate `target_level` from the [d1](d1-index.md) promotion ladder.",
+  "reader_narrative": "<!-- prose-source: agent plane-c 2026-06-28 -->\n\nEvidence per task is mandatory when evidence_required: verify-router or tool-operator writes logs under evidence/, state records evidence_files and last_verify. Implement tasks do not complete on agent assertion alone.\n\nEvidence types include pytest logs, tool output, checksums\u2014see docs/operator/evidence-types.md. Missing evidence blocks goal rollup in C3.4 and goal_verify in Plane A/G."
+}

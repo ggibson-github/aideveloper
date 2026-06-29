@@ -1,0 +1,89 @@
+{
+  "id": "H6",
+  "slug": "H6-snapshots",
+  "title": "snapshots",
+  "branch": "H",
+  "parent": "\u2014",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "H6 defines snapshots for the agent-driven expert system. Persistence \u2014 journal, state.json, graphs, evidence.",
+  "scope": [
+    "Owns `H6` only; siblings under `\u2014` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a710 \u2014 Branch H \u2014 Persistence & state plane](../../full-automation-vision-and-hierarchy.md#10-branch-h-persistence-state-plane)."
+  ],
+  "behavior_steps": [
+    "During product pursuit the conductor and S0 scripts detect repeated manual commands, missing playbooks, or verify failures and enqueue platform work items per D2 without blocking the current product `next_action` unless H2 requires it.",
+    "Each platform turn is scheduled per D3.1\u2014one platform dequeue after K product steps\u2014so delivery continues while reuse matures from L0 ephemeral reasoning toward L2 scripts and L3 skills on the D1 promotion ladder.",
+    "When dequeuing, D2.3 runs exactly one platform-queue item as an economy turn with S0 extraction scripts before any improvisational catalog work.",
+    "Completed promotions dual-write to catalog manifests, playbooks, and skills per D1 maturity rungs; staleness nodes bump so E5 reconcile can flag dependents.",
+    "If platform backlog exceeds age or depth thresholds from D3.5, pursuit prioritizes a drain turn or stops at H2 when enqueue would starve an active goal slice."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"H6\",\n  \"description\": \"snapshots\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `H6` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `H6` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `H6`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `H6` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_h6.py when script exists.",
+    "Validate `H6` against SEC-15 release checklist and parent index links.",
+    "Document `H6` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `H6`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids H6`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`journal/state.json`",
+    "`journal/progress.md`",
+    "`evidence/`",
+    "`docs/manifest/staleness.json`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a710",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[\u2014-index](\u2014-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids H6` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [\u2014-index](\u2014-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "H6 defines snapshots for the agent-driven expert system. Persistence \u2014 journal, state.json, graphs, evidence. In practice, the system during product pursuit the conductor and s0 scripts detect repeated manual commands, missing playbooks, or verify failures and enqueue platform work items per d2 without blocking the current product `next_action` unless h2 requires it, then each platform turn is scheduled per d3.1\u2014one platform dequeue after k product steps\u2014so delivery continues while reuse matures from l0 ephemeral reasoning toward l2 scripts and l3 skills on the d1 promotion ladder.",
+  "reader_narrative": "<!-- prose-source: agent plane-h 2026-06-28 -->\n\nSnapshots capture pursuit state before context compaction or session handoff\u2014preCompact hook triggers sync-state.py to write timestamped snapshot files alongside live journal/state.json ([I1.4](I1.4-runtime-ide-hooks-beforesubmit-subagentstart-pretooluse-prec.md)).\n\nRecovery resumes from last good dual-write if operator closes mid-loop; snapshots are recovery aids, not the primary router. SDK daemon and headless runs use the same snapshot contract ([I2.1](I2.1-runtime-sdk-run-local-pipeline-goal-autopilot.md)). validate-workflow.py rejects corrupt state before autopilot continues."
+}

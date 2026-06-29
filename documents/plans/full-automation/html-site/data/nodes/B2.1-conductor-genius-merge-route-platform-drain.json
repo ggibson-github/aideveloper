@@ -1,0 +1,89 @@
+{
+  "id": "B2.1",
+  "slug": "B2.1-conductor-genius-merge-route-platform-drain",
+  "title": "Conductor genius merge route platform drain",
+  "branch": "B",
+  "parent": "[B2-index](B2-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "B2.1 defines conductor genius merge route platform drain for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack.",
+  "scope": [
+    "Owns `B2.1` only; siblings under `B2` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a74 \u2014 Branch B \u2014 Cognition & routing plane](../../full-automation-vision-and-hierarchy.md#4-branch-b-cognition-routing-plane)."
+  ],
+  "behavior_steps": [
+    "The genius-tier conductor merges worker summaries each turn, reads route-tier output, and chooses `next_action` without implementing large task cards inline when `spawn_workers` is true.",
+    "On the interleaved schedule from Plane D, the conductor may peek or drain one platform promotion queue item per K product steps via [B4.2](B4.2-platform-promotion-queue-peek-drain.md) while product pursuit stays on the main stack.",
+    "Only the conductor dual-writes `journal/progress.md` and `journal/state.json` after workers return; workers never clear gates, approve design, or advance `next_action` on their own.",
+    "The conductor spawns economy workers with bounded `allowed_reads` from task cards or Librarian output and keeps platform workers confined to queue item ids without mutating consumer goal scope.",
+    "If merge would skip S0 preflight, corrupt dual-write, or drain platform work that blocks the active product goal, pursuit stops at H2 until routing and queue policy reconcile."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"B2.1\",\n  \"description\": \"conductor genius merge route platform drain\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `B2.1` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `B2.1` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `B2.1`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `B2.1` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_b2_1.py when script exists.",
+    "Validate `B2.1` against SEC-15 release checklist and parent index links.",
+    "Document `B2.1` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `B2.1`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids B2.1`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/operator/model-policy.json`",
+    "`scripts/route-tier.py`",
+    "`.cursor/skills/librarian/`",
+    "`.cursor/rules/genius-conductor.mdc`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a74",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[B2-index](B2-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids B2.1` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [B2-index](B2-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "B2.1 defines conductor genius merge route platform drain for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack. In practice, the system the genius-tier conductor merges worker summaries each turn, reads route-tier output, and chooses `next_action` without implementing large task cards inline when `spawn_workers` is true, then on the interleaved schedule from plane d, the conductor may peek or drain one platform promotion queue item per k product steps via [b4.2](b4.2-platform-promotion-queue-peek-drain.md) while product pursuit stays on the main stack.",
+  "reader_narrative": "<!-- prose-source: agent plane-b 2026-06-28 -->\n\nThe conductor is genius-tier and thin: merge worker summaries, run S0 preflight, choose next_action, spawn workers, and route platform queue drains\u2014it does not implement large task cards inline when `spawn_workers` is true.\n\nEach turn may peek at or drain the platform promotion queue on the interleaved product-and-improvement schedule so self-improvement work advances alongside the current project. After workers finish, only the conductor dual-writes journal and state.json. This role separation is the core of [genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)."
+}

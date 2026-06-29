@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>B1.2 — S1 mechanical economy workers catalog</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/B.html">Plane B</a> · <a href="../chapters/B-B1.html">B1</a> ·
+    B1.2
+  </nav>
+  <p class="page-id">B1.2 · Cognition &amp; routing plane</p>
+  <h1 class="page-title">S1 mechanical economy workers catalog</h1>
+  <p class="page-subtitle">S1 mechanical economy workers catalog</p>
+  
+  <div class="story-block"><p><a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a> covers mechanical work that still needs a model but not genius-tier judgment: bounded code edits from task cards, <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> lookups, shell verification, and bulk search. Economy workers from <code>model-policy.json</code> execute <a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a> under <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> contracts with <code>allowed_reads</code> caps.</p>
+<p><a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a> is the default implement tier when <code>spawn_workers</code> is true. Workers must not expand scope, <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> journal/state, or skip <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>. The <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> in Plane E tells the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> which worker role fits which task pattern. Mis-routing <a href="../glossary.html#s3" class="glossary-link" title="S3 — architecture / ambiguity">S3</a> architecture questions to <a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a> causes rework; mis-routing <a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a> mechanical tasks to genius tier wastes cost.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When route-tier classifies a turn as <a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a> and <code>spawn_workers</code> is true, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> spawns economy-tier implement workers from <code>model-policy.json</code> with task-card scope and <code>allowed_reads</code> caps—never genius models for mechanical bounded edits.</span></li><li><span class="step-num">Step 2</span><span class="step-text"><a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a> workers execute <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> lookups, shell verification, and bulk search under orchestrate-subagents contracts and must not expand scope, <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> journal/state, or mark tasks complete without <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> paths.</span></li><li><span class="step-num">Step 3</span><span class="step-text">The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> selects worker roles using Plane E <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> component refs so recurring implement patterns map to verifier or tool-operator roles instead of improvising role choice each wake.</span></li><li><span class="step-num">Step 4</span><span class="step-text"><a href="../capabilities/B1.1-s0-deterministic-mandatory-first.html" class="spec-link">B1.1</a> scripts remain mandatory before <a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a> workers run when file-derived routing, validation, or verify already exists in <code>scripts/</code>.</span></li><li><span class="step-num">Step 5</span><span class="step-text">Mis-routed <a href="../glossary.html#s3" class="glossary-link" title="S3 — architecture / ambiguity">S3</a> architecture work assigned to <a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a>, or <a href="../glossary.html#s1" class="glossary-link" title="S1 — mechanical workers">S1</a> tasks escalated to genius without <code>model_escalation</code>, stops at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> until route-tier re-classifies capability and <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s corrected <code>model_tier</code>.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids B1.2</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case B1.2 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case B1.2 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;B1.2&quot;,
+  &quot;description&quot;: &quot;s1 mechanical economy workers catalog&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

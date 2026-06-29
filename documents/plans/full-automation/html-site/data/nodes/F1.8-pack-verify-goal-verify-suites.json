@@ -1,0 +1,88 @@
+{
+  "id": "F1.8",
+  "slug": "F1.8-pack-verify-goal-verify-suites",
+  "title": "pack verify goal_verify suites",
+  "branch": "F",
+  "parent": "[F1-index](F1-index.md)",
+  "vision_section": "",
+  "release": "v2.19",
+  "purpose": "F1.8 defines pack verify goal verify suites for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling.",
+  "scope": [
+    "Owns `F1.8` only; siblings under `F1` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a78 \u2014 Branch F \u2014 Organization plane (template-packs = ceiling)](../../full-automation-vision-and-hierarchy.md#8-branch-f-organization-plane-template-packs-ceiling)."
+  ],
+  "behavior_steps": [
+    "When platform scheduling dequeues a promotion item typed playbook-keeper, conductor spawns an economy platform worker bound to the queue item id with scoped `allowed_reads`\u2014no permission to edit consumer feature scope or dual-write product pursuit state.",
+    "The worker distills repeated reasoning, divergence log entries, or task post-mortems into `docs/playbooks/<slug>.md`, following [B4.3](B4.3-compose-first-catalog-before-improvise.md) compose-first by extending existing INDEX playbooks before creating new slugs.",
+    "Completion dual-writes the playbook path into the promotion queue item, passes word-quality bar checks, and plans INDEX registration for the new or extended entry.",
+    "When steps in the playbook stabilize as L2 candidates, the worker enqueues downstream [D4.2](D4.2-platform-work-script-extraction.md) promotion rather than marking the queue item done prematurely.",
+    "If the worker edits journal or consumer state.json, produces prose below the quality bar, or marks done without a playbook path, pursuit fails closed at H2 and the promotion item reopens."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"node\": \"F1.8\",\n  \"description\": \"pack verify goal verify suites\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Pack role handoff while lane lease held \u00e2\u20ac\u201d complete-work-order releases lease before role switch.",
+    "Edge case `F1.8` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `F1.8`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `company.yaml` + `roles/*.yaml` to template-packs schema.",
+    "program-scoper selects pack; sets state.company.active_role.",
+    "Per-role allowed_reads in lane.json work orders.",
+    "Validate `F1.8` against SEC-15 release checklist and parent index links.",
+    "Document `F1.8` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `F1.8`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids F1.8`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`template-packs/`",
+    "`program/integration/manifest.md`",
+    "`.cursor/skills/program-scoper/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a78",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[F1-index](F1-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids F1.8` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [F1-index](F1-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "F1.8 defines pack verify goal verify suites for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling. In practice, the system when platform scheduling dequeues a promotion item typed playbook-keeper, conductor spawns an economy platform worker bound to the queue item id with scoped `allowed_reads`\u2014no permission to edit consumer feature scope or dual-write product pursuit state, then the worker distills repeated reasoning, divergence log entries, or task post-mortems into `docs/playbooks/<slug>.md`, following [b4.3](b4.3-compose-first-catalog-before-improvise.md) compose-first by extending existing index playbooks before creating new slugs.",
+  "reader_narrative": "<!-- prose-source: agent plane-f 2026-06-28 -->\n\nPack `verify/` defines goal_verify suites per deliverable type\u2014aggregated pytest profiles, validate-workflow hooks, checksum tools, and meta-tests that prove pack intent beyond per-task evidence. When implement batch completes, conductor resolves `goal.verify_command` from state or active pack suite before H3 ([A2.4](A2.4-goal-scope-complete-run-goal-verify.md)).\n\nFail closed: missing task evidence blocks goal_verify; goal_verify failure blocks H3 auto-clear ([A2.5](A2.5-goal-verify-pass-transition-h3-pending.md)). Domain packs specialize suites\u2014game studio asset/engine checks ([F3.4](F3.4-game-studio-goal-verify-asset-engine-tests-perf.md))\u2014without weakening the generic suite contract here."
+}

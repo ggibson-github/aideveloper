@@ -1,0 +1,89 @@
+{
+  "id": "A2.7",
+  "slug": "A2.7-no-intermediate-wait-for-continue",
+  "title": "no intermediate wait for continue",
+  "branch": "A",
+  "parent": "[A2-index](A2-index.md)",
+  "vision_section": "",
+  "release": "v2.14",
+  "purpose": "A2.7 defines no intermediate wait for continue for the agent-driven expert system. Pursuit & control plane \u2014 autonomous loops until goal verified.",
+  "scope": [
+    "Owns `A2.7` only; siblings under `A2` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a73 \u2014 Branch A \u2014 Pursuit & control plane](../../full-automation-vision-and-hierarchy.md#3-branch-a-pursuit-control-plane)."
+  ],
+  "behavior_steps": [
+    "With autopilot.active true, the conductor runs the [A2.6](A2.6-loop-until-blocked-budget-achieved-h3-reject.md) canonical loop\u2014[A2.1](A2.1-preflight-check-pipeline-blocked-extended.md) preflight, one [A2.2](A2.2-if-ready-execute-one-pipeline-step.md) phase, [A2.3](A2.3-post-step-route-tier-dual-write-increment.md) post-step\u2014back-to-back in the same session without prompting the operator to type \"continue\" between skill phases.",
+    "Manual `/continue` or operator \"continue\" executes exactly one pipeline step only when autopilot is inactive; it does not babysit each phase inside an active pursuit loop.",
+    "Permitted human pauses are H1 plan approval, H2 blocker resolution, and H3 final sign-off per [INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md); check-pipeline-blocked BLOCKED exits the loop until H2 clears.",
+    "Skills, rules, and run-local-pipeline must not reintroduce intermediate wait-for-user gates between post-step dual-write and the next preflight except at H1, H2, or H3 touchpoints.",
+    "If a conductor turn ends while autopilot remains active without advancing pursuit or dual-writing an H2 stop reason, the next wake fails closed at preflight BLOCKED until journal and state.json reconcile the stall."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"A2.7\",\n  \"description\": \"no intermediate wait for continue\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "goal_verify passes but H3 rejected \u00e2\u20ac\u201d goal.state returns to pursuing with rejection notes.",
+    "Edge case `A2.7` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `A2.7`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `goal` block to state template and journal-keeper dual-write (v2.14).",
+    "Extend `check-pipeline-blocked.py` with goal_autopilot stop reasons.",
+    "Implement `scripts/goal-verify.py` stub aggregating task evidence paths.",
+    "Add `.cursor/skills/goal-keeper/SKILL.md` for conductor H1\u00e2\u2020\u2019pursuit transition.",
+    "Document `A2.7` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `A2.7`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids A2.7`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`journal/state.json `goal`, `pursuit`, `hitl``",
+    "`scripts/automation/check-pipeline-blocked.py`",
+    "`scripts/automation/run-local-pipeline.py`",
+    "`.cursor/skills/autopilot/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a73",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[A2-index](A2-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids A2.7` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [A2-index](A2-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "A2.7 defines no intermediate wait for continue for the agent-driven expert system. Pursuit & control plane \u2014 autonomous loops until goal verified. In practice, the system with autopilot.active true, the conductor runs the [a2.6](a2.6-loop-until-blocked-budget-achieved-h3-reject.md) canonical loop\u2014[a2.1](a2.1-preflight-check-pipeline-blocked-extended.md) preflight, one [a2.2](a2.2-if-ready-execute-one-pipeline-step.md) phase, [a2.3](a2.3-post-step-route-tier-dual-write-increment.md) post-step\u2014back-to-back in the same session without prompting the operator to type \"continue\" between skill phases, then manual `/continue` or operator \"continue\" executes exactly one pipeline step only when autopilot is inactive; it does not babysit each phase inside an active pursuit loop.",
+  "reader_narrative": "<!-- prose-source: agent pilot 2026-06-28 -->\n\nEarlier automation models asked humans to type \u201ccontinue\u201d after every step. This capability forbids intermediate wait-for-continue: the loop runs autonomously between H1, H2, and H3 touchpoints.\n\n\u201cContinue\u201d in operator language now means one pipeline step when manually invoked\u2014not a prompt between every phase inside autopilot. That redefinition is what makes 100% automation between touchpoints achievable.\n\nConfusion here causes products to re-introduce manual babysitting. This spec is the guardrail against regressing to burst-and-wait workflows."
+}

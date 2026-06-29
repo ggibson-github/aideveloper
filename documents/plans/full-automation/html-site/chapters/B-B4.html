@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>B4 — Dual-stack cognition (every turn)</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/B.html">Plane B</a> ·
+    B4
+  </nav>
+  <p class="page-id">B4 · Cognition &amp; routing plane</p>
+  <h1 class="page-title">Dual-stack cognition (every turn)</h1>
+  <div class="story-block"><p>B4: Dual-stack cognition (every turn). Open each capability below for diagrams, verification, and contracts.</p>
+<p>Each <a href="../glossary.html#product-turn" class="glossary-link" title="Product turn">product turn</a> executes the current <code>next_action</code> task from state.json—one task card, one skill phase—aligned with Plane C pipelines. The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> does not skip ahead to push or refactor while implement <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> is missing.</p>
+<p>Task selection is <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> where scripts exist; otherwise <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> reads state and journal mirror. This capability binds Plane B routing to Plane C execution order so interleaved product and platform scheduling does not desynchronize project progress from recorded next_action.</p>
+<p>Platform <a href="../glossary.html#promotion-queue" class="glossary-link" title="Promotion queue">promotion queue</a> peek/drain runs on a K-step cadence during pursuit: inspect head items, drain ready promotions with <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> scripts, defer blocked items with journal notes. Peek is cheap; drain commits artifacts and updates maturity.</p>
+<p>By default the current project step and one self-improvement step from the queue run in turn—delivery does not pause entirely while the system works on itself, unless policy explicitly prioritizes clearing the improvement backlog first. Failed drain surfaces <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> when external repo access or pack authority is missing.</p>
+<p>Compose-first requires <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> search before inventing new patterns: INDEX.md, playbooks, existing pack components, and facts files must be consulted and bound in the task or design record. Improvisation without <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> search is a divergence logged in Plane E.</p>
+<p>This capability implements the expert-system reuse ladder—ephemeral reasoning should shrink over time as <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> scripts and pack fragments absorb repeated patterns. See <a href="../capabilities/MASTER-E-branch-e---knowledge---composition-plane.html" class="spec-link">MASTER-E</a>.</p>
+<p>When <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">compose-first</a> cannot find a suitable component, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> records a divergence log entry: what was searched, why composition failed, what was invented instead, and promotion candidate id for the platform queue.</p>
+<p>Divergence is not failure—it is an audit trail for what was invented instead of reused, feeding future self-improvement work. Silent invention without log blocks pack maturity claims and makes SEC-14 gap analysis untrustworthy. Reviewers may sample divergence logs for duplicate patterns to prioritize promotion.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/B4.1-product-next-action-task-each-turn.html">B4.1</a></span>
+  <span class="cap-title">PRODUCT next action task each turn</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/B4.2-platform-promotion-queue-peek-drain.html">B4.2</a></span>
+  <span class="cap-title">PLATFORM promotion queue peek drain</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/B4.3-compose-first-catalog-before-improvise.html">B4.3</a></span>
+  <span class="cap-title">compose-first catalog before improvise</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/B4.4-divergence-log-when-not-composing.html">B4.4</a></span>
+  <span class="cap-title">divergence, log, when, not, and composing</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

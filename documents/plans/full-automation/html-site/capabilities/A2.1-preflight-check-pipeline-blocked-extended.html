@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>A2.1 — preflight check-pipeline-blocked extended</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/A.html">Plane A</a> · <a href="../chapters/A-A2.html">A2</a> ·
+    A2.1
+  </nav>
+  <p class="page-id">A2.1 · Pursuit &amp; control plane</p>
+  <h1 class="page-title">preflight check-pipeline-blocked extended</h1>
+  <p class="page-subtitle">preflight check-pipeline-blocked extended</p>
+  
+  <div class="story-block"><p>Every pursuit turn starts with a question: is it safe to act? This capability extends preflight via <code>check-pipeline-blocked.py</code> so the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> never executes a pipeline step while gates, blockers, budgets, or missing <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> would make that step invalid.</p>
+<p>Exit code semantics are strict: READY (0) means exactly one skill phase may run; BLOCKED (1) means stop, <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> a structured <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> or stop reason, and do not advance next_action. Preflight is <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a>—deterministic, cheap, and mandatory before any model-heavy work (<a href="../capabilities/B1.1-s0-deterministic-mandatory-first.html" class="spec-link">B1.1 S0 rule</a>).</p>
+<p>Skipping preflight is how autonomous systems waste tokens on work that cannot commit. This step is the first node in the A2 <a href="../glossary.html#pursuit-loop" class="glossary-link" title="Pursuit loop">pursuit loop</a> and re-runs after every completed turn.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart TD
+  start[Conductor turn start] --&gt; s0[check-pipeline-blocked.py]
+  s0 --&gt;|exit 0 READY| step[Execute one pipeline step]
+  s0 --&gt;|exit 1 BLOCKED| stop[Stop pursuit / H2]
+  step --&gt; post[route-tier + dual-write]
+  post --&gt; start</pre>
+</div>
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">Every pursuit wake—session <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a>, <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">goal_autopilot</a>, or SDK daemon—starts with the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> running <code>python scripts/automation/check-pipeline-blocked.py</code> (<a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a>) against journal and state.json before any skill phase or worker spawn.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Exit code READY (0) authorizes exactly one pipeline phase via <a href="../capabilities/A2.2-if-ready-execute-one-pipeline-step.html" class="spec-link">A2.2</a>; BLOCKED (1) halts the turn, <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s a structured stop reason, and leaves next_action unchanged.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Preflight tests gates_pending, blocking_questions, <a href="../capabilities/A1.4-deadline-budget-steps-tokens-wall-clock.html" class="spec-link">A1.4</a> budget caps, evidence_required gaps, and <a href="../capabilities/A1.5-goal-state-enum-pursuing-blocked-verifying-achieved-rejected.html" class="spec-link">A1.5</a> goal.state so model-heavy work never starts when the step cannot commit.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Per <a href="../capabilities/B1.1-s0-deterministic-mandatory-first.html" class="spec-link">B1.1</a>, routing and worker spawns never precede this <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> check; <a href="../capabilities/A2.3-post-step-route-tier-dual-write-increment.html" class="spec-link">A2.3</a> re-invokes preflight on the next wake after each completed phase.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If BLOCKED fires for corrupt state, unresolved gates, or stale <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>, pursuit routes to <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> and goal.state becomes blocked until the operator or journal-keeper reconciles journal and state.json.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids A2.1</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>goal_verify passes but H3 rejected — goal.state returns to pursuing with rejection notes.</li><li>Edge case A2.1 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;A2.1&quot;,
+  &quot;description&quot;: &quot;preflight check pipeline blocked extended&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.14</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

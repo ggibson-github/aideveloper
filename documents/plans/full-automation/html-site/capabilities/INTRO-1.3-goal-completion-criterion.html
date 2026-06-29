@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>INTRO-1.3 — Goal completion criterion</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/meta.html">Plane meta</a> ·
+    INTRO-1.3
+  </nav>
+  <p class="page-id">INTRO-1.3 · Front matter &amp; cross-cutting architecture</p>
+  <h1 class="page-title">Goal completion criterion</h1>
+  <p class="page-subtitle">Goal completion criterion</p>
+  
+  <div class="story-block"><p>A goal is achieved only when five conditions hold together: acceptance artifacts exist, automated goal verification passes, staleness and integration graphs are consistent, no blocking questions remain without deferred rationale, and platform debt for the goal is promoted or explicitly waived with expiry.</p>
+<p>The agent does not stop for status theater. It stops on <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a>, <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a>, <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a>, unrecoverable failure, or resource budget caps. This criterion prevents the common failure mode of marking tasks done while the overarching goal remains unproven—Plane G <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> exists to enforce this bar.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart TD
+  trigger[Trigger condition] --&gt; pre[Preconditions S0]
+  pre --&gt; exec[Execute step logic]
+  exec --&gt; verify[Verify output]
+  verify --&gt;|pass| done[Mark queue item done]
+  verify --&gt;|fail| h2[H2 blocker]</pre>
+</div>
+  <h2 class="section-title">What this defines</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When <a href="../capabilities/A2.1-preflight-check-pipeline-blocked-extended.html" class="spec-link">A2.1</a> reports READY, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> reads next_action from state.json and invokes exactly one matching skill phase—implement-feature, dd-writer, or continue—never batching design, implement, and verify in a single wake.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Each wake produces one ledger entry, one <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> slot, and one <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> boundary so pursuit audit trails stay aligned with a single next_action transition.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Economy workers run only when spawn_workers is true and <a href="../capabilities/B2.2-librarian-allowed-reads-catalog-composition.html" class="spec-link">B2.2</a> allowed_reads constrain scope; the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> does not chain additional phases before post-step housekeeping.</span></li><li><span class="step-num">Step 4</span><span class="step-text">When the skill phase completes, control passes to <a href="../capabilities/A2.3-post-step-route-tier-dual-write-increment.html" class="spec-link">A2.3</a> for route-tier, journal-keeper <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>, and counter increment before the next preflight cycle.</span></li><li><span class="step-num">Step 5</span><span class="step-text">Violating one-step semantics—or executing when preflight was BLOCKED—halts pursuit at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> because partial state makes resume ambiguous after crash, laptop sleep, or operator interrupt.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids INTRO-1.3</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case INTRO-1.3 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case INTRO-1.3 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;INTRO-1.3&quot;,
+  &quot;description&quot;: &quot;goal completion criterion&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

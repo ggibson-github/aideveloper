@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>SEC-15-v2.15 — Release v2.15 pursuit loop goal autopilot self-gate</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/meta.html">Plane meta</a> ·
+    SEC-15-v2.15
+  </nav>
+  <p class="page-id">SEC-15-v2.15 · Front matter &amp; cross-cutting architecture</p>
+  <h1 class="page-title">Release v2.15 pursuit loop goal autopilot self-gate</h1>
+  <p class="page-subtitle">v2.15 release v2 15 pursuit loop goal autopilot self gate</p>
+  
+  <div class="story-block"><p>Release v2.15 hardens the <a href="../glossary.html#pursuit-loop" class="glossary-link" title="Pursuit loop">pursuit loop</a>: <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">goal_autopilot</a> mode, optional uncapped session settings, and self-gate defaults for HLD/DD when strict_hitl is false. This is the release that makes &quot;always-on&quot; real rather than a 25-step <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> cap.</p>
+<p>Preflight, one-step execution, and stop-reason taxonomy from Plane A must be green before later platform work relies on them.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart TD
+  start[Pursuit turn] --&gt; pre[S0 preflight]
+  pre --&gt;|READY| step[One step]
+  pre --&gt;|BLOCKED| exit[Stop: H2 or budget]
+  step --&gt; goal{goal_scope_complete?}
+  goal --&gt;|yes| gv[goal_verify]
+  goal --&gt;|no| start
+  gv --&gt;|pass| h3[H3 pending]
+  gv --&gt;|fail| exit</pre>
+</div>
+  <h2 class="section-title">What this defines</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When <code>next_action</code> lands on a templated design phase—HLD, DD, diagrams, or task-breakdown—the genius <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> invokes the matching <a href="../glossary.html#s2" class="glossary-link" title="S2 — templated artifacts">S2</a> skill (hld-writer, dd-writer, task-breakdown, diagram-generator) rather than improvising artifact structure in chat.</span></li><li><span class="step-num">Step 2</span><span class="step-text"><a href="../glossary.html#s2" class="glossary-link" title="S2 — templated artifacts">S2</a> skills write into repo template paths under <code>docs/design/</code>, task cards, and diagram stubs; the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> then runs <a href="../capabilities/B1.1-s0-deterministic-mandatory-first.html" class="spec-link">B1.1</a> validation to check template conformance before <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> advances <code>next_action</code>.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Phase outputs declare <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> component refs so <a href="../glossary.html#s2" class="glossary-link" title="S2 — templated artifacts">S2</a> artifacts register on Plane E staleness graphs and bind to Plane G <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> paths for downstream implement turns.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Active template packs extend <a href="../glossary.html#s2" class="glossary-link" title="S2 — templated artifacts">S2</a> surfaces in template-packs per Plane F; consumer goals compose from pack fragments instead of forking ad hoc template copies that drift from certification baselines.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If template validation fails, critic review finds structural gaps, or declared <a href="../glossary.html#s2" class="glossary-link" title="S2 — templated artifacts">S2</a> artifacts are missing on disk, pursuit stops at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> until the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> re-runs the <a href="../glossary.html#s2" class="glossary-link" title="S2 — templated artifacts">S2</a> skill with reconciled inputs.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids SEC-15-v2.15</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case SEC-15-v2.15 variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case SEC-15-v2.15 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;SEC-15-v2.15&quot;,
+  &quot;description&quot;: &quot;release v2 15 pursuit loop goal autopilot self gate&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>D6.1 — platform done catalog INDEX row</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/D.html">Plane D</a> · <a href="../chapters/D-D6.html">D6</a> ·
+    D6.1
+  </nav>
+  <p class="page-id">D6.1 · Platform evolution plane</p>
+  <h1 class="page-title">platform done catalog INDEX row</h1>
+  <p class="page-subtitle">platform done catalog INDEX row</p>
+  
+  <div class="story-block"><p>Platform promotion is not done until a <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> entry exists and INDEX row points to it—playbook slug, script path, skill name, or pack fragment id discoverable from <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">compose-first</a> search. INDEX regeneration (<a href="../capabilities/D4.5-platform-work-catalog-regeneration.html" class="spec-link">D4.5</a>) is often the completing step of another work type.</p>
+<p>Missing INDEX row fails audit-hierarchy-depth strict checks and leaves queue item reopenable. Row includes maturity level, verify command reference, and optional promotion id trace. Consumer goals should never hunt ad hoc paths omitted from INDEX; Librarian allowed_reads assume INDEX is authoritative for playbook discovery.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">Platform promotion is not done until a <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> entry exists and an INDEX row points to the artifact—playbook slug, script path, skill name, or pack fragment id discoverable from <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">compose-first</a> search.</span></li><li><span class="step-num">Step 2</span><span class="step-text">After artifact creation, <a href="../capabilities/D4.5-platform-work-catalog-regeneration.html" class="spec-link">D4.5</a> regeneration often completes the promotion by updating INDEX and manifest <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> nodes.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Each row records maturity level, verify command reference, and optional promotion id trace so audit can reopen incomplete promotions.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Librarian <code>allowed_reads</code> and <a href="../capabilities/B4.3-compose-first-catalog-before-improvise.html" class="spec-link">B4.3</a> treat INDEX as authoritative—consumer goals must not hunt ad-hoc paths omitted from INDEX.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids D6.1</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Platform queue depth 0 but product blocked on missing playbook — D3.3 priority cut skips platform drain.</li><li>Edge case D6.1 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;D6.1&quot;,
+  &quot;description&quot;: &quot;platform done catalog index row&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.16</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,89 @@
+{
+  "id": "D5.2",
+  "slug": "D5.2-extend-backwards-compatible-staleness-bump",
+  "title": "extend backwards-compatible staleness bump",
+  "branch": "D",
+  "parent": "[D5-index](D5-index.md)",
+  "vision_section": "",
+  "release": "v2.16",
+  "purpose": "D5.2 defines extend backwards compatible staleness bump for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse.",
+  "scope": [
+    "Owns `D5.2` only; siblings under `D5` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a76 \u2014 Branch D \u2014 Platform evolution plane (parallel queue)](../../full-automation-vision-and-hierarchy.md#6-branch-d-platform-evolution-plane-parallel-queue)."
+  ],
+  "behavior_steps": [
+    "When a platform queue item targets extend, a worker improves an existing catalog artifact with backwards-compatible changes\u2014optional script flags, appended playbook sections, extended skills\u2014without breaking callers.",
+    "The item must cite parent catalog id; the verifier runs tests and validate-workflow to prove compatibility before dequeue.",
+    "On land, [E5.1](E5.1-staleness-design-graph-staleness-json.md) bumps staleness on dependent design nodes and task cards per Plane E reconcile rules.",
+    "Extend is preferred over fork when [B4.3](B4.3-compose-first-catalog-before-improvise.md) compose-first can absorb the change; non-compatible behavior requires fork even if the filename stays the same.",
+    "If compatibility proof fails or dependents remain stale without reconcile routing, pursuit stops at H2\u2014never mark extend done while stale design artifacts block implement."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"D5.2\",\n  \"description\": \"extend backwards compatible staleness bump\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Platform queue depth 0 but product blocked on missing playbook \u00e2\u20ac\u201d D3.3 priority cut skips platform drain.",
+    "Edge case `D5.2` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `D5.2`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `platform.promotion_queue[]` to state.json schema.",
+    "Scheduler in autopilot workflow: `(steps_total % K) == 0` \u00e2\u2020\u2019 platform turn.",
+    "playbook-keeper + script extraction skills dequeue promotion items.",
+    "Validate `D5.2` against SEC-15 release checklist and parent index links.",
+    "Document `D5.2` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `D5.2`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids D5.2`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/playbooks/`",
+    "`scripts/`",
+    "`.cursor/skills/playbook-keeper/`",
+    "`state.platform.promotion_queue`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a76",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[D5-index](D5-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids D5.2` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [D5-index](D5-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "D5.2 defines extend backwards compatible staleness bump for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse. In practice, the system when a platform queue item targets extend, a worker improves an existing catalog artifact with backwards-compatible changes\u2014optional script flags, appended playbook sections, extended skills\u2014without breaking callers, then the item must cite parent catalog id; the verifier runs tests and validate-workflow to prove compatibility before dequeue.",
+  "reader_narrative": "<!-- prose-source: agent plane-d 2026-06-28 -->\n\nExtend means backwards-compatible improvement to an existing catalog artifact\u2014add optional flag to script, append playbook section, extend skill without breaking callers. Extension triggers staleness bump on dependent design nodes and task cards per Plane E reconcile rules.\n\nPlatform queue items targeting extend must cite parent catalog id and compatibility proof\u2014tests green, validate-workflow passes. Extend is preferred over fork when compose-first can absorb the change ([B4.3](B4.3-compose-first-catalog-before-improvise.md)). Non-compatible behavior change is fork, not extend, even if filename stays the same\u2014semver and provenance matter."
+}

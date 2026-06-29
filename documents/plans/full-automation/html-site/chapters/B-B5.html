@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>B5 — Company role switching (template-pack)</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/B.html">Plane B</a> ·
+    B5
+  </nav>
+  <p class="page-id">B5 · Cognition &amp; routing plane</p>
+  <h1 class="page-title">Company role switching (template-pack)</h1>
+  <div class="story-block"><p>B5: Company role switching (template-pack). Open each capability below for diagrams, verification, and contracts.</p>
+<p>Active role comes from the instantiated template-pack: developer, operator, platform, legal reviewer—each with default pipeline_id and tool permissions. <code>state.json</code> carries active_role so pursuit, spawn policy, and <a href="../glossary.html#hitl" class="glossary-link" title="Human-in-the-loop touchpoints">HITL</a> strictness match pack intent.</p>
+<p>Switching roles mid-goal requires manifest or <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> decision recorded in journal; workers inherit role context in spawn contracts. Company <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> (<a href="../capabilities/A3.3-company-autopilot-multi-goal-role-workstreams.html" class="spec-link">A3.3</a>) schedules across roles without merging their permissions.</p>
+<p>Role bindings map to pipeline_id, enabled skills, MCP servers, and forbidden paths—encoded in pack schema (Plane F) and mirrored in operator policy overrides. A platform role may run <a href="../glossary.html#promotion-queue" class="glossary-link" title="Promotion queue">promotion queue</a> skills; a product role may not waive governance gates.</p>
+<p>Misconfiguration here is a high-risk blocker: wrong pipeline_id routes implement into design-only phases. Pack authors validate bindings with conformance scripts before publishing pack versions.</p>
+<p>Handoff manifest and artifact graph declare cross-workstream dependencies: which design nodes must exist before implement lanes start, which integration tests gate program completion. Program orchestration reads the manifest before parallel spawn (<a href="../capabilities/C4.2-orchestrate-program.html" class="spec-link">orchestrate-program skill</a>).</p>
+<p>Stale nodes in the graph trigger reconcile-artifact-graph before workers proceed. Handoff is the human-approved integration contract for multi-stream company goals.</p>
+<p>The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> identity persists across role switches; workers swap with fresh allowed_reads and role context per spawn. The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> does not “become” the implement worker—it merges worker output and maintains single-writer journal/state discipline.</p>
+<p>This separation prevents role context bleed (platform worker editing consumer tasks) and keeps <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> packaging centralized in S4. Multi-role company pursuit depends on stable <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> identity with ephemeral worker personas.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/B5.1-active-role-from-template-pack.html">B5.1</a></span>
+  <span class="cap-title">active role, from, template, and pack</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/B5.2-role-to-pipeline-id-skills-tool-permissions.html">B5.2</a></span>
+  <span class="cap-title">role, to, pipeline id, skills, tool, and permissions</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/B5.3-handoff-manifest-artifact-graph.html">B5.3</a></span>
+  <span class="cap-title">handoff, manifest, artifact, and graph</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/B5.4-conductor-stays-workers-swap-role-context.html">B5.4</a></span>
+  <span class="cap-title">conductor, stays, workers, swap, role, and context</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

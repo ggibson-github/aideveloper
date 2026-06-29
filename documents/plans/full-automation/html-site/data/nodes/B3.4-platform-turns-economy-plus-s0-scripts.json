@@ -1,0 +1,89 @@
+{
+  "id": "B3.4",
+  "slug": "B3.4-platform-turns-economy-plus-s0-scripts",
+  "title": "platform turns economy plus S0 scripts",
+  "branch": "B",
+  "parent": "[B3-index](B3-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "B3.4 defines platform turns economy plus s0 scripts for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack.",
+  "scope": [
+    "Owns `B3.4` only; siblings under `B3` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a74 \u2014 Branch B \u2014 Cognition & routing plane](../../full-automation-vision-and-hierarchy.md#4-branch-b-cognition-routing-plane)."
+  ],
+  "behavior_steps": [
+    "On scheduled platform turns per [SEC-13](SEC-13-pursuit-flow.md) interleaving, the conductor runs S0 scripts first\u2014queue peek, promotion apply, staleness reconcile, manifest validation\u2014before any economy worker interprets platform debt.",
+    "Economy platform workers from `model-policy.json` execute [B2.6](B2.6-platform-worker-promotion-queue-parallel-slot.md) promotion items under bounded contracts; clerical queue mutations stay on S0 or the conductor per [B1.1](B1.1-s0-deterministic-mandatory-first.md).",
+    "Platform workers use the same evidence discipline as product workers\u2014[B2.4](B2.4-verifier-tool-operator-evidence.md) verify where required\u2014but write outcomes to platform queue state and pack fragments, not consumer feature branches.",
+    "Product `next_action` remains primary; platform turns dequeue only when [D3.1](D3.1-1-platform-turn-per-k-product-turns.md) schedule and [B4.2](B4.2-platform-promotion-queue-peek-drain.md) peek/drain policy allow, so self-improvement does not starve the active goal.",
+    "If S0 platform scripts fail or a worker touches consumer goal scope, the conductor halts the platform turn and routes to H2\u2014never marking promotion items done without verification evidence."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"B3.4\",\n  \"description\": \"platform turns economy plus s0 scripts\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `B3.4` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `B3.4` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `B3.4`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `B3.4` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_b3_4.py when script exists.",
+    "Validate `B3.4` against SEC-15 release checklist and parent index links.",
+    "Document `B3.4` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `B3.4`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids B3.4`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/operator/model-policy.json`",
+    "`scripts/route-tier.py`",
+    "`.cursor/skills/librarian/`",
+    "`.cursor/rules/genius-conductor.mdc`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a74",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[B3-index](B3-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids B3.4` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [B3-index](B3-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "B3.4 defines platform turns economy plus s0 scripts for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack. In practice, the system on scheduled platform turns per [sec-13](sec-13-pursuit-flow.md) interleaving, the conductor runs s0 scripts first\u2014queue peek, promotion apply, staleness reconcile, manifest validation\u2014before any economy worker interprets platform debt, then economy platform workers from `model-policy.json` execute [b2.6](b2.6-platform-worker-promotion-queue-parallel-slot.md) promotion items under bounded contracts; clerical queue mutations stay on s0 or the conductor per [b1.1](b1.1-s0-deterministic-mandatory-first.md).",
+  "reader_narrative": "<!-- prose-source: agent plane-b 2026-06-28 -->\n\nPlatform turns combine economy workers with S0 scripts: queue peek, promotion apply, staleness reconcile, and manifest validation run deterministically before any model interprets platform debt.\n\nProduct turns remain primary; platform turns interleave on schedule ([SEC-13 pursuit flow](SEC-13-pursuit-flow.md)). Platform workers use the same evidence discipline as product workers but write to platform queue state and pack fragments, not consumer feature branches."
+}

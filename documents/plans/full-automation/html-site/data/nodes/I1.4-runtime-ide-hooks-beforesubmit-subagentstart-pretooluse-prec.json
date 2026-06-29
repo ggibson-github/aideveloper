@@ -1,0 +1,88 @@
+{
+  "id": "I1.4",
+  "slug": "I1.4-runtime-ide-hooks-beforesubmit-subagentstart-pretooluse-prec",
+  "title": "runtime IDE hooks beforeSubmit subagentStart preToolUse preCompact",
+  "branch": "I",
+  "parent": "[I1-index](I1-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "I1.4 defines runtime ide hooks beforesubmit subagentstart pretooluse prec for the agent-driven expert system. Runtime & integration \u2014 IDE, SDK, headless, MCP tools.",
+  "scope": [
+    "Owns `I1.4` only; siblings under `I1` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a711 \u2014 Branch I \u2014 Runtime & integration plane](../../full-automation-vision-and-hierarchy.md#11-branch-i-runtime-integration-plane)."
+  ],
+  "behavior_steps": [
+    "On continue/start, beforeSubmit and subagentStart hooks in `.cursor/hooks.json` run S0-thin scripts that inject journal summary, state.json snapshot fields, and context file paths into the conductor turn.",
+    "preToolUse hooks enforce allowlisted commands and filesystem writes before economy workers execute shell or MCP tooling during implement tasks.",
+    "preCompact fires sync-state snapshot writes paired with [H6](H6-snapshots.md) so pursuit can resume after context compaction without losing the last good dual-write baseline.",
+    "Hooks complement always-on rules from [E4.1](E4.1-context-always-on-rules-agents-md.md) but do not replace the continue skill requirement to read journal/progress.md each wake.",
+    "If hook injection fails\u2014corrupt state.json, missing journal, or script error\u2014pursuit surfaces H2 and refuses the turn rather than running the conductor on stale or empty context."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"I1.4\",\n  \"description\": \"runtime ide hooks beforesubmit subagentstart pretooluse prec\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `I1.4` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `I1.4` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `I1.4`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `I1.4` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_i1_4.py when script exists.",
+    "Validate `I1.4` against SEC-15 release checklist and parent index links.",
+    "Document `I1.4` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `I1.4`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids I1.4`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/automation/`",
+    "`.cursor/hooks/`",
+    "`docs/operator/export-contract.md`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a711",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[I1-index](I1-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids I1.4` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [I1-index](I1-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "I1.4 defines runtime ide hooks beforesubmit subagentstart pretooluse prec for the agent-driven expert system. Runtime & integration \u2014 IDE, SDK, headless, MCP tools. In practice, the system on continue/start, beforesubmit and subagentstart hooks in `.cursor/hooks.json` run s0-thin scripts that inject journal summary, state.json snapshot fields, and context file paths into the conductor turn, then pretooluse hooks enforce allowlisted commands and filesystem writes before economy workers execute shell or mcp tooling during implement tasks.",
+  "reader_narrative": "<!-- prose-source: agent plane-i 2026-06-28 -->\n\nCursor hooks\u2014beforeSubmit, subagentStart, preToolUse, preCompact\u2014inject journal summary, state snapshot, and context files on continue/start and trigger sync-state snapshots before compaction. Hooks are S0-thin scripts referenced from `.cursor/hooks.json`.\n\nFailed hook injection surfaces H2 when state.json is corrupt. preCompact pairs with [H6](H6-snapshots.md) snapshot writes. Hooks complement always-on rules ([E4.1](E4.1-context-always-on-rules-agents-md.md)) but do not replace reading journal/progress.md per continue skill."
+}

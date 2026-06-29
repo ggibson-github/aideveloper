@@ -1,0 +1,89 @@
+{
+  "id": "D2.1.4",
+  "slug": "D2.1.4-enqueue-conductor-post-mortem-escalation",
+  "title": "enqueue conductor post-mortem escalation",
+  "branch": "D",
+  "parent": "[D2.1-index](D2.1-index.md)",
+  "vision_section": "",
+  "release": "v2.16",
+  "purpose": "D2.1.4 defines enqueue conductor post mortem escalation for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse.",
+  "scope": [
+    "Owns `D2.1.4` only; siblings under `D2.1` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a76 \u2014 Branch D \u2014 Platform evolution plane (parallel queue)](../../full-automation-vision-and-hierarchy.md#6-branch-d-platform-evolution-plane-parallel-queue)."
+  ],
+  "behavior_steps": [
+    "At pack instantiation, program-scoper copies or references pack `playbooks/` fragments into the consumer catalog so [E1.2](E1.2-catalog-playbooks-index.md) indexes role-specific procedures alongside repo playbooks.",
+    "During implement turns, compose-first ([B4.3](B4.3-compose-first-catalog-before-improvise.md)) searches pack playbooks through role-scoped `allowed_reads` from [F6.2](F6.2-role-allowed-reads-scoped-playbooks-lane-tasks.md) before workers improvise steps.",
+    "Spawned workers receive playbook paths in their allowed_reads when the active role's pack binding lists industry procedures\u2014game QA checks, data deploy runbooks, onboarding flows\u2014for that template.",
+    "When repeated pursuit patterns qualify for promotion, playbook-keeper enqueues Plane D work to lift fragments back into the pack via the platform queue\u2014not ad hoc consumer-repo edits per [F5.3](F5.3-no-repo-outside-template-packs-ceiling.md).",
+    "If role-scoped playbook paths are missing, allowed_reads reference stale pack fragments, or workers improvise without catalog hits, pursuit stops at H2 until pack playbook bindings are reconciled and dual-written."
+  ],
+  "mermaid": "flowchart LR\n  prod[Product turn] --> k{step mod K == 0?}\n  k -->|yes| plat[Platform turn dequeue]\n  k -->|no| prod\n  plat --> promote[promotion_queue drain]\n  promote --> prod",
+  "json_example": "{\n  \"platform\": {\n    \"promotion_queue\": [\n      {\n        \"id\": \"promo-001\",\n        \"source\": \"task-012\",\n        \"target_level\": \"L2\",\n        \"priority\": 50,\n        \"reason\": \"repeated manual pytest invocation\"\n      }\n    ],\n    \"drain_policy\": { \"product_steps_per_platform_turn\": 5 }\n  }\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Platform queue depth 0 but product blocked on missing playbook \u00e2\u20ac\u201d D3.3 priority cut skips platform drain.",
+    "Edge case `D2.1.4` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `D2.1.4`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `platform.promotion_queue[]` to state.json schema.",
+    "Scheduler in autopilot workflow: `(steps_total % K) == 0` \u00e2\u2020\u2019 platform turn.",
+    "playbook-keeper + script extraction skills dequeue promotion items.",
+    "Validate `D2.1.4` against SEC-15 release checklist and parent index links.",
+    "Document `D2.1.4` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `D2.1.4`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids D2.1.4`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/playbooks/`",
+    "`scripts/`",
+    "`.cursor/skills/playbook-keeper/`",
+    "`state.platform.promotion_queue`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a76",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[D2.1-index](D2.1-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids D2.1.4` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [D2.1-index](D2.1-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "D2.1.4 defines enqueue conductor post mortem escalation for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse. In practice, the system at pack instantiation, program-scoper copies or references pack `playbooks/` fragments into the consumer catalog so [e1.2](e1.2-catalog-playbooks-index.md) indexes role-specific procedures alongside repo playbooks, then during implement turns, compose-first ([b4.3](b4.3-compose-first-catalog-before-improvise.md)) searches pack playbooks through role-scoped `allowed_reads` from [f6.2](f6.2-role-allowed-reads-scoped-playbooks-lane-tasks.md) before workers improvise steps.",
+  "reader_narrative": "<!-- prose-source: agent plane-d 2026-06-28 -->\n\nAfter S3 merge or S4 H2 escalation, the conductor runs a short post-mortem: what repeated, what was improvised, what catalog entry was missing. Concrete improvement candidates from that review go on the promotion queue\u2014especially when escalation root cause was absent playbook, script, or skill.\n\nPost-mortem enqueue is conductor-only; it captures institutional learning from failure, not happy-path optimization. Items may target L1 playbook first even when L2 script is eventual goal. Scheduling still follows platform turns; urgent product blockers on missing artifacts can raise priority via [D3.3](D3.3-priority-cut-product-blocked-missing-tool.md) without skipping H2 resolution."
+}

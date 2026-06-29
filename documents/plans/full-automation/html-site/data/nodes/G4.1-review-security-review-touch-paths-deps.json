@@ -1,0 +1,89 @@
+{
+  "id": "G4.1",
+  "slug": "G4.1-review-security-review-touch-paths-deps",
+  "title": "review security-review touch paths deps",
+  "branch": "G",
+  "parent": "[G4-index](G4-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "G4.1 defines review security review touch paths deps for the agent-driven expert system. Verification & quality \u2014 evidence, goal_verify, anti-mistake.",
+  "scope": [
+    "Owns `G4.1` only; siblings under `G4` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a79 \u2014 Branch G \u2014 Verification & quality plane (anti-mistake)](../../full-automation-vision-and-hierarchy.md#9-branch-g-verification-quality-plane-anti-mistake)."
+  ],
+  "behavior_steps": [
+    "The reviewer subagent is readonly\u2014findings merge through the conductor, not direct journal writes (B2.5)",
+    "Strict packs may require security-review pass before git-workflow; default self-gate records waivable findings with expiry when automated checks pass",
+    "During pursuit, enforce the review security-review touch paths deps contract within Review triggers (automated) (Plane G).",
+    "Run [S0](B1.1-s0-deterministic-mandatory-first.md) scripts before improvising when file-derived behavior exists.",
+    "Dual-write journal and state.json after the step; attach evidence when verification applies."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"G4.1\",\n  \"description\": \"review security review touch paths deps\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Flaky test \u00e2\u20ac\u201d escalation S4 once, then H2 with evidence log; no silent retry loop.",
+    "Edge case `G4.1` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `G4.1`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Extend verify-router for goal-level suite invocation.",
+    "Wire CI: validate-workflow checks goal block when pursuit.mode=goal_autopilot.",
+    "Document evidence type in docs/operator/evidence-types.md.",
+    "Validate `G4.1` against SEC-15 release checklist and parent index links.",
+    "Document `G4.1` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `G4.1`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids G4.1`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`scripts/verify-router.py`",
+    "`scripts/validate-workflow.py`",
+    "`evidence/`",
+    "`.cursor/skills/verifier/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a79",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[G4-index](G4-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids G4.1` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [G4-index](G4-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "G4.1 defines review security review touch paths deps for the agent-driven expert system. Verification & quality \u2014 evidence, goal_verify, anti-mistake. In practice, the system the reviewer subagent is readonly\u2014findings merge through the conductor, not direct journal writes (b2.5), then strict packs may require security-review pass before git-workflow; default self-gate records waivable findings with expiry when automated checks pass.",
+  "reader_narrative": "<!-- prose-source: agent plane-g 2026-06-28 -->\n\nSecurity-review triggers when implement diffs touch auth, crypto, credentials paths, dependency manifests, or other pack-flagged risk surfaces. The reviewer subagent is readonly\u2014findings merge through the conductor, not direct journal writes ([B2.5](B2.5-reviewer-bugbot-security-risk-triggers.md)).\n\nStrict packs may require security-review pass before git-workflow; default self-gate records waivable findings with expiry when automated checks pass. Touch-path detection uses task card declared files plus diff stats, not conductor memory."
+}

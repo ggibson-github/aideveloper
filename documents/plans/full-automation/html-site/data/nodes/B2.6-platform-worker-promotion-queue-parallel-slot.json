@@ -1,0 +1,89 @@
+{
+  "id": "B2.6",
+  "slug": "B2.6-platform-worker-promotion-queue-parallel-slot",
+  "title": "Platform worker promotion queue parallel slot",
+  "branch": "B",
+  "parent": "[B2-index](B2-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "B2.6 defines platform worker promotion queue parallel slot for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack.",
+  "scope": [
+    "Owns `B2.6` only; siblings under `B2` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a74 \u2014 Branch B \u2014 Cognition & routing plane](../../full-automation-vision-and-hierarchy.md#4-branch-b-cognition-routing-plane)."
+  ],
+  "behavior_steps": [
+    "On scheduled platform turns, the conductor assigns economy-tier platform workers a single promotion queue item id from Plane D without mutating the active consumer goal scope.",
+    "Platform workers drain the assigned item\u2014script extraction, playbook distillation, or pack fragment work\u2014on a parallel slot while product pursuit continues on the main stack per [B4.2](B4.2-platform-promotion-queue-peek-drain.md).",
+    "Completion updates platform maturity ladders, catalog rows, and staleness nodes so downstream compose-first search sees the promoted artifact.",
+    "Platform workers return bounded summaries; only the conductor dual-writes queue completion, journal notes, and state.json promotion fields.",
+    "If a platform worker edits product goal artifacts, completes without verify proof, or blocks a product-blocked missing tool, pursuit halts at H2 and the queue item reopens rather than false-completing promotion."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"B2.6\",\n  \"description\": \"platform worker promotion queue parallel slot\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `B2.6` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `B2.6` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `B2.6`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `B2.6` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_b2_6.py when script exists.",
+    "Validate `B2.6` against SEC-15 release checklist and parent index links.",
+    "Document `B2.6` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `B2.6`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids B2.6`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/operator/model-policy.json`",
+    "`scripts/route-tier.py`",
+    "`.cursor/skills/librarian/`",
+    "`.cursor/rules/genius-conductor.mdc`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a74",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[B2-index](B2-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids B2.6` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [B2-index](B2-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "B2.6 defines platform worker promotion queue parallel slot for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack. In practice, the system on scheduled platform turns, the conductor assigns economy-tier platform workers a single promotion queue item id from plane d without mutating the active consumer goal scope, then platform workers drain the assigned item\u2014script extraction, playbook distillation, or pack fragment work\u2014on a parallel slot while product pursuit continues on the main stack per [b4.2](b4.2-platform-promotion-queue-peek-drain.md).",
+  "reader_narrative": "<!-- prose-source: agent plane-b 2026-06-28 -->\n\nPlatform workers drain the promotion queue in parallel slots scheduled by Plane D policy\u2014turning repeated one-off reasoning into scripts, playbooks, and pack fragments while product pursuit continues on the main stack.\n\nThe conductor assigns economy-tier platform workers with queue item ids; they must not mutate consumer goal scope. Completion updates platform maturity ladders and reconciles staleness for downstream catalog nodes. See [B4.2](B4.2-platform-promotion-queue-peek-drain.md) for peek/drain semantics each K product steps."
+}

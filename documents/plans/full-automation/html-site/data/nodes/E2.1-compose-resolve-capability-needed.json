@@ -1,0 +1,89 @@
+{
+  "id": "E2.1",
+  "slug": "E2.1-compose-resolve-capability-needed",
+  "title": "compose resolve capability needed",
+  "branch": "E",
+  "parent": "[E2-index](E2-index.md)",
+  "vision_section": "",
+  "release": "v2.17",
+  "purpose": "E2.1 defines compose resolve capability needed for the agent-driven expert system. Knowledge & composition \u2014 catalog, compose-first, staleness.",
+  "scope": [
+    "Owns `E2.1` only; siblings under `E2` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a77 \u2014 Branch E \u2014 Knowledge & composition plane](../../full-automation-vision-and-hierarchy.md#7-branch-e-knowledge-composition-plane)."
+  ],
+  "behavior_steps": [
+    "After implement diffs land, S0 touch-path detection compares task card declared files and diff stats against pack-flagged risk surfaces\u2014auth, crypto, credentials paths, and dependency manifests\u2014not conductor memory.",
+    "When paths match risk triggers per [B2.5](B2.5-reviewer-bugbot-security-risk-triggers.md), the conductor spawns a readonly security-review subagent; findings merge through the conductor, not direct journal writes.",
+    "Strict packs may require security-review pass before git-workflow advances; default self-gate records waivable findings with expiry when automated checks pass.",
+    "Blocking security findings hold pursuit at H2 until remediated, waived with evidence, or escalated per pack policy.",
+    "If security-review is skipped while touch paths matched, preflight fails closed rather than pushing unreviewed risk surfaces."
+  ],
+  "mermaid": "flowchart TD\n  trigger[Trigger condition] --> pre[Preconditions S0]\n  pre --> exec[Execute step logic]\n  exec --> verify[Verify output]\n  verify -->|pass| done[Mark queue item done]\n  verify -->|fail| h2[H2 blocker]",
+  "json_example": "{\n  \"node\": \"E2.1\",\n  \"description\": \"compose resolve capability needed\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `E2.1` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `E2.1` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `E2.1`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `E2.1` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_e2_1.py when script exists.",
+    "Validate `E2.1` against SEC-15 release checklist and parent index links.",
+    "Document `E2.1` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `E2.1`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids E2.1`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/facts/INDEX.md`",
+    "`docs/playbooks/INDEX.md`",
+    "`docs/manifest/staleness.json`",
+    "`allowed_reads`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a77",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[E2-index](E2-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids E2.1` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [E2-index](E2-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "E2.1 defines compose resolve capability needed for the agent-driven expert system. Knowledge & composition \u2014 catalog, compose-first, staleness. In practice, the system after implement diffs land, s0 touch-path detection compares task card declared files and diff stats against pack-flagged risk surfaces\u2014auth, crypto, credentials paths, and dependency manifests\u2014not conductor memory, then when paths match risk triggers per [b2.5](b2.5-reviewer-bugbot-security-risk-triggers.md), the conductor spawns a readonly security-review subagent; findings merge through the conductor, not direct journal writes.",
+  "reader_narrative": "<!-- prose-source: agent plane-e 2026-06-28 -->\n\nBefore any S1+ work, compose must resolve which capability the turn needs: routing, implement, verify, design artifact, platform promotion. Resolution names the capability id and target catalog slice\u2014not a vague \"figure it out\" prompt.\n\nLibrarian and conductor share this step; output drives [E2.2](E2.2-compose-query-catalog-list-components.md) query and [E2.3](E2.3-compose-rank-script-playbook-skill-facts.md) ranking. Unresolved capability blocks spawn until catalog search completes. This implements mandatory compose-before-invent from [B4.3](B4.3-compose-first-catalog-before-improvise.md) at the Plane E protocol layer."
+}

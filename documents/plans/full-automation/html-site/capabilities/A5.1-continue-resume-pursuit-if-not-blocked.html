@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>A5.1 — continue, resume, pursuit, if, not, and blocked</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/A.html">Plane A</a> · <a href="../chapters/A-A5.html">A5</a> ·
+    A5.1
+  </nav>
+  <p class="page-id">A5.1 · Pursuit &amp; control plane</p>
+  <h1 class="page-title">continue, resume, pursuit, if, not, and blocked</h1>
+  <p class="page-subtitle">continue resume pursuit if not blocked</p>
+  
+  <div class="story-block"><p>“Continue” in the target architecture means resume the <a href="../glossary.html#pursuit-loop" class="glossary-link" title="Pursuit loop">pursuit loop</a> if preflight reports READY—not approval of design gates, not answers to open questions, and not permission to skip <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>. Manual <code>/continue</code> invokes one step when <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> is off; daemons invoke the same semantics on poll.</p>
+<p>This capability prevents the v2.13 failure mode where operators typed Continue dozens of times per feature. Blocked preflight must re-prompt for <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> assistance instead of advancing <code>next_action</code>. See <a href="../capabilities/A5.2-continue-not-approval-self-gate-h1-h3-only.html" class="spec-link">A5.2</a> for what Continue explicitly does not mean.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When the operator types <code>/continue</code> or a daemon poll fires with <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> inactive, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> runs <a href="../capabilities/A2.1-preflight-check-pipeline-blocked-extended.html" class="spec-link">A2.1</a> via <code>check-pipeline-blocked.py</code>—advancing only when status is READY.</span></li><li><span class="step-num">Step 2</span><span class="step-text">If preflight reports BLOCKED from <a href="../chapters/A-A4.html" class="spec-link">A4</a>, Continue re-prompts for the specific human action instead of advancing next_action or treating the word as implicit approval.</span></li><li><span class="step-num">Step 3</span><span class="step-text">On READY, exactly one <a href="../capabilities/A2.2-if-ready-execute-one-pipeline-step.html" class="spec-link">A2.2</a> skill phase executes followed by <a href="../capabilities/A2.3-post-step-route-tier-dual-write-increment.html" class="spec-link">A2.3</a> <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>—matching <a href="../capabilities/A2.7-no-intermediate-wait-for-continue.html" class="spec-link">A2.7</a> one-step semantics.</span></li><li><span class="step-num">Step 4</span><span class="step-text"><a href="../capabilities/A3.4-sdk-daemon-run-local-pipeline-24-7.html" class="spec-link">A3.4</a> SDK daemon invokes the same contract on poll when goal <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> is off—IDE and headless runners share identical semantics.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If the operator intended to approve a design gate or answer a blocker, pursuit stays blocked until an explicit approval phrase.—Continue alone never clears self-gates.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids A5.1</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>goal_verify passes but H3 rejected — goal.state returns to pursuing with rejection notes.</li><li>Edge case A5.1 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;A5.1&quot;,
+  &quot;description&quot;: &quot;continue resume pursuit if not blocked&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.14</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>D2.1.3 — enqueue verify pattern N task cards</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/D.html">Plane D</a> · <a href="../chapters/D-D2.html">D2</a> ·
+    D2.1.3
+  </nav>
+  <p class="page-id">D2.1.3 · Platform evolution plane</p>
+  <h1 class="page-title">enqueue verify pattern N task cards</h1>
+  <p class="page-subtitle">enqueue verify pattern N task cards</p>
+  
+  <div class="story-block"><p>If the same verify or test command shape appears on N task cards—default N from pack policy—the pattern is mature enough for script or playbook promotion without waiting for manual duplication. Task-breakdown and verify-router logs supply <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>: identical command blocks, same failure class, same <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> path template.</p>
+<p>Enqueue records N, sample task ids, and target_level. Platform drain executes script extraction or playbook-keeper per target level (<a href="../capabilities/D4.2-platform-work-script-extraction.html" class="spec-link">D4.2</a>, <a href="../capabilities/D4.1-platform-work-playbook-keeper.html" class="spec-link">D4.1</a>). Premature enqueue (N too low) wastes platform slots; pack authors tune N in template-pack drain policy alongside K product steps.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart LR
+  prod[Product turn] --&gt; k{step mod K == 0?}
+  k --&gt;|yes| plat[Platform turn dequeue]
+  k --&gt;|no| prod
+  plat --&gt; promote[promotion_queue drain]
+  promote --&gt; prod</pre>
+</div>
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">During pursuit, verify-router and task-breakdown logs accumulate identical Test command blocks across task cards; when repetition reaches pack policy threshold N, <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> enqueue scripts file a platform promotion item instead of waiting for manual duplication.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Each enqueue record captures N, representative task ids, and target_level (script L2 or playbook L1) so platform drain knows whether to run <a href="../capabilities/D4.2-platform-work-script-extraction.html" class="spec-link">D4.2</a> or <a href="../capabilities/D4.1-platform-work-playbook-keeper.html" class="spec-link">D4.1</a>.</span></li><li><span class="step-num">Step 3</span><span class="step-text">After every K <a href="../glossary.html#product-turn" class="glossary-link" title="Product turn">product turns</a>, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> peeks the platform <a href="../glossary.html#promotion-queue" class="glossary-link" title="Promotion queue">promotion queue</a> and drains eligible verify-pattern items during economy platform slots without blocking the active product next_action.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Pack authors tune N in template-pack drain_policy alongside K so premature enqueue does not waste <a href="../glossary.html#platform-turn" class="glossary-link" title="Platform turn">platform turns</a> on immature patterns.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If N is below threshold or enqueue lacks sample task <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>, platform promotion stays deferred; forcing drain without proof fails closed at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> until verify-router logs justify the pattern.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids D2.1.3</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Platform queue depth 0 but product blocked on missing playbook — D3.3 priority cut skips platform drain.</li><li>Edge case D2.1.3 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;platform&quot;: {
+    &quot;promotion_queue&quot;: [
+      {
+        &quot;id&quot;: &quot;promo-001&quot;,
+        &quot;source&quot;: &quot;task-012&quot;,
+        &quot;target_level&quot;: &quot;L2&quot;,
+        &quot;priority&quot;: 50,
+        &quot;reason&quot;: &quot;repeated manual pytest invocation&quot;
+      }
+    ],
+    &quot;drain_policy&quot;: { &quot;product_steps_per_platform_turn&quot;: 5 }
+  }
+}</pre></div>
+  <p class="release-note">Target release: v2.16</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

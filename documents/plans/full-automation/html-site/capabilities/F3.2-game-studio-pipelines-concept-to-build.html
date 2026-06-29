@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>F3.2 — game, studio, pipelines, concept, to, and build</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/F.html">Plane F</a> · <a href="../chapters/F-F3.html">F3</a> ·
+    F3.2
+  </nav>
+  <p class="page-id">F3.2 · Organization plane</p>
+  <h1 class="page-title">game, studio, pipelines, concept, to, and build</h1>
+  <p class="page-subtitle">game studio pipelines concept to build</p>
+  
+  <div class="story-block"><p>Game studio pipelines walk concept → mesh → rig → animation → engine import → QA → build—each phase bound to roles and gates in pipelines/*.yaml. Phase order prevents animator work before rig exists and blocks build before QA <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> passes.</p>
+<p>Pipeline phases reference pack playbooks (<a href="../capabilities/F1.6-pack-playbooks-role-specific.html" class="spec-link">F1.6</a>) and seed task cards (<a href="../capabilities/F1.7-pack-template-tasks-seed-cards.html" class="spec-link">F1.7</a>) for implement turns. Integration manifest declares which phases may parallelize (e.g. multiple asset lanes). <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> at ship uses <a href="../capabilities/F3.4-game-studio-goal-verify-asset-engine-tests-perf.html" class="spec-link">F3.4</a> suite atop generic <a href="../capabilities/F1.8-pack-verify-goal-verify-suites.html" class="spec-link">F1.8</a>.</p></div>
+  
+  <h2 class="section-title">How it works</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">At <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> plan approval for a game-studio goal, program-scoper binds the active pack&#x27;s <code>pipelines/*.yaml</code> so pursuit phases follow concept → mesh → rig → animation → engine import → QA → build in enforced order.</span></li><li><span class="step-num">Step 2</span><span class="step-text">Each phase turn loads role-specific playbooks (<a href="../capabilities/F1.6-pack-playbooks-role-specific.html" class="spec-link">F1.6</a>) and seeded task cards (<a href="../capabilities/F1.7-pack-template-tasks-seed-cards.html" class="spec-link">F1.7</a>) so implement workers advance only the current pipeline gate—not downstream animator or build work.</span></li><li><span class="step-num">Step 3</span><span class="step-text">The integration manifest declares which asset phases may parallelize; the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> schedules lane workstreams without violating ordering gates (e.g. no animator tasks before rig <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> passes).</span></li><li><span class="step-num">Step 4</span><span class="step-text">QA <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> must pass before build-phase tasks enqueue; partial phase completion rolls up in state but does not unlock ship until <a href="../capabilities/F3.4-game-studio-goal-verify-asset-engine-tests-perf.html" class="spec-link">F3.4</a> atop <a href="../capabilities/F1.8-pack-verify-goal-verify-suites.html" class="spec-link">F1.8</a> succeeds.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If a worker attempts an out-of-order phase, required prior gate <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> is missing, or parallel lanes collide on the same asset lease, pursuit halts at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> until the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> reorders work at H1.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids F3.2</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Pack role handoff while lane lease held — complete-work-order releases lease before role switch.</li><li>Edge case F3.2 variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;F3.2&quot;,
+  &quot;description&quot;: &quot;game studio pipelines concept to build&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.19</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

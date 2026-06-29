@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>E3 — Facts &amp; decisions</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/E.html">Plane E</a> ·
+    E3
+  </nav>
+  <p class="page-id">E3 · Knowledge &amp; composition plane</p>
+  <h1 class="page-title">Facts &amp; decisions</h1>
+  <div class="story-block"><p>E3: Facts &amp; decisions. Open each capability below for diagrams, verification, and contracts.</p>
+<p><code>docs/facts/</code> holds external truth separate from design and journal narrative: environment URLs, schema snippets, operator-provided credentials pointers, team routing. Agents read facts; they do not invent URLs or API shapes when INDEX lists a topic file.</p>
+<p>Facts integrate with compose at lowest rank (<a href="../capabilities/E2.3-compose-rank-script-playbook-skill-facts.html" class="spec-link">E2.3</a>) and with context retrieval (<a href="../chapters/E-E1.html" class="spec-link">E1.4</a>). Blocking questions about external config resolve by reading or extending facts—not by guessing. Stale facts when upstream systems change should trigger journal note and optional reconcile-stale (<a href="../capabilities/E5.3-staleness-reconcile-stale-artifact-graph-skills.html" class="spec-link">E5.3</a>).</p>
+<p><code>docs/decisions/</code> stores ADRs and recorded trade-offs when <a href="../glossary.html#s3" class="glossary-link" title="S3 — architecture / ambiguity">S3</a> ambiguity resolves: architecture choices, gate waivers with rationale, program manifest conflicts. Journal Q&amp;A captures session decisions; ADRs persist cross-session authoritative rationale.</p>
+<p><a href="../glossary.html#s3" class="glossary-link" title="S3 — architecture / ambiguity">S3</a> turns in Plane B should end in journal entry or ADR (<a href="../capabilities/B1.4-s3-architecture-ambiguity.html" class="spec-link">B1.4</a>). ADRs link from design artifacts and task cards when implement depends on a settled choice. Unlike facts, decisions are repo-authored judgment—not external truth. Staleness may mark downstream design nodes when ADRs supersede prior assumptions (<a href="../capabilities/E5.1-staleness-design-graph-staleness-json.html" class="spec-link">E5.1</a>).</p>
+<p>The remember skill captures operator snippets into <code>docs/facts/captured.md</code> and updates facts INDEX—explicit &quot;remember this&quot; workflow, not ambient chat memory. There is no global FTS or hidden vector store; all retained knowledge is file-backed and discoverable via <a href="../chapters/E-E1.html" class="spec-link">E1.4</a>.</p>
+<p>This keeps Plane E honest: if it is not in facts/decisions/<a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a>, agents should not treat it as project truth. Remember complements journal Resolved Q&amp;A for durable non-decision snippets (Slack URLs, SQL fragments). Promotion candidates from repeated captures may enqueue via <a href="../capabilities/E2.5-compose-miss-l0-enqueue-promotion.html" class="spec-link">E2.5</a>.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/E3.1-facts-docs-facts-external-truth.html">E3.1</a></span>
+  <span class="cap-title">facts docs/facts external truth</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/E3.2-decisions-docs-decisions-adr.html">E3.2</a></span>
+  <span class="cap-title">decisions docs/decisions ADR</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/E3.3-remember-skill-index-no-fts-global.html">E3.3</a></span>
+  <span class="cap-title">remember skill INDEX no FTS global</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

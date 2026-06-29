@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>APP-A-improve — Work taxonomy improve platform</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/meta.html">Plane meta</a> ·
+    APP-A-improve
+  </nav>
+  <p class="page-id">APP-A-improve · Front matter &amp; cross-cutting architecture</p>
+  <h1 class="page-title">Work taxonomy improve platform</h1>
+  <p class="page-subtitle">improve work taxonomy improve platform</p>
+  
+  <div class="story-block"><p>Improve platform work is promotion, turning repeated patterns into playbooks, script extraction, and <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> curation—Plane D and E activities that run alongside product pursuits via the platform queue.</p>
+<p>Without this slice in packs, organizations revert to one-off heroics instead of maturing reuse.</p></div>
+  
+<div class="diagram-panel">
+  <pre class="mermaid">flowchart TD
+  trigger[Trigger condition] --&gt; pre[Preconditions S0]
+  pre --&gt; exec[Execute step logic]
+  exec --&gt; verify[Verify output]
+  verify --&gt;|pass| done[Mark queue item done]
+  verify --&gt;|fail| h2[H2 blocker]</pre>
+</div>
+  <h2 class="section-title">What this defines</h2>
+  <ol class="timeline"><li><span class="step-num">Step 1</span><span class="step-text">When pursuit surfaces repeated improvisation, divergence logs, or compose misses, the <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> classifies the work as improve-platform and enqueues promotion items on the platform queue via <a href="../capabilities/E2.5-compose-miss-l0-enqueue-promotion.html" class="spec-link">E2.5</a> instead of folding reuse debt into the active product step.</span></li><li><span class="step-num">Step 2</span><span class="step-text"><a href="../glossary.html#product-turn" class="glossary-link" title="Product turn">Product turn</a>s continue under goal <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a>; <a href="../glossary.html#platform-turn" class="glossary-link" title="Platform turn">platform turns</a> drain one promotion item. so playbook extraction and <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> curation run alongside—not instead of—active goals.</span></li><li><span class="step-num">Step 3</span><span class="step-text">Promotion workers distill captured patterns into L1 playbooks, L2 <a href="../glossary.html#s0" class="glossary-link" title="S0 — deterministic scripts">S0</a> scripts, or <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> fragments per the <a href="../capabilities/D1.2-l1-playbook-docs-playbooks.html" class="spec-link">D1.2</a>–<a href="../capabilities/D1.4-l3-skill-command-cursor-skills.html" class="spec-link">D1.4</a> ladder, dual-writing artifacts and updating <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">compose-first</a> bindings for future turns.</span></li><li><span class="step-num">Step 4</span><span class="step-text">Template-pack authors map this APP-A slice to platform-queue enqueue rules, promotion-ladder targets, and verify commands so company <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> spawns improve roles with the correct skills—not ad hoc heroics each sprint.</span></li><li><span class="step-num">Step 5</span><span class="step-text">If platform reuse is claimed without playbook artifacts, <a href="../glossary.html#catalog" class="glossary-link" title="Catalog (compose-first)">catalog</a> entries, or queue-drain <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a>, pursuit fails closed at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> rather than marking promotion complete or advancing product scope silently.</span></li></ol>
+  
+<h2 class="section-title">Verification</h2>
+<div class="card table-wrap"><table class="data-table"><thead><tr><th>Check</th><th>Command</th></tr></thead><tbody><tr><td>Completeness</td><td><code>python scripts/automation/audit-hierarchy-depth.py --strict --ids APP-A-improve</code></td></tr><tr><td>Conformance</td><td><code>python scripts/validate-workflow.py</code></td></tr><tr><td>Task evidence</td><td>`python scripts/verify-router.py` when implement task exists</td></tr></tbody></table></div>
+  
+<h2 class="section-title">Edge cases</h2>
+<div class="card"><ul class="prose-list"><li>Operator closes laptop mid-loop — state.json must resume from last good dual-write.</li><li>Concurrent manual edit to queue JSON — conductor reloads queue each wake; last writer wins with journal note.</li><li>Edge case APP-A-improve variant 3: verify state dual-write before continuing pursuit.</li><li>Edge case APP-A-improve variant 4: verify state dual-write before continuing pursuit.</li></ul></div>
+  
+  
+<h2 class="section-title">Implementation contract</h2>
+<div class="card"><pre class="code-block">{
+  &quot;node&quot;: &quot;APP-A-improve&quot;,
+  &quot;description&quot;: &quot;work taxonomy improve platform&quot;,
+  &quot;state&quot;: { &quot;ref&quot;: &quot;APP-B-state-json-sketch.md&quot; },
+  &quot;implemented_in_release&quot;: &quot;v2.14+&quot;
+}</pre></div>
+  <p class="release-note">Target release: v2.15</p>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

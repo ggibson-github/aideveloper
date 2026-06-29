@@ -1,0 +1,89 @@
+{
+  "id": "D2.3",
+  "slug": "D2.3-dequeue-platform-turn-not-product",
+  "title": "dequeue platform turn not product",
+  "branch": "D",
+  "parent": "[D2-index](D2-index.md)",
+  "vision_section": "",
+  "release": "v2.16",
+  "purpose": "D2.3 defines dequeue platform turn not product for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse.",
+  "scope": [
+    "Owns `D2.3` only; siblings under `D2` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a76 \u2014 Branch D \u2014 Platform evolution plane (parallel queue)](../../full-automation-vision-and-hierarchy.md#6-branch-d-platform-evolution-plane-parallel-queue)."
+  ],
+  "behavior_steps": [
+    "After [E2.3](E2.3-compose-rank-script-playbook-skill-facts.md) ranking completes, the conductor or task-breakdown writes explicit catalog refs\u2014script path, playbook id, skill name\u2014into the task card **Components used** section before any implement worker spawns.",
+    "**Components used** is auditable evidence that compose-first ran; workers inherit listed paths as `allowed_reads` per [E4.3](E4.3-context-allowed-reads-cap-max-5.md) in the spawn briefing.",
+    "When the catalog returned matches but **Components used** is empty or incomplete, conformance checks fail and pursuit stops at H2\u2014never mark implement complete without bound components.",
+    "When no catalog match existed, the plan pairs with [E2.5](E2.5-compose-miss-l0-enqueue-promotion.md) L0 proceed and promotion enqueue instead of omitting the Components section.",
+    "If a worker improvises outside listed components, the conductor records divergence per [B4.4](B4.4-divergence-log-when-not-composing.md) and halts advancement until dual-write and evidence explain the override."
+  ],
+  "mermaid": "flowchart LR\n  prod[Product turn] --> k{step mod K == 0?}\n  k -->|yes| plat[Platform turn dequeue]\n  k -->|no| prod\n  plat --> promote[promotion_queue drain]\n  promote --> prod",
+  "json_example": "{\n  \"platform\": {\n    \"promotion_queue\": [\n      {\n        \"id\": \"promo-001\",\n        \"source\": \"task-012\",\n        \"target_level\": \"L2\",\n        \"priority\": 50,\n        \"reason\": \"repeated manual pytest invocation\"\n      }\n    ],\n    \"drain_policy\": { \"product_steps_per_platform_turn\": 5 }\n  }\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Platform queue depth 0 but product blocked on missing playbook \u00e2\u20ac\u201d D3.3 priority cut skips platform drain.",
+    "Edge case `D2.3` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `D2.3`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `platform.promotion_queue[]` to state.json schema.",
+    "Scheduler in autopilot workflow: `(steps_total % K) == 0` \u00e2\u2020\u2019 platform turn.",
+    "playbook-keeper + script extraction skills dequeue promotion items.",
+    "Validate `D2.3` against SEC-15 release checklist and parent index links.",
+    "Document `D2.3` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `D2.3`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids D2.3`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/playbooks/`",
+    "`scripts/`",
+    "`.cursor/skills/playbook-keeper/`",
+    "`state.platform.promotion_queue`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a76",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[D2-index](D2-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids D2.3` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [D2-index](D2-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "D2.3 defines dequeue platform turn not product for the agent-driven expert system. Platform evolution \u2014 promotion ladder, parallel queue, reuse. In practice, the system after [e2.3](e2.3-compose-rank-script-playbook-skill-facts.md) ranking completes, the conductor or task-breakdown writes explicit catalog refs\u2014script path, playbook id, skill name\u2014into the task card **components used** section before any implement worker spawns, then **components used** is auditable evidence that compose-first ran; workers inherit listed paths as `allowed_reads` per [e4.3](e4.3-context-allowed-reads-cap-max-5.md) in the spawn briefing.",
+  "reader_narrative": "<!-- prose-source: agent plane-d 2026-06-28 -->\n\nDequeue consumes the queue head on a platform turn, not a product turn: `next_action` for consumer goals is untouched while platform workers run playbook-keeper, script extraction, or catalog regeneration. One platform item per platform turn preserves auditability unless parallel platform slots are explicitly enabled in policy.\n\nAfter drain, dual-write marks item done only when [D6 definition of done](D6-index.md) passes\u2014catalog row, verify script if L2+, task reference, staleness node. Partial work re-enqueues with updated state rather than false completion. Product pursuit resumes on the following turn unless scheduler inserted platform turn mid-autopilot ([D3.1](D3.1-1-platform-turn-per-k-product-turns.md))."
+}

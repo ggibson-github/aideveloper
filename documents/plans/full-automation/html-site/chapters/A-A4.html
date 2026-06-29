@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>A4 — Stop reasons (exhaustive taxonomy)</title>
+  <link rel="stylesheet" href="../assets/css/site.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js" defer></script>
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body data-base="">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html">Expert System Blueprint<span>Strategic architecture portfolio</span></a>
+      <nav class="nav">
+        <a href="../index.html">Overview</a>
+        <a href="../branches/index.html">Architectural planes</a>
+        <a href="../glossary.html">Glossary</a>
+        
+        <a href="../data/manifest.json">Data</a>
+      </nav>
+    </div>
+  </header>
+  
+<main>
+  <nav class="breadcrumb">
+    <a href="../index.html">Overview</a> ·
+    <a href="../branches/A.html">Plane A</a> ·
+    A4
+  </nav>
+  <p class="page-id">A4 · Pursuit &amp; control plane</p>
+  <h1 class="page-title">Stop reasons (exhaustive taxonomy)</h1>
+  <div class="story-block"><p>A4: Stop reasons (exhaustive taxonomy). Open each capability below for diagrams, verification, and contracts.</p>
+<p>Human stop reasons are intentional, policy-driven pauses—not failures. <a href="../glossary.html#h1" class="glossary-link" title="H1 — initial planning gate">H1</a> stops pursuit until an approved plan exists; <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> stops until a blocker is resolved (credentials, external access, ambiguous requirement); <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> stops after <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> passes until the operator accepts or rejects verified outcomes.</p>
+<p>Each stop <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a>s to journal and <code>hitl</code> fields in state.json with a typed reason so dashboards and daemons do not guess why the loop exited. Pursuit must never auto-clear <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> or treat silence as approval. This capability is the exhaustive taxonomy entry for touchpoint-class stops—see <a href="../capabilities/INTRO-1.2-human-touchpoint-contract-h1-h2-h3.html" class="spec-link">INTRO-1.2</a> for the contract operators see.</p>
+<p>Verification stops protect quality when <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> or goal-level proof fails. Task <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> missing, <code>verify-router</code> failure, <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> regression, or conformance script exit non-zero all produce a hard stop with structured <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a>—not a silent retry loop.</p>
+<p>Fail-closed behavior prevents false “achieved” states that would reach <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> without proof. The <a href="../glossary.html#conductor" class="glossary-link" title="Conductor">conductor</a> records which command failed and which <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> paths were absent so the operator or a resumed pursuit knows exactly what to fix. This stop class connects Plane A to Plane G; it is distinct from resource exhaustion (A4.3) and integrity corruption (A4.4).</p>
+<p>Resource stops bound autonomous pursuit in measurable units: max steps per session or goal, token budgets, cost caps, and lease expiry on shared runners. When a budget is exhausted, pursuit halts with a stop reason that operators can extend at <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> if policy allows.</p>
+<p>These limits implement <a href="../capabilities/A1.4-deadline-budget-steps-tokens-wall-clock.html" class="spec-link">A1.4</a> in the stop taxonomy so “always-on” never means “unbounded.” Scheduling in Plane D may reprioritize work when leases expire, but the stop record must remain auditable. Too-tight budgets cause false stops; too-loose budgets waste spend—pack authors set defaults per goal_type.</p>
+<p>Integrity stops fire when the harness cannot trust its own state: <code>validate-workflow.py</code> fails, state.json is corrupt or schema-invalid, <a href="../glossary.html#dual-write" class="glossary-link" title="Dual-write">dual-write</a> mismatch between journal and state, or artifact graph references missing nodes. Pursuit must not continue on ambiguous memory.</p>
+<p>Recovery is deterministic-first: repair scripts, restore snapshot from Plane H, or escalate <a href="../glossary.html#h2" class="glossary-link" title="H2 — blocker assistance">H2</a> with the validation log attached. Continuing pursuit on corrupt state duplicates work or attaches <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> to the wrong goal. This stop class is rare in production but critical for restart safety after manual edits or merge conflicts.</p>
+<p>Completion stops are successful termination: <a href="../glossary.html#goal-verify" class="glossary-link" title="Goal verification suite">goal_verify</a> passed, <a href="../glossary.html#h3" class="glossary-link" title="H3 — final sign-off">H3</a> accepted (or waived under policy), program manifest complete, or company_ops goal criteria satisfied per <a href="../capabilities/INTRO-1.3-goal-completion-criterion.html" class="spec-link">INTRO-1.3</a>. The goal state transitions to achieved or program_done with timestamps and <a href="../glossary.html#evidence" class="glossary-link" title="Evidence">evidence</a> pointers.</p>
+<p>Unlike H3-pending (<a href="../capabilities/A2.5-goal-verify-pass-transition-h3-pending.html" class="spec-link">A2.5</a>), this stop closes pursuit for that goal id. Multi-goal company <a href="../glossary.html#autopilot" class="glossary-link" title="Autopilot">autopilot</a> (<a href="../capabilities/A3.3-company-autopilot-multi-goal-role-workstreams.html" class="spec-link">A3.3</a>) may immediately advance to the next queued goal. Operators should see completion on dashboard/STATUS without parsing journals.</p></div>
+  
+  <h2 class="section-title">Capabilities in this chapter</h2>
+  <div class="card"><ul class="cap-list">
+<li>
+  <span class="cap-id"><a href="../capabilities/A4.1-stop-human-h1-h2-h3.html">A4.1</a></span>
+  <span class="cap-title">stop human H1 H2 H3</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A4.2-stop-verify-evidence-goal-verify-regression.html">A4.2</a></span>
+  <span class="cap-title">stop, verify, evidence, goal verify, and regression</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A4.3-stop-resource-max-steps-max-cost-lease-expired.html">A4.3</a></span>
+  <span class="cap-title">stop, resource, max steps, max cost, and lease expired</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A4.4-stop-integrity-validate-workflow-state-corrupt.html">A4.4</a></span>
+  <span class="cap-title">stop integrity validate-workflow state corrupt</span>
+</li>
+<li>
+  <span class="cap-id"><a href="../capabilities/A4.5-stop-completion-goal-achieved-program-done.html">A4.5</a></span>
+  <span class="cap-title">stop, completion, goal, achieved, program, and done</span>
+</li></ul></div>
+</main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>Expert system architecture blueprint · 2026-06-28</span>
+    </div>
+  </footer>
+</body>
+</html>

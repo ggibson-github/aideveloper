@@ -1,0 +1,161 @@
+{
+  "done": {
+    "A2.5": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "A3.4": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "A5.1": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "APP-A-build": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "APP-A-verify": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "B1.5": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "B2.6": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "B4.2": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "B5.4": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "C2.2": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "C3.3": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "C5.1": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "D1.4": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "D2.1.4": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "D3.4": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "D4.5": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "D6.2": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "E1.7": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "E3.1": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "E5.1": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "F1.4": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "F2.2": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "F3.4": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "F6.1": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "G1.3": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "G3.2": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "G5.1": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "G5.7": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "H1.3": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "H4": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "I1.4": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "I3.3": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "INTRO-0": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "J3": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "MASTER-C": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "MASTER-I": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "SEC-15-v2.16": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "SEC-15-v2.22": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    },
+    "SEC-17-5": {
+      "version": "cli-composer-2.5",
+      "issues": []
+    }
+  },
+  "failed": {}
+}

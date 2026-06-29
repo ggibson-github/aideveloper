@@ -1,0 +1,88 @@
+{
+  "id": "F3.4",
+  "slug": "F3.4-game-studio-goal-verify-asset-engine-tests-perf",
+  "title": "game studio goal_verify asset engine tests perf",
+  "branch": "F",
+  "parent": "[F3-index](F3-index.md)",
+  "vision_section": "",
+  "release": "v2.19",
+  "purpose": "F3.4 defines game studio goal verify asset engine tests perf for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling.",
+  "scope": [
+    "Owns `F3.4` only; siblings under `F3` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a78 \u2014 Branch F \u2014 Organization plane (template-packs = ceiling)](../../full-automation-vision-and-hierarchy.md#8-branch-f-organization-plane-template-packs-ceiling)."
+  ],
+  "behavior_steps": [
+    "When platform promotion lands playbooks, scripts, or pack fragments, reconcile-stale registers each reusable path in docs/manifest/staleness.json so downstream task cards and compose hits can mark dependencies stale.",
+    "On script or playbook change during pursuit, the staleness graph propagates to dependent task cards and [E2.2](E2.2-compose-query-catalog-list-components.md) compose results\u2014workers reconcile before advancing implement steps.",
+    "Regeneration of [E1.1](E1.1-catalog-scripts-manifest-generated.md) and [E1.7](E1.7-catalog-platform-catalog-md-umbrella.md) reconciles graph entries with live catalog INDEX rows after platform drain completes.",
+    "Pack verify suites from [F1.8](F1.8-pack-verify-goal-verify-suites.md) may assert graph completeness at goal_verify\u2014missing nodes fail closed rather than allowing pursuit on orphan artifact paths.",
+    "If a promoted artifact lacks a staleness node or graph drift leaves dependents unmarked, pursuit stops at H2 until reconcile-stale or [D4.5](D4.5-platform-work-catalog-regeneration.md) restores traceability."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"F3.4\",\n  \"description\": \"game studio goal verify asset engine tests perf\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Pack role handoff while lane lease held \u00e2\u20ac\u201d complete-work-order releases lease before role switch.",
+    "Edge case `F3.4` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `F3.4`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Add `company.yaml` + `roles/*.yaml` to template-packs schema.",
+    "program-scoper selects pack; sets state.company.active_role.",
+    "Per-role allowed_reads in lane.json work orders.",
+    "Validate `F3.4` against SEC-15 release checklist and parent index links.",
+    "Document `F3.4` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `F3.4`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids F3.4`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`template-packs/`",
+    "`program/integration/manifest.md`",
+    "`.cursor/skills/program-scoper/`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a78",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[F3-index](F3-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids F3.4` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [F3-index](F3-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "F3.4 defines game studio goal verify asset engine tests perf for the agent-driven expert system. Organization \u2014 template-packs as whole-company ceiling. In practice, the system when platform promotion lands playbooks, scripts, or pack fragments, reconcile-stale registers each reusable path in docs/manifest/staleness.json so downstream task cards and compose hits can mark dependencies stale, then on script or playbook change during pursuit, the staleness graph propagates to dependent task cards and [e2.2](e2.2-compose-query-catalog-list-components.md) compose results\u2014workers reconcile before advancing implement steps.",
+  "reader_narrative": "<!-- prose-source: agent plane-f 2026-06-28 -->\n\nGame studio goal_verify proves assets load in engine, automated tests pass, and performance budgets hold\u2014beyond per-task pytest evidence. The suite aggregates tool-operator logs, engine test output, and perf counters into one `goal.verify_command` resolved at scope complete ([A2.4](A2.4-goal-scope-complete-run-goal-verify.md)).\n\nWeak goal_verify (smoke import only) is an accepted risk documented in adversarial review\u2014pack authors tighten suites over releases. Failure blocks H3 and packages H2 with evidence paths attached. Extends generic pack verify ([F1.8](F1.8-pack-verify-goal-verify-suites.md)) without replacing task-level verify-router discipline."
+}

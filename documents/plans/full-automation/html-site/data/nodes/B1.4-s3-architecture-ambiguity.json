@@ -1,0 +1,89 @@
+{
+  "id": "B1.4",
+  "slug": "B1.4-s3-architecture-ambiguity",
+  "title": "S3 architecture ambiguity",
+  "branch": "B",
+  "parent": "[B1-index](B1-index.md)",
+  "vision_section": "",
+  "release": "v2.15",
+  "purpose": "B1.4 defines s3 architecture ambiguity for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack.",
+  "scope": [
+    "Owns `B1.4` only; siblings under `B1` must not duplicate this spec.",
+    "Aligns with minimal HITL: H1 plan, H2 blocker, H3 sign-off ([INTRO-1.2](INTRO-1.2-human-touchpoint-contract-h1-h2-h3.md)).",
+    "Conflicts resolve in favor of [Vision \u00a74 \u2014 Branch B \u2014 Cognition & routing plane](../../full-automation-vision-and-hierarchy.md#4-branch-b-cognition-routing-plane)."
+  ],
+  "behavior_steps": [
+    "When [A2.1](A2.1-preflight-check-pipeline-blocked-extended.md) or [B2.1](B2.1-conductor-genius-merge-route-platform-drain.md) classifies a turn as S3, only the genius-tier conductor owns it\u2014thin orchestration for trade-offs, merge decisions, silent policy, and conflicting design artifacts, not bulk S1 implementation.",
+    "Before invoking S3, [B1.1](B1.1-s0-deterministic-mandatory-first.md) must rule out resolvable ambiguity: one fact-file read or one script answer stays S0/S1, not S3.",
+    "After parallel workers return under [B2.3](B2.3-phase-workers-implement-design-explore.md), the conductor performs S3 merge\u2014reconciling summaries, updating `next_action` and routing\u2014without workers dual-writing journal or state.json.",
+    "Each S3 turn ends in a recorded decision\u2014journal Resolved Q&A or [E3.2](E3.2-decisions-docs-decisions-adr.md) ADR\u2014and updated `route-tier` output; open-ended exploration without closure is forbidden.",
+    "When external authority is required beyond recorded policy, the conductor escalates to [B1.5](B1.5-s4-governance-escalation-h2-packaging.md) S4/H2 rather than improvising past the ambiguity boundary."
+  ],
+  "mermaid": "",
+  "json_example": "{\n  \"node\": \"B1.4\",\n  \"description\": \"s3 architecture ambiguity\",\n  \"state\": { \"ref\": \"APP-B-state-json-sketch.md\" },\n  \"implemented_in_release\": \"v2.14+\"\n}",
+  "edge_cases": [
+    "Operator closes laptop mid-loop \u00e2\u20ac\u201d state.json must resume from last good dual-write.",
+    "Concurrent manual edit to queue JSON \u00e2\u20ac\u201d conductor reloads queue each wake; last writer wins with journal note.",
+    "Edge case `B1.4` variant 3: verify state dual-write before continuing pursuit.",
+    "Edge case `B1.4` variant 4: verify state dual-write before continuing pursuit.",
+    "Pass 3: add regression test or evidence path specific to `B1.4`.",
+    "Pass 3: cross-link related nodes in same branch index."
+  ],
+  "failure_modes": [
+    "**Silent stop:** Agent ends turn without updating queue \u00e2\u2020\u2019 mitigated by /loop + check-hierarchy-queue.py EMPTY gate.",
+    "**False complete:** Item marked done without artifact \u00e2\u2020\u2019 audit-hierarchy-depth.py re-enqueues deepen pass.",
+    "**Scope bleed:** Worker edits journal/state during planning-only expansion \u00e2\u2020\u2019 forbidden in vision-expansion-prompt.",
+    "**Stale design:** Upstream vision \u00c2\u00a7 changes \u00e2\u2020\u2019 reconcile-stale adds deepen items for affected ids."
+  ],
+  "implementation": [
+    "Map `B1.4` to v2.14\u00e2\u20ac\u201cv2.23 release row in SEC-15-index.md.",
+    "Create or extend S0 script if behavior is file-derived.",
+    "Add unit test under tests/unit/test_b1_4.py when script exists.",
+    "Validate `B1.4` against SEC-15 release checklist and parent index links.",
+    "Document `B1.4` in parent index with verify command and release tag.",
+    "Add checklist row in SEC-15 release doc for `B1.4`."
+  ],
+  "verification": [
+    {
+      "Check": "Completeness",
+      "Command": "`python scripts/automation/audit-hierarchy-depth.py --strict --ids B1.4`"
+    },
+    {
+      "Check": "Conformance",
+      "Command": "`python scripts/validate-workflow.py`"
+    },
+    {
+      "Check": "Task evidence",
+      "Command": "`python scripts/verify-router.py` when implement task exists"
+    }
+  ],
+  "artifacts": [
+    "`docs/operator/model-policy.json`",
+    "`scripts/route-tier.py`",
+    "`.cursor/skills/librarian/`",
+    "`.cursor/rules/genius-conductor.mdc`"
+  ],
+  "dependencies": [
+    {
+      "Link": "[full-automation-vision-and-hierarchy.md](../../full-automation-vision-and-hierarchy.md) \u00a74",
+      "Why": "Master hierarchy"
+    },
+    {
+      "Link": "[B1-index](B1-index.md)",
+      "Why": "Parent grouping"
+    },
+    {
+      "Link": "[genius-conductor-tiered-routing.md](../../genius-conductor-tiered-routing.md)",
+      "Why": "S0\u2013S4 routing"
+    }
+  ],
+  "acceptance": [
+    "[ ] `python scripts/automation/audit-hierarchy-depth.py --strict --ids B1.4` passes",
+    "[ ] Named script, skill, or test path exists or is listed in SEC-15 release row",
+    "[ ] Linked from [B1-index](B1-index.md)",
+    "[ ] `python scripts/validate-workflow.py` passes after implement"
+  ],
+  "adversarial": [],
+  "narrative": "B1.4 defines s3 architecture ambiguity for the agent-driven expert system. Cognition & routing \u2014 [S0](B1.1-s0-deterministic-mandatory-first.md)\u2013S4, conductor, workers, dual-stack. In practice, the system when [a2.1](a2.1-preflight-check-pipeline-blocked-extended.md) or [b2.1](b2.1-conductor-genius-merge-route-platform-drain.md) classifies a turn as s3, only the genius-tier conductor owns it\u2014thin orchestration for trade-offs, merge decisions, silent policy, and conflicting design artifacts, not bulk s1 implementation, then before invoking s3, [b1.1](b1.1-s0-deterministic-mandatory-first.md) must rule out resolvable ambiguity: one fact-file read or one script answer stays s0/s1, not s3.",
+  "reader_narrative": "<!-- prose-source: agent plane-b 2026-06-28 -->\n\nS3 is reserved for architecture ambiguity: trade-offs without a single script answer, merge decisions after parallel workers return, gate interpretation when policy is silent, and reconciliation when design artifacts conflict. The genius-tier conductor owns S3\u2014thin orchestration, not bulk implementation.\n\nWhen ambiguity is resolvable by reading one fact file or running one script, that is S0 or S1, not S3. S3 turns should end in a recorded decision (journal Q&A or ADR) and updated routing, not open-ended exploration. Escalation to H2 belongs in S4 when external authority is required."
+}
