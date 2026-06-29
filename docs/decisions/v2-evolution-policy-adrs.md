@@ -159,3 +159,74 @@ When `depth >= boost_queue_depth`, reduce K (more frequent platform turns). When
 **Decision:** Repos without `goal` block: `check-pipeline-blocked` treats as **bridge mode** — existing task pipeline continues; conductor prompted to run goal-keeper at next H1. Missing blocks = inactive (no crash). First v2.14 session: goal-keeper backfills `goal` from journal TODOS + records `workflow_policy: bridge` until v2.25.
 
 **Effective:** v2.14 pre-flight · **Verify:** `tests/integration/test_v213_upgrade_bridge.py`
+
+---
+
+## ADR-V2-013 — Reference pack goal_verify tightening (F3.4)
+
+**Decision:** Game/data reference packs use a **staged verify ladder**, not a permanently weak suite:
+
+| Stage | Release | Minimum bar |
+|-------|---------|-------------|
+| **M1** | v2.20 | Asset/deliverable artifact exists on disk; ≥1 integration test; perf budget field present in verify config |
+| **M2** | v2.27 | Full pack `verify/` suite green; domain bootstrap transistors bound in workflows |
+| **M3** | v2.28 | No `weak_goal_verify` waiver rows in `automation-waivers.md`; ADR-V2-013 complete |
+
+Waiver row `weak_goal_verify` allowed only v2.20–v2.26 with expiry and linked `goal_ids`.
+
+**Effective:** v2.20 · **Verify:** `tests/integration/test_game_studio_demo.py`, pack verify at v2.27+
+
+---
+
+## ADR-V2-014 — File locking (Windows / concurrent writers)
+
+**Decision:** S0 scripts that write shared files use **write-temp + atomic rename** (same directory). Optional `portalocker` for `lane.json` and promotion-queue reload paths on Windows.
+
+- Lock timeout: **30 seconds** → structured H2 (`integrity.state_corrupt` or lease conflict payload).
+- Conductor remains sole writer of `state.json` / `promotion_queue[]`; workers never hold locks on state.
+
+**Effective:** v2.18 (I2.3 lanes), v2.19 · **Verify:** `tests/integration/test_lane_lease_conflict.py`, `tests/integration/test_writer_authority.py`
+
+---
+
+## ADR-V2-015 — L0 waiver bounds
+
+**Decision:**
+
+- `max_l0_waivers_per_goal = 3` (configurable in `model-policy.json`, default 3).
+- Each L0 node in workflow DAG requires `l0_waiver: true` + `rationale` + `expiry` + linked `promotion_queue_id`.
+- **Expired** waiver on active goal → preflight BLOCKED; cannot advance node.
+- `goal_verify` gate 5 (platform debt): expired L0 waivers on goal-scoped promotion items → **fail**.
+- v2.28: expired waivers also **block H3** (not alert-only).
+
+**Effective:** v2.25 · **Verify:** `validate-workflow-dag.py` enforcement tests; `test_platform_debt_clear.py`
+
+---
+
+## ADR-V2-016 — Security finding taxonomy (G4.1)
+
+**Decision:** Automated security-review findings split into:
+
+| Class | Waivable under self-gate? | Examples |
+|-------|---------------------------|----------|
+| **critical** | **Never** | Secrets/credentials in repo, auth bypass, RCE path |
+| **high** | Only with expiry + operator row | Dependency CVE above pack threshold |
+| **medium/low** | Yes (default self-gate) | Style, nits, non-exploitable warnings |
+
+Pack `roles/*.yaml` may set `security.cve_threshold` (CVSS). `strict_hitl` packs require **critical=0, high=0** before git-workflow.
+
+**Effective:** v2.23 · **Verify:** `tests/unit/test_security_waiver_classes.py`
+
+---
+
+## ADR-V2-017 — Parent goal tree
+
+**Decision:**
+
+- `parent_goal` must reference an existing `goal.id` or be `null`; cycles rejected at preflight.
+- **Child `achieved` does not auto-achieve parent** — parent runs its own `goal_verify`.
+- Parent rollup: `goal_verify` for parent may aggregate **evidence paths** from child goals listed in journal Goal section (conductor links at H1).
+- Program milestones: `program.milestone_id` + child `goal.parent_goal` linkage; parent program goal completes only when milestone workstreams + integration gate satisfied.
+
+**Effective:** v2.14 validation, v2.19 program · **Verify:** `tests/unit/test_parent_goal_tree.py`
+

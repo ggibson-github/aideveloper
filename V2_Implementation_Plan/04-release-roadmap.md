@@ -49,7 +49,7 @@ Standing rule for **every** release: update plans/journal, add `validate-workflo
 
 ### v2.20 — Game studio pack reference + e2e demo
 **Deliver:** full `game-asset-pipeline` pack … end-to-end demo run with **only H1/H3** human interaction; first `tests/e2e/` entries.
-**Capability debt window (v2.20–v2.23):** reference packs ship in **bridge mode** — compose-first task cards + phase skills until v2.24–26 transistor layer back-fills domain transistors (SEC-18 §K). Weak initial `goal_verify` allowed with adversarial tightening ADR (F3.4). **Not** an exemption from generator-first after v2.26.
+**Capability debt paydown (v2.20–v2.27):** reference packs ship transitional (bridge mode, ADR-V2-013 M1 verify). **Debt must be paid down** before v2.28: domain transistors (v2.24+), workflow templates (v2.27), full verify suite (ADR-V2-013 M2/M3). **Not** exempt from generator-first after v2.26.
 **Exit gate:** demo completes a role-to-role handoff producing evidence; e2e test passes (mock external tools where needed).
 **Leaves:** F3.1–F3.4, I4.1–I4.3.
 
@@ -80,13 +80,13 @@ Standing rule for **every** release: update plans/journal, add `validate-workflo
 ### v2.25 — Workflow DAG schema + validator + compose phase (L2)
 **Intent:** **no implement/build/scaffold until DAG validates** — agents plan generators before executing.
 **Deliver:** `workflow-dag.v1.json`; `validate-workflow-dag.py`; `docs/workflows/`; workflow-compose phase **mandatory (default `goal.workflow_policy=required`)**; staleness E5.4; pack pipeline phases become DAG node templates.
-**Exit gate:** a sample DAG validates; an invalid wiring (missing typed input) fails closed at compose time; tests green.
+**Exit gate:** sample DAG validates; invalid wiring fails closed; **`migrate-bridge-to-workflow.py`** flips active goals to `required`; tests green.
 **Leaves:** C6.1–C6.2, E7.1–E7.4, E5.4, SEC-17-9, SEC-15-v2.25.
 
 ### v2.26 — Workflow composer + active_workflow + one-node-per-turn (L3)
 **Intent:** **deliverables only via transistor nodes** — code, docs, diagrams, assets; soft transistors for bounded doc/design generation; fuzzy-chain guard blocks direct implement.
 **Deliver:** `workflow-composer` skill; `pursuit.active_workflow`; `run-soft-transistor.py`; conductor approves DAG at H1; one node/turn; gate edges; task binds `workflow_node_id`; evidence rollup; checkpoint replay; export-contract + redaction profiles.
-**Exit gate:** a goal runs its DAG one node per turn with active_workflow advancing; a failed node replays from checkpoint; fuzzy-chain guard blocks implement without a node binding; tests green.
+**Exit gate:** DAG one node/turn; replay works; fuzzy-chain guard active; **bridge disabled by default**; phase-skill routing forbidden when policy=required; tests green. **Recommended operator checkpoint** ([10](10-implementation-readiness.md)).
 **Leaves:** B6.1–B6.4, C6.3, C6.5, H1.7, G2.5, G5.8, G6.4, I4.4, J5, SEC-17-8, SEC-15-v2.26.
 
 ### v2.27 — Pack workflow templates + _shared transistors + parallel branches
@@ -96,7 +96,7 @@ Standing rule for **every** release: update plans/journal, add `validate-workflo
 
 ### v2.28 — Transistor maturity dashboard + metrics
 **Deliver:** transistor maturity dashboard (class mix vs ~70/20/10 target); `platform.metrics` (fuzzy-chain incidents, promotion debt by capability, workflow coverage % per pack); promotion-debt SLA alerts; optional DAG viewer.
-**Exit gate:** dashboard reports maturity + fuzzy-chain rate + workflow coverage from real registry/workflows; SEC-18 §Q complete; tests green.
+**Exit gate:** dashboard + metrics; SEC-18 §Q + ADR-V2-013 M3; workflow coverage ≥90%; tests green.
 **Leaves:** E6.5 (metrics view), G5.8 (metrics), SEC-15-v2.28.
 
 ---

@@ -48,3 +48,5 @@ description: >-
 8. Session end: `last_session_summary`; run **generate-dashboard** skill or `python scripts/generate-dashboard.py`; refresh `STATUS.md`.
 
 9. If md/json drift: run `python scripts/sync-state.py`.
+
+10. **V2 master plan (`V2_Implementation_Plan/`):** After checking off any [06-MASTER-CHECKLIST.md](../../V2_Implementation_Plan/06-MASTER-CHECKLIST.md) item, run `python scripts/automation/sync-implementation-tracker.py` and record completed stable IDs (e.g. `V214-003`) in **Session summary** / **Artifacts produced**. See [11-implementation-tracker.md](../../V2_Implementation_Plan/11-implementation-tracker.md) Conductor protocol.

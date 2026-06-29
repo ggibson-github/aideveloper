@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aideveloper.local/schemas/state-hitl.v1.json",
+  "title": "state.hitl",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "pending": {
+      "type": ["string", "null"],
+      "enum": ["H1", "H2", "H3", null]
+    },
+    "since": { "type": ["string", "null"], "format": "date-time" },
+    "payload": { "type": ["object", "null"] }
+  }
+}

@@ -115,3 +115,15 @@ Artifact key: **[S]** script · **[K]** skill · **[C]** command · **[R]** rule
 | J4 audit | worker-runs.jsonl + waiver/self-gate audit trail; evidence immutability; retention policy | [D] audit log [v2.15, v2.23] |
 | J5 export-contract | state/evidence export; **redaction profiles** + pack extensions; H3 export approval; `active_workflow` + trace_id fields; secrets never exported | [D] `docs/operator/export-contract.md` |
 | J6 release-queue.json | **harness evolution only** (separate from platform.promotion_queue + hierarchy queues); v2.14–v2.28 rows; run-next-release.py + unattended-prompt | [D] [S] `docs/automation/release-queue.json` [v2.16, v2.28] |
+
+---
+
+## Phase skill → transistor migration (ADR-V2-007)
+
+| Phase skill | v2.24 action | v2.26 action |
+|-------------|--------------|--------------|
+| `hld-writer`, `dd-writer`, `diagram-generator` | Wrap as **soft transistor** templates under `docs/platform/transistors/` | DAG node only; skill invoked only via `run-soft-transistor.py` |
+| `implement-feature` | Decompose into workflow templates + hard transistors | **Forbidden** as direct `next_action` when `workflow_policy=required` |
+| `task-breakdown` | Emits task cards **with** `workflow_node_id` placeholders | Binds to DAG compose output |
+
+Verify: `tests/unit/test_phase_skill_routing_forbidden.py` (v2.26). Bootstrap minimum set: [bootstrap-transistors.manifest.json](../docs/platform/bootstrap-transistors.manifest.json).

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aideveloper.local/schemas/lane.v1.json",
+  "title": "program.workstreams lane lease",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["holder", "expires_at"],
+  "properties": {
+    "holder": { "type": "string", "minLength": 1 },
+    "expires_at": { "type": "string", "format": "date-time" },
+    "work_order_path": { "type": ["string", "null"] },
+    "goal_id": { "type": ["string", "null"] },
+    "trace_id": { "type": ["string", "null"] }
+  }
+}

@@ -39,8 +39,19 @@ Prompt: [`local-autopilot-prompt.md`](local-autopilot-prompt.md)
 | [`release-queue.json`](release-queue.json) | Template **release** evolution only (not consumer pipeline) |
 | [`unattended-prompt.md`](unattended-prompt.md) | Release-queue slice prompt |
 | [`../decisions/automation-waivers.md`](../decisions/automation-waivers.md) | Gate waiver for template self-build only |
+| [`implementation-tracker-registry.json`](implementation-tracker-registry.json) | Stable IDs for V2 master plan todos (PF-001, V214-012, …) |
+| [`../../scripts/automation/sync-implementation-tracker.py`](../../scripts/automation/sync-implementation-tracker.py) | Sync 06 ↔ [11-implementation-tracker.md](../../V2_Implementation_Plan/11-implementation-tracker.md) |
 
-## Release queue (separate)
+## V2 master plan progress (conductor)
+
+When implementing [V2_Implementation_Plan/06-MASTER-CHECKLIST.md](../../V2_Implementation_Plan/06-MASTER-CHECKLIST.md):
+
+1. Complete one item; verify; check off in **06**.
+2. Run `python scripts/automation/sync-implementation-tracker.py` (every turn that changes checkboxes).
+3. Record item IDs in journal (e.g. `V214-003` done).
+4. Read [11-implementation-tracker.md](../../V2_Implementation_Plan/11-implementation-tracker.md) **Conductor protocol** for full rules.
+
+---
 
 `run-next-release.py` lists the next pending **template release** from `release-queue.json`. For day-to-day project pipeline, use autopilot above.
 

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aideveloper.local/schemas/state-pursuit.v1.json",
+  "title": "state.pursuit",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["mode", "steps_total"],
+  "properties": {
+    "mode": {
+      "type": "string",
+      "enum": ["session_autopilot", "goal_autopilot", "company_autopilot", "sdk_daemon"]
+    },
+    "steps_total": { "type": "integer", "minimum": 0 },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "max_steps": { "type": ["integer", "null"], "minimum": 1 },
+        "max_wall_hours": { "type": ["number", "null"], "minimum": 0 }
+      }
+    },
+    "stopped_reason": { "type": ["string", "null"] },
+    "goal_queue": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["goal_id", "enqueued_at"],
+        "properties": {
+          "goal_id": { "type": "string" },
+          "priority": { "type": "integer" },
+          "enqueued_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "active_workflow": { "type": ["object", "null"] }
+  }
+}

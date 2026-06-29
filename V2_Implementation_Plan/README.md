@@ -35,11 +35,15 @@ It is written so that an agent (or a human) can implement it **release by releas
 | 7 | [07-traceability-matrix.md](07-traceability-matrix.md) | Leaf ID → release → checklist item. Proves every spec leaf is covered. |
 | 8 | [08-coverage-ledger.md](08-coverage-ledger.md) | File-by-file checkoff vs `documents/**/*.md` (348 files). |
 | 9 | [09-architectural-supplements.md](09-architectural-supplements.md) | Post-review cross-cuts: ADR index, CI matrix pointer, capability-debt window. |
+| 10 | [10-implementation-readiness.md](10-implementation-readiness.md) | **Read before v2.14 code** — plan vs implementation, bridge sunset, P0 gates, 100% spec definition of done. |
+| 11 | [11-implementation-tracker.md](11-implementation-tracker.md) | **Progress dashboard** — all 293 implementation todos with stable IDs and % complete by release. |
 
 ---
 
 ## How to execute this plan
 
+0. **Confirm 100% spec readiness** — complete [10-implementation-readiness.md](10-implementation-readiness.md) checklist before writing v2.14 code.
+0b. **Track progress** — use [11-implementation-tracker.md](11-implementation-tracker.md) to see every todo; run `python scripts/automation/sync-implementation-tracker.py` after updating checkboxes.
 1. **One release at a time, in order.** Releases are additive and dependency-ordered (see [04](04-release-roadmap.md)). Do not start v2.N+1 until v2.N's exit gate is green.
 2. **Schema is additive.** `journal/state.json` stays `version: 2`. New blocks (`goal`, `pursuit`, `platform`, `company`, `hitl`, `active_workflow`) are added, never breaking existing fields. See [03](03-target-architecture.md).
 3. **Generator-first.** After v2.25, deliverables come from workflow DAG terminal nodes — not direct inline implement. See [03 §5](03-target-architecture.md) and [ADR-V2-007](../docs/decisions/v2-evolution-policy-adrs.md).

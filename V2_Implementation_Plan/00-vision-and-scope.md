@@ -30,7 +30,7 @@ Only **three** classes of human interaction. Everything else (including HLD/DD *
 ```
 H1 — Initial planning gate
       Input:  spec / mega-spec / company charter
-      Output: approved plan artifact (HLD or program milestone + manifest, and the generator workflow DAG)
+      Output: era-dependent — see H1 contract table below
       Once:   per project / program / company template instantiation
 
 H2 — Blocker assistance
@@ -45,6 +45,16 @@ H3 — Final sign-off
 ```
 
 **Continue is redefined:** "continue" = *resume the pursuit loop if not blocked*. It is **not** approval and **not** an answer to an open question. (This preserves the existing `approval-gates` and `pipeline-continue` rules while adding the pursuit semantics.)
+
+**H1 contract by release era:**
+
+| Era | Required H1 artifacts |
+|-----|----------------------|
+| **v2.14–v2.24** (bridge) | Goal spec; machine-checkable `success_criteria[]`; task breakdown; L1 **Components plan**; journal/state dual-write; `goal.workflow_policy=bridge` |
+| **v2.25+** | Above + `docs/workflows/<goal-id>.json` passing `validate-workflow-dag.py` |
+| **v2.26+** | Above + `active_workflow` binding; no direct phase-skill deliverables when policy=`required` |
+
+Bridge sunset: [10-implementation-readiness.md](10-implementation-readiness.md).
 
 ---
 
@@ -131,8 +141,13 @@ The **transistor & generator-workflow model** (vision §19) is not a separate pl
 | SEC-17-6 multi-goal | Single stack until v2.19; preemption ADR when `company_autopilot` enabled | ADR-V2-006 |
 | Platform debt at goal done | `platform_debt_clear_for_goal()` — goal-scoped queue items promoted or waived-with-expiry | ADR-V2-008 |
 | Writer authority | Conductor sole state/journal writer; workers summaries only | ADR-V2-009 |
+| Reference pack verify tightening | Staged M1/M2/M3 ladder; no permanent weak suite | ADR-V2-013 |
+| File locking | Atomic rename; 30s lock timeout → H2 | ADR-V2-014 |
+| L0 waiver bounds | max 3 per goal; expiry blocks advance + H3 | ADR-V2-015 |
+| Security finding taxonomy | critical/high non-waivable or threshold-gated | ADR-V2-016 |
+| Parent goal tree | No auto-achieve parent; evidence rollup only | ADR-V2-017 |
 
-Full ADR text: [docs/decisions/v2-evolution-policy-adrs.md](../docs/decisions/v2-evolution-policy-adrs.md). Operator may override any ADR at **H1** with journal record; do not silently diverge during implement.
+Full ADR text: [docs/decisions/v2-evolution-policy-adrs.md](../docs/decisions/v2-evolution-policy-adrs.md) (ADR-V2-001..017).
 
 ## Operator override at H1
 

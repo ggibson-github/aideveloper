@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aideveloper.local/schemas/workflow-dag.v1.json",
+  "title": "generator workflow DAG (v2.25)",
+  "description": "Placeholder — full schema ships in v2.25 per C6.2 / E7.3",
+  "type": "object",
+  "required": ["workflow_id", "goal_id", "terminal_nodes"],
+  "properties": {
+    "workflow_id": { "type": "string" },
+    "goal_id": { "type": "string" },
+    "terminal_nodes": { "type": "array", "items": { "type": "string" } },
+    "nodes": { "type": "array" }
+  }
+}

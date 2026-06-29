@@ -2,4 +2,4 @@
 
 ## V2 evolution policy
 
-See **[v2-evolution-policy-adrs.md](v2-evolution-policy-adrs.md)** — SEC-17 defaults, generator-first compose precedence (ADR-V2-007), platform debt, writer authority, soft transistor runtime, observability.
+See **[v2-evolution-policy-adrs.md](v2-evolution-policy-adrs.md)** — ADR-V2-001..017: SEC-17 defaults, generator-first compose, platform debt, writer authority, soft transistor runtime, observability, L0 bounds, security taxonomy, parent goal tree, pack verify tightening.

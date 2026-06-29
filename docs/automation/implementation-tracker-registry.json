@@ -1,0 +1,2355 @@
+{
+  "version": 1,
+  "items": {
+    "PF-001": {
+      "hash": "400c7f78fc658877",
+      "prefix": "PF",
+      "num": 1,
+      "section": "Pre-flight (do once, before v2.14)",
+      "text_preview": "Create `tests/integration/` and `tests/e2e/` directories with `__init__.py` and a README. *(C5.1)*",
+      "status": " "
+    },
+    "PF-002": {
+      "hash": "832b4318314cefdf",
+      "prefix": "PF",
+      "num": 2,
+      "section": "Pre-flight (do once, before v2.14)",
+      "text_preview": "Add `docs/platform/` directory + [docs/platform/schemas/README.md](../docs/platform/schemas/README.md) registry (state b",
+      "status": " "
+    },
+    "PF-003": {
+      "hash": "292d9b7b7dac007e",
+      "prefix": "PF",
+      "num": 3,
+      "section": "Pre-flight (do once, before v2.14)",
+      "text_preview": "Publish [docs/decisions/v2-evolution-policy-adrs.md](../docs/decisions/v2-evolution-policy-adrs.md) (ADR-V2-001..017); l",
+      "status": " "
+    },
+    "PF-004": {
+      "hash": "c427ee1cf965447a",
+      "prefix": "PF",
+      "num": 4,
+      "section": "Pre-flight (do once, before v2.14)",
+      "text_preview": "Record ADR defaults in `journal/state.json` `deferred_questions[]` with `{id, adr_ref, default, override:null, needed_by",
+      "status": " "
+    },
+    "PF-005": {
+      "hash": "cf90bb5f21fccec8",
+      "prefix": "PF",
+      "num": 5,
+      "section": "Pre-flight (do once, before v2.14)",
+      "text_preview": "`validate-workflow.py` loads `STATE_SCHEMA_REGISTRY` from [schemas/README.md](../docs/platform/schemas/README.md); **`--",
+      "status": " "
+    },
+    "PF-006": {
+      "hash": "f8020873e135b977",
+      "prefix": "PF",
+      "num": 6,
+      "section": "Pre-flight (do once, before v2.14)",
+      "text_preview": "Each release adds/extends schema + `tests/unit/test_validate_state_<block>.py` for new blocks. *(ongoing)*",
+      "status": " "
+    },
+    "PF-007": {
+      "hash": "cc5f3d636333a923",
+      "prefix": "PF",
+      "num": 7,
+      "section": "Pre-flight (do once, before v2.14)",
+      "text_preview": "Treat [`APP-B-state-json-sketch.md`](../documents/plans/full-automation/APP-B-state-json-sketch.md) as fulfilled by [03-",
+      "status": " "
+    },
+    "PF-008": {
+      "hash": "e90c5f67c740d828",
+      "prefix": "PF",
+      "num": 8,
+      "section": "Pre-flight (do once, before v2.14)",
+      "text_preview": "**Upgrade path (ADR-V2-012):** document v2.13\u2192v2.14 bridge \u2014 missing `goal` block \u2192 existing task pipeline continues; go",
+      "status": " "
+    },
+    "PF-009": {
+      "hash": "93cb7b684785fbed",
+      "prefix": "PF",
+      "num": 9,
+      "section": "Pre-flight (do once, before v2.14)",
+      "text_preview": "**CI test matrix** \u2014 add `.github/workflows/v2-conformance.yml` (or extend existing): per-release gates \u2014 always `valida",
+      "status": " "
+    },
+    "PF-010": {
+      "hash": "43f510412f4b9e4c",
+      "prefix": "PF",
+      "num": 10,
+      "section": "Pre-flight (do once, before v2.14)",
+      "text_preview": "Create [tests/contract/README.md](../tests/contract/README.md) scaffold (v2.20 pre-flight). *(Phase F)*",
+      "status": " "
+    },
+    "PF-011": {
+      "hash": "6d0be18a6efd5890",
+      "prefix": "PF",
+      "num": 11,
+      "section": "Pre-flight (do once, before v2.14)",
+      "text_preview": "`tests/integration/test_v213_upgrade_bridge.py` \u2014 repo without goal block still runs check-pipeline-blocked. *(ADR-V2-01",
+      "status": " "
+    },
+    "V214-001": {
+      "hash": "40807ff21994f17d",
+      "prefix": "V214",
+      "num": 1,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "Add additive `goal` block to `state.json` template (`id, parent_goal, type, priority, success_criteria[], verify_command",
+      "status": " "
+    },
+    "V214-002": {
+      "hash": "95ba6f187c86094d",
+      "prefix": "V214",
+      "num": 2,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "Ship [state-goal.v1.json](../docs/platform/schemas/state-goal.v1.json); `validate-workflow.py --strict` validates presen",
+      "status": " "
+    },
+    "V214-003": {
+      "hash": "71296197d5218fe6",
+      "prefix": "V214",
+      "num": 3,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "`goal.workflow_policy` enum = `required | bridge | exempt` \u2014 default **`bridge`** at v2.14 H1; auto-flip to **`required`",
+      "status": " "
+    },
+    "V214-004": {
+      "hash": "72d023e80960c9c5",
+      "prefix": "V214",
+      "num": 4,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "`goal.state` enum = `pursuing|blocked|verifying|achieved|rejected`. *(A1.5)*",
+      "status": " "
+    },
+    "V214-005": {
+      "hash": "9ef7aa8aebb43bfa",
+      "prefix": "V214",
+      "num": 5,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "`goal.type` enum = `app|feature|milestone|company_ops|program`. *(A1.1)* \u2014 type drives preflight routing: milestone\u2192mani",
+      "status": " "
+    },
+    "V214-006": {
+      "hash": "d8a1e9b65d04b0ef",
+      "prefix": "V214",
+      "num": 6,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "Preflight rejects duplicate `goal.id`, invalid `parent_goal`, and **non-machine-checkable** `success_criteria` (subjecti",
+      "status": " "
+    },
+    "V214-007": {
+      "hash": "2a42be4a64dab870",
+      "prefix": "V214",
+      "num": 7,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "goal-keeper at H1 binds each `success_criteria[]` entry to a task-card verify command or script path. *(A1.2)*",
+      "status": " "
+    },
+    "V214-008": {
+      "hash": "454e233d44de2ceb",
+      "prefix": "V214",
+      "num": 8,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "`scripts/goal-verify.py` \u2014 aggregates unit+integration+e2e+tool results; writes evidence; returns exit code. *(A1.3, G2.",
+      "status": " "
+    },
+    "V214-009": {
+      "hash": "aac574a20f0f55e2",
+      "prefix": "V214",
+      "num": 9,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "`scripts/platform-debt-clear.py` \u2014 S0 predicate `platform_debt_clear_for_goal(goal_id)` per [03 \u00a76.1](03-target-architec",
+      "status": " "
+    },
+    "V214-010": {
+      "hash": "c955ab4ef3ab844a",
+      "prefix": "V214",
+      "num": 10,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "Extend `scripts/automation/check-pipeline-blocked.py`: exit **0=READY / 1=BLOCKED**; read goal fields; missing goal \u2192 H2",
+      "status": " "
+    },
+    "V214-011": {
+      "hash": "d5b3cf00cf5e27af",
+      "prefix": "V214",
+      "num": 11,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "Extend `scripts/validate-workflow.py` to validate the `goal` block shape. *(G3.1)*",
+      "status": " "
+    },
+    "V214-012": {
+      "hash": "ae4fad0beea9b3d3",
+      "prefix": "V214",
+      "num": 12,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "`goal.deadline` budget accounting: pursuit increments steps/tokens/wall-clock via A2.3 post-step; **precedence:** wall_h",
+      "status": " "
+    },
+    "V214-013": {
+      "hash": "274af1dde82027b1",
+      "prefix": "V214",
+      "num": 13,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "`A2.5` transition: when scope-complete, set `goal.state=verifying`; on goal_verify **pass** (incl. platform debt clear),",
+      "status": " "
+    },
+    "V214-014": {
+      "hash": "46eadd6943f3a849",
+      "prefix": "V214",
+      "num": 14,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "`A4.4` integrity stop: `validate-workflow` fail / corrupt state \u2192 `integrity.*` stop reason (not silent continue). *(A4.",
+      "status": " "
+    },
+    "V214-015": {
+      "hash": "0360f61addbf1f23",
+      "prefix": "V214",
+      "num": 15,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "**INTRO-1.3 completion gate** in `goal-verify.py`/`goal-keeper`: `achieved` requires all 5 \u2014 acceptance artifacts, goal_",
+      "status": " "
+    },
+    "V214-016": {
+      "hash": "f262f87b01e6cb09",
+      "prefix": "V214",
+      "num": 16,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "`.cursor/skills/goal-keeper/SKILL.md` \u2014 populates `state.goal` during H1 dual-write; transitions `goal.state`; forbids `",
+      "status": " "
+    },
+    "V214-017": {
+      "hash": "7737eca909227791",
+      "prefix": "V214",
+      "num": 17,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "Add task\u2192goal rollup (% toward goal_verify) to `task-breakdown`/journal-keeper. *(C3.4)*",
+      "status": " "
+    },
+    "V214-018": {
+      "hash": "df1a3564a767930b",
+      "prefix": "V214",
+      "num": 18,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "**C5.2 env-setup-first:** task-breakdown orders portable Python/venv/VS solution/repo clone before package-install tasks",
+      "status": " "
+    },
+    "V214-019": {
+      "hash": "a2022dddc914475e",
+      "prefix": "V214",
+      "num": 19,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "**C5.3 goal-slice DoD:** task-done \u2260 goal-done; slice satisfied = tasks complete + evidence + scope-complete predicate r",
+      "status": " "
+    },
+    "V214-020": {
+      "hash": "f03fb6de262b47ed",
+      "prefix": "V214",
+      "num": 20,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "`G2.4` regression: `goal-verify.py` runs the regression suite on every implement batch (not just at goal end). *(G2.4)*",
+      "status": " "
+    },
+    "V214-021": {
+      "hash": "5f9d91915ac95555",
+      "prefix": "V214",
+      "num": 21,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "`tests/unit/test_goal_verify.py` \u2014 passes/fails on sample suites; bypass attempt fails. *(G2.3, SEC-15-v2.14)*",
+      "status": " "
+    },
+    "V214-022": {
+      "hash": "4fd6a015db11d8d1",
+      "prefix": "V214",
+      "num": 22,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "`tests/unit/test_goal_keeper_state.py` \u2014 `achieved` blocked without verify exit code + 5-part gate enforced. *(INTRO-1.3",
+      "status": " "
+    },
+    "V214-023": {
+      "hash": "df288c49020e2811",
+      "prefix": "V214",
+      "num": 23,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "`tests/integration/test_goal_scope_complete.py` \u2014 scope-complete routes to goal_verify, not \"done\". *(A2.4)*",
+      "status": " "
+    },
+    "V214-024": {
+      "hash": "a54b1cef06b68506",
+      "prefix": "V214",
+      "num": 24,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "`tests/unit/test_platform_debt_clear.py` \u2014 pending goal-scoped queue item blocks; waived-with-expiry passes; global item",
+      "status": " "
+    },
+    "V214-025": {
+      "hash": "8512fb26ee825442",
+      "prefix": "V214",
+      "num": 25,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "`tests/unit/test_budget_caps.py` \u2014 wall\u2192steps\u2192tokens precedence; session cap only in session_autopilot. *(A1.4, A4.3, AD",
+      "status": " "
+    },
+    "V214-026": {
+      "hash": "2be589a7001067e1",
+      "prefix": "V214",
+      "num": 26,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "`python scripts/goal-verify.py --goal <sample>` runs and records exit code in state.",
+      "status": " "
+    },
+    "V214-027": {
+      "hash": "8cf6fe7c939b0e98",
+      "prefix": "V214",
+      "num": 27,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "`python scripts/validate-workflow.py` green; full unit+integration suite green.",
+      "status": " "
+    },
+    "V214-028": {
+      "hash": "079f22d638a81db5",
+      "prefix": "V214",
+      "num": 28,
+      "section": "v2.14 \u2014 Goal model + goal_verify",
+      "text_preview": "Vision \u00a715 v2.14 row + `documents/plans/v2-full-evolution.md` marked shipped; journal dual-written.",
+      "status": " "
+    },
+    "V215-001": {
+      "hash": "9f1316964704ab3d",
+      "prefix": "V215",
+      "num": 1,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "Add `pursuit` block (`mode, steps_total, budget{}, stopped_reason, goal_queue[], active_workflow:null`); **validate lega",
+      "status": " "
+    },
+    "V215-002": {
+      "hash": "4a2716192a54ad07",
+      "prefix": "V215",
+      "num": 2,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "Add `hitl` block (`pending\u2208{H1,H2,H3,null}, since, payload`). *(INTRO-1.2, H1.5)*",
+      "status": " "
+    },
+    "V215-003": {
+      "hash": "9b01207554d7f3e3",
+      "prefix": "V215",
+      "num": 3,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "Allow `autopilot.max_steps_per_session: null` (uncapped) under goal_autopilot. *(A3.1, A3.2)*",
+      "status": " "
+    },
+    "V215-004": {
+      "hash": "b020548f016bda74",
+      "prefix": "V215",
+      "num": 4,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "`check-pipeline-blocked.py` emits full **stop-reason taxonomy** (canonical **dot** notation; leaf A4.* colons are aliase",
+      "status": " "
+    },
+    "V215-005": {
+      "hash": "7155605bb329d29b",
+      "prefix": "V215",
+      "num": 5,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "`run-local-pipeline.py` supports `goal_autopilot` (loop until goal_verify or hard block, no session cap); auth/SDK failu",
+      "status": " "
+    },
+    "V215-006": {
+      "hash": "c0e2bb96a351c6ed",
+      "prefix": "V215",
+      "num": 6,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "**I2.2** `CURSOR_API_KEY` + `AUTOPILOT_MODEL` via env/facts INDEX (never in repo); missing creds \u2192 structured H2; model ",
+      "status": " "
+    },
+    "V215-007": {
+      "hash": "1f791b4a3f04550f",
+      "prefix": "V215",
+      "num": 7,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "`session_autopilot`: when `autopilot.steps_this_session >= max_steps_per_session`, stop with `resource.session_cap` (A3.",
+      "status": " "
+    },
+    "V215-008": {
+      "hash": "cbb46f3497c6ded5",
+      "prefix": "V215",
+      "num": 8,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "**I1.1** genius conductor session: model-policy per session; S0-first; orchestrate-only when `spawn_workers=true`. *(I1.",
+      "status": " "
+    },
+    "V215-009": {
+      "hash": "f886f5371541c127",
+      "prefix": "V215",
+      "num": 9,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "**I1.2** economy subagents via orchestrate-subagents; parallel spawn gated by C4.2 independent lanes; H5 worker-runs aud",
+      "status": " "
+    },
+    "V215-010": {
+      "hash": "ba5bb89018f53eee",
+      "prefix": "V215",
+      "num": 10,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "**I1.3** slash commands (`/continue /autopilot /status /gate /task /verify /lane /program`) \u2194 `.cursor/commands/` \u2194 skil",
+      "status": " "
+    },
+    "V215-011": {
+      "hash": "1eae9bc27c19ae23",
+      "prefix": "V215",
+      "num": 11,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "`autopilot` skill: add `goal_autopilot` mode; default to it after H1; one skill-phase per iteration. *(A3.2, A5.3)*",
+      "status": " "
+    },
+    "V215-012": {
+      "hash": "4ebb465e19d69fb9",
+      "prefix": "V215",
+      "num": 12,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "Update `pipeline-continue.mdc` + `approval-gates.mdc`: \"continue\" = resume pursuit if not blocked; \u2260 approval. *(A5.1, A",
+      "status": " "
+    },
+    "V215-013": {
+      "hash": "d53b39e95db42b3c",
+      "prefix": "V215",
+      "num": 13,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "Self-gate for HLD/DD when `strict_hitl=false` (default); strict mode restores human gates. *(A5.2, J3, SEC-17-1)*",
+      "status": " "
+    },
+    "V215-014": {
+      "hash": "9ae9eea2195dd42e",
+      "prefix": "V215",
+      "num": 14,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "Add `self_gate_mode` to state (`checklist|reviewer|dual_reviewer`) per ADR-V2-001; risk triggers escalate to reviewer. *",
+      "status": " "
+    },
+    "V215-015": {
+      "hash": "a46189a5ceda16d5",
+      "prefix": "V215",
+      "num": 15,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "**Writer authority:** document in AGENTS.md + conductor rule \u2014 workers forbidden dual-write; S0-only lane/evidence appen",
+      "status": " "
+    },
+    "V215-016": {
+      "hash": "2cc82e2299e6e1dd",
+      "prefix": "V215",
+      "num": 16,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "**Full hook set (I1.4)** \u2014 hooks already exist in `.cursor/hooks.json` (beforeSubmitPrompt, postToolUse, sessionStart, s",
+      "status": " "
+    },
+    "V215-017": {
+      "hash": "a4c8bc9967833de2",
+      "prefix": "V215",
+      "num": 17,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "`G6.1` git branch per goal slice (**branch name recorded in journal**); `G6.2` structured `last_failure` packaged for H2",
+      "status": " "
+    },
+    "V215-018": {
+      "hash": "c4f90e1dbcec1e19",
+      "prefix": "V215",
+      "num": 18,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "**B1.1 S0 mandatory-first:** `route-tier.py` \u2192 `check-pipeline-blocked.py` \u2192 `validate-workflow.py` before any S1\u2013S4 mod",
+      "status": " "
+    },
+    "V215-019": {
+      "hash": "4675fe50dded42ee",
+      "prefix": "V215",
+      "num": 19,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "**B1.2 S1 economy workers:** catalog picks worker role; `spawn_workers` + economy tier from `model-policy.json`; workers",
+      "status": " "
+    },
+    "V215-020": {
+      "hash": "fac9da9a58d87af3",
+      "prefix": "V215",
+      "num": 20,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "**B1.3 S2 templated artifacts:** route `hld-writer`, `dd-writer`, `task-breakdown`, `diagram-generator` at S2; S0 valida",
+      "status": " "
+    },
+    "V215-021": {
+      "hash": "fcaed8ad2cd3d7a0",
+      "prefix": "V215",
+      "num": 21,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "**B1.4 S3 genius-only:** trade-offs, merge, ADR/journal closure; one-fact/one-script tasks are NOT S3; external authorit",
+      "status": " "
+    },
+    "V215-022": {
+      "hash": "194536a8ffd6265c",
+      "prefix": "V215",
+      "num": 22,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "**B1.5 S4 H2 packaging:** structured blocker (`goal_id`, missing artifact, operator action); legal/finance pack authorit",
+      "status": " "
+    },
+    "V215-023": {
+      "hash": "323e82542bee47b3",
+      "prefix": "V215",
+      "num": 23,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "**B3.1 genius thin turns:** conductor orchestrates only when `spawn_workers=true`; inline large implement = conformance ",
+      "status": " "
+    },
+    "V215-024": {
+      "hash": "1699ee946d89f3e2",
+      "prefix": "V215",
+      "num": 24,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "**B3.2 economy bulk scope:** multi-file search, scoped refactors, test fixes on economy tier; escalate to S3 on architec",
+      "status": " "
+    },
+    "V215-025": {
+      "hash": "1cd5c1ce5bb9361a",
+      "prefix": "V215",
+      "num": 25,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "**B3.3 verify-fail escalation:** classify failure (test/tool/environment/design); retry vs H2 vs refactor task; repeated",
+      "status": " "
+    },
+    "V215-026": {
+      "hash": "3a3bfa6b3c2256c8",
+      "prefix": "V215",
+      "num": 26,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "**J1** extend `docs/operator/model-policy.json`: genius/economy tiers, autopilot defaults, `capability_classes`, routing",
+      "status": " "
+    },
+    "V215-027": {
+      "hash": "d0ec6fdda6ba906d",
+      "prefix": "V215",
+      "num": 27,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "Add `strict_hitl` flag to `docs/operator/model-policy.json` (default false) + document in J3; interacts with `self_gate_",
+      "status": " "
+    },
+    "V215-028": {
+      "hash": "e5d03fd795713140",
+      "prefix": "V215",
+      "num": 28,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "Map ADR defaults to state slots: SEC-17-2 \u2192 pack `h3_scope` + journal; SEC-17-3 \u2192 `platform.drain_policy` + adaptive K; ",
+      "status": " "
+    },
+    "V215-029": {
+      "hash": "0b72177a7c3f8465",
+      "prefix": "V215",
+      "num": 29,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "Stop taxonomy includes `resource.preempted` (ADR-V2-006) and `integrity.workflow_stale` (E5.4 validation_hash mismatch);",
+      "status": " "
+    },
+    "V215-030": {
+      "hash": "6769fa6992e20ca2",
+      "prefix": "V215",
+      "num": 30,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "`tests/integration/test_goal_autopilot_loop.py` \u2014 seeded goal advances \u22653 phases unattended, stops only on real blocker/",
+      "status": " "
+    },
+    "V215-031": {
+      "hash": "d9a0d1905b0cba06",
+      "prefix": "V215",
+      "num": 31,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "`tests/unit/test_strict_hitl_toggle.py` \u2014 toggling re-enables HLD/DD gates. *(J3)*",
+      "status": " "
+    },
+    "V215-032": {
+      "hash": "978fdfaa7dce2457",
+      "prefix": "V215",
+      "num": 32,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "`tests/unit/test_pretooluse_allowlist.py` \u2014 unsafe command blocked; allowed command passes. *(G5.7)*",
+      "status": " "
+    },
+    "V215-033": {
+      "hash": "3283c7816bd75ae7",
+      "prefix": "V215",
+      "num": 33,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "`tests/integration/test_precompact_resume.py` \u2014 resume from snapshot after simulated crash. *(G6.3, H6)*",
+      "status": " "
+    },
+    "V215-034": {
+      "hash": "80020572ad7b6e20",
+      "prefix": "V215",
+      "num": 34,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "**`worker-runs.jsonl` audit contract:** conductor logs each spawn (`role, model_tier, allowed_reads, task_id, goal_id, l",
+      "status": " "
+    },
+    "V215-035": {
+      "hash": "60b97511f8bdd20d",
+      "prefix": "V215",
+      "num": 35,
+      "section": "v2.15 \u2014 Pursuit loop hardening",
+      "text_preview": "Unattended multi-phase advance demonstrated; stop_reason recorded; strict_hitl verified; suite green; docs/journal updat",
+      "status": " "
+    },
+    "V216-001": {
+      "hash": "9bf27034cb178936",
+      "prefix": "V216",
+      "num": 1,
+      "section": "v2.16 \u2014 Platform queue + scheduler",
+      "text_preview": "Add `platform` block: `promotion_queue[]` (**authoritative in state.json** \u2014 not hierarchy queue JSON; J6 separation), `",
+      "status": " "
+    },
+    "V216-002": {
+      "hash": "cb4f2116e75d9527",
+      "prefix": "V216",
+      "num": 2,
+      "section": "v2.16 \u2014 Platform queue + scheduler",
+      "text_preview": "Promotion item schema `{id, source, target_level(L1\u2013L6), priority(numeric), effort_class(S|M|L), reason, fingerprint, so",
+      "status": " "
+    },
+    "V216-003": {
+      "hash": "38fb903f360ec4b2",
+      "prefix": "V216",
+      "num": 3,
+      "section": "v2.16 \u2014 Platform queue + scheduler",
+      "text_preview": "Scheduler logic in autopilot/`run-local-pipeline.py`: **adaptive K** per ADR-V2-003 (`K = max(K_min, base - floor((depth",
+      "status": " "
+    },
+    "V216-004": {
+      "hash": "7d8f885b6b857691",
+      "prefix": "V216",
+      "num": 4,
+      "section": "v2.16 \u2014 Platform queue + scheduler",
+      "text_preview": "`K` is pack-configurable via task-level params (D5.1); record deferrals in state, never silently skip self-improvement f",
+      "status": " "
+    },
+    "V216-005": {
+      "hash": "8fe7b94b83da6f98",
+      "prefix": "V216",
+      "num": 5,
+      "section": "v2.16 \u2014 Platform queue + scheduler",
+      "text_preview": "Enqueue triggers: repeated manual command 2\u00d7 \u2192 often L2 (D2.1.1); worker flags repetition with fingerprint dedupe \u2014 defe",
+      "status": " "
+    },
+    "V216-006": {
+      "hash": "23985f6d6809eb55",
+      "prefix": "V216",
+      "num": 6,
+      "section": "v2.16 \u2014 Platform queue + scheduler",
+      "text_preview": "`new-task-card.py` adds **Components used** + **Promotion note** fields; v2.26 also adds **workflow_node_id** + **transi",
+      "status": " "
+    },
+    "V216-007": {
+      "hash": "95b3ed783834a613",
+      "prefix": "V216",
+      "num": 7,
+      "section": "v2.16 \u2014 Platform queue + scheduler",
+      "text_preview": "Document ladder **L0\u2013L6** with locations + promotion rules (L6 capstone deferred detail to v2.24). *(D1.1\u2013D1.7)*",
+      "status": " "
+    },
+    "V216-008": {
+      "hash": "1a00fb520c23e4fc",
+      "prefix": "V216",
+      "num": 8,
+      "section": "v2.16 \u2014 Platform queue + scheduler",
+      "text_preview": "Dequeue on platform turn only; product `next_action` untouched; partial promotion \u2192 re-enqueue (not false done); optiona",
+      "status": " "
+    },
+    "V216-009": {
+      "hash": "a953df9ad9f61945",
+      "prefix": "V216",
+      "num": 9,
+      "section": "v2.16 \u2014 Platform queue + scheduler",
+      "text_preview": "Extend/fork/configure policy: **configure**=task-level params only, **no staleness bump** (D5.1); **extend**=back-compat",
+      "status": " "
+    },
+    "V216-010": {
+      "hash": "5fa3ca6b4ae4f58a",
+      "prefix": "V216",
+      "num": 10,
+      "section": "v2.16 \u2014 Platform queue + scheduler",
+      "text_preview": "Platform DoD checklist: D6.1 INDEX row (maturity + verify ref + promotion id trace); **D6.2 verify: L1 playbook manual v",
+      "status": " "
+    },
+    "V216-011": {
+      "hash": "a923f74113c0e0ce",
+      "prefix": "V216",
+      "num": 11,
+      "section": "v2.16 \u2014 Platform queue + scheduler",
+      "text_preview": "Platform work type: **Behavior-section scrub** \u2014 leaves in active release scope must cite Reader narrative / State field",
+      "status": " "
+    },
+    "V216-012": {
+      "hash": "dfbafa1ddd40175c",
+      "prefix": "V216",
+      "num": 12,
+      "section": "v2.16 \u2014 Platform queue + scheduler",
+      "text_preview": "Optional: `scripts/automation/lint-leaf-authority.py` flags Behavior-only references in task cards (non-blocking until v",
+      "status": " "
+    },
+    "V216-013": {
+      "hash": "7209432a60ab9bb1",
+      "prefix": "V216",
+      "num": 13,
+      "section": "v2.16 \u2014 Platform queue + scheduler",
+      "text_preview": "Platform work types via `playbook-keeper` + script extraction (D4.2) + skill/command wrapper (D4.3) + hook+validate ext ",
+      "status": " "
+    },
+    "V216-014": {
+      "hash": "e4e42e29725274d3",
+      "prefix": "V216",
+      "num": 14,
+      "section": "v2.16 \u2014 Platform queue + scheduler",
+      "text_preview": "Populate `docs/playbooks/INDEX.md` with the 2 existing playbooks; add platform worker role to orchestration. *(D4.1, B2.",
+      "status": " "
+    },
+    "V216-015": {
+      "hash": "225e39d5bbd24c67",
+      "prefix": "V216",
+      "num": 15,
+      "section": "v2.16 \u2014 Platform queue + scheduler",
+      "text_preview": "Every turn peeks promotion_queue + drain decision; **divergence_log entry schema** `{timestamp, searched[], compose_fail",
+      "status": " "
+    },
+    "V216-016": {
+      "hash": "1bd75de98f9301bf",
+      "prefix": "V216",
+      "num": 16,
+      "section": "v2.16 \u2014 Platform queue + scheduler",
+      "text_preview": "Platform turns may use economy + S0 (model-policy). *(B3.4)*",
+      "status": " "
+    },
+    "V216-017": {
+      "hash": "b53c1001e61af8d7",
+      "prefix": "V216",
+      "num": 17,
+      "section": "v2.16 \u2014 Platform queue + scheduler",
+      "text_preview": "`docs/automation/release-queue.json` schema wired to existing `scripts/automation/run-next-release.py`. Row fields: `sta",
+      "status": " "
+    },
+    "V216-018": {
+      "hash": "22e0da3d6f99f534",
+      "prefix": "V216",
+      "num": 18,
+      "section": "v2.16 \u2014 Platform queue + scheduler",
+      "text_preview": "`docs/automation/unattended-prompt.md` \u2014 stable instructions for unattended/Cloud harness self-evolution (one release pe",
+      "status": " "
+    },
+    "V216-019": {
+      "hash": "1a9d2a141bf9fef4",
+      "prefix": "V216",
+      "num": 19,
+      "section": "v2.16 \u2014 Platform queue + scheduler",
+      "text_preview": "Harness self-build runs under `mode: iterative_feature` with empty blockers; gate waivers recorded in `docs/decisions/au",
+      "status": " "
+    },
+    "V216-020": {
+      "hash": "7e8d9bb967cbeed3",
+      "prefix": "V216",
+      "num": 20,
+      "section": "v2.16 \u2014 Platform queue + scheduler",
+      "text_preview": "`tests/unit/test_platform_dod_l1_once.py` \u2014 second L1-only verify reference enqueues L2 or H2. *(D6.2)*",
+      "status": " "
+    },
+    "V216-021": {
+      "hash": "7c7e4501c9dfb84e",
+      "prefix": "V216",
+      "num": 21,
+      "section": "v2.16 \u2014 Platform queue + scheduler",
+      "text_preview": "`tests/unit/test_platform_queue.py` \u2014 enqueue/dequeue/priority + malformed item rejected. *(D2)*",
+      "status": " "
+    },
+    "V216-022": {
+      "hash": "ab70920c3511bbaf",
+      "prefix": "V216",
+      "num": 22,
+      "section": "v2.16 \u2014 Platform queue + scheduler",
+      "text_preview": "`tests/unit/test_drain_scheduler.py` \u2014 1/K, boost, cut, idle, max-age, skip-when-empty. *(D3)*",
+      "status": " "
+    },
+    "V216-023": {
+      "hash": "edb61dc940a15a8d",
+      "prefix": "V216",
+      "num": 23,
+      "section": "v2.16 \u2014 Platform queue + scheduler",
+      "text_preview": "`tests/integration/test_promotion_flow.py` \u2014 enqueue\u2192drain\u2192catalog row\u2192staleness node. *(D6)*",
+      "status": " "
+    },
+    "V216-024": {
+      "hash": "51bc07da5ff5cbcf",
+      "prefix": "V216",
+      "num": 24,
+      "section": "v2.16 \u2014 Platform queue + scheduler",
+      "text_preview": "`tests/integration/test_platform_interleave.py` \u2014 **SEC-13 end-to-end**: pursuit step \u2192 K-scheduled platform drain \u2192 pro",
+      "status": " "
+    },
+    "V216-025": {
+      "hash": "9522d511119b84a2",
+      "prefix": "V216",
+      "num": 25,
+      "section": "v2.16 \u2014 Platform queue + scheduler",
+      "text_preview": "A promotion item completes the full ladder loop; scheduler interleaves correctly; SEC-13 interleave proven; suite green;",
+      "status": " "
+    },
+    "V217-001": {
+      "hash": "3aed52fb85f8ca65",
+      "prefix": "V217",
+      "num": 1,
+      "section": "v2.17 \u2014 Catalog & compose-first",
+      "text_preview": "`scripts/list-components.py` (S0) scans + emits per-source indexes: scripts manifest (E1.1), playbooks INDEX (E1.2), ski",
+      "status": " "
+    },
+    "V217-002": {
+      "hash": "c503df228fe4a567",
+      "prefix": "V217",
+      "num": 2,
+      "section": "v2.17 \u2014 Catalog & compose-first",
+      "text_preview": "CATALOG.md is generated (regenerable, deterministic) with **bidirectional INDEX cross-links**; Plane D maturity claims r",
+      "status": " "
+    },
+    "V217-003": {
+      "hash": "7c926c0085a7006d",
+      "prefix": "V217",
+      "num": 3,
+      "section": "v2.17 \u2014 Catalog & compose-first",
+      "text_preview": "Each phase skill declares **front-matter contract**: inputs[], outputs[], verify command, catalog refs[]; missing catalo",
+      "status": " "
+    },
+    "V217-004": {
+      "hash": "79dcead5c5b3bbe5",
+      "prefix": "V217",
+      "num": 4,
+      "section": "v2.17 \u2014 Catalog & compose-first",
+      "text_preview": "**E4.1** layer-0 context: AGENTS.md + always-on rules (+ pack rule fragments); AGENTS change \u2192 dependent playbook/skill ",
+      "status": " "
+    },
+    "V217-005": {
+      "hash": "3384f439212e01de",
+      "prefix": "V217",
+      "num": 5,
+      "section": "v2.17 \u2014 Catalog & compose-first",
+      "text_preview": "Confirm hooks inject journal + **Context files** on continue/start (E4.2); corrupt state \u2192 H2; allowed_reads cap 5 retai",
+      "status": " "
+    },
+    "V217-006": {
+      "hash": "1559c1bae5127659",
+      "prefix": "V217",
+      "num": 6,
+      "section": "v2.17 \u2014 Catalog & compose-first",
+      "text_preview": "Verify ADR-V2-001..017 published and linked; S3 ambiguity \u2192 new ADR (B1.4); **supersede \u2192 downstream staleness**. *(E3.2",
+      "status": " "
+    },
+    "V217-007": {
+      "hash": "e8680a0838e126a9",
+      "prefix": "V217",
+      "num": 7,
+      "section": "v2.17 \u2014 Catalog & compose-first",
+      "text_preview": "**E3.3** remember skill: no global FTS/vector store; repeated captures \u2192 promotion candidates; distinct from journal Q&A",
+      "status": " "
+    },
+    "V217-008": {
+      "hash": "116f2c98e26fd7fb",
+      "prefix": "V217",
+      "num": 8,
+      "section": "v2.17 \u2014 Catalog & compose-first",
+      "text_preview": "**E3.1** stale external facts \u2192 journal note + optional reconcile-stale. *(E3.1)*",
+      "status": " "
+    },
+    "V217-009": {
+      "hash": "72183af06741fc02",
+      "prefix": "V217",
+      "num": 9,
+      "section": "v2.17 \u2014 Catalog & compose-first",
+      "text_preview": "Compose-first rule (`.cursor/rules/compose-first.mdc`): mandatory before S1+ during **bridge** mode; becomes **per-node ",
+      "status": " "
+    },
+    "V217-010": {
+      "hash": "8f243c4800efe6e5",
+      "prefix": "V217",
+      "num": 10,
+      "section": "v2.17 \u2014 Catalog & compose-first",
+      "text_preview": "Rule text states: **catalog compose does NOT substitute for workflow DAG** after v2.25; it selects transistors for each ",
+      "status": " "
+    },
+    "V217-011": {
+      "hash": "5752441b5cfcb060",
+      "prefix": "V217",
+      "num": 11,
+      "section": "v2.17 \u2014 Catalog & compose-first",
+      "text_preview": "Rank order `script > playbook > skill > facts` (transistor prepended in v2.24); **tie-break: pack-authored + higher matu",
+      "status": " "
+    },
+    "V217-012": {
+      "hash": "5fd1e58e9325275f",
+      "prefix": "V217",
+      "num": 12,
+      "section": "v2.17 \u2014 Catalog & compose-first",
+      "text_preview": "`list-components` returns **component type + maturity tier** metadata (E2.2); Librarian returns `suggested_components` +",
+      "status": " "
+    },
+    "V217-013": {
+      "hash": "876be5e170e27e78",
+      "prefix": "V217",
+      "num": 13,
+      "section": "v2.17 \u2014 Catalog & compose-first",
+      "text_preview": "Compose miss \u2192 proceed L0 + enqueue promotion; **repeated L0 same capability \u2192 elevate promotion priority**. *(E2.5)*",
+      "status": " "
+    },
+    "V217-014": {
+      "hash": "279fa501f1d28a5b",
+      "prefix": "V217",
+      "num": 14,
+      "section": "v2.17 \u2014 Catalog & compose-first",
+      "text_preview": "Facts/decisions/remember wiring confirmed (E3); allowed_reads cap 5 retained (E4.3).",
+      "status": " "
+    },
+    "V217-015": {
+      "hash": "159c651d05fc4f2c",
+      "prefix": "V217",
+      "num": 15,
+      "section": "v2.17 \u2014 Catalog & compose-first",
+      "text_preview": "`tests/unit/test_list_components.py` \u2014 catalog reflects real repo contents. *(E1)*",
+      "status": " "
+    },
+    "V217-016": {
+      "hash": "d8fa3714bede3136",
+      "prefix": "V217",
+      "num": 16,
+      "section": "v2.17 \u2014 Catalog & compose-first",
+      "text_preview": "`tests/integration/test_compose_first.py` \u2014 task card gets Components from catalog; miss enqueues promotion. *(E2)*",
+      "status": " "
+    },
+    "V217-017": {
+      "hash": "033c81ddd093305b",
+      "prefix": "V217",
+      "num": 17,
+      "section": "v2.17 \u2014 Catalog & compose-first",
+      "text_preview": "CATALOG.md regenerates; compose-first produces a Components section; miss enqueues; suite green; docs/journal updated.",
+      "status": " "
+    },
+    "V218-001": {
+      "hash": "e88ec12278df1590",
+      "prefix": "V218",
+      "num": 1,
+      "section": "v2.18 \u2014 Staleness graph extension (platform nodes)",
+      "text_preview": "Extend `docs/manifest/staleness.json` + `update-staleness.py` to track playbooks, scripts, **skills/commands**, pack nod",
+      "status": " "
+    },
+    "V218-002": {
+      "hash": "f62b71fe51b6323b",
+      "prefix": "V218",
+      "num": 2,
+      "section": "v2.18 \u2014 Staleness graph extension (platform nodes)",
+      "text_preview": "Vision \u00a7 changes enqueue **hierarchy deepen** items; implement blocked on stale design until reconcile. *(E5.1)*",
+      "status": " "
+    },
+    "V218-003": {
+      "hash": "38aff1bd4129612d",
+      "prefix": "V218",
+      "num": 3,
+      "section": "v2.18 \u2014 Staleness graph extension (platform nodes)",
+      "text_preview": "**Catalog regen reconciles staleness graph**; optional pack verify asserts graph completeness. *(E5.2)*",
+      "status": " "
+    },
+    "V218-004": {
+      "hash": "2bd057dc190280c0",
+      "prefix": "V218",
+      "num": 4,
+      "section": "v2.18 \u2014 Staleness graph extension (platform nodes)",
+      "text_preview": "`reconcile-stale` + `reconcile-artifact-graph` cover platform nodes; outcomes: rerun / waive / **deepen hierarchy queue*",
+      "status": " "
+    },
+    "V218-005": {
+      "hash": "830d8e9561d60266",
+      "prefix": "V218",
+      "num": 5,
+      "section": "v2.18 \u2014 Staleness graph extension (platform nodes)",
+      "text_preview": "CI step (GitHub Actions) runs `validate-workflow.py` + `headless-verify.py` + lane pull/complete work-order checks. *(I3",
+      "status": " "
+    },
+    "V218-006": {
+      "hash": "a18a2985d184e9b6",
+      "prefix": "V218",
+      "num": 6,
+      "section": "v2.18 \u2014 Staleness graph extension (platform nodes)",
+      "text_preview": "**I3.1** headless-verify is S0/disk-first (no LLM by default); failures set `last_verify` for IDE resume.",
+      "status": " "
+    },
+    "V218-007": {
+      "hash": "6b006d1ecb1489b4",
+      "prefix": "V218",
+      "num": 7,
+      "section": "v2.18 \u2014 Staleness graph extension (platform nodes)",
+      "text_preview": "**I3.2** CI validates conformance \u2014 pass \u2260 `goal_verify`; does not clear H3/design gates.",
+      "status": " "
+    },
+    "V218-008": {
+      "hash": "a36ddfb40716cbb9",
+      "prefix": "V218",
+      "num": 8,
+      "section": "v2.18 \u2014 Staleness graph extension (platform nodes)",
+      "text_preview": "**I3.3** headless lane workers: S0-only dual-write; conductor merge path; C4.1 lease semantics.",
+      "status": " "
+    },
+    "V218-009": {
+      "hash": "7750841816eda139",
+      "prefix": "V218",
+      "num": 9,
+      "section": "v2.18 \u2014 Staleness graph extension (platform nodes)",
+      "text_preview": "**I2.3 operator PC worker-server:** dedicated machine drains lane work orders; GPU/tool offload; network partition \u2192 H2;",
+      "status": " "
+    },
+    "V218-010": {
+      "hash": "cf2910ca35e18e73",
+      "prefix": "V218",
+      "num": 10,
+      "section": "v2.18 \u2014 Staleness graph extension (platform nodes)",
+      "text_preview": "`tests/unit/test_staleness_platform.py` \u2014 editing a script marks dependent nodes stale; reconcile plans re-run.",
+      "status": " "
+    },
+    "V218-011": {
+      "hash": "42bc6b6048e79fcb",
+      "prefix": "V218",
+      "num": 11,
+      "section": "v2.18 \u2014 Staleness graph extension (platform nodes)",
+      "text_preview": "Stale propagation + reconcile demonstrated; CI conformance green; suite green; docs/journal updated.",
+      "status": " "
+    },
+    "V219-001": {
+      "hash": "1ea9c30524a56ac2",
+      "prefix": "V219",
+      "num": 1,
+      "section": "v2.19 \u2014 Company pack schema v1",
+      "text_preview": "`docs/platform/schemas/company.schema.json` \u2014 fields `name, industry, roles[], departments[], default_pipeline, pack_ver",
+      "status": " "
+    },
+    "V219-002": {
+      "hash": "7952279a83ed9d9f",
+      "prefix": "V219",
+      "num": 2,
+      "section": "v2.19 \u2014 Company pack schema v1",
+      "text_preview": "`docs/platform/schemas/role.schema.json` \u2014 fields `role_id, pipeline_id, tools, permissions, kpis, handoff_targets, allo",
+      "status": " "
+    },
+    "V219-003": {
+      "hash": "32478de418f9c0a3",
+      "prefix": "V219",
+      "num": 3,
+      "section": "v2.19 \u2014 Company pack schema v1",
+      "text_preview": "`docs/platform/schemas/pipeline.schema.json` \u2014 fields `phases, phase_order, gates, pack_keywords, skill_bindings/default",
+      "status": " "
+    },
+    "V219-004": {
+      "hash": "bbf08f79554d8d66",
+      "prefix": "V219",
+      "num": 4,
+      "section": "v2.19 \u2014 Company pack schema v1",
+      "text_preview": "Pack target structure documented: `company.yaml`, `roles/*.yaml`, `pipelines/*.yaml`, `manifest.md`, `artifact-graph.jso",
+      "status": " "
+    },
+    "V219-005": {
+      "hash": "16d6af36d5ae827c",
+      "prefix": "V219",
+      "num": 5,
+      "section": "v2.19 \u2014 Company pack schema v1",
+      "text_preview": "**C1.4 pipeline resolution:** consumer goals inherit pack `pipelines/*.yaml` at instantiation (`program-scoper` + `state",
+      "status": " "
+    },
+    "V219-006": {
+      "hash": "7e3d8643b0196414",
+      "prefix": "V219",
+      "num": 6,
+      "section": "v2.19 \u2014 Company pack schema v1",
+      "text_preview": "**C4.1 lane lease schema:** `{holder, expires_at, work_order_path}`; stale lease \u2192 `resource.lease_expired` stop (A4.3);",
+      "status": " "
+    },
+    "V219-007": {
+      "hash": "2465be668d216ca3",
+      "prefix": "V219",
+      "num": 7,
+      "section": "v2.19 \u2014 Company pack schema v1",
+      "text_preview": "Add `company` block (`pack_id, pack_version, active_role, role_queue[], role_forbidden_reads[]`). *(H1.6, B5.1)*",
+      "status": " "
+    },
+    "V219-008": {
+      "hash": "fdd824f669b5b1a6",
+      "prefix": "V219",
+      "num": 8,
+      "section": "v2.19 \u2014 Company pack schema v1",
+      "text_preview": "role \u2192 pipeline_id + skill set + tool permissions (MCP/CLI allowlist) mapping. *(B5.2, F6.1, F6.3)*",
+      "status": " "
+    },
+    "V219-009": {
+      "hash": "1a5fd96731756060",
+      "prefix": "V219",
+      "num": 9,
+      "section": "v2.19 \u2014 Company pack schema v1",
+      "text_preview": "role-scoped `allowed_reads` **and** `forbidden_reads` deny list (role playbooks + lane tasks). *(F6.2, F1.1)*",
+      "status": " "
+    },
+    "V219-010": {
+      "hash": "5eb5271cfa4aee31",
+      "prefix": "V219",
+      "num": 10,
+      "section": "v2.19 \u2014 Company pack schema v1",
+      "text_preview": "per-role evidence requirements by output type; **output_type evidence fail-closed** even when generic task verify passed",
+      "status": " "
+    },
+    "V219-011": {
+      "hash": "edd0c6df3cda5a0d",
+      "prefix": "V219",
+      "num": 11,
+      "section": "v2.19 \u2014 Company pack schema v1",
+      "text_preview": "**active_role persists in state.json** across turns (session continuity); mis-mapping role\u2192pipeline = conformance fail. ",
+      "status": " "
+    },
+    "V219-012": {
+      "hash": "144ee9e4356f57fb",
+      "prefix": "V219",
+      "num": 12,
+      "section": "v2.19 \u2014 Company pack schema v1",
+      "text_preview": "complete-work-order before role switch; lease + active_role + workflow-branch ordering. *(F6.3, C6.4)*",
+      "status": " "
+    },
+    "V219-013": {
+      "hash": "e54c62183350d710",
+      "prefix": "V219",
+      "num": 13,
+      "section": "v2.19 \u2014 Company pack schema v1",
+      "text_preview": "`program-scoper` selects pack from mega-spec (records rationale); optional **H1 pack-selection gate** when `policy.pack_",
+      "status": " "
+    },
+    "V219-014": {
+      "hash": "e6617f803ead52e5",
+      "prefix": "V219",
+      "num": 14,
+      "section": "v2.19 \u2014 Company pack schema v1",
+      "text_preview": "Pack authority policy: legal/finance roles `H2-always` unless operator overrides (`role_class`+`automation_allowed`). *(",
+      "status": " "
+    },
+    "V219-015": {
+      "hash": "249f1422fb8e5f45",
+      "prefix": "V219",
+      "num": 15,
+      "section": "v2.19 \u2014 Company pack schema v1",
+      "text_preview": "**C4.1 program block schema** in `validate-workflow.py`: `program.workstreams[]`, `lane.json` lease fields; document in ",
+      "status": " "
+    },
+    "V219-016": {
+      "hash": "ef8ab315ab00b8cd",
+      "prefix": "V219",
+      "num": 16,
+      "section": "v2.19 \u2014 Company pack schema v1",
+      "text_preview": "If `company_autopilot`/multi-goal enabled: ADR-V2-006 preemption rules implemented (not ad-hoc). *(SEC-17-6, A3.3)*",
+      "status": " "
+    },
+    "V219-017": {
+      "hash": "108927deaa82914c",
+      "prefix": "V219",
+      "num": 17,
+      "section": "v2.19 \u2014 Company pack schema v1",
+      "text_preview": "Pack authoring guide maps every APP-A slice to pipeline phases + verify commands + playbooks (not chat-only policy):",
+      "status": " "
+    },
+    "V219-018": {
+      "hash": "ed343ad853bfe4d6",
+      "prefix": "V219",
+      "num": 18,
+      "section": "v2.19 \u2014 Company pack schema v1",
+      "text_preview": "`tests/unit/test_pack_schema_validate.py` \u2014 valid pack passes, malformed fails. *(F1)*",
+      "status": " "
+    },
+    "V219-019": {
+      "hash": "0fdd0d98b68cb0c5",
+      "prefix": "V219",
+      "num": 19,
+      "section": "v2.19 \u2014 Company pack schema v1",
+      "text_preview": "`tests/integration/test_active_role_routing.py` \u2014 instantiation sets active_role + routes to role pipeline. *(F2, B5)*",
+      "status": " "
+    },
+    "V219-020": {
+      "hash": "95e49009f8d092b1",
+      "prefix": "V219",
+      "num": 20,
+      "section": "v2.19 \u2014 Company pack schema v1",
+      "text_preview": "`tests/unit/test_role_permission_matrix.py` \u2014 tool allowlist + forbidden_reads enforced per role. *(F6.2, F6.3)*",
+      "status": " "
+    },
+    "V219-021": {
+      "hash": "2e7451d24a71f50c",
+      "prefix": "V219",
+      "num": 21,
+      "section": "v2.19 \u2014 Company pack schema v1",
+      "text_preview": "`tests/unit/test_output_type_fail_closed.py` \u2014 task blocked without role output_type evidence despite generic verify pas",
+      "status": " "
+    },
+    "V219-022": {
+      "hash": "2f5f7f645636f858",
+      "prefix": "V219",
+      "num": 22,
+      "section": "v2.19 \u2014 Company pack schema v1",
+      "text_preview": "`tests/integration/test_goal_queue_preemption.py` \u2014 higher priority goal preempts; lease priority respected. *(ADR-V2-00",
+      "status": " "
+    },
+    "V219-023": {
+      "hash": "cea39128265879b1",
+      "prefix": "V219",
+      "num": 23,
+      "section": "v2.19 \u2014 Company pack schema v1",
+      "text_preview": "`tests/integration/test_writer_authority.py` + `tests/integration/test_lane_lease_conflict.py` \u2014 worker cannot dual-writ",
+      "status": " "
+    },
+    "V219-024": {
+      "hash": "79da76ae81a195f1",
+      "prefix": "V219",
+      "num": 24,
+      "section": "v2.19 \u2014 Company pack schema v1",
+      "text_preview": "`tests/integration/test_handoff_s0_vs_s3.py` \u2014 S0 graph prereq vs S3 ambiguous merge paths. *(F2.4)*",
+      "status": " "
+    },
+    "V219-025": {
+      "hash": "b07317282f0611cc",
+      "prefix": "V219",
+      "num": 25,
+      "section": "v2.19 \u2014 Company pack schema v1",
+      "text_preview": "A pack validates + instantiates + routes by role; suite green; docs/journal updated.",
+      "status": " "
+    },
+    "V220-001": {
+      "hash": "5941cf1580f76c6b",
+      "prefix": "V220",
+      "num": 1,
+      "section": "v2.20 \u2014 Game studio pack reference + e2e demo",
+      "text_preview": "Build full `template-packs/game-asset-pipeline/`: `company.yaml`, roles (designer, TA, animator, programmer, QA, build, ",
+      "status": " "
+    },
+    "V220-002": {
+      "hash": "580ef61fedb04239",
+      "prefix": "V220",
+      "num": 2,
+      "section": "v2.20 \u2014 Game studio pack reference + e2e demo",
+      "text_preview": "External-tool wiring: Blender, UE, Perforce/Git, CI via `tool-operator` + Tool command + evidence-types. *(F3.3, I4.1\u2013I4",
+      "status": " "
+    },
+    "V220-003": {
+      "hash": "5cc913496c558022",
+      "prefix": "V220",
+      "num": 3,
+      "section": "v2.20 \u2014 Game studio pack reference + e2e demo",
+      "text_preview": "**I4.1** MCP per-role allowlist; browser lock/navigate/unlock; MCP \u2260 pursuit router; auth/rate-limit \u2192 H2.",
+      "status": " "
+    },
+    "V220-004": {
+      "hash": "fc8597a19855591f",
+      "prefix": "V220",
+      "num": 4,
+      "section": "v2.20 \u2014 Game studio pack reference + e2e demo",
+      "text_preview": "**I4.2** tool-operator cannot edit product source; ad-hoc tools forbidden during evidence-gated implement.",
+      "status": " "
+    },
+    "V220-005": {
+      "hash": "e6cd1fc8b5fd1d4d",
+      "prefix": "V220",
+      "num": 5,
+      "section": "v2.20 \u2014 Game studio pack reference + e2e demo",
+      "text_preview": "**I4.3** non-pytest evidence types (checksum, screenshot, manifest, linter); S0 validation when extending evidence-types",
+      "status": " "
+    },
+    "V220-006": {
+      "hash": "ba5cf0aa00b09228",
+      "prefix": "V220",
+      "num": 6,
+      "section": "v2.20 \u2014 Game studio pack reference + e2e demo",
+      "text_preview": "goal_verify suite = asset in engine + tests + performance budget; **initial weak suite acceptable** with adversarial-rev",
+      "status": " "
+    },
+    "V220-007": {
+      "hash": "4e0090d09f9a1672",
+      "prefix": "V220",
+      "num": 7,
+      "section": "v2.20 \u2014 Game studio pack reference + e2e demo",
+      "text_preview": "Domain transistors (deferred until v2.24 schema, then back-fill): e.g. `mesh-import`, `rig-humanoid`, `ue-validate`. *(S",
+      "status": " "
+    },
+    "V220-008": {
+      "hash": "273f7d7a31f69b95",
+      "prefix": "V220",
+      "num": 8,
+      "section": "v2.20 \u2014 Game studio pack reference + e2e demo",
+      "text_preview": "`tests/e2e/test_game_studio_demo.py` \u2014 role-to-role handoff produces evidence with only H1/H3 (mock DCC tools). *(F3, A1",
+      "status": " "
+    },
+    "V220-009": {
+      "hash": "397bdb379c799076",
+      "prefix": "V220",
+      "num": 9,
+      "section": "v2.20 \u2014 Game studio pack reference + e2e demo",
+      "text_preview": "e2e demo completes a handoff with evidence; only H1/H3 human points; suite green; docs/journal updated.",
+      "status": " "
+    },
+    "V221-001": {
+      "hash": "cb938771816b09ab",
+      "prefix": "V221",
+      "num": 1,
+      "section": "v2.21 \u2014 Data platform pack reference",
+      "text_preview": "Build full `template-packs/data-platform/`: roles (analyst, engineer, DBA, SRE, **governance w/ strict_hitl**), pipeline",
+      "status": " "
+    },
+    "V221-002": {
+      "hash": "bc2399afb6ba8aa2",
+      "prefix": "V221",
+      "num": 2,
+      "section": "v2.21 \u2014 Data platform pack reference",
+      "text_preview": "**Deploy gate placeholder:** pack pipeline YAML includes gate node `deploy-gate-maintenance-window` (maintenance window ",
+      "status": " "
+    },
+    "V221-003": {
+      "hash": "64923a250b6cb7c4",
+      "prefix": "V221",
+      "num": 3,
+      "section": "v2.21 \u2014 Data platform pack reference",
+      "text_preview": "**Deploy gate (bridge until v2.25):** deploy pipeline phase includes task-card checklist for maintenance window + rollba",
+      "status": " "
+    },
+    "V221-004": {
+      "hash": "ccd405ca9974e613",
+      "prefix": "V221",
+      "num": 4,
+      "section": "v2.21 \u2014 Data platform pack reference",
+      "text_preview": "Domain transistors (back-fill after v2.24): e.g. `ingest`, `dbt-run`, `deploy-check`. *(SEC-18 \u00a7K)*",
+      "status": " "
+    },
+    "V221-005": {
+      "hash": "9c7f55f9a5147f59",
+      "prefix": "V221",
+      "num": 5,
+      "section": "v2.21 \u2014 Data platform pack reference",
+      "text_preview": "`tests/integration/test_data_platform_pipeline.py` \u2014 representative pipeline runs to evidence.",
+      "status": " "
+    },
+    "V221-006": {
+      "hash": "b62d41c8d82e3f76",
+      "prefix": "V221",
+      "num": 6,
+      "section": "v2.21 \u2014 Data platform pack reference",
+      "text_preview": "Pack validates + instantiates + runs a pipeline to evidence; suite green; docs/journal updated.",
+      "status": " "
+    },
+    "V222-001": {
+      "hash": "39d3c79c59926901",
+      "prefix": "V222",
+      "num": 1,
+      "section": "v2.22 \u2014 Cross-pack `_shared` library",
+      "text_preview": "Create `template-packs/_shared/` with \u22651 micro-pack (e.g. HR/onboarding). *(F5.2)*",
+      "status": " "
+    },
+    "V222-002": {
+      "hash": "dc4b8354037026ae",
+      "prefix": "V222",
+      "num": 2,
+      "section": "v2.22 \u2014 Cross-pack `_shared` library",
+      "text_preview": "Pack import mechanism (a pack imports a `_shared` micro-pack). *(F5.1)*",
+      "status": " "
+    },
+    "V222-003": {
+      "hash": "4d1b0cff63ada4c7",
+      "prefix": "V222",
+      "num": 3,
+      "section": "v2.22 \u2014 Cross-pack `_shared` library",
+      "text_preview": "Enforce \"no repo outside template-packs ceiling\" (validator/check); **hotfix path**: version bump / import / journal-rec",
+      "status": " "
+    },
+    "V222-004": {
+      "hash": "ee6a5d97ea4bb140",
+      "prefix": "V222",
+      "num": 4,
+      "section": "v2.22 \u2014 Cross-pack `_shared` library",
+      "text_preview": "**`_shared` blast radius:** importer staleness on _shared edit; extend/fork or H2 when importer goal_verify fails. *(F5.",
+      "status": " "
+    },
+    "V222-005": {
+      "hash": "9c35e15530709693",
+      "prefix": "V222",
+      "num": 5,
+      "section": "v2.22 \u2014 Cross-pack `_shared` library",
+      "text_preview": "`tests/unit/test_pack_imports.py` \u2014 import resolves; missing import fails closed.",
+      "status": " "
+    },
+    "V222-006": {
+      "hash": "647e60bac75018e6",
+      "prefix": "V222",
+      "num": 6,
+      "section": "v2.22 \u2014 Cross-pack `_shared` library",
+      "text_preview": "Import resolves end-to-end; ceiling enforced; suite green; docs/journal updated.",
+      "status": " "
+    },
+    "V223-001": {
+      "hash": "c9b947d2299e3c53",
+      "prefix": "V223",
+      "num": 1,
+      "section": "v2.23 \u2014 Operator polish",
+      "text_preview": "`generate-dashboard.py` \u2192 `docs/operator/dashboard.md` + `STATUS.md` (staleness-aware inputs); optional webhook on miles",
+      "status": " "
+    },
+    "V223-002": {
+      "hash": "fafbaa058f8c81d5",
+      "prefix": "V223",
+      "num": 2,
+      "section": "v2.23 \u2014 Operator polish",
+      "text_preview": "H2 notification digest (single digest on blocker with goal_id + stop_reason + suggested action \u2014 not per-step). *(A6.2, ",
+      "status": " "
+    },
+    "V223-003": {
+      "hash": "41ad59755009f60c",
+      "prefix": "V223",
+      "num": 3,
+      "section": "v2.23 \u2014 Operator polish",
+      "text_preview": "**I5.2** strict environments may disable outbound notify (dashboard-only); observe-without-unblock (A6.3).",
+      "status": " "
+    },
+    "V223-004": {
+      "hash": "4fdfb67e10fd554c",
+      "prefix": "V223",
+      "num": 4,
+      "section": "v2.23 \u2014 Operator polish",
+      "text_preview": "**Observe-without-unblock:** reading dashboard/journal/evidence does not clear H2 or gates; explicit operator answer in ",
+      "status": " "
+    },
+    "V223-005": {
+      "hash": "77180e62d9a8c3ff",
+      "prefix": "V223",
+      "num": 5,
+      "section": "v2.23 \u2014 Operator polish",
+      "text_preview": "Self-gate audit trail (who waived what, when) in `docs/decisions/automation-waivers.md` + audit log; evidence/ immutabil",
+      "status": " "
+    },
+    "V223-006": {
+      "hash": "3bafb6b659742505",
+      "prefix": "V223",
+      "num": 6,
+      "section": "v2.23 \u2014 Operator polish",
+      "text_preview": "**`docs/operator/pursuit-trace.jsonl`** \u2014 append per turn; rotate at 50 MB or 90 days; redact secrets at write; webhooks",
+      "status": " "
+    },
+    "V223-007": {
+      "hash": "3e74968a31cd56b6",
+      "prefix": "V223",
+      "num": 7,
+      "section": "v2.23 \u2014 Operator polish",
+      "text_preview": "J4 retention table documented: `evidence/` immutable; `worker-runs.jsonl` 1 year; trace 90 days. *(J4, 03 \u00a79)*",
+      "status": " "
+    },
+    "V223-008": {
+      "hash": "050dca90c8aed486",
+      "prefix": "V223",
+      "num": 8,
+      "section": "v2.23 \u2014 Operator polish",
+      "text_preview": "Extend `export-contract.md` redaction profiles: strip secrets from `hitl.payload`, env vars, credentials paths (J5). *(J",
+      "status": " "
+    },
+    "V223-009": {
+      "hash": "b68fad541b00d270",
+      "prefix": "V223",
+      "num": 9,
+      "section": "v2.23 \u2014 Operator polish",
+      "text_preview": "Automated review triggers: security-review on task-card declared files + diff stats \u2014 wire **ADR-V2-016 non-waivable cla",
+      "status": " "
+    },
+    "V223-010": {
+      "hash": "6d2f6a6bcee6ab3e",
+      "prefix": "V223",
+      "num": 10,
+      "section": "v2.23 \u2014 Operator polish",
+      "text_preview": "`tests/unit/test_dashboard_goal_queue.py` + `tests/unit/test_h2_digest.py` + `tests/unit/test_pursuit_trace.py`. *(ADR-V",
+      "status": " "
+    },
+    "V223-011": {
+      "hash": "606edb25347dd86e",
+      "prefix": "V223",
+      "num": 11,
+      "section": "v2.23 \u2014 Operator polish",
+      "text_preview": "Dashboard renders goal/queue; H2 emits one digest; audit records waivers; review triggers fire; suite green; docs/journa",
+      "status": " "
+    },
+    "V224-001": {
+      "hash": "56a923f023d5041d",
+      "prefix": "V224",
+      "num": 1,
+      "section": "v2.24 \u2014 Transistor schema + registry + L6",
+      "text_preview": "`docs/platform/schemas/transistor.v1.json` \u2014 common: `id, version(semver), capability_id, class\u2208{hard,soft,gate}, inputs",
+      "status": " "
+    },
+    "V224-002": {
+      "hash": "79fe34d843b2030a",
+      "prefix": "V224",
+      "num": 2,
+      "section": "v2.24 \u2014 Transistor schema + registry + L6",
+      "text_preview": "Class-specific fields (E6.3): **hard** `executor.kind=script|tool`; **soft** `executor.kind=soft_template` + `prompt_tem",
+      "status": " "
+    },
+    "V224-003": {
+      "hash": "d73cacaf9f572250",
+      "prefix": "V224",
+      "num": 3,
+      "section": "v2.24 \u2014 Transistor schema + registry + L6",
+      "text_preview": "Typed slots `string|path|json|artifact_ref|enum` (+ optional `$ref`). *(E6.2)*",
+      "status": " "
+    },
+    "V224-004": {
+      "hash": "55db74ae05eb850b",
+      "prefix": "V224",
+      "num": 4,
+      "section": "v2.24 \u2014 Transistor schema + registry + L6",
+      "text_preview": "`docs/platform/transistors/` with **bootstrap transistor set** per [bootstrap-transistors.manifest.json](../docs/platfor",
+      "status": " "
+    },
+    "V224-005": {
+      "hash": "ebaa4201f37fba69",
+      "prefix": "V224",
+      "num": 5,
+      "section": "v2.24 \u2014 Transistor schema + registry + L6",
+      "text_preview": "**Skill \u2192 soft transistor (v2.24):** wrap `hld-writer`, `dd-writer`, `diagram-generator` as soft templates under `docs/p",
+      "status": " "
+    },
+    "V224-006": {
+      "hash": "4676f4eb92644dfe",
+      "prefix": "V224",
+      "num": 6,
+      "section": "v2.24 \u2014 Transistor schema + registry + L6",
+      "text_preview": "`docs/platform/TRANSISTORS.md` generated. *(E6.1)*",
+      "status": " "
+    },
+    "V224-007": {
+      "hash": "5adf5e75f135d780",
+      "prefix": "V224",
+      "num": 7,
+      "section": "v2.24 \u2014 Transistor schema + registry + L6",
+      "text_preview": "`scripts/automation/list-transistors.py` \u2014 list + I/O compatibility query + `--check-duplicates`. *(E6.4, G5.6)*",
+      "status": " "
+    },
+    "V224-008": {
+      "hash": "20d5e84fb70b4369",
+      "prefix": "V224",
+      "num": 8,
+      "section": "v2.24 \u2014 Transistor schema + registry + L6",
+      "text_preview": "`scripts/automation/regenerate-transistors-index.py` \u2014 regenerates `TRANSISTORS.md` from manifests. *(E6.1, SEC-18 \u00a7J)*",
+      "status": " "
+    },
+    "V224-009": {
+      "hash": "c415b968c94228a0",
+      "prefix": "V224",
+      "num": 9,
+      "section": "v2.24 \u2014 Transistor schema + registry + L6",
+      "text_preview": "`validate-workflow.py` validates transistor manifests against `transistor.v1.json` on commit; **empty/invalid registry b",
+      "status": " "
+    },
+    "V224-010": {
+      "hash": "76f700970ac673db",
+      "prefix": "V224",
+      "num": 10,
+      "section": "v2.24 \u2014 Transistor schema + registry + L6",
+      "text_preview": "Add **L6 transistor** as ladder capstone: subsumes L2\u2013L5 executors; L0 must not remain steady state for capability in 2+",
+      "status": " "
+    },
+    "V224-011": {
+      "hash": "ef7f4be38d19e8de",
+      "prefix": "V224",
+      "num": 11,
+      "section": "v2.24 \u2014 Transistor schema + registry + L6",
+      "text_preview": "Platform work type: transistor extraction \u2014 prefer hard executor from existing L2 script before soft template; `list-tra",
+      "status": " "
+    },
+    "V224-012": {
+      "hash": "c051d7decc2cfbe9",
+      "prefix": "V224",
+      "num": 12,
+      "section": "v2.24 \u2014 Transistor schema + registry + L6",
+      "text_preview": "Platform DoD D6.5: TRANSISTORS.md row + \u22651 workflow JSON ref + `tests/unit/test_transistor_<id>.py` + staleness node (E5",
+      "status": " "
+    },
+    "V224-013": {
+      "hash": "66caf99d7b63bc31",
+      "prefix": "V224",
+      "num": 13,
+      "section": "v2.24 \u2014 Transistor schema + registry + L6",
+      "text_preview": "Compose-first rank prepends `hard_transistor` (then script > soft_transistor > playbook > skill > facts); **gate transis",
+      "status": " "
+    },
+    "V224-014": {
+      "hash": "9222c05fcba6d650",
+      "prefix": "V224",
+      "num": 14,
+      "section": "v2.24 \u2014 Transistor schema + registry + L6",
+      "text_preview": "Compose miss = missing transistor \u2192 enqueue with `capability_id`/`suggested_io_schema`; product may proceed L0 for that ",
+      "status": " "
+    },
+    "V224-015": {
+      "hash": "faa1738743af1805",
+      "prefix": "V224",
+      "num": 15,
+      "section": "v2.24 \u2014 Transistor schema + registry + L6",
+      "text_preview": "One verify boundary per transistor. *(SEC-17-7)* \u00b7 [ ] `_shared` + pack overlay scope. *(SEC-17-10)*",
+      "status": " "
+    },
+    "V224-016": {
+      "hash": "bde1b10726037966",
+      "prefix": "V224",
+      "num": 16,
+      "section": "v2.24 \u2014 Transistor schema + registry + L6",
+      "text_preview": "`tests/unit/test_transistor_schema.py` \u2014 valid/invalid manifests incl. each class. *(E6.2, E6.3)*",
+      "status": " "
+    },
+    "V224-017": {
+      "hash": "19275cb60a3ed718",
+      "prefix": "V224",
+      "num": 17,
+      "section": "v2.24 \u2014 Transistor schema + registry + L6",
+      "text_preview": "`tests/unit/test_list_transistors.py` \u2014 listing + duplicate detection + I/O query. *(E6.4)*",
+      "status": " "
+    },
+    "V224-018": {
+      "hash": "64eb0903a794020a",
+      "prefix": "V224",
+      "num": 18,
+      "section": "v2.24 \u2014 Transistor schema + registry + L6",
+      "text_preview": "`tests/unit/test_transistors_index_regen.py` \u2014 `regenerate-transistors-index.py` deterministic. *(E6.1)*",
+      "status": " "
+    },
+    "V224-019": {
+      "hash": "a3c7e17bf63f51dd",
+      "prefix": "V224",
+      "num": 19,
+      "section": "v2.24 \u2014 Transistor schema + registry + L6",
+      "text_preview": "Walk SEC-18 \u00a7Q: registry + schema validated on CI; bootstrap manifest complete (every row has transistor + unit test); c",
+      "status": " "
+    },
+    "V224-020": {
+      "hash": "e0c01215b5a4c0b7",
+      "prefix": "V224",
+      "num": 20,
+      "section": "v2.24 \u2014 Transistor schema + registry + L6",
+      "text_preview": "Registry validates; list/dup-detect + index regen work; manifests validated on commit; rank updated; SEC-18 \u00a7Q items che",
+      "status": " "
+    },
+    "V225-001": {
+      "hash": "4afc0c237f638df9",
+      "prefix": "V225",
+      "num": 1,
+      "section": "v2.25 \u2014 Workflow DAG schema + validator + compose phase",
+      "text_preview": "`docs/platform/schemas/workflow-dag.v1.json` \u2014 DAG-level `workflow_id, goal_id, template_ref, pack_id, terminal_nodes[]`",
+      "status": " "
+    },
+    "V225-002": {
+      "hash": "c4206449caaf56a0",
+      "prefix": "V225",
+      "num": 2,
+      "section": "v2.25 \u2014 Workflow DAG schema + validator + compose phase",
+      "text_preview": "`docs/workflows/` storage for `<goal-id>.json` DAGs. *(C6.2)*",
+      "status": " "
+    },
+    "V225-003": {
+      "hash": "bee42ffa6a28ee4a",
+      "prefix": "V225",
+      "num": 3,
+      "section": "v2.25 \u2014 Workflow DAG schema + validator + compose phase",
+      "text_preview": "`scripts/automation/validate-workflow-dag.py` (S0) \u2014 **DAG acyclicity**, **gate edge completeness**, every node's **prec",
+      "status": " "
+    },
+    "V225-004": {
+      "hash": "d96360fc3d882ddb",
+      "prefix": "V225",
+      "num": 4,
+      "section": "v2.25 \u2014 Workflow DAG schema + validator + compose phase",
+      "text_preview": "`check-pipeline-blocked.py`: **workflow-compose phase mandatory before implement/scaffold/build** (C6.1) when `goal.work",
+      "status": " "
+    },
+    "V225-005": {
+      "hash": "aa9670d93d5d6f94",
+      "prefix": "V225",
+      "num": 5,
+      "section": "v2.25 \u2014 Workflow DAG schema + validator + compose phase",
+      "text_preview": "Add `.cursor/rules/workflow-compose-before-implement.mdc` \u2014 states generator-first thesis; forbids direct deliverable im",
+      "status": " "
+    },
+    "V225-006": {
+      "hash": "c651f7b4e9d3046e",
+      "prefix": "V225",
+      "num": 6,
+      "section": "v2.25 \u2014 Workflow DAG schema + validator + compose phase",
+      "text_preview": "Extend staleness for workflow + transistor nodes; version bump mid-pursuit \u2192 re-validate before next node. *(E5.4)*",
+      "status": " "
+    },
+    "V225-007": {
+      "hash": "147b20dcadd0739c",
+      "prefix": "V225",
+      "num": 7,
+      "section": "v2.25 \u2014 Workflow DAG schema + validator + compose phase",
+      "text_preview": "L0-waiver nodes link to a promotion-queue item with expiry (compose-miss path). *(E7.4)*",
+      "status": " "
+    },
+    "V225-008": {
+      "hash": "f94d1c9667b87097",
+      "prefix": "V225",
+      "num": 8,
+      "section": "v2.25 \u2014 Workflow DAG schema + validator + compose phase",
+      "text_preview": "**ADR-V2-015:** enforce `max_l0_waivers_per_goal=3` in `validate-workflow-dag.py`; expired `l0_waiver` \u2192 preflight BLOCK",
+      "status": " "
+    },
+    "V225-009": {
+      "hash": "3e3ec42dcd0a9162",
+      "prefix": "V225",
+      "num": 9,
+      "section": "v2.25 \u2014 Workflow DAG schema + validator + compose phase",
+      "text_preview": "`scripts/migrate-bridge-to-workflow.py` \u2014 converts bridge-era task-card goals to minimal DAG from phase list + catalog b",
+      "status": " "
+    },
+    "V225-010": {
+      "hash": "971a57873283d4e8",
+      "prefix": "V225",
+      "num": 10,
+      "section": "v2.25 \u2014 Workflow DAG schema + validator + compose phase",
+      "text_preview": "All active goals flip `workflow_policy` to **`required`** unless explicit waiver row in `automation-waivers.md`. *(10)*",
+      "status": " "
+    },
+    "V225-011": {
+      "hash": "f693b462da7bc691",
+      "prefix": "V225",
+      "num": 11,
+      "section": "v2.25 \u2014 Workflow DAG schema + validator + compose phase",
+      "text_preview": "Resolve deliverable type \u2192 workflow template (E7.1); stitch transistors into DAG (E7.2); **each node binds catalog rank ",
+      "status": " "
+    },
+    "V225-012": {
+      "hash": "8e6bee03744a6463",
+      "prefix": "V225",
+      "num": 12,
+      "section": "v2.25 \u2014 Workflow DAG schema + validator + compose phase",
+      "text_preview": "Pack `pipelines/*.yaml` phases map to **DAG node templates** (HLD/DD/implement = nodes, not free-form skills). *(C2.5, A",
+      "status": " "
+    },
+    "V225-013": {
+      "hash": "959fd33491d33ec0",
+      "prefix": "V225",
+      "num": 13,
+      "section": "v2.25 \u2014 Workflow DAG schema + validator + compose phase",
+      "text_preview": "Bind **`deploy-gate-maintenance-window`** to hard gate transistor (from v2.21 placeholder). *(F4.2, Phase F)*",
+      "status": " "
+    },
+    "V225-014": {
+      "hash": "071ffc5304fccd7b",
+      "prefix": "V225",
+      "num": 14,
+      "section": "v2.25 \u2014 Workflow DAG schema + validator + compose phase",
+      "text_preview": "JSON DAG authoritative; visual editor optional. *(SEC-17-9)*",
+      "status": " "
+    },
+    "V225-015": {
+      "hash": "282225c48f7b7666",
+      "prefix": "V225",
+      "num": 15,
+      "section": "v2.25 \u2014 Workflow DAG schema + validator + compose phase",
+      "text_preview": "`tests/unit/test_validate_workflow_dag.py` \u2014 valid DAG passes; missing typed input fails. *(E7.3)*",
+      "status": " "
+    },
+    "V225-016": {
+      "hash": "98285131f8f58955",
+      "prefix": "V225",
+      "num": 16,
+      "section": "v2.25 \u2014 Workflow DAG schema + validator + compose phase",
+      "text_preview": "`tests/integration/test_workflow_compose_phase.py` \u2014 implement blocked until compose done. *(C6.1)*",
+      "status": " "
+    },
+    "V225-017": {
+      "hash": "546a236b796d64d6",
+      "prefix": "V225",
+      "num": 17,
+      "section": "v2.25 \u2014 Workflow DAG schema + validator + compose phase",
+      "text_preview": "Sample DAG validates; invalid wiring fails closed; compose enforced; **migrate-bridge-to-workflow** run; all goals `requ",
+      "status": " "
+    },
+    "V226-001": {
+      "hash": "6517d9bf8a7ba0b1",
+      "prefix": "V226",
+      "num": 1,
+      "section": "v2.26 \u2014 Workflow composer + active_workflow + one-node-per-turn",
+      "text_preview": "**Skill migration (v2.26):** `implement-feature` forbidden as direct `next_action` when policy=required; `task-breakdown",
+      "status": " "
+    },
+    "V226-002": {
+      "hash": "85600df5a9b73fe1",
+      "prefix": "V226",
+      "num": 2,
+      "section": "v2.26 \u2014 Workflow composer + active_workflow + one-node-per-turn",
+      "text_preview": "Add `pursuit.active_workflow` full shape (`workflow_id, path, current_node_id, completed_nodes[]{node_id,transistor_vers",
+      "status": " "
+    },
+    "V226-003": {
+      "hash": "64d7c4a994e1db59",
+      "prefix": "V226",
+      "num": 3,
+      "section": "v2.26 \u2014 Workflow composer + active_workflow + one-node-per-turn",
+      "text_preview": "Update `docs/operator/export-contract.md` to document `active_workflow` for headless SDK consumers; redaction profiles +",
+      "status": " "
+    },
+    "V226-004": {
+      "hash": "bf8b216eb63909ef",
+      "prefix": "V226",
+      "num": 4,
+      "section": "v2.26 \u2014 Workflow composer + active_workflow + one-node-per-turn",
+      "text_preview": "Extend the preCompact snapshot (v2.15) to include `active_workflow` so DAG position survives compaction/crash. *(G6.3, H",
+      "status": " "
+    },
+    "V226-005": {
+      "hash": "7d106a4f1f10414a",
+      "prefix": "V226",
+      "num": 5,
+      "section": "v2.26 \u2014 Workflow composer + active_workflow + one-node-per-turn",
+      "text_preview": "`.cursor/skills/workflow-composer/SKILL.md` \u2014 S3, authors DAG from deliverable decomposition; **queries catalog per node",
+      "status": " "
+    },
+    "V226-006": {
+      "hash": "84e5705673979729",
+      "prefix": "V226",
+      "num": 6,
+      "section": "v2.26 \u2014 Workflow composer + active_workflow + one-node-per-turn",
+      "text_preview": "`scripts/run-soft-transistor.py` \u2014 ADR-V2-010 runtime: template load \u2192 economy worker \u2192 JSON Schema validate \u2192 evidence;",
+      "status": " "
+    },
+    "V226-007": {
+      "hash": "7ae509a401decb6d",
+      "prefix": "V226",
+      "num": 7,
+      "section": "v2.26 \u2014 Workflow composer + active_workflow + one-node-per-turn",
+      "text_preview": "Soft transistors used for **doc/design brief nodes** (HLD, DD, diagram spec) \u2014 not unconstrained phase skills. *(ADR-V2-",
+      "status": " "
+    },
+    "V226-008": {
+      "hash": "0a967ca1856fb6da",
+      "prefix": "V226",
+      "num": 8,
+      "section": "v2.26 \u2014 Workflow composer + active_workflow + one-node-per-turn",
+      "text_preview": "**Generator-only deliverables:** direct file write / implement without bound node blocked at preflight when `workflow_po",
+      "status": " "
+    },
+    "V226-009": {
+      "hash": "a2aa989da99c9b41",
+      "prefix": "V226",
+      "num": 9,
+      "section": "v2.26 \u2014 Workflow composer + active_workflow + one-node-per-turn",
+      "text_preview": "One workflow node per product turn (default). *(B6.3)*",
+      "status": " "
+    },
+    "V226-010": {
+      "hash": "ba7185b3847b2618",
+      "prefix": "V226",
+      "num": 10,
+      "section": "v2.26 \u2014 Workflow composer + active_workflow + one-node-per-turn",
+      "text_preview": "Gate transistor edge routing executes, with gate kinds `verify_result | file_exists | schema_match | budget_remaining | ",
+      "status": " "
+    },
+    "V226-011": {
+      "hash": "dee56361a7bfcd52",
+      "prefix": "V226",
+      "num": 11,
+      "section": "v2.26 \u2014 Workflow composer + active_workflow + one-node-per-turn",
+      "text_preview": "Task card binds `workflow_node_id` **and** `transistor_id`; running outside bound node = conformance failure. *(C6.3)*",
+      "status": " "
+    },
+    "V226-012": {
+      "hash": "4fb5ae11793bbfcd",
+      "prefix": "V226",
+      "num": 12,
+      "section": "v2.26 \u2014 Workflow composer + active_workflow + one-node-per-turn",
+      "text_preview": "Executor boundary: script | tool | mcp dispatch; soft transistors via bounded workers; **never bypass preToolUse**; F6.3",
+      "status": " "
+    },
+    "V226-013": {
+      "hash": "70f9d6b314f7aec7",
+      "prefix": "V226",
+      "num": 13,
+      "section": "v2.26 \u2014 Workflow composer + active_workflow + one-node-per-turn",
+      "text_preview": "`check-pipeline-blocked.py` rejects direct `implement-feature` / phase-skill routing (`hld-writer`, `dd-writer`, `diagra",
+      "status": " "
+    },
+    "V226-014": {
+      "hash": "7b98079c414541e3",
+      "prefix": "V226",
+      "num": 14,
+      "section": "v2.26 \u2014 Workflow composer + active_workflow + one-node-per-turn",
+      "text_preview": "State template default `goal.workflow_policy=required`; bridge requires waiver + expiry. *(10)*",
+      "status": " "
+    },
+    "V226-015": {
+      "hash": "086bdb260e016e24",
+      "prefix": "V226",
+      "num": 15,
+      "section": "v2.26 \u2014 Workflow composer + active_workflow + one-node-per-turn",
+      "text_preview": "Ship [state-active-workflow.v1.json](../docs/platform/schemas/state-active-workflow.v1.json). *(Phase B)*",
+      "status": " "
+    },
+    "V226-016": {
+      "hash": "a77169fa6be0f330",
+      "prefix": "V226",
+      "num": 16,
+      "section": "v2.26 \u2014 Workflow composer + active_workflow + one-node-per-turn",
+      "text_preview": "Per-node evidence rollup \u2192 goal_verify. **Coexists with C3.4 task rollup:** goal_verify requires (a) task checklist + ev",
+      "status": " "
+    },
+    "V226-017": {
+      "hash": "23423bad368e3abe",
+      "prefix": "V226",
+      "num": 17,
+      "section": "v2.26 \u2014 Workflow composer + active_workflow + one-node-per-turn",
+      "text_preview": "Checkpoint replay from **`failed_node_id`**; **graph change \u2192 full restart** (not partial replay). *(G6.4)*",
+      "status": " "
+    },
+    "V226-018": {
+      "hash": "3928b0ceef80b126",
+      "prefix": "V226",
+      "num": 18,
+      "section": "v2.26 \u2014 Workflow composer + active_workflow + one-node-per-turn",
+      "text_preview": "Fuzzy-chain guard: implement without workflow_node_id (when C6.1 applies) blocked at preflight. *(G5.8)*",
+      "status": " "
+    },
+    "V226-019": {
+      "hash": "e65eb5efb0d45ee9",
+      "prefix": "V226",
+      "num": 19,
+      "section": "v2.26 \u2014 Workflow composer + active_workflow + one-node-per-turn",
+      "text_preview": "`tests/integration/test_one_node_per_turn.py` \u2014 active_workflow advances one node/turn. *(B6.3, H1.7)*",
+      "status": " "
+    },
+    "V226-020": {
+      "hash": "b02d11fe3478d220",
+      "prefix": "V226",
+      "num": 20,
+      "section": "v2.26 \u2014 Workflow composer + active_workflow + one-node-per-turn",
+      "text_preview": "`tests/integration/test_checkpoint_replay.py` \u2014 failed node replays from checkpoint. *(G6.4)*",
+      "status": " "
+    },
+    "V226-021": {
+      "hash": "481e87ce4319f565",
+      "prefix": "V226",
+      "num": 21,
+      "section": "v2.26 \u2014 Workflow composer + active_workflow + one-node-per-turn",
+      "text_preview": "`tests/unit/test_fuzzy_chain_guard.py` \u2014 unbound implement blocked. *(G5.8)*",
+      "status": " "
+    },
+    "V226-022": {
+      "hash": "54f029e2a884767e",
+      "prefix": "V226",
+      "num": 22,
+      "section": "v2.26 \u2014 Workflow composer + active_workflow + one-node-per-turn",
+      "text_preview": "`tests/unit/test_soft_transistor_executor.py` \u2014 schema pass/fail/retry/H2 paths. *(ADR-V2-010)*",
+      "status": " "
+    },
+    "V226-023": {
+      "hash": "6818e11124c35fce",
+      "prefix": "V226",
+      "num": 23,
+      "section": "v2.26 \u2014 Workflow composer + active_workflow + one-node-per-turn",
+      "text_preview": "`tests/unit/test_generator_only_deliverables.py` \u2014 direct implement blocked when policy=required. *(ADR-V2-007)*",
+      "status": " "
+    },
+    "V226-024": {
+      "hash": "83f250c840ec7200",
+      "prefix": "V226",
+      "num": 24,
+      "section": "v2.26 \u2014 Workflow composer + active_workflow + one-node-per-turn",
+      "text_preview": "`tests/unit/test_phase_skill_routing_forbidden.py` \u2014 phase skills blocked when policy=required. *(Phase E)*",
+      "status": " "
+    },
+    "V226-025": {
+      "hash": "4331470c0c83b007",
+      "prefix": "V226",
+      "num": 25,
+      "section": "v2.26 \u2014 Workflow composer + active_workflow + one-node-per-turn",
+      "text_preview": "DAG one node/turn; replay works; fuzzy-chain + generator-only guards active; **bridge disabled by default**; suite green",
+      "status": " "
+    },
+    "V227-001": {
+      "hash": "de56a98567038117",
+      "prefix": "V227",
+      "num": 1,
+      "section": "v2.27 \u2014 Pack workflow templates + _shared transistors + parallel branches",
+      "text_preview": "Pack `workflows/` + `transistors/` overlays inherit templates; **pack CI pre-publish validates workflow + transistor tem",
+      "status": " "
+    },
+    "V227-002": {
+      "hash": "bde1385bad54421f",
+      "prefix": "V227",
+      "num": 2,
+      "section": "v2.27 \u2014 Pack workflow templates + _shared transistors + parallel branches",
+      "text_preview": "`_shared` transistors library under `template-packs/_shared/transistors/` \u2014 bootstrap set (e.g. git-commit, verify-pytes",
+      "status": " "
+    },
+    "V227-003": {
+      "hash": "65963c44568b4ee1",
+      "prefix": "V227",
+      "num": 3,
+      "section": "v2.27 \u2014 Pack workflow templates + _shared transistors + parallel branches",
+      "text_preview": "`_shared` workflow \"standard cells\" (reusable subgraphs) under `template-packs/_shared/workflows/`. *(SEC-18 \u00a7A, F5.4)*",
+      "status": " "
+    },
+    "V227-004": {
+      "hash": "fc9596ed95999c10",
+      "prefix": "V227",
+      "num": 4,
+      "section": "v2.27 \u2014 Pack workflow templates + _shared transistors + parallel branches",
+      "text_preview": "Parallel workflow branches via work orders/lanes (`active_workflow.branches[]`). *(C6.4)*",
+      "status": " "
+    },
+    "V227-005": {
+      "hash": "c553277bad577196",
+      "prefix": "V227",
+      "num": 5,
+      "section": "v2.27 \u2014 Pack workflow templates + _shared transistors + parallel branches",
+      "text_preview": "`tests/integration/test_pack_workflow_inherit.py` + `tests/integration/test_parallel_branches.py`.",
+      "status": " "
+    },
+    "V227-006": {
+      "hash": "1fc0deffa285f45a",
+      "prefix": "V227",
+      "num": 6,
+      "section": "v2.27 \u2014 Pack workflow templates + _shared transistors + parallel branches",
+      "text_preview": "Pack workflow template instantiates; `_shared` transistor resolves via overlay; parallel branch runs across lanes; suite",
+      "status": " "
+    },
+    "V228-001": {
+      "hash": "3a23da4240999a1c",
+      "prefix": "V228",
+      "num": 1,
+      "section": "v2.28 \u2014 Transistor maturity dashboard + metrics",
+      "text_preview": "Maturity dashboard: class mix vs ~70% hard / 20% soft / 10% gate target (from `platform.composition.class_mix`). *(E6.5,",
+      "status": " "
+    },
+    "V228-002": {
+      "hash": "074dc85575a92d40",
+      "prefix": "V228",
+      "num": 2,
+      "section": "v2.28 \u2014 Transistor maturity dashboard + metrics",
+      "text_preview": "Fuzzy-chain metrics in `state.platform.metrics.fuzzy_chain_incidents` (rate of unbound/prose implement). *(G5.8, SEC-15-",
+      "status": " "
+    },
+    "V228-003": {
+      "hash": "997610820c1b510b",
+      "prefix": "V228",
+      "num": 3,
+      "section": "v2.28 \u2014 Transistor maturity dashboard + metrics",
+      "text_preview": "**`promotion_debt_by_capability` threshold (default: 0 expired L0 waivers) blocks H3** on acceptance demo goal \u2014 not web",
+      "status": " "
+    },
+    "V228-004": {
+      "hash": "9bb42b4d4b3c79e5",
+      "prefix": "V228",
+      "num": 4,
+      "section": "v2.28 \u2014 Transistor maturity dashboard + metrics",
+      "text_preview": "**`workflow_coverage_by_pack` \u2265 90%** per reference pack ([game-asset-pipeline](../template-packs/game-asset-pipeline/),",
+      "status": " "
+    },
+    "V228-005": {
+      "hash": "c1fa6aaa3df423cd",
+      "prefix": "V228",
+      "num": 5,
+      "section": "v2.28 \u2014 Transistor maturity dashboard + metrics",
+      "text_preview": "**`fuzzy_chain_incidents == 0`** for last 10 pursuit steps before H3 on acceptance demo goal. *(G5.8, Phase E)*",
+      "status": " "
+    },
+    "V228-006": {
+      "hash": "bd883a3de756a852",
+      "prefix": "V228",
+      "num": 6,
+      "section": "v2.28 \u2014 Transistor maturity dashboard + metrics",
+      "text_preview": "ADR-V2-013 M3: no weak waiver rows remain on reference pack verify suites. *(ADR-V2-013)*",
+      "status": " "
+    },
+    "V228-007": {
+      "hash": "2f3a94f52b6e89c7",
+      "prefix": "V228",
+      "num": 7,
+      "section": "v2.28 \u2014 Transistor maturity dashboard + metrics",
+      "text_preview": "Promotion debt SLA alert fires webhook when threshold exceeded (reads `platform.metrics.promotion_debt_by_capability`; n",
+      "status": " "
+    },
+    "V228-008": {
+      "hash": "0a26fa86694915eb",
+      "prefix": "V228",
+      "num": 8,
+      "section": "v2.28 \u2014 Transistor maturity dashboard + metrics",
+      "text_preview": "Workflow coverage % per pack in `platform.metrics.workflow_coverage_by_pack` (deliverable types with bound templates / t",
+      "status": " "
+    },
+    "V228-009": {
+      "hash": "dcbce61568de1c56",
+      "prefix": "V228",
+      "num": 9,
+      "section": "v2.28 \u2014 Transistor maturity dashboard + metrics",
+      "text_preview": "Optional DAG viewer (read-only static HTML from workflow JSON in `docs/platform/`). *(SEC-17-9)*",
+      "status": " "
+    },
+    "V228-010": {
+      "hash": "a6a7274897ebe97d",
+      "prefix": "V228",
+      "num": 10,
+      "section": "v2.28 \u2014 Transistor maturity dashboard + metrics",
+      "text_preview": "Update `docs/automation/release-queue.json` to reflect the full v2.14\u2013v2.28 history (J6 leaf stopped at v2.23). *(J6)*",
+      "status": " "
+    },
+    "V228-011": {
+      "hash": "66a85ef2d1988948",
+      "prefix": "V228",
+      "num": 11,
+      "section": "v2.28 \u2014 Transistor maturity dashboard + metrics",
+      "text_preview": "Walk SEC-18 \u00a7Q program-complete acceptance checklist end-to-end. *(SEC-18 \u00a7Q)*",
+      "status": " "
+    },
+    "V228-012": {
+      "hash": "1235f392de02a089",
+      "prefix": "V228",
+      "num": 12,
+      "section": "v2.28 \u2014 Transistor maturity dashboard + metrics",
+      "text_preview": "`tests/unit/test_maturity_metrics.py` \u2014 metrics computed from real registry/workflows.",
+      "status": " "
+    },
+    "V228-013": {
+      "hash": "f52973e302904aa5",
+      "prefix": "V228",
+      "num": 13,
+      "section": "v2.28 \u2014 Transistor maturity dashboard + metrics",
+      "text_preview": "Dashboard reports maturity + coverage \u226590% + fuzzy_chain=0 on demo goal; promotion debt blocks H3 when threshold exceede",
+      "status": " "
+    },
+    "G5-001": {
+      "hash": "3ae78436c47f39f6",
+      "prefix": "G5",
+      "num": 1,
+      "section": "G5 \u2014 Mistake \u2192 control mapping (verify each control is live)",
+      "text_preview": "**G5.1** hallucinated done \u2192 evidence gate (`verify-router` + `evidence_required`) + **hierarchy audit re-enqueue deepen",
+      "status": " "
+    },
+    "G5-002": {
+      "hash": "00613e7e473b115c",
+      "prefix": "G5",
+      "num": 2,
+      "section": "G5 \u2014 Mistake \u2192 control mapping (verify each control is live)",
+      "text_preview": "**G5.2** scope creep \u2192 `allowed_reads`/`forbidden_reads` cap + task card. *(v2.17/v2.19)*",
+      "status": " "
+    },
+    "G5-003": {
+      "hash": "5c3b381978d1605e",
+      "prefix": "G5",
+      "num": 3,
+      "section": "G5 \u2014 Mistake \u2192 control mapping (verify each control is live)",
+      "text_preview": "**G5.3** wrong architecture \u2192 self-gate checklist/reviewer + goal_verify. *(v2.15)*",
+      "status": " "
+    },
+    "G5-004": {
+      "hash": "26582157f3704b9a",
+      "prefix": "G5",
+      "num": 4,
+      "section": "G5 \u2014 Mistake \u2192 control mapping (verify each control is live)",
+      "text_preview": "**G5.4** skipped tests \u2192 `verify-router` mandatory before advance. *(exists)*",
+      "status": " "
+    },
+    "G5-005": {
+      "hash": "e4ef61b2baec77b2",
+      "prefix": "G5",
+      "num": 5,
+      "section": "G5 \u2014 Mistake \u2192 control mapping (verify each control is live)",
+      "text_preview": "**G5.5** stale design \u2192 staleness graph + reconcile before merge. *(v2.18)*",
+      "status": " "
+    },
+    "G5-006": {
+      "hash": "454e96d23020343c",
+      "prefix": "G5",
+      "num": 6,
+      "section": "G5 \u2014 Mistake \u2192 control mapping (verify each control is live)",
+      "text_preview": "**G5.6** duplicate tooling \u2192 platform queue + compose-first + `list-transistors --check-duplicates`. *(v2.16/v2.24)*",
+      "status": " "
+    },
+    "G5-007": {
+      "hash": "3637d2835ab1cb15",
+      "prefix": "G5",
+      "num": 7,
+      "section": "G5 \u2014 Mistake \u2192 control mapping (verify each control is live)",
+      "text_preview": "**G5.7** unsafe command \u2192 preToolUse hook allowlist per role. *(v2.15)*",
+      "status": " "
+    },
+    "G5-008": {
+      "hash": "0dfd5637b234c233",
+      "prefix": "G5",
+      "num": 8,
+      "section": "G5 \u2014 Mistake \u2192 control mapping (verify each control is live)",
+      "text_preview": "**G5.8** fuzzy chain lost in prose \u2192 workflow-node binding + preflight guard. *(v2.26)*",
+      "status": " "
+    },
+    "INV-001": {
+      "hash": "72e9e93d1efe3575",
+      "prefix": "INV",
+      "num": 1,
+      "section": "Cross-cutting invariants (must hold across all releases)",
+      "text_preview": "**Generator-first (ADR-V2-007):** after v2.26, deliverables (code, docs, diagrams, assets, configs) are terminal workflo",
+      "status": " "
+    },
+    "INV-002": {
+      "hash": "3b6fdf4ac5b9c4e4",
+      "prefix": "INV",
+      "num": 2,
+      "section": "Cross-cutting invariants (must hold across all releases)",
+      "text_preview": "**Dual-write + resume:** every new state block (`goal`, `pursuit`, `platform`, `company`, `active_workflow`) has a mirro",
+      "status": " "
+    },
+    "INV-003": {
+      "hash": "83c4cd8f6d443085",
+      "prefix": "INV",
+      "num": 3,
+      "section": "Cross-cutting invariants (must hold across all releases)",
+      "text_preview": "**Writer authority (ADR-V2-009):** conductor sole writer of state/journal/promotion_queue; workers return summaries; S0 ",
+      "status": " "
+    },
+    "INV-004": {
+      "hash": "90bebc0f27bc9568",
+      "prefix": "INV",
+      "num": 4,
+      "section": "Cross-cutting invariants (must hold across all releases)",
+      "text_preview": "**Fail-closed:** any \"claimed done without artifact\" (promotion, goal, workflow node, role output) stops at H2, never ad",
+      "status": " "
+    },
+    "INV-005": {
+      "hash": "dc049c0dff5babfe",
+      "prefix": "INV",
+      "num": 5,
+      "section": "Cross-cutting invariants (must hold across all releases)",
+      "text_preview": "**Platform never blocks product / product never starves platform:** scheduler defers (records) rather than skips; produc",
+      "status": " "
+    },
+    "INV-006": {
+      "hash": "00d8fdcd498358d7",
+      "prefix": "INV",
+      "num": 6,
+      "section": "Cross-cutting invariants (must hold across all releases)",
+      "text_preview": "**Authority order honored:** when a leaf's Behavior/Release header conflicts with vision \u00a715 / SEC-18 / state-block leaf",
+      "status": " "
+    },
+    "INV-007": {
+      "hash": "ff80021eb7a52684",
+      "prefix": "INV",
+      "num": 7,
+      "section": "Cross-cutting invariants (must hold across all releases)",
+      "text_preview": "**Hierarchy toolchain untouched:** `scripts/automation/` hierarchy/HTML scripts and their tests stay green; harness evol",
+      "status": " "
+    },
+    "INV-008": {
+      "hash": "47600950f8ec1d7d",
+      "prefix": "INV",
+      "num": 8,
+      "section": "Cross-cutting invariants (must hold across all releases)",
+      "text_preview": "**Stale transistor/workflow re-validation:** any transistor version bump marks the workflow stale (E5.4); pursuit re-run",
+      "status": " "
+    },
+    "FA-001": {
+      "hash": "58cb6e2c9f50235c",
+      "prefix": "FA",
+      "num": 1,
+      "section": "Final acceptance (vision achieved)",
+      "text_preview": "All v2.14\u2013v2.28 **exit gates green** (each release section in this file).",
+      "status": " "
+    },
+    "FA-002": {
+      "hash": "301f22e03ec8cfa8",
+      "prefix": "FA",
+      "num": 2,
+      "section": "Final acceptance (vision achieved)",
+      "text_preview": "**SEC-18 \u00a7Q** \u2014 every row checked with evidence path under `evidence/`.",
+      "status": " "
+    },
+    "FA-003": {
+      "hash": "deeeb54d36a323f0",
+      "prefix": "FA",
+      "num": 3,
+      "section": "Final acceptance (vision achieved)",
+      "text_preview": "Reference packs: `workflow_coverage_by_pack` **\u2265 90%**; domain bootstrap transistors registered per [bootstrap-transisto",
+      "status": " "
+    },
+    "FA-004": {
+      "hash": "14f1e9700920c249",
+      "prefix": "FA",
+      "num": 4,
+      "section": "Final acceptance (vision achieved)",
+      "text_preview": "Acceptance demo goal: `workflow_policy=required`; **0 `fuzzy_chain_incidents`** in last 10 pursuit steps; **0 expired L0",
+      "status": " "
+    },
+    "FA-005": {
+      "hash": "a5a32acc909309f3",
+      "prefix": "FA",
+      "num": 5,
+      "section": "Final acceptance (vision achieved)",
+      "text_preview": "[07-traceability-matrix.md](07-traceability-matrix.md) shows every leaf ID covered by a checked **06** item (not just [0",
+      "status": " "
+    },
+    "FA-006": {
+      "hash": "b5c0db4f686e499e",
+      "prefix": "FA",
+      "num": 6,
+      "section": "Final acceptance (vision achieved)",
+      "text_preview": "[08-coverage-ledger.md](08-coverage-ledger.md) remains **plan-covered** only; [10 \u00a7Implementation status](10-implementat",
+      "status": " "
+    },
+    "FA-007": {
+      "hash": "8284e81798981b08",
+      "prefix": "FA",
+      "num": 7,
+      "section": "Final acceptance (vision achieved)",
+      "text_preview": "`python scripts/validate-workflow.py --strict` green on full state with all blocks.",
+      "status": " "
+    },
+    "FA-008": {
+      "hash": "02e527149df2c801",
+      "prefix": "FA",
+      "num": 8,
+      "section": "Final acceptance (vision achieved)",
+      "text_preview": "Full test suite (unit + integration + contract + e2e) green.",
+      "status": " "
+    },
+    "FA-009": {
+      "hash": "debceb50bfb032cf",
+      "prefix": "FA",
+      "num": 9,
+      "section": "Final acceptance (vision achieved)",
+      "text_preview": "End-to-end company-scale goal: H1 \u2192 H3 via `goal_autopilot`, composed transistor workflow, platform-queue drain, pack ro",
+      "status": " "
+    },
+    "FA-010": {
+      "hash": "23b46fb213b30b8f",
+      "prefix": "FA",
+      "num": 10,
+      "section": "Final acceptance (vision achieved)",
+      "text_preview": "`documents/full-automation-vision-and-hierarchy.md` \u00a715 all rows shipped; `documents/plans/v2-full-evolution.md` complet",
+      "status": " "
+    },
+    "FA-011": {
+      "hash": "c65227033d743029",
+      "prefix": "FA",
+      "num": 11,
+      "section": "Final acceptance (vision achieved)",
+      "text_preview": "STATUS.md + dashboard reflect **vision complete**.",
+      "status": " "
+    },
+    "FA-012": {
+      "hash": "269883ba29e0f26a",
+      "prefix": "FA",
+      "num": 12,
+      "section": "Final acceptance (vision achieved)",
+      "text_preview": "**Sign-off line recorded in journal:** *\"Bridge mode disabled; generator-first enforced.\"*",
+      "status": " "
+    }
+  },
+  "last_sync": "2026-06-29T05:41:01.590537+00:00",
+  "totals": {
+    "total": 293,
+    "done": 0,
+    "wip": 0
+  }
+}

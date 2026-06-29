@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aideveloper.local/schemas/state-company.v1.json",
+  "title": "state.company",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["pack_id", "pack_version", "active_role"],
+  "properties": {
+    "pack_id": { "type": "string" },
+    "pack_version": { "type": "string" },
+    "active_role": { "type": "string" },
+    "role_queue": { "type": "array", "items": { "type": "string" } },
+    "role_forbidden_reads": { "type": "array", "items": { "type": "string" } }
+  }
+}

@@ -5,6 +5,7 @@
 Conventions:
 - `[ ]` not started · `[~]` in progress · `[x]` done & verified.
 - Each item names the **artifact** and the **leaf ID(s)** it satisfies (traceable to `documents/plans/full-automation/`).
+- **Progress tracker:** [11-implementation-tracker.md](11-implementation-tracker.md) lists all **293** items with stable IDs (e.g. `PF-001`, `V214-012`). Sync via `python scripts/automation/sync-implementation-tracker.py`.
 - "Schema additive" = `state.json` stays `version: 2`; tools treat missing blocks as inactive.
 
 ---
@@ -12,13 +13,15 @@ Conventions:
 ## Pre-flight (do once, before v2.14)
 
 - [ ] Create `tests/integration/` and `tests/e2e/` directories with `__init__.py` and a README. *(C5.1)*
-- [ ] Add a `docs/platform/` directory placeholder + decide schema location `docs/platform/schemas/`.
-- [ ] Publish [docs/decisions/v2-evolution-policy-adrs.md](../docs/decisions/v2-evolution-policy-adrs.md) (ADR-V2-001..012); link from [decisions.md](../docs/decisions/decisions.md). *(SEC-17-1..6, architect review)*
+- [ ] Add `docs/platform/` directory + [docs/platform/schemas/README.md](../docs/platform/schemas/README.md) registry (state block JSON Schemas ship per release; placeholders for transistor/workflow-dag).
+- [ ] Publish [docs/decisions/v2-evolution-policy-adrs.md](../docs/decisions/v2-evolution-policy-adrs.md) (ADR-V2-001..017); link from [decisions.md](../docs/decisions/decisions.md). *(SEC-17, architect review)*
 - [ ] Record ADR defaults in `journal/state.json` `deferred_questions[]` with `{id, adr_ref, default, override:null, needed_by_release}` — operator H1 override fills `override`. *(SEC-17)*
-- [ ] Confirm `validate-workflow.py` has an extension point for new state blocks (add a schema-registry dict if not).
+- [ ] `validate-workflow.py` loads `STATE_SCHEMA_REGISTRY` from [schemas/README.md](../docs/platform/schemas/README.md); **`--strict`** fails on unknown keys in present blocks. *(Pre-flight, Phase B)*
+- [ ] Each release adds/extends schema + `tests/unit/test_validate_state_<block>.py` for new blocks. *(ongoing)*
 - [ ] Treat [`APP-B-state-json-sketch.md`](../documents/plans/full-automation/APP-B-state-json-sketch.md) as fulfilled by [03-target-architecture.md](03-target-architecture.md) §1 (additive `goal`, `pursuit`, `platform`, `hitl`, `self_gate_mode`, `company`, `active_workflow`); cross-link in `validate-workflow.py` schema registry comments. *(APP-B, H1.*)*
 - [ ] **Upgrade path (ADR-V2-012):** document v2.13→v2.14 bridge — missing `goal` block → existing task pipeline continues; goal-keeper backfills at next H1; `goal.workflow_policy: bridge` until v2.25. *(ADR-V2-012)*
-- [ ] **CI test matrix** — add `.github/workflows/v2-conformance.yml` (or extend existing): per-release gates — always `validate-workflow.py` + unit; from v2.14 add integration; from v2.18 add headless-verify + lane scripts; from v2.20 add e2e (mock externals); from v2.25 add `validate-workflow-dag.py`. Tag `v2.N` only when matrix green. *(C5.1, architect review)*
+- [ ] **CI test matrix** — add `.github/workflows/v2-conformance.yml` (or extend existing): per-release gates — always `validate-workflow.py` + unit; from v2.14 add integration; from v2.18 add headless-verify + lane scripts; from v2.20 add **contract** (`tests/contract/`) + e2e (mock externals); from v2.25 add `validate-workflow-dag.py`; from v2.26 add `test_phase_skill_routing_forbidden.py`. Tag `v2.N` only when matrix green. *(C5.1, 09)*
+- [ ] Create [tests/contract/README.md](../tests/contract/README.md) scaffold (v2.20 pre-flight). *(Phase F)*
 - [ ] `tests/integration/test_v213_upgrade_bridge.py` — repo without goal block still runs check-pipeline-blocked. *(ADR-V2-012)*
 
 ---
@@ -26,7 +29,8 @@ Conventions:
 ## v2.14 — Goal model + goal_verify
 
 **State schema**
-- [ ] Add additive `goal` block to `state.json` template (`id, parent_goal, type, success_criteria[], verify_command, deadline{}, state, verify{}, workflow_policy`). *(A1.1–A1.5, H1.2, ADR-V2-007)*
+- [ ] Add additive `goal` block to `state.json` template (`id, parent_goal, type, priority, success_criteria[], verify_command, deadline{}, state, verify{}, workflow_policy`). *(A1.1–A1.5, H1.2, ADR-V2-007)*
+- [ ] Ship [state-goal.v1.json](../docs/platform/schemas/state-goal.v1.json); `validate-workflow.py --strict` validates present `goal` block. *(Phase B)*
 - [ ] `goal.workflow_policy` enum = `required | bridge | exempt` — default **`bridge`** at v2.14 H1; auto-flip to **`required`** when v2.25 ships unless operator waiver. *(ADR-V2-007)*
 - [ ] `goal.state` enum = `pursuing|blocked|verifying|achieved|rejected`. *(A1.5)*
 - [ ] `goal.type` enum = `app|feature|milestone|company_ops|program`. *(A1.1)* — type drives preflight routing: milestone→manifest gates, feature→task cards, company_ops→ops queue, program→workstreams.
@@ -109,7 +113,7 @@ Conventions:
 - [ ] Map ADR defaults to state slots: SEC-17-2 → pack `h3_scope` + journal; SEC-17-3 → `platform.drain_policy` + adaptive K; SEC-17-4 → `goal.deadline`; SEC-17-6 → `pursuit.goal_queue` (disabled until v2.19). *(SEC-17-2,3,4,6, ADR-V2-003,006)*
 
 **Verification / tests**
-- [ ] `tests/unit/test_stop_reasons.py` — every taxonomy branch reachable. *(A4)*
+- [ ] Stop taxonomy includes `resource.preempted` (ADR-V2-006) and `integrity.workflow_stale` (E5.4 validation_hash mismatch); `test_stop_reasons.py` covers every enumerated value. *(A4, E5.4)*
 - [ ] `tests/integration/test_goal_autopilot_loop.py` — seeded goal advances ≥3 phases unattended, stops only on real blocker/H3. *(A2.2, A2.3, A2.6, A2.7)*
 - [ ] `tests/unit/test_strict_hitl_toggle.py` — toggling re-enables HLD/DD gates. *(J3)*
 - [ ] `tests/unit/test_pretooluse_allowlist.py` — unsafe command blocked; allowed command passes. *(G5.7)*
@@ -139,7 +143,9 @@ Conventions:
 - [ ] Document ladder **L0–L6** with locations + promotion rules (L6 capstone deferred detail to v2.24). *(D1.1–D1.7)*
 - [ ] Dequeue on platform turn only; product `next_action` untouched; partial promotion → re-enqueue (not false done); optional parallel platform worker slots (B2.6). *(D2.3)*
 - [ ] Extend/fork/configure policy: **configure**=task-level params only, **no staleness bump** (D5.1); **extend**=back-compat + staleness bump + parent catalog id + compatibility proof (D5.2); **fork**=new catalog id + provenance, **silent alias forbidden**, explicit task-card migration (D5.3). *(D5.1–D5.3)*
-- [ ] Platform DoD checklist: D6.1 INDEX row (maturity + verify ref + promotion id trace); D6.2 verify script (L1 manual OK until scripted, L2+ automated); D6.3 ≥1 task-card ref; D6.4 staleness node wired. *(D6.1–D6.4)*
+- [ ] Platform DoD checklist: D6.1 INDEX row (maturity + verify ref + promotion id trace); **D6.2 verify: L1 playbook manual verify allowed once per capability** — second reference → enqueue L2 script or H2; L2+ automated; D6.3 ≥1 task-card ref; D6.4 staleness node wired. *(D6.1–D6.4)*
+- [ ] Platform work type: **Behavior-section scrub** — leaves in active release scope must cite Reader narrative / State fields / Repo artifacts in task cards, not Behavior-only authority. *(Phase H)*
+- [ ] Optional: `scripts/automation/lint-leaf-authority.py` flags Behavior-only references in task cards (non-blocking until v2.16 exit). *(Phase H)*
 - [ ] Platform work types via `playbook-keeper` + script extraction (D4.2) + skill/command wrapper (D4.3) + hook+validate ext (D4.4) + **catalog/index regeneration (D4.5)** + pack export (D4.6). *(D4.1–D4.6)*
 - [ ] Populate `docs/playbooks/INDEX.md` with the 2 existing playbooks; add platform worker role to orchestration. *(D4.1, B2.6)*
 
@@ -149,9 +155,9 @@ Conventions:
 - [ ] `docs/automation/release-queue.json` schema wired to existing `scripts/automation/run-next-release.py`. Row fields: `status, branch, plan_todo_id, tag, auto_tag, last_error` + deliverables/verify commands. Tag `v2.x.0` only when `auto_tag: true`. *(J6)*
 - [ ] `docs/automation/unattended-prompt.md` — stable instructions for unattended/Cloud harness self-evolution (one release per run, PR/merge chaining). *(J6, existing .cursor/plans recipe)*
 - [ ] Harness self-build runs under `mode: iterative_feature` with empty blockers; gate waivers recorded in `docs/decisions/automation-waivers.md` (**template self-build** + structured rows: operator, rationale, expiry, goal_ids; H3 never permanently waived). *(J2, J6)*
-- [ ] SEC-17-3 interim: scheduler logs queue-depth samples so K (fixed vs adaptive) can be decided from data. *(SEC-17-3)*
 
 **Verification / tests**
+- [ ] `tests/unit/test_platform_dod_l1_once.py` — second L1-only verify reference enqueues L2 or H2. *(D6.2)*
 - [ ] `tests/unit/test_platform_queue.py` — enqueue/dequeue/priority + malformed item rejected. *(D2)*
 - [ ] `tests/unit/test_drain_scheduler.py` — 1/K, boost, cut, idle, max-age, skip-when-empty. *(D3)*
 - [ ] `tests/integration/test_promotion_flow.py` — enqueue→drain→catalog row→staleness node. *(D6)*
@@ -170,7 +176,7 @@ Conventions:
 - [ ] Each phase skill declares **front-matter contract**: inputs[], outputs[], verify command, catalog refs[]; missing catalog refs → B4.4 divergence log. Phase verify ≠ goal_verify. *(C2.5)*
 - [ ] **E4.1** layer-0 context: AGENTS.md + always-on rules (+ pack rule fragments); AGENTS change → dependent playbook/skill staleness nodes. *(E4.1, E5.2)*
 - [ ] Confirm hooks inject journal + **Context files** on continue/start (E4.2); corrupt state → H2; allowed_reads cap 5 retained + scope-bleed class (E4.3). *(E4.2, E4.3, G5.2)*
-- [ ] ADR template for unresolved SEC-17 decisions; S3 ambiguity → ADR (B1.4); **supersede → downstream staleness**. *(E3.2)*
+- [ ] Verify ADR-V2-001..017 published and linked; S3 ambiguity → new ADR (B1.4); **supersede → downstream staleness**. *(E3.2)*
 - [ ] **E3.3** remember skill: no global FTS/vector store; repeated captures → promotion candidates; distinct from journal Q&A. *(E3.3)*
 - [ ] **E3.1** stale external facts → journal note + optional reconcile-stale. *(E3.1)*
 
@@ -274,7 +280,8 @@ Conventions:
 ## v2.21 — Data platform pack reference
 
 - [ ] Build full `template-packs/data-platform/`: roles (analyst, engineer, DBA, SRE, **governance w/ strict_hitl**), pipelines (ingest→model→deploy→monitor; **deploy.maintenance_windows** policy field), verify/tasks/playbooks. *(F4.1, F4.2)*
-- [ ] **Deploy gate (bridge until v2.25):** deploy pipeline phase includes task-card checklist for maintenance window + rollback path; v2.25+ becomes hard **gate transistor** node per [03 §6.2](03-target-architecture.md). *(APP-A-release, F4.2)*
+- [ ] **Deploy gate placeholder:** pack pipeline YAML includes gate node `deploy-gate-maintenance-window` (maintenance window + rollback checklist) ready for v2.25 transistor binding. *(F4.2, APP-A-release)*
+- [ ] **Deploy gate (bridge until v2.25):** deploy pipeline phase includes task-card checklist for maintenance window + rollback path; v2.25+ binds hard **gate transistor** per [03 §6.2](03-target-architecture.md). *(APP-A-release, F4.2)*
 - [ ] Domain transistors (back-fill after v2.24): e.g. `ingest`, `dbt-run`, `deploy-check`. *(SEC-18 §K)*
 - [ ] `tests/integration/test_data_platform_pipeline.py` — representative pipeline runs to evidence.
 
@@ -303,15 +310,16 @@ Conventions:
 - [ ] **I5.2** strict environments may disable outbound notify (dashboard-only); observe-without-unblock (A6.3).
 - [ ] **Observe-without-unblock:** reading dashboard/journal/evidence does not clear H2 or gates; explicit operator answer in Resolved Q&A required. *(A6.3)*
 - [ ] Self-gate audit trail (who waived what, when) in `docs/decisions/automation-waivers.md` + audit log; evidence/ immutability; retention policy documented. *(J4)*
-- [ ] **`docs/operator/pursuit-trace.jsonl`** — append per turn `{timestamp, trace_id, goal_id, workflow_id, node_id, transistor_id, lane_id, phase, stop_reason, evidence_paths[]}`; webhooks include `trace_id` (ADR-V2-011). *(ADR-V2-011, I5.2)*
+- [ ] **`docs/operator/pursuit-trace.jsonl`** — append per turn; rotate at 50 MB or 90 days; redact secrets at write; webhooks include `trace_id` (ADR-V2-011). *(ADR-V2-011, I5.2, J4)*
+- [ ] J4 retention table documented: `evidence/` immutable; `worker-runs.jsonl` 1 year; trace 90 days. *(J4, 03 §9)*
 - [ ] Extend `export-contract.md` redaction profiles: strip secrets from `hitl.payload`, env vars, credentials paths (J5). *(J5)*
-- [ ] Automated review triggers: security-review on **task-card declared files + diff stats** (default self-gate: **waivable findings with expiry**; strict packs require pass before git-workflow); bugbot on large diffs (**supplemental, ≠ verify-router**; repeat pattern → promotion enqueue D2.1); S4 escalation on repeated verify fail. *(G4.1–G4.3)*
+- [ ] Automated review triggers: security-review on task-card declared files + diff stats — wire **ADR-V2-016 non-waivable classes** (secrets-in-repo, dependency CVE above pack threshold, auth bypass); waivable: style/nits with expiry; strict packs require pass before git-workflow; bugbot on large diffs (**supplemental, ≠ verify-router**); S4 escalation on repeated verify fail. *(G4.1–G4.3, ADR-V2-016)*
 - [ ] `tests/unit/test_dashboard_goal_queue.py` + `tests/unit/test_h2_digest.py` + `tests/unit/test_pursuit_trace.py`. *(ADR-V2-011)*
 
 **Exit gate**
 - [ ] Dashboard renders goal/queue; H2 emits one digest; audit records waivers; review triggers fire; suite green; docs/journal updated.
 
-> **Phase 1+2 milestone:** the autonomous, company-scale delivery system (sans transistors) is now complete. Consider a human checkpoint here.
+> **Operator checkpoint (recommended after v2.26, not v2.23):** generator-first enforcement lands at v2.26. Review SEC-18 §Q progress, fuzzy-chain metrics, and pack workflow coverage before v2.27–28. See [10-implementation-readiness.md](10-implementation-readiness.md).
 
 ---
 
@@ -321,7 +329,8 @@ Conventions:
 - [ ] `docs/platform/schemas/transistor.v1.json` — common: `id, version(semver), capability_id, class∈{hard,soft,gate}, inputs[], outputs[], preconditions[], executor, verify{kind:exit_code,expect:0}, maturity, tags/capability_tags, provenance{queue_id,pack_id}`. *(E6.2, SEC-18 §D)*
 - [ ] Class-specific fields (E6.3): **hard** `executor.kind=script|tool`; **soft** `executor.kind=soft_template` + `prompt_template_path, output_schema, max_tokens, capability_class:S1`; **gate** `executor.kind=gate` + `predicate_command` (S0 script only, **soft gates forbidden**). *(E6.3)*
 - [ ] Typed slots `string|path|json|artifact_ref|enum` (+ optional `$ref`). *(E6.2)*
-- [ ] `docs/platform/transistors/` with **bootstrap transistor set** (enumerate per SEC-18 §M — e.g. `route-tier-preflight`, `check-pipeline-blocked`, `validate-workflow-run`, `verify-router-invoke`, `dual-write-journal-state`, `list-components-query`, `list-transistors-query`). *(E6.1, SEC-18 §M)*
+- [ ] `docs/platform/transistors/` with **bootstrap transistor set** per [bootstrap-transistors.manifest.json](../docs/platform/bootstrap-transistors.manifest.json) (SEC-18 §M). *(E6.1, SEC-18 §M)*
+- [ ] **Skill → soft transistor (v2.24):** wrap `hld-writer`, `dd-writer`, `diagram-generator` as soft templates under `docs/platform/transistors/`. *(05 migration table)*
 - [ ] `docs/platform/TRANSISTORS.md` generated. *(E6.1)*
 
 **Scripts**
@@ -345,7 +354,7 @@ Conventions:
 - [ ] `tests/unit/test_transistors_index_regen.py` — `regenerate-transistors-index.py` deterministic. *(E6.1)*
 
 **SEC-18 §Q acceptance gate**
-- [ ] Walk the SEC-18 §Q acceptance checklist (registry + schema validated on CI; compose-first rank prepends hard_transistor; C6.1 applies on the iterative pipeline; bootstrap set present). *(SEC-18 §Q)*
+- [ ] Walk SEC-18 §Q: registry + schema validated on CI; bootstrap manifest complete (every row has transistor + unit test); compose-first rank prepends hard_transistor. *(SEC-18 §Q)*
 
 **Exit gate**
 - [ ] Registry validates; list/dup-detect + index regen work; manifests validated on commit; rank updated; SEC-18 §Q items checked; suite green; docs/journal updated.
@@ -364,10 +373,14 @@ Conventions:
 - [ ] Add `.cursor/rules/workflow-compose-before-implement.mdc` — states generator-first thesis; forbids direct deliverable implement when policy=required. *(ADR-V2-007)*
 - [ ] Extend staleness for workflow + transistor nodes; version bump mid-pursuit → re-validate before next node. *(E5.4)*
 - [ ] L0-waiver nodes link to a promotion-queue item with expiry (compose-miss path). *(E7.4)*
+- [ ] **ADR-V2-015:** enforce `max_l0_waivers_per_goal=3` in `validate-workflow-dag.py`; expired `l0_waiver` → preflight BLOCKED.
+- [ ] `scripts/migrate-bridge-to-workflow.py` — converts bridge-era task-card goals to minimal DAG from phase list + catalog bindings. *(10, Phase D)*
+- [ ] All active goals flip `workflow_policy` to **`required`** unless explicit waiver row in `automation-waivers.md`. *(10)*
 
 **Composition (compose-time — L2)**
 - [ ] Resolve deliverable type → workflow template (E7.1); stitch transistors into DAG (E7.2); **each node binds catalog rank (L1)** inside workflow-composer; miss → enqueue transistor promotion (E7.4); **second workflow same unpromoted miss → H2**.
 - [ ] Pack `pipelines/*.yaml` phases map to **DAG node templates** (HLD/DD/implement = nodes, not free-form skills). *(C2.5, ADR-V2-007)*
+- [ ] Bind **`deploy-gate-maintenance-window`** to hard gate transistor (from v2.21 placeholder). *(F4.2, Phase F)*
 
 **Decisions encoded**
 - [ ] JSON DAG authoritative; visual editor optional. *(SEC-17-9)*
@@ -377,11 +390,13 @@ Conventions:
 - [ ] `tests/integration/test_workflow_compose_phase.py` — implement blocked until compose done. *(C6.1)*
 
 **Exit gate**
-- [ ] Sample DAG validates; invalid wiring fails closed at compose; compose-before-implement enforced; suite green; docs/journal updated.
+- [ ] Sample DAG validates; invalid wiring fails closed; compose enforced; **migrate-bridge-to-workflow** run; all goals `required` or waived; suite green; docs/journal updated.
 
 ---
 
 ## v2.26 — Workflow composer + active_workflow + one-node-per-turn
+
+- [ ] **Skill migration (v2.26):** `implement-feature` forbidden as direct `next_action` when policy=required; `task-breakdown` binds `workflow_node_id` from compose output. *(05 migration table)*
 
 **State schema**
 - [ ] Add `pursuit.active_workflow` full shape (`workflow_id, path, current_node_id, completed_nodes[]{node_id,transistor_version,evidence[]}, failed_node_id, retry_counts{}, branches[], terminal_nodes[], validation_hash`). *(H1.7)*
@@ -398,6 +413,10 @@ Conventions:
 - [ ] Task card binds `workflow_node_id` **and** `transistor_id`; running outside bound node = conformance failure. *(C6.3)*
 - [ ] Executor boundary: script | tool | mcp dispatch; soft transistors via bounded workers; **never bypass preToolUse**; F6.3 role allowlist enforced. *(I4.4, F6.3)*
 
+- [ ] `check-pipeline-blocked.py` rejects direct `implement-feature` / phase-skill routing (`hld-writer`, `dd-writer`, `diagram-generator`) when `workflow_policy=required`. *(Phase D, skill migration)*
+- [ ] State template default `goal.workflow_policy=required`; bridge requires waiver + expiry. *(10)*
+- [ ] Ship [state-active-workflow.v1.json](../docs/platform/schemas/state-active-workflow.v1.json). *(Phase B)*
+
 **Verification & recovery**
 - [ ] Per-node evidence rollup → goal_verify. **Coexists with C3.4 task rollup:** goal_verify requires (a) task checklist + evidence (C3.4) AND (b) when `active_workflow` bound, all `terminal_nodes[]` in `completed_nodes[]` with per-node evidence paths (C6.5/G2.5). *(C6.5, C3.4, G2.5)*
 - [ ] Checkpoint replay from **`failed_node_id`**; **graph change → full restart** (not partial replay). *(G6.4)*
@@ -410,8 +429,10 @@ Conventions:
 - [ ] `tests/unit/test_soft_transistor_executor.py` — schema pass/fail/retry/H2 paths. *(ADR-V2-010)*
 - [ ] `tests/unit/test_generator_only_deliverables.py` — direct implement blocked when policy=required. *(ADR-V2-007)*
 
+- [ ] `tests/unit/test_phase_skill_routing_forbidden.py` — phase skills blocked when policy=required. *(Phase E)*
+
 **Exit gate**
-- [ ] A goal runs its DAG one node/turn with rollup to goal_verify; replay works; fuzzy-chain guard active; suite green; docs/journal updated.
+- [ ] DAG one node/turn; replay works; fuzzy-chain + generator-only guards active; **bridge disabled by default**; suite green; docs/journal updated. **Operator checkpoint** ([10](10-implementation-readiness.md)).
 
 ---
 
@@ -432,6 +453,10 @@ Conventions:
 
 - [ ] Maturity dashboard: class mix vs ~70% hard / 20% soft / 10% gate target (from `platform.composition.class_mix`). *(E6.5, E6.3, SEC-18)*
 - [ ] Fuzzy-chain metrics in `state.platform.metrics.fuzzy_chain_incidents` (rate of unbound/prose implement). *(G5.8, SEC-15-v2.28)*
+- [ ] **`promotion_debt_by_capability` threshold (default: 0 expired L0 waivers) blocks H3** on acceptance demo goal — not webhook-only. *(ADR-V2-015, Phase E)*
+- [ ] **`workflow_coverage_by_pack` ≥ 90%** per reference pack ([game-asset-pipeline](../template-packs/game-asset-pipeline/), [data-platform](../template-packs/data-platform/)). *(SEC-15-v2.28, Phase E)*
+- [ ] **`fuzzy_chain_incidents == 0`** for last 10 pursuit steps before H3 on acceptance demo goal. *(G5.8, Phase E)*
+- [ ] ADR-V2-013 M3: no weak waiver rows remain on reference pack verify suites. *(ADR-V2-013)*
 - [ ] Promotion debt SLA alert fires webhook when threshold exceeded (reads `platform.metrics.promotion_debt_by_capability`; non-blocking on notify fail). *(SEC-15-v2.28, ADR-V2-011)*
 - [ ] Workflow coverage % per pack in `platform.metrics.workflow_coverage_by_pack` (deliverable types with bound templates / total). *(SEC-15-v2.28)*
 - [ ] Optional DAG viewer (read-only static HTML from workflow JSON in `docs/platform/`). *(SEC-17-9)*
@@ -440,7 +465,7 @@ Conventions:
 - [ ] `tests/unit/test_maturity_metrics.py` — metrics computed from real registry/workflows.
 
 **Exit gate**
-- [ ] Dashboard reports maturity + fuzzy-chain rate from real data; release-queue current; SEC-18 §Q complete; suite green; docs/journal updated.
+- [ ] Dashboard reports maturity + coverage ≥90% + fuzzy_chain=0 on demo goal; promotion debt blocks H3 when threshold exceeded; SEC-18 §Q + ADR-V2-013 M3 complete; suite green; docs/journal updated.
 
 ---
 
@@ -470,10 +495,17 @@ Each AI failure mode must be neutralized by a named control. Tick when the contr
 
 ## Final acceptance (vision achieved)
 
-- [ ] All release exit gates green (v2.14–v2.28).
-- [ ] [07-traceability-matrix.md](07-traceability-matrix.md) shows **every leaf ID covered** by a checked item.
-- [ ] `python scripts/validate-workflow.py` green on full state with all blocks.
-- [ ] Full test suite (unit + integration + e2e) green.
-- [ ] An end-to-end company-scale goal runs from H1 to H3 using `goal_autopilot`, a composed transistor workflow, platform-queue drain, and pack role rotation — with evidence — and only H1/H2/H3 human interaction.
+Measurable criteria — all must pass before declaring v2.28 / vision complete:
+
+- [ ] All v2.14–v2.28 **exit gates green** (each release section in this file).
+- [ ] **SEC-18 §Q** — every row checked with evidence path under `evidence/`.
+- [ ] Reference packs: `workflow_coverage_by_pack` **≥ 90%**; domain bootstrap transistors registered per [bootstrap-transistors.manifest.json](../docs/platform/bootstrap-transistors.manifest.json).
+- [ ] Acceptance demo goal: `workflow_policy=required`; **0 `fuzzy_chain_incidents`** in last 10 pursuit steps; **0 expired L0 waivers**; **H3 only** human touch after goal_verify pass.
+- [ ] [07-traceability-matrix.md](07-traceability-matrix.md) shows every leaf ID covered by a checked **06** item (not just [08](08-coverage-ledger.md) plan-covered).
+- [ ] [08-coverage-ledger.md](08-coverage-ledger.md) remains **plan-covered** only; [10 §Implementation status](10-implementation-readiness.md) tracks 06 % complete.
+- [ ] `python scripts/validate-workflow.py --strict` green on full state with all blocks.
+- [ ] Full test suite (unit + integration + contract + e2e) green.
+- [ ] End-to-end company-scale goal: H1 → H3 via `goal_autopilot`, composed transistor workflow, platform-queue drain, pack role rotation — evidence at every verify boundary; only H1/H2/H3 human interaction.
 - [ ] `documents/full-automation-vision-and-hierarchy.md` §15 all rows shipped; `documents/plans/v2-full-evolution.md` complete.
-- [ ] STATUS.md + dashboard reflect "vision complete."
+- [ ] STATUS.md + dashboard reflect **vision complete**.
+- [ ] **Sign-off line recorded in journal:** *"Bridge mode disabled; generator-first enforced."*

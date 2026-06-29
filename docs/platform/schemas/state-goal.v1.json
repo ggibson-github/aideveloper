@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aideveloper.local/schemas/state-goal.v1.json",
+  "title": "state.goal",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "success_criteria", "verify_command", "state"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "parent_goal": { "type": ["string", "null"] },
+    "type": {
+      "type": "string",
+      "enum": ["app", "feature", "milestone", "company_ops", "program"]
+    },
+    "priority": { "type": "integer", "default": 50, "minimum": 0, "maximum": 100 },
+    "workflow_policy": {
+      "type": "string",
+      "enum": ["required", "bridge", "exempt"],
+      "default": "bridge"
+    },
+    "success_criteria": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1
+    },
+    "verify_command": { "type": "string", "minLength": 1 },
+    "deadline": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "max_steps": { "type": ["integer", "null"], "minimum": 1 },
+        "max_tokens": { "type": ["integer", "null"], "minimum": 1 },
+        "max_wall_hours": { "type": ["number", "null"], "minimum": 0 }
+      }
+    },
+    "state": {
+      "type": "string",
+      "enum": ["pursuing", "blocked", "verifying", "achieved", "rejected"]
+    },
+    "verify": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "last_run": { "type": ["string", "null"], "format": "date-time" },
+        "passed": { "type": "boolean" },
+        "exit_code": { "type": ["integer", "null"] },
+        "evidence": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

@@ -2,12 +2,16 @@
 
 **Total source files tracked: 348** (every `.md` under `documents/`, excluding the generated `html-site/` payload).
 
+**Status semantics:** Rows marked `[x]` mean **plan-covered** — the source idea is traced into master plan docs (`00`–`10`). They do **not** mean the feature is implemented in the repo. Implementation progress lives in [06-MASTER-CHECKLIST.md](06-MASTER-CHECKLIST.md). Read [10-implementation-readiness.md](10-implementation-readiness.md) before conflating the two.
+
 ## How to use this ledger
 
-Iterate in batches. For each file, **read it**, confirm its ideas are reflected in the master plan (`00`–`07`) **verbosely and clearly**, enrich the plan where the source implies an important addition, then mark the row:
+Iterate in batches. For each file, **read it**, confirm its ideas are reflected in the master plan (`00`–`10`) **verbosely and clearly**, enrich the plan where the source implies an important addition, then mark the row:
 
-- `- [ ]` pending — not yet verified
-- `- [x] PATH — §<plan file/section>: <one-line note>` verified (cite where the idea now lives; note any enrichment)
+- `- [ ]` pending — not yet plan-verified
+- `- [x] PATH — §<plan file/section>: <one-line note>` **plan-covered** (cite where the idea now lives; note any enrichment)
+
+Future optional suffix: `impl-verified` when the matching [06](06-MASTER-CHECKLIST.md) checkbox passes its verify command.
 
 Keep the per-group counts and the progress line at the bottom up to date as rows are checked.
 

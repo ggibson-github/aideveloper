@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aideveloper.local/schemas/state-program.v1.json",
+  "title": "state.program",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "manifest_path": { "type": "string" },
+    "artifact_graph_path": { "type": "string" },
+    "milestone_id": { "type": "string" },
+    "workstreams": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "lane_path", "status"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "department": { "type": "string" },
+          "role_id": { "type": "string" },
+          "lane_path": { "type": "string" },
+          "status": { "type": "string", "enum": ["active", "blocked", "done"] }
+        }
+      }
+    },
+    "integration_gate": {
+      "type": "string",
+      "enum": ["pending", "approved", "waived"]
+    }
+  }
+}

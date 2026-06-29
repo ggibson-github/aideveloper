@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aideveloper.local/schemas/transistor.v1.json",
+  "title": "transistor manifest (v2.24)",
+  "description": "Placeholder — full schema ships in v2.24 per SEC-18 §D",
+  "type": "object",
+  "required": ["id", "version", "class", "verify"],
+  "properties": {
+    "id": { "type": "string" },
+    "version": { "type": "string" },
+    "class": { "type": "string", "enum": ["hard", "soft", "gate"] },
+    "verify": { "type": "object" }
+  }
+}

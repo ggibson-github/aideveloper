@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aideveloper.local/schemas/state-active-workflow.v1.json",
+  "title": "state.pursuit.active_workflow",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["workflow_id", "path", "current_node_id", "terminal_nodes", "validation_hash"],
+  "properties": {
+    "workflow_id": { "type": "string" },
+    "path": { "type": "string" },
+    "current_node_id": { "type": "string" },
+    "completed_nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["node_id", "evidence"],
+        "properties": {
+          "node_id": { "type": "string" },
+          "transistor_version": { "type": "string" },
+          "evidence": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "failed_node_id": { "type": ["string", "null"] },
+    "retry_counts": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } },
+    "branches": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["branch_id", "current_node_id"],
+        "properties": {
+          "branch_id": { "type": "string" },
+          "current_node_id": { "type": "string" },
+          "lease_owner": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "terminal_nodes": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "validation_hash": { "type": "string", "pattern": "^sha256:" }
+  }
+}

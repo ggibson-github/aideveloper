@@ -31,6 +31,8 @@ Existing fields stay. New blocks below are added incrementally by the named rele
     "id": "goal-001",
     "parent_goal": null,
     "type": "app | feature | milestone | company_ops | program",
+    "priority": 50,
+    "workflow_policy": "bridge | required | exempt",
     "success_criteria": ["..."],
     "verify_command": "python scripts/goal-verify.py --goal goal-001",
     "deadline": { "max_steps": null, "max_tokens": null, "max_wall_hours": 48 },  // max_tokens → stop reason resource.max_cost (alias)
@@ -46,8 +48,8 @@ Existing fields stay. New blocks below are added incrementally by the named rele
     // stopped_reason — canonical dot notation (A4.*); leaf docs may use colons — implement dots only:
     //   human.H1 | human.H2 | human.H3
     //   verify.evidence_fail | verify.goal_verify_fail | verify.regression
-    //   resource.max_steps | resource.max_cost (alias of goal.deadline.max_tokens) | resource.max_wall_hours | resource.session_cap | resource.lease_expired
-    //   integrity.validate_fail | integrity.state_corrupt | integrity.artifact_graph_missing
+    //   resource.max_steps | resource.max_cost (alias of goal.deadline.max_tokens) | resource.max_wall_hours | resource.session_cap | resource.lease_expired | resource.preempted
+    //   integrity.validate_fail | integrity.state_corrupt | integrity.artifact_graph_missing | integrity.workflow_stale
     //   completion.goal_achieved | completion.program_done
     // check-pipeline-blocked.py: exit 0 = READY, exit 1 = BLOCKED (A2.1)
     // goal_scope_complete (A2.4): all task cards done + evidence present + promotion_queue drained for goal slice + no blocking_questions → set goal.state=verifying → run goal_verify
@@ -116,14 +118,17 @@ Existing fields stay. New blocks below are added incrementally by the named rele
 ```
 
 ### Field ownership by release
-| Block | Release | Skill that writes it | Validator |
-|-------|---------|----------------------|-----------|
-| `goal` | v2.14 | `goal-keeper` | `validate-workflow.py` (goal schema check) |
-| `pursuit` | v2.15 | `autopilot` / conductor | `check-pipeline-blocked.py` |
-| `platform` | v2.16 | `playbook-keeper` / conductor | `validate-workflow.py` |
-| `hitl` | v2.15 | conductor | `validate-workflow.py` |
-| `company` | v2.19 | `program-scoper` / conductor | `validate-workflow.py` |
-| `pursuit.active_workflow` | v2.26 | `workflow-composer` | `validate-workflow-dag.py` |
+| Block | Release | Skill that writes it | Validator | JSON Schema |
+|-------|---------|----------------------|-----------|-------------|
+| `goal` | v2.14 | `goal-keeper` | `validate-workflow.py` | [state-goal.v1.json](../docs/platform/schemas/state-goal.v1.json) |
+| `pursuit` | v2.15 | `autopilot` / conductor | `check-pipeline-blocked.py` | [state-pursuit.v1.json](../docs/platform/schemas/state-pursuit.v1.json) |
+| `hitl` | v2.15 | conductor | `validate-workflow.py` | [state-hitl.v1.json](../docs/platform/schemas/state-hitl.v1.json) |
+| `self_gate_mode` (top-level) | v2.15 | conductor | `validate-workflow.py` | [state-self-gate.v1.json](../docs/platform/schemas/state-self-gate.v1.json) |
+| `platform` | v2.16 | `playbook-keeper` / conductor | `validate-workflow.py` | [state-platform.v1.json](../docs/platform/schemas/state-platform.v1.json) |
+| `program` | v2.19 | `program-scoper` / conductor | `validate-workflow.py` | [state-program.v1.json](../docs/platform/schemas/state-program.v1.json) |
+| `company` | v2.19 | `program-scoper` / conductor | `validate-workflow.py` | [state-company.v1.json](../docs/platform/schemas/state-company.v1.json) |
+| `pursuit.active_workflow` | v2.26 | `workflow-composer` | `validate-workflow-dag.py` | [state-active-workflow.v1.json](../docs/platform/schemas/state-active-workflow.v1.json) |
+| `lane.json` (per workstream) | v2.19 | S0 lease scripts | `validate-workflow.py` | [lane.v1.json](../docs/platform/schemas/lane.v1.json) |
 
 ### Legacy top-level vs additive blocks (H1.1, H1.4)
 
@@ -190,6 +195,14 @@ Top-level `program` (existing v2.13 key) extends additively when `mode=program` 
 
 Stale or expired lease → `resource.lease_expired` (A4). Lease holder finishing work order has priority over `active_role` rotation for that lane (ADR-V2-006). Manifest/graph paths stay in `program` block — not duplicated in `company`.
 
+**`company_autopilot` enable contract (A3.3, ADR-V2-006):** all three must be true before multi-goal preemption runs:
+
+1. `docs/operator/model-policy.json` → `company_autopilot.enabled: true`
+2. `pursuit.mode = company_autopilot`
+3. Non-empty `pursuit.goal_queue[]`
+
+Pre-flight at enable: ADR-V2-006 preemption rules acknowledged in journal Resolved Q&A. Preemption sets `stopped_reason=resource.preempted` on the displaced goal; resume when higher-priority goal clears or operator reorders queue at H2.
+
 ### 1.2 Writer authority & concurrency (ADR-V2-009)
 
 | Writer | May write | Must not write |
@@ -208,6 +221,16 @@ Authoritative caps live in **`goal.deadline`**. Evaluation order each post-step 
 ### 1.4 H3 scope binding (ADR-V2-002)
 
 Pack `company.yaml` **`h3_scope`**: `task | milestone | release | company_goal` (default **`milestone`**). `goal-keeper` at H1 records effective scope in journal Goal section. Partial milestones may H3 per scope without achieving parent program goal.
+
+### 1.5 H1 contract by era (ADR-V2-007, [10](10-implementation-readiness.md))
+
+| Era | H1 must produce |
+|-----|-----------------|
+| v2.14–v2.24 | Goal + task breakdown + L1 Components plan; `workflow_policy=bridge` unless waiver |
+| v2.25+ | + Validated workflow JSON at `docs/workflows/<goal-id>.json` |
+| v2.26+ | + `active_workflow` execution binding; generator-only deliverables when `required` |
+
+**Bridge migration:** v2.25 ships `scripts/migrate-bridge-to-workflow.py`; all active goals flip to `required` unless waiver. v2.26 disables bridge by default in state template.
 
 ---
 
@@ -301,6 +324,16 @@ Doc/design/3D brief generation uses soft transistors in the DAG — **not** unco
 ---
 
 ## 4. Template-pack = company (target schema)
+
+### 4.1 Pipeline resolution (C1.4)
+
+When `state.company.pack_id` is set:
+
+1. Pack `pipelines/*.yaml` **overrides** harness pipeline for phase order and skill bindings.
+2. Phase name collision → **pack wins**; harness phase logged as `superseded_by_pack` in journal Pursuit section.
+3. Verify-command conflict between pack and harness → **H2 at H1 (S3)** — not silent merge.
+
+Harness `docs/manifest/pipelines/` remains fallback when no pack is bound.
 
 ```
 template-packs/<pack>/
@@ -478,5 +511,14 @@ Irreversible production deploy requires a **hard gate transistor** node (`class=
 | **`docs/operator/pursuit-trace.jsonl`** | Append-only per-turn trace: `{timestamp, trace_id, goal_id, workflow_id, node_id, transistor_id, lane_id, phase, stop_reason, evidence_paths[]}` |
 | **`docs/operator/worker-runs.jsonl`** | Subagent spawn audit (H5) — correlate via shared `trace_id` |
 | **Dashboard / webhooks** | H2/H3 payloads include `trace_id`; v2.28 SLA alerts on `platform.metrics.promotion_debt_by_capability` threshold → webhook (non-blocking) |
+
+**Retention (J4, v2.23+):**
+
+| Artifact | Policy |
+|----------|--------|
+| `evidence/` | Immutable — no auto-delete |
+| `worker-runs.jsonl` | 1 year rotate/archive |
+| `pursuit-trace.jsonl` | Rotate at **50 MB or 90 days** (whichever first); **redact secrets at write** |
+| Waiver audit rows | Same retention as worker-runs |
 
 `trace_id` = `{goal_id}-step-{pursuit.steps_total}`. Export redaction (J5): strip `payload` secrets; profiles in `export-contract.md`.

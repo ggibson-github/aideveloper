@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aideveloper.local/schemas/state-platform.v1.json",
+  "title": "state.platform",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "promotion_queue": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/promotionItem" }
+    },
+    "drain_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "product_steps_per_platform_turn": { "type": "integer", "minimum": 1 },
+        "verify_pattern_task_threshold": { "type": "integer", "minimum": 1 },
+        "max_backlog_age_steps": { "type": "integer", "minimum": 1 },
+        "boost_queue_depth": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "composition": {
+      "type": "object",
+      "properties": {
+        "last_catalog_query": { "type": ["string", "null"] },
+        "class_mix": { "type": ["object", "null"] }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "fuzzy_chain_incidents": { "type": "integer", "minimum": 0 },
+        "promotion_debt_by_capability": { "type": "object" },
+        "workflow_coverage_by_pack": { "type": "object" },
+        "queue_depth_samples": { "type": "array", "maxItems": 1000 }
+      }
+    },
+    "divergence_log": { "type": "array" }
+  },
+  "$defs": {
+    "promotionItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "source", "target_level", "status"],
+      "properties": {
+        "id": { "type": "string" },
+        "source": { "type": "string" },
+        "target_level": { "type": "string", "pattern": "^L[0-6]$" },
+        "priority": { "type": "integer" },
+        "effort_class": { "type": "string", "enum": ["S", "M", "L"] },
+        "reason": { "type": "string" },
+        "fingerprint": { "type": ["string", "null"] },
+        "source_workflow_id": { "type": ["string", "null"] },
+        "goal_id": { "type": ["string", "null"] },
+        "node_id": { "type": ["string", "null"] },
+        "capability_id": { "type": ["string", "null"] },
+        "suggested_io_schema": { "type": ["object", "null"] },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "draining", "promoted", "waived"]
+        },
+        "waiver_expiry": { "type": ["string", "null"], "format": "date-time" }
+      }
+    }
+  }
+}

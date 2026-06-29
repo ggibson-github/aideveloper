@@ -30,7 +30,7 @@ Legend: **Release** = owning release in [04](04-release-roadmap.md) · **§06** 
 | A5 Continue semantics | A5.1–A5.3 | v2.15 | v2.15 |
 | A6 Notification | A6.1–A6.3 | v2.23 | v2.23 |
 
-> **A3.3 multi-goal / `company_autopilot`:** the leaf describes a multi-goal queue. Per open decision **SEC-17-6**, the plan ships single-pursuit-stack first and `company_autopilot` behind a flag in **v2.19+**. Resolve SEC-17-6 at H1 to confirm.
+> **A3.3 multi-goal / `company_autopilot`:** **SEC-17-6 resolved** in ADR-V2-006. Ships v2.19+ behind triple enable (`model-policy.company_autopilot.enabled` + `pursuit.mode=company_autopilot` + non-empty `goal_queue`). Confirm preemption rules at H1 before enabling.
 
 ## Plane B — Cognition & routing (~27 leaves)
 

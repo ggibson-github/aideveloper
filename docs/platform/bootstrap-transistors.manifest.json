@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Bootstrap transistor manifest (SEC-18 §M, v2.24)",
+  "description": "Minimum hard transistor set required before workflow-compose is unblocked. SEC-18 §Q walk at v2.28 must assert every row is registered with passing unit test.",
+  "version": "1.0.0",
+  "transistors": [
+    {
+      "id": "route-tier-preflight",
+      "target_release": "v2.14",
+      "test_path": "tests/unit/test_transistor_route_tier_preflight.py",
+      "domain": "harness"
+    },
+    {
+      "id": "journal-dual-write",
+      "target_release": "v2.14",
+      "test_path": "tests/unit/test_transistor_journal_dual_write.py",
+      "domain": "harness"
+    },
+    {
+      "id": "verify-pytest",
+      "target_release": "v2.14",
+      "test_path": "tests/unit/test_transistor_verify_pytest.py",
+      "domain": "harness"
+    },
+    {
+      "id": "goal-verify-rollup",
+      "target_release": "v2.14",
+      "test_path": "tests/unit/test_transistor_goal_verify_rollup.py",
+      "domain": "harness"
+    },
+    {
+      "id": "validate-workflow-dag",
+      "target_release": "v2.25",
+      "test_path": "tests/unit/test_transistor_validate_workflow_dag.py",
+      "domain": "harness"
+    },
+    {
+      "id": "git-commit",
+      "target_release": "v2.14",
+      "test_path": "tests/unit/test_transistor_git_commit.py",
+      "domain": "harness"
+    },
+    {
+      "id": "scaffold-module",
+      "target_release": "v2.14",
+      "test_path": "tests/unit/test_transistor_scaffold_module.py",
+      "domain": "harness"
+    },
+    {
+      "id": "platform-debt-clear",
+      "target_release": "v2.14",
+      "test_path": "tests/unit/test_transistor_platform_debt_clear.py",
+      "domain": "harness"
+    }
+  ]
+}
